@@ -22,9 +22,12 @@
         </svg>
       </label>
     </div>
-    <!-- Search Bar - Hanya muncul di home -->
-    <div id="search-bar" class="hidden max-w-7xl mx-auto px-4 py-2">
-      <input id="search-input" type="text" placeholder="Search by title or author..." class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" oninput="searchBooks()">
+    <!-- Search Bar & Filter Kategori - Hanya di Home -->
+    <div id="search-bar" class="hidden max-w-7xl mx-auto px-4 py-4">
+      <input id="search-input" type="text" placeholder="Search by title or author..." class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 mb-4" oninput="updateBooks()">
+      <div id="category-filters" class="flex flex-wrap gap-2">
+        <!-- Tombol kategori akan di-generate di JS -->
+      </div>
     </div>
   </header>
 
@@ -50,20 +53,25 @@
   <!-- Main Content -->
   <main id="content" class="max-w-7xl mx-auto p-4 pt-8"></main>
 
-  <!-- Data + Script -->
+  <!-- Data Buku + Script -->
   <script>
     const books = [
-      {id:1,title:"Don Quixote",author:"Miguel de Cervantes",sales:"500M+",summary:"The first modern novel about a man who believes he is a knight.",img:"https://picsum.photos/seed/donquixote/400/600"},
-      {id:2,title:"A Tale of Two Cities",author:"Charles Dickens",sales:"200M+",summary:"A story of sacrifice and revolution in London and Paris.",img:"https://picsum.photos/seed/taleof2cities/400/600"},
-      {id:3,title:"The Lord of the Rings",author:"J.R.R. Tolkien",sales:"150M+",summary:"Epic quest to destroy the One Ring.",img:"https://picsum.photos/seed/lotr/400/600"},
-      {id:4,title:"The Little Prince",author:"Antoine de Saint-Exupéry",sales:"140M+",summary:"A poetic tale of love and life.",img:"https://picsum.photos/seed/littleprince/400/600"},
-      {id:5,title:"Harry Potter and the Philosopher's Stone",author:"J.K. Rowling",sales:"120M+",summary:"Harry's first year at Hogwarts.",img:"https://picsum.photos/seed/harrypotter1/400/600"},
+      {id:1,title:"Don Quixote",author:"Miguel de Cervantes",sales:"500M+",summary:"The first modern novel about a man who believes he is a knight.",img:"https://picsum.photos/seed/donquixote/400/600",category:"Classic"},
+      {id:2,title:"A Tale of Two Cities",author:"Charles Dickens",sales:"200M+",summary:"A story of sacrifice and revolution in London and Paris.",img:"https://picsum.photos/seed/taleof2cities/400/600",category:"Classic"},
+      {id:3,title:"The Lord of the Rings",author:"J.R.R. Tolkien",sales:"150M+",summary:"Epic quest to destroy the One Ring.",img:"https://picsum.photos/seed/lotr/400/600",category:"Fantasy"},
+      {id:4,title:"The Little Prince",author:"Antoine de Saint-Exupéry",sales:"140M+",summary:"A poetic tale of love and life.",img:"https://picsum.photos/seed/littleprince/400/600",category:"Adventure"},
+      {id:5,title:"Harry Potter and the Philosopher's Stone",author:"J.K. Rowling",sales:"120M+",summary:"Harry's first year at Hogwarts.",img:"https://picsum.photos/seed/harrypotter1/400/600",category:"Fantasy"},
       ...Array.from({length:45},(_,i)=>({
         id:6+i,title:`Best-Seller #${6+i}`,author:"Various Authors",sales:`${100-i}M+`,
         summary:"Brief summary of a world-famous best-selling book.",
-        img:`https://picsum.photos/seed/book${6+i}/400/600`
+        img:`https://picsum.photos/seed/book${6+i}/400/600`,
+        category: ["Fantasy","Classic","Mystery","Adventure","Self-Help"][i % 5]  // Contoh acak kategori
       }))
     ];
+
+    const categories = [...new Set(books.map(b => b.category))]; // Ambil unik kategori: Fantasy, Classic, dll
+
+    let selectedCategory = 'All'; // Default: tampil semua
 
     function showPage(page) {
       const content = document.getElementById('content');
@@ -71,15 +79,28 @@
       searchBar.classList.add('hidden');
       if (page === 'home') {
         searchBar.classList.remove('hidden');
-        content.innerHTML = `
-          <h1 class="text-3xl font-bold text-center mb-10">50 Best-Selling Books of All Time</h1>
-          <div id="book-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-            ${renderBooks(books)}
-          </div>`;
+        generateCategoryFilters();
+        updateBooks();
       }
-      if (page === 'about')  content.innerHTML = `<div class="bg-white rounded-2xl shadow-lg p-10 max-w-2xl mx-auto mt-10"><h1 class="text-3xl font-bold mb-6">About This App</h1><p class="text-lg leading-relaxed">A simple, fast, and beautiful summary of the 50 best-selling books ever written. Fully responsive and works offline.</p></div>`;
-      if (page === 'terms')  content.innerHTML = `<div class="bg-white rounded-2xl shadow-lg p-10 max-w-2xl mx-auto mt-10"><h1 class="text-3xl font-bold mb-6">Terms & Conditions</h1><p class="text-lg">For educational purposes only.</p></div>`;
-      if (page === 'privacy')content.innerHTML = `<div class="bg-white rounded-2xl shadow-lg p-10 max-w-2xl mx-auto mt-10"><h1 class="text-3xl font-bold mb-6">Privacy Policy</h1><p class="text-lg">No data collected. 100% private.</p></div>`;
+      if (page === 'about') content.innerHTML = `<div class="bg-white rounded-2xl shadow-lg p-10 max-w-2xl mx-auto mt-10"><h1 class="text-3xl font-bold mb-6">About This App</h1><p class="text-lg leading-relaxed">A simple app with summaries of the 50 best-selling books. Now with category filters!</p></div>`;
+      if (page === 'terms') content.innerHTML = `<div class="bg-white rounded-2xl shadow-lg p-10 max-w-2xl mx-auto mt-10"><h1 class="text-3xl font-bold mb-6">Terms & Conditions</h1><p class="text-lg">For educational purposes only.</p></div>`;
+      if (page === 'privacy') content.innerHTML = `<div class="bg-white rounded-2xl shadow-lg p-10 max-w-2xl mx-auto mt-10"><h1 class="text-3xl font-bold mb-6">Privacy Policy</h1><p class="text-lg">No data collected. 100% private.</p></div>`;
+    }
+
+    function generateCategoryFilters() {
+      const filterDiv = document.getElementById('category-filters');
+      filterDiv.innerHTML = `
+        <button onclick="selectCategory('All')" class="px-4 py-2 rounded-full ${selectedCategory === 'All' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'} hover:bg-blue-500 hover:text-white transition">All</button>
+        ${categories.map(cat => `
+          <button onclick="selectCategory('${cat}')" class="px-4 py-2 rounded-full ${selectedCategory === cat ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'} hover:bg-blue-500 hover:text-white transition">${cat}</button>
+        `).join('')}
+      `;
+    }
+
+    function selectCategory(cat) {
+      selectedCategory = cat;
+      generateCategoryFilters();
+      updateBooks();
     }
 
     function renderBooks(bookList) {
@@ -91,6 +112,16 @@
             <p class="text-xs text-gray-600 mt-1">${b.author}</p>
           </div>
         </div>`).join('');
+    }
+
+    function updateBooks() {
+      const query = document.getElementById('search-input').value.toLowerCase();
+      let filtered = books;
+      if (selectedCategory !== 'All') {
+        filtered = filtered.filter(b => b.category === selectedCategory);
+      }
+      filtered = filtered.filter(b => b.title.toLowerCase().includes(query) || b.author.toLowerCase().includes(query));
+      document.getElementById('book-grid').innerHTML = renderBooks(filtered);
     }
 
     function showDetail(id) {
@@ -109,12 +140,6 @@
             </div>
           </div>
         </div>`;
-    }
-
-    function searchBooks() {
-      const query = document.getElementById('search-input').value.toLowerCase();
-      const filtered = books.filter(b => b.title.toLowerCase().includes(query) || b.author.toLowerCase().includes(query));
-      document.getElementById('book-grid').innerHTML = renderBooks(filtered);
     }
 
     // Start
