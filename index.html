@@ -1,121 +1,134 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>50 Buku Best-Seller Dunia</title>
-  <meta name="description" content="Ringkasan 50 buku terlaris sepanjang masa"/>
+  <title>50 Best-Selling Books of All Time</title>
+  <meta name="description" content="Summary of the 50 best-selling books in the world"/>
   <link rel="icon" href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/325/open-book_1f4d6.png"/>
   
-  <!-- Tailwind CDN (tanpa install apa-apa) -->
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } }}
-    }
-  </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    .drawer-toggle:checked ~ .drawer-side > .drawer-overlay { @apply bg-black/50; }
-    .drawer-toggle:checked ~ .drawer-side > ul { transform: translateX(0); }
+    body { font-family: 'Inter', sans-serif; }
   </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
+<body class="bg-gray-50 min-h-screen">
 
-  <!-- Header + Drawer -->
-  <header class="bg-white shadow-sm sticky top-0 z-50">
+  <!-- Header -->
+  <header class="bg-white shadow-sm sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
       <h1 class="text-2xl font-bold text-blue-600">Best Seller Books</h1>
       
-      <!-- Drawer Button -->
-      <label for="my-drawer" class="btn btn-square btn-ghost lg:hidden">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-7 h-7">
+      <!-- Hamburger Button -->
+      <label for="drawer-checkbox" class="cursor-pointer lg:hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
         </svg>
       </label>
     </div>
   </header>
 
-  <!-- Drawer Menu -->
-  <input id="my-drawer" type="checkbox" class="drawer-toggle hidden" />
-  <div class="drawer-side z-50">
-    <label for="my-drawer" class="drawer-overlay"></label>
-    <ul class="menu p-6 w-64 h-full bg-white shadow-lg">
-      <h2 class="text-xl font-bold mb-6">Menu</h2>
-      <li><a href="#" onclick="showPage('home')">Home</a></li>
-      <li><a href="#" onclick="showPage('about')">Info Aplikasi</a></li>
-      <li><a href="#" onclick="showPage('terms')">Terms & Conditions</a></li>
-      <li><a href="#" onclick="showPage('privacy')">Privacy Policy</a></li>
-    </ul>
+  <!-- Drawer (sidebar) -->
+  <input type="checkbox" id="drawer-checkbox" class="hidden" />
+  <div class="fixed inset-0 z-50 flex">
+    <!-- Overlay (klik di sini untuk tutup) -->
+    <label for="drawer-checkbox" class="fixed inset-0 bg-black/50 hidden" id="overlay"></label>
+    
+    <!-- Sidebar -->
+    <div class="w-64 bg-white shadow-2xl transform -translate-x-full transition-transform duration-300 ease-in-out" id="sidebar">
+      <div class="p-6">
+        <h2 class="text-xl font-bold mb-8 text-gray-800">Menu</h2>
+        <ul class="space-y-4 text-lg">
+          <li><a href="#" onclick="showPage('home')"    class="block hover:text-blue-600">Home</a></li>
+          <li><a href="#" onclick="showPage('about')"   class="block hover:text-blue-600">About App</a></li>
+          <li><a href="#" onclick="showPage('terms')"   class="block hover:text-blue-600">Terms & Conditions</a></li>
+          <li><a href="#" onclick="showPage('privacy')" class="block hover:text-blue-600">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
   </div>
 
-  <!-- Konten Utama -->
-  <main id="content" class="max-w-7xl mx-auto p-4"></main>
+  <!-- Main Content -->
+  <main id="content" class="max-w-7xl mx-auto p-4 pt-8"></main>
 
-  <!-- 50 Buku Data (bisa tambah sendiri) -->
+  <!-- Data Buku + Script -->
   <script>
     const books = [
-      {id:1,title:"Don Quixote",author:"Miguel de Cervantes",sales:"500M+",summary:"Kisah seorang pria yang ingin menjadi ksatria sejati.",img:"https://picsum.photos/seed/donquixote/400/600"},
-      {id:2,title:"A Tale of Two Cities",author:"Charles Dickens",sales:"200M+",summary:"Novel tentang Revolusi Prancis dan pengorbanan cinta.",img:"https://picsum.photos/seed/taleof2cities/400/600"},
-      {id:3,title:"The Lord of the Rings",author:"J.R.R. Tolkien",sales:"150M+",summary:"Petualangan epik menghancurkan Cincin Satu.",img:"https://picsum.photos/seed/lotr/400/600"},
-      {id:4,title:"The Little Prince",author:"Antoine de Saint-Exupéry",sales:"140M+",summary:"Cerita penuh makna tentang persahabatan dan cinta.",img:"https://picsum.photos/seed/littleprince/400/600"},
-      {id:5,title:"Harry Potter and the Philosopher's Stone",author:"J.K. Rowling",sales:"120M+",summary:"Awal petualangan Harry di dunia sihir.",img:"https://picsum.photos/seed/harrypotter1/400/600"},
-      // Tambah 45 lagi atau pakai loop otomatis
+      {id:1,title:"Don Quixote",author:"Miguel de Cervantes",sales:"500M+",summary:"The first modern novel about a man who believes he is a knight.",img:"https://picsum.photos/seed/donquixote/400/600"},
+      {id:2,title:"A Tale of Two Cities",author:"Charles Dickens",sales:"200M+",summary:"A story of sacrifice and revolution in London and Paris.",img:"https://picsum.photos/seed/taleof2cities/400/600"},
+      {id:3,title:"The Lord of the Rings",author:"J.R.R. Tolkien",sales:"150M+",summary:"Epic quest to destroy the One Ring and save Middle-earth.",img:"https://picsum.photos/seed/lotr/400/600"},
+      {id:4,title:"The Little Prince",author:"Antoine de Saint-Exupéry",sales:"140M+",summary:"A poetic tale of love, loss, and the essence of life.",img:"https://picsum.photos/seed/littleprince/400/600"},
+      {id:5,title:"Harry Potter and the Philosopher's Stone",author:"J.K. Rowling",sales:"120M+",summary:"The beginning of Harry's magical journey at Hogwarts.",img:"https://picsum.photos/seed/harrypotter1/400/600"},
       ...Array.from({length:45},(_,i)=>({
         id:6+i,
-        title:`Buku Best-Seller #${6+i}`,
+        title:`Best-Seller Book #${6+i}`,
         author:"Various Authors",
         sales:`${100-(i*1.5)}M+`,
-        summary:"Ringkasan singkat dari salah satu buku terlaris sepanjang masa.",
+        summary:"Brief summary of one of the world's best-selling books.",
         img:`https://picsum.photos/seed/book${6+i}/400/600`
       }))
     ];
 
+    // Toggle drawer
+    document.getElementById('drawer-checkbox').addEventListener('change', function() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay  = document.getElementById('overlay');
+      if (this.checked) {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+    });
+
     function showPage(page) {
-      document.getElementById('my-drawer').checked = false;
+      document.getElementById('drawer-checkbox').checked = false;
       const content = document.getElementById('content');
       if (page === 'home') {
-        content.innerHTML = `<h1 class="text-3xl font-bold text-center my-8">50 Buku Best-Seller Terlaris Dunia</h1>
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        content.innerHTML = `
+          <h1 class="text-3xl font-bold text-center mb-8">50 Best-Selling Books of All Time</h1>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
             ${books.map(b=>`
-              <div onclick="showDetail(${b.id})" class="cursor-pointer transform hover:scale-105 transition bg-white rounded-lg shadow hover:shadow-2xl overflow-hidden">
+              <div onclick="showDetail(${b.id})" class="cursor-pointer bg-white rounded-xl shadow hover:shadow-2xl transition-all hover:-translate-y-1 overflow-hidden">
                 <img src="${b.img}" alt="${b.title}" class="w-full h-48 object-cover">
                 <div class="p-3">
-                  <h3 class="font-bold text-sm line-clamp-2">${b.title}</h3>
+                  <h3 class="font-semibold text-sm line-clamp-2">${b.title}</h3>
                   <p class="text-xs text-gray-600">${b.author}</p>
                 </div>
               </div>`).join('')}
           </div>`;
       } else if (page === 'about') {
-        content.innerHTML = `<div class="bg-white rounded-xl shadow-lg p-8 max-w-2xl mx-auto mt-10"><h1 class="text-3xl font-bold mb-4">Info Aplikasi</h1><p class="text-lg leading-relaxed">Aplikasi ringan berisi 50 buku terlaris sepanjang masa + ringkasan singkat. 100% offline, cepat, dan responsif di HP/tablet.</p></div>`;
+        content.innerHTML = `<div class="bg-white rounded-2xl shadow-lg p-8 max-w-2xl mx-auto mt-10"><h1 class="text-3xl font-bold mb-4">About This App</h1><p class="text-lg leading-relaxed">A lightweight, fully responsive web app featuring summaries of the 50 best-selling books ever published.</p></div>`;
       } else if (page === 'terms') {
-        content.innerHTML = `<div class="bg-white rounded-xl shadow-lg p-8 max-w-2xl mx-auto mt-10"><h1 class="text-3xl font-bold mb-4">Terms & Conditions</h1><p>Konten hanya untuk tujuan edukasi. Hak cipta buku tetap milik penulis/penerbit.</p></div>`;
+        content.innerHTML = `<div class="bg-white rounded-2xl shadow-lg p-8 max-w-2xl mx-auto mt-10"><h1 class="text-3xl font-bold mb-4">Terms & Conditions</h1><p class="text-lg leading-relaxed">Content is for educational purposes only. All book copyrights remain with their respective authors and publishers.</p></div>`;
       } else if (page === 'privacy') {
-        content.innerHTML = `<div class="bg-white rounded-xl shadow-lg p-8 max-w-2xl mx-auto mt-10"><h1 class="text-3xl font-bold mb-4">Privacy Policy</h1><p>Tidak ada data pribadi yang dikumpulkan. 100% aman dan private.</p></div>`;
+        content.innerHTML = `<div class="bg-white rounded-2xl shadow-lg p-8 max-w-2xl mx-auto mt-10"><h1 class="text-3xl font-bold mb-4">Privacy Policy</h1><p class="text-lg leading-relaxed">No personal data is collected. This app works 100% offline and respects your privacy.</p></div>`;
       }
     }
 
     function showDetail(id) {
       const book = books.find(b=>b.id===id);
       document.getElementById('content').innerHTML = `
-        <div class="min-h-screen bg-gray-100 p-4">
-          <button onclick="showPage('home')" class="mb-6 text-blue-600 flex items-center gap-2">&larr; Kembali</button>
-          <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden">
+        <div class="min-h-screen p-4">
+          <button onclick="showPage('home')" class="mb-6 text-blue-600 flex items-center gap-2 text-lg">&larr; Back</button>
+          <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
             <img src="${book.img}" class="w-full h-96 object-cover">
             <div class="p-8">
               <h1 class="text-4xl font-bold mb-3">${book.title}</h1>
               <p class="text-xl text-gray-700 mb-2">by ${book.author}</p>
-              <p class="text-sm text-gray-500 mb-6">Terjual: ${book.sales}</p>
-              <p class="text-lg leading-relaxed bg-gray-50 p-6 rounded-lg">${book.summary}</p>
+              <p class="text-sm text-gray-500 mb-8">Sales: ${book.sales}</p>
+              <p class="text-lg leading-relaxed bg-gray-50 p-6 rounded-xl">${book.summary}</p>
             </div>
           </div>
         </div>`;
-      history.pushState(null, null, `/book/${id}`);
+      history.pushState(null, null, `#book/${id}`);
     }
 
-    // Load halaman home saat pertama buka
+    // Load home saat pertama buka
     window.onload = () => showPage('home');
-    window.onpopstate = () => showPage('home');
   </script>
 </body>
 </html>
