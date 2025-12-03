@@ -22,6 +22,10 @@
         </svg>
       </label>
     </div>
+    <!-- Search Bar - Hanya muncul di home -->
+    <div id="search-bar" class="hidden max-w-7xl mx-auto px-4 py-2">
+      <input id="search-input" type="text" placeholder="Search by title or author..." class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" oninput="searchBooks()">
+    </div>
   </header>
 
   <!-- Drawer Checkbox -->
@@ -40,9 +44,6 @@
         <li><a href="#" onclick="showPage('terms');document.getElementById('drawer-check').checked=false"   class="block hover:text-blue-600">Terms & Conditions</a></li>
         <li><a href="#" onclick="showPage('privacy');document.getElementById('drawer-check').checked=false" class="block hover:text-blue-600">Privacy Policy</a></li>
       </ul>
-      <div class="mt-8">
-        <input id="search-input" type="text" placeholder="Search by title or author..." class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" oninput="searchBooks()">
-      </div>
     </div>
   </div>
 
@@ -66,7 +67,10 @@
 
     function showPage(page) {
       const content = document.getElementById('content');
+      const searchBar = document.getElementById('search-bar');
+      searchBar.classList.add('hidden');
       if (page === 'home') {
+        searchBar.classList.remove('hidden');
         content.innerHTML = `
           <h1 class="text-3xl font-bold text-center mb-10">50 Best-Selling Books of All Time</h1>
           <div id="book-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
@@ -91,16 +95,17 @@
 
     function showDetail(id) {
       const b = books.find(x=>x.id===id);
+      document.getElementById('search-bar').classList.add('hidden');
       document.getElementById('content').innerHTML = `
-        <div class="min-h-screen p-0 md:p-6">
-          <button onclick="showPage('home')" class="absolute top-4 left-4 md:static md:mb-8 text-blue-600 text-lg flex items-center gap-2 z-10 bg-white/80 p-2 rounded-lg md:bg-transparent">&larr; Back to List</button>
+        <div class="min-h-screen p-0">
           <div class="w-full max-w-full mx-auto bg-white md:rounded-2xl md:shadow-2xl overflow-hidden">
             <img src="${b.img}" class="w-full h-96 object-cover">
-            <div class="p-8">
+            <div class="p-8 md:p-12">
               <h1 class="text-4xl font-bold mb-3">${b.title}</h1>
               <p class="text-xl text-gray-700 mb-2">by ${b.author}</p>
               <p class="text-gray-500 mb-8">Sales: ${b.sales}</p>
               <p class="text-lg leading-relaxed bg-gray-50 p-6 rounded-xl">${b.summary}</p>
+              <button onclick="showPage('home')" class="mt-8 w-full md:w-auto bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition">Back to Home</button>
             </div>
           </div>
         </div>`;
