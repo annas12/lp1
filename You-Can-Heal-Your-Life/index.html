@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You Can Heal Your Life — Louise Hay | Summary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .active-tab { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.6; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 14px; line-height: 1.5; }
+            .mobile-title { font-size: 1.75rem !important; }
+            .mobile-subtitle { font-size: 1.125rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 320px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1e293b 0%, #334155 100%);
+            transition: left 0.3s ease-in-out;
+            z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+            z-index: 999;
+        }
+        
+        .nav-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .drawer-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .drawer-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+        
+        .drawer-toggle.open {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+        
+        .hamburger {
+            width: 24px;
+            height: 18px;
+            position: relative;
+        }
+        
+        .hamburger span {
+            display: block;
+            position: absolute;
+            height: 3px;
+            width: 100%;
+            background: white;
+            border-radius: 2px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+        
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        
+        .drawer-toggle.open .hamburger span:nth-child(1) {
+            top: 7px;
+            transform: rotate(135deg);
+        }
+        
+        .drawer-toggle.open .hamburger span:nth-child(2) {
+            opacity: 0;
+            left: -60px;
+        }
+        
+        .drawer-toggle.open .hamburger span:nth-child(3) {
+            top: 7px;
+            transform: rotate(-135deg);
+        }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) {
+            .nav-drawer { width: 280px; left: -280px; }
+            .drawer-toggle { top: 15px; left: 15px; padding: 10px; }
+        }
+        
+        @media (max-width: 480px) {
+            .nav-drawer { width: 260px; left: -260px; }
+            .drawer-toggle { top: 12px; left: 12px; padding: 8px; }
+            .hamburger { width: 20px; height: 15px; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+    <!-- Navigation Drawer Toggle -->
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <!-- Navigation Overlay -->
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <!-- Navigation Drawer -->
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-600">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">1</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">You Can Heal Your Life</h2>
+                    <p class="text-slate-300 text-sm">Book Summary</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-300 text-sm font-medium uppercase tracking-wider mb-4 px-2">Table of Contents</h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">📖</span>
+                        <span>Introduction</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 1</div>
+                            <div class="text-xs text-slate-400">Author, Story & Core Idea</div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 2</div>
+                            <div class="text-xs text-slate-400">Mind–Body Connection & Beliefs</div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 3</div>
+                            <div class="text-xs text-slate-400">Affirmations, Self-Love & Forgiveness</div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                            <span class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                            <div class="text-left">
+                                <div class="font-medium">Part 4</div>
+                                <div class="text-xs text-slate-400">Healing Life Areas</div>
+                            </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                            <span class="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                            <div class="text-left">
+                                <div class="font-medium">Part 5</div>
+                                <div class="text-xs text-slate-400">Practice, Limits & Conclusion</div>
+                            </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-600">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© 2024 You Can Heal Your Life Summary</p>
+                <p class="text-slate-500 text-xs mt-1">Minimalist Design</p>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 mb-2 mobile-title">
+                    You Can Heal Your Life
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    The power of thoughts, self-love, and inner healing
+                </p>
+                <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-600 mx-auto mt-3 sm:mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <!-- Introduction -->
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Introduction</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            Welcome to “You Can Heal Your Life”
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <p class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-blue-500 pl-4 sm:pl-6 italic mobile-text justified-text">
+                            If you are willing to change your thinking, says Louise Hay, you can change your life — 
+                            including your relationship with your body, your past, and your future.
+                        </p>
+                        
+                        <p class="mobile-text justified-text">
+                            <em>You Can Heal Your Life</em> is a classic self-help and spiritual healing book 
+                            that combines affirmations, metaphysical ideas, and emotional work. 
+                            Louise Hay teaches that many physical and emotional problems are linked to 
+                            patterns of self-criticism, guilt, resentment, and fear — and that by choosing 
+                            kinder, more loving thoughts, we can transform our experience.
+                        </p>
+
+                        <p class="mobile-text justified-text">
+                            This summary presents the core ideas of the book in five parts: 
+                            the author’s story and main philosophy, the mind–body connection, 
+                            the tools of affirmations and forgiveness, how healing is applied to life areas, 
+                            and finally how to practice this work wisely and realistically.
+                        </p>
+                        
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-100">
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">In this summary you will learn:</h4>
+                            <ul class="space-y-2 text-slate-700 mobile-text">
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">Who Louise Hay is and how her personal story shaped her philosophy.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">How thoughts and beliefs are connected to emotions, behavior, and (in her view) physical health.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">How to use affirmations, mirror work, and self-love practices as healing tools.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">How the book approaches healing around the body, relationships, work, and prosperity — and what its limits are.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <p class="mobile-text justified-text">
+                            You do not have to agree with every metaphysical claim to benefit from this book. 
+                            You can treat it as a gentle invitation to examine how you talk to yourself, 
+                            how you hold on to pain, and how a more loving inner dialogue might change your life.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Part 1 – Author, Story & Core Idea -->
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">
+                            Louise Hay, Her Story & the Central Philosophy
+                        </h3>
+                        <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Louise Hay (1926–2017) was a motivational author and founder of Hay House, a publishing company 
+focused on personal growth and spirituality. Her life story included childhood abuse, poverty, 
+and later a cancer diagnosis. She claimed to have contributed to her own healing through inner work, 
+forgiveness, and affirmations.
+</p>
+
+<p>
+From her experiences and work with clients, she developed a simple but radical idea:
+<strong>our thoughts and beliefs are powerful creative forces in our lives.</strong>
+We may not control everything that happens to us, but we have enormous influence over how we respond, 
+what we expect, and how we treat ourselves.
+</p>
+
+<h3>The Core Idea: “Every Thought Is Creating Our Future”</h3>
+
+<p>
+The book’s central philosophy can be summarized in a few key statements:
+</p>
+
+<ul>
+  <li>Our outer life reflects our inner beliefs.</li>
+  <li>Self-hatred, guilt, and resentment are at the root of much suffering.</li>
+  <li>Love, acceptance, and forgiveness are the most powerful healing energies.</li>
+  <li>When we change our thinking, we often see changes in how we feel, act, and even how our body responds.</li>
+</ul>
+
+<p>
+Louise Hay does not separate psychological and spiritual language. 
+She talks about the <em>Universe</em>, <em>Life</em>, or <em>God</em> as a loving intelligence that always says “yes” 
+to the thoughts we repeatedly hold. If we repeatedly think “I am not good enough,” 
+Life mirrors that belief back in our experiences. 
+If we practice thinking “I am worthy and lovable,” 
+we begin to notice and attract situations that match that new belief.
+</p>
+
+<p>
+Whether you take this literally or symbolically, the practical question she asks is:
+<strong>“What do you keep telling yourself — and is it helping you or hurting you?”</strong>
+</p>
+
+</div>
+                        
+                        <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl">
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Key facts about the book:</h4>
+                            <ul class="space-y-2 mobile-text">
+                                <li class="justified-text"><strong>Publication:</strong><br>Originally published in the 1980s and has remained a long-selling self-help classic.</li> 
+                                <li class="justified-text"><strong>Author:</strong><br>Louise L. Hay.</li>
+                                <li class="justified-text"><strong>Core claim:</strong><br>By changing your thoughts, beliefs, and self-talk — especially around self-worth — you can transform your life and support healing.</li>
+                            </ul>
+                        </div>
+                        
+                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">The Structure of the Book</h3>
+                        <p class="mobile-text justified-text">
+                            The book roughly follows this flow:
+                        </p>
+                        
+                        <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-amber-200">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                                <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                                    <h5 class="font-medium text-blue-700 text-sm sm:text-base">Awareness</h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        Seeing current beliefs, patterns, and self-talk clearly.
+                                    </p>
+                                </div>
+                                <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                                    <h5 class="font-medium text-green-700 text-sm sm:text-base">Release</h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        Letting go of guilt, blame, and resentment — especially toward self and parents.
+                                    </p>
+                                </div>
+                                <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                                    <h5 class="font-medium text-purple-700 text-sm sm:text-base">Reprogramming</h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        Practicing new thoughts and affirmations based on love, trust, and acceptance.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="mobile-text justified-text">
+                            The next parts dive deeper into how she connects thoughts to the body, 
+                            and how she uses affirmations and self-love as daily tools.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Part 2 – Mind–Body Connection & Beliefs -->
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            Mind–Body Connection & Foundational Beliefs
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <div class="bg-blue-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
+                            <h3 class="text-lg sm:text-xl font-semibold text-blue-800 mb-3 mobile-subtitle">
+                                How Thoughts and Beliefs Affect Our Lives
+                            </h3>
+                            <p class="text-blue-700 mobile-text justified-text">
+                                Louise Hay suggests that every experience in our life reflects a pattern of thought. 
+                                She does not mean we consciously “choose” every event, but that our inner beliefs 
+                                shape how we interpret events, what we tolerate, and what we attract or reject.
+                            </p>
+                        </div>
+
+                        <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<h3>Key Foundational Beliefs in the Book</h3>
+
+<ul>
+  <li><strong>“I am not good enough” is one of the most destructive core beliefs.</strong><br>
+  It leads to self-sabotage, staying in harmful situations, and rejecting love and success.</li>
+
+  <li><strong>Most of our negative beliefs come from childhood.</strong><br>
+  As children we absorb messages from parents, family, culture, and trauma. 
+  We often continue living by these scripts long after they stop being relevant.</li>
+
+  <li><strong>What we believe, we tend to recreate.</strong><br>
+  If we deeply believe “people always abandon me,” we may unconsciously choose partners and 
+  dynamics that confirm that story.</li>
+
+  <li><strong>We can choose new beliefs.</strong><br>
+  Beliefs are not fixed truths; they are learned. This means they can be questioned, softened, 
+  and eventually replaced with kinder, more empowering alternatives.</li>
+</ul>
+
+<h3>The Mind–Body Link (Louise Hay’s View)</h3>
+
+<p>
+One of the most controversial parts of the book is her claim that physical conditions often reflect 
+emotional and mental patterns. For example, she might connect:
+</p>
+
+<ul>
+  <li>Back pain → feeling unsupported.</li>
+  <li>Throat issues → fear of expressing oneself.</li>
+  <li>Stomach problems → difficulty “digesting” life or new experiences.</li>
+</ul>
+
+<p>
+Louise Hay offers a large chart linking symptoms to possible emotional causes and corresponding affirmations. 
+She does not say this replaces medical care; rather, she invites readers to explore what emotional message 
+a symptom might carry.
+</p>
+
+<p>
+You can choose how literally to take this. Even if you do not believe that thoughts cause illness, 
+it can still be helpful to ask: 
+<strong>“If this part of my body had a message for me, what would it say?”</strong>
+This perspective can open gentle reflection on stress, boundaries, and unspoken feelings.
+</p>
+
+</div>
+
+                        <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-green-200">
+                            <h4 class="font-semibold text-green-800 mb-3 text-sm sm:text-base mobile-subtitle">
+                                Practical Reflection Exercise
+                            </h4>
+                            <ul class="space-y-2 text-green-700 mobile-text">
+                                <li class="justified-text">• Notice one repeating problem in your life (physical, emotional, or situational).</li>
+                                <li class="justified-text">• Ask: “What belief about myself or life might be feeding this pattern?”</li>
+                                <li class="justified-text">• Write that belief down. Then ask: “Is this absolutely true? Who taught me this?”</li>
+                                <li class="justified-text">• Begin imagining an opposite, kinder belief that might also be possible.</li>
+                            </ul>
+                        </div>
+
+                        <p class="mobile-text justified-text">
+                            This part of the book is less about proving a theory and more about inviting you to use curiosity. 
+                            Instead of seeing yourself as a passive victim of life, you start seeing areas where inner change is possible.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Part 3 – Affirmations, Self-Love & Forgiveness -->
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            Affirmations, Self-Love & Forgiveness Work
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <p class="mobile-text justified-text">
+                            For Louise Hay, healing is not just understanding where beliefs come from; 
+                            it is about practicing new inner language. Her primary tools are 
+                            <strong>affirmations</strong>, <strong>mirror work</strong>, and <strong>forgiveness</strong>.
+                        </p>
+                        
+                        <div class="bg-green-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-green-200">
+                            <h3 class="text-lg sm:text-xl font-semibold text-green-800 mb-3 mobile-subtitle">
+                                What Are Affirmations?
+                            </h3>
+                            <p class="mobile-text justified-text">
+                                Affirmations are positive statements about yourself or your life that you repeat 
+                                regularly to help create new mental patterns. 
+                                For example:
+                            </p>
+                            <ul class="list-disc ml-5 space-y-1 mobile-text text-slate-700">
+                                <li class="justified-text">“I am willing to change.”</li>
+                                <li class="justified-text">“I am learning to love and accept myself exactly as I am.”</li>
+                                <li class="justified-text">“I deserve good in all areas of my life.”</li>
+                            </ul>
+                            <p class="mobile-text justified-text mt-2">
+                                At first these may feel fake. Louise Hay says this is normal; 
+                                affirmations are not a description of the present, but seeds for the future.
+                            </p>
+                        </div>
+
+                        <div class="bg-blue-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
+                            <h3 class="text-lg sm:text-xl font-semibold text-blue-800 mb-3 mobile-subtitle">
+                                Mirror Work: Looking Yourself in the Eyes
+                            </h3>
+                            <p class="mobile-text justified-text">
+                                One of her signature practices is <strong>mirror work</strong>: 
+                                standing in front of a mirror, looking into your own eyes, and saying loving affirmations.
+                            </p>
+                            <p class="mobile-text justified-text">
+                                Many people find this extremely uncomfortable at first. 
+                                That discomfort reveals how much self-judgment is present. 
+                                Persisting gently — even starting with “I am willing to learn to love you” — 
+                                can slowly soften inner resistance and build a kinder relationship with yourself.
+                            </p>
+                        </div>
+
+                        <div class="bg-purple-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-purple-200">
+                            <h3 class="text-lg sm:text-xl font-semibold text-purple-800 mb-3 mobile-subtitle">
+                                Forgiveness as a Healing Force
+                            </h3>
+                            <p class="mobile-text justified-text">
+                                Forgiveness is central in the book, especially forgiveness of parents and oneself. 
+                                Louise Hay is clear that forgiving does <em>not</em> mean saying harmful behavior was okay. 
+                                Instead, it means releasing the ongoing emotional poison that keeps you tied to the past.
+                            </p>
+                            <p class="mobile-text justified-text">
+                                She invites readers to see parents as wounded children themselves — 
+                                people who could only teach what they knew, however limited. 
+                                This perspective is not about erasing responsibility, 
+                                but about letting go of the belief “They ruined my life and I am powerless.”
+                            </p>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-emerald-200">
+                            <h4 class="font-semibold text-emerald-800 mb-3 text-sm sm:text-base mobile-subtitle">
+                                A Simple Daily Practice (Based on the Book)
+                            </h4>
+                            <ol class="list-decimal ml-5 space-y-2 mobile-text text-slate-700">
+                                <li class="justified-text">Spend a few minutes each morning noticing your first thoughts. Gently question any harsh self-talk.</li>
+                                <li class="justified-text">Stand in front of a mirror and say: “I am willing to love and accept myself, just as I am right now.”</li>
+                                <li class="justified-text">Choose 1–3 affirmations that feel meaningful to you and repeat them throughout the day.</li>
+                                <li class="justified-text">In the evening, write down anything you are ready to forgive (yourself or others), even if you are not fully ready. Start with willingness.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 4 – Healing Life Areas -->
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            Applying Healing to Body, Relationships, Work & Prosperity
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="mobile-text justified-text">
+                            In the second half of the book, Louise Hay applies her philosophy to different areas of life. 
+                            The process is similar in each area: notice beliefs, release blame, and install new affirmations.
+                        </p>
+
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
+                            <h3 class="text-lg sm:text-xl font-semibold text-indigo-800 mb-3 mobile-subtitle">1. The Body & Health</h3>
+                            <p class="mobile-text justified-text">
+                                She encourages readers to stop fighting their bodies with hatred or constant criticism. 
+                                Instead, learn to listen, thank, and lovingly support the body.
+                            </p>
+                            <ul class="list-disc ml-5 space-y-1 mobile-text text-slate-700">
+                                <li class="justified-text">Notice how you talk about your body (“I hate my legs”, “My body always betrays me”).</li>
+                                <li class="justified-text">Consider how much stress and shame this language adds on top of physical symptoms.</li>
+                                <li class="justified-text">Practice affirmations like: “I am willing to feel safe in my body,” or “My body and I are on the same team.”</li>
+                            </ul>
+                            <p class="mobile-text justified-text mt-2">
+                                She suggests combining affirmations with healthy practical choices (nutrition, rest, medical support), 
+                                not using them as a magical replacement.
+                            </p>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-emerald-200">
+                            <h3 class="text-lg sm:text-xl font-semibold text-emerald-800 mb-3 mobile-subtitle">2. Relationships & Love</h3>
+                            <p class="mobile-text justified-text">
+                                Relationships, she says, mirror our relationship with ourselves. 
+                                If we believe we are unlovable, we may attract partners who confirm that story.
+                            </p>
+                            <ul class="list-disc ml-5 space-y-1 mobile-text text-slate-700">
+                                <li class="justified-text">Ask: “What do I really believe I deserve in love?”</li>
+                                <li class="justified-text">Notice patterns of choosing unavailable, critical, or distant people.</li>
+                                <li class="justified-text">Practice affirmations such as: “I am worthy of a loving, respectful relationship,” and “I attract people who support my growth.”</li>
+                            </ul>
+                            <p class="mobile-text justified-text mt-2">
+                                She also stresses boundaries: loving yourself includes leaving situations that are consistently abusive or degrading.
+                            </p>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-amber-50 to-yellow-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-amber-200">
+                            <h3 class="text-lg sm:text-xl font-semibold text-amber-800 mb-3 mobile-subtitle">3. Work, Success & Money</h3>
+                            <p class="mobile-text justified-text">
+                                Around work and money, many people carry beliefs like “I’ll always struggle,” 
+                                “I don’t deserve abundance,” or “Rich people are bad.” These beliefs create inner conflict 
+                                that can block opportunities or make it hard to receive.
+                            </p>
+                            <ul class="list-disc ml-5 space-y-1 mobile-text text-slate-700">
+                                <li class="justified-text">Identify family or cultural messages you absorbed about money and success.</li>
+                                <li class="justified-text">Question whether you still want to keep those beliefs.</li>
+                                <li class="justified-text">Experiment with affirmations such as: “There is more than enough to go around,” 
+                                    “I am open to new channels of income,” or “I use prosperity in wise and loving ways.”</li>
+                            </ul>
+                            <p class="mobile-text justified-text mt-2">
+                                Again, the focus is not on magical thinking but on shifting from fear and scarcity 
+                                to a sense of worthiness and possibility, which often changes how you act.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl">
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">A Repeating Pattern Across Areas</h4>
+                            <ol class="list-decimal ml-5 space-y-2 mobile-text text-slate-700">
+                                <li class="justified-text">Become aware of your current belief (“Life is hard,” “No one ever helps me”).</li>
+                                <li class="justified-text">See how that belief has played out in your choices and reactions.</li>
+                                <li class="justified-text">Release blame where possible (including self-blame).</li>
+                                <li class="justified-text">Choose and practice a new belief that supports your well-being.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 5 – Practice, Limits & Conclusion -->
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-red-100 text-red-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            Bringing the Work into Daily Life & Staying Grounded
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-red-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-red-200">
+                            <h3 class="text-lg sm:text-xl font-semibold text-red-800 mb-3 mobile-subtitle">From Inspiration to Daily Practice</h3>
+                            <p class="mobile-text justified-text">
+                                Many readers feel uplifted after reading <em>You Can Heal Your Life</em> — but the real change 
+                                happens in small, consistent steps. Louise Hay suggests:
+                            </p>
+                            <ul class="list-disc ml-5 space-y-1 mobile-text text-slate-700">
+                                <li class="justified-text">Starting with willingness: “I am willing to change.”</li>
+                                <li class="justified-text">Choosing a few affirmations and using them regularly, not perfectly.</li>
+                                <li class="justified-text">Creating small self-love rituals: a kind word in the mirror, a gentle hand on the heart, a break when you are tired.</li>
+                                <li class="justified-text">Being patient; old patterns took years to form and take time to soften.</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-slate-50 to-slate-100 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-slate-200">
+                            <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mb-3 mobile-subtitle">Important Limits & Cautions</h3>
+                            <p class="mobile-text justified-text">
+                                While the book is loving and hopeful, it can be misunderstood in ways that increase guilt 
+                                if taken too literally:
+                            </p>
+                            <ul class="list-disc ml-5 space-y-1 mobile-text text-slate-700">
+                                <li class="justified-text">
+                                    It is not helpful to tell yourself that every illness or tragedy is your “fault” for thinking wrong thoughts.
+                                </li>
+                                <li class="justified-text">
+                                    Deep trauma, depression, or serious mental health issues often require professional support; 
+                                    affirmations can support, but not replace, therapy or medical care.
+                                </li>
+                                <li class="justified-text">
+                                    Some beliefs came from real experiences of harm. It is okay to seek justice and boundaries 
+                                    while also working on inner healing.
+                                </li>
+                            </ul>
+                            <p class="mobile-text justified-text mt-2">
+                                A balanced way to use the book is to see it as an invitation to increase your inner kindness, 
+                                not as a strict rulebook that blames you for every difficulty.
+                            </p>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-emerald-200">
+                            <h3 class="text-lg sm:text-xl font-semibold text-emerald-800 mb-3 mobile-subtitle">Final Reflection: Healing as a Relationship with Yourself</h3>
+                            <p class="mobile-text justified-text">
+                                At its heart, <em>You Can Heal Your Life</em> is not about pretending everything is fine. 
+                                It is about slowly building a new relationship with yourself — one based on respect, listening, 
+                                and love instead of constant judgment.
+                            </p>
+                            <p class="mobile-text justified-text">
+                                You may take some of Louise Hay’s ideas literally, others symbolically, and disagree with a few. 
+                                That is okay. The essential question she leaves you with is:
+                            </p>
+                            <p class="mobile-text justified-text font-medium italic border-l-4 border-emerald-400 pl-4 sm:pl-6">
+                                “If I spoke to a child the way I speak to myself, would that child grow or shrink?”  
+                                And if the answer is “shrink,” am I willing — even just a little — to learn a new way?
+                            </p>
+                            <p class="mobile-text justified-text">
+                                If you start from that willingness, then in Louise Hay’s language, 
+                                you have already begun to heal your life.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
