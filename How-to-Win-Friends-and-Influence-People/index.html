@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Win Friends and Influence People — Dale Carnegie | Summary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .active-tab { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.6; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 14px; line-height: 1.5; }
+            .mobile-title { font-size: 1.75rem !important; }
+            .mobile-subtitle { font-size: 1.125rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 320px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1e293b 0%, #334155 100%);
+            transition: left 0.3s ease-in-out;
+            z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+            z-index: 999;
+        }
+        
+        .nav-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .drawer-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .drawer-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+        
+        .drawer-toggle.open {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+        
+        .hamburger {
+            width: 24px;
+            height: 18px;
+            position: relative;
+        }
+        
+        .hamburger span {
+            display: block;
+            position: absolute;
+            height: 3px;
+            width: 100%;
+            background: white;
+            border-radius: 2px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+        
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        
+        .drawer-toggle.open .hamburger span:nth-child(1) {
+            top: 7px;
+            transform: rotate(135deg);
+        }
+        
+        .drawer-toggle.open .hamburger span:nth-child(2) {
+            opacity: 0;
+            left: -60px;
+        }
+        
+        .drawer-toggle.open .hamburger span:nth-child(3) {
+            top: 7px;
+            transform: rotate(-135deg);
+        }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) {
+            .nav-drawer { width: 280px; left: -280px; }
+            .drawer-toggle { top: 15px; left: 15px; padding: 10px; }
+        }
+        
+        @media (max-width: 480px) {
+            .nav-drawer { width: 260px; left: -260px; }
+            .drawer-toggle { top: 12px; left: 12px; padding: 8px; }
+            .hamburger { width: 20px; height: 15px; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+    <!-- Navigation Drawer Toggle -->
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <!-- Navigation Overlay -->
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <!-- Navigation Drawer -->
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-600">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">H</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">How to Win Friends</h2>
+                    <p class="text-slate-300 text-sm">Book Summary</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-300 text-sm font-medium uppercase tracking-wider mb-4 px-2">Table of Contents</h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">📖</span>
+                        <span>Introduction</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 1</div>
+                            <div class="text-xs text-slate-400">Author, Context & Structure</div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 2</div>
+                            <div class="text-xs text-slate-400">Core Principles: Handling People</div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 3</div>
+                            <div class="text-xs text-slate-400">Make People Like You & Agree</div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 4</div>
+                            <div class="text-xs text-slate-400">People Patterns & Relationships</div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 5</div>
+                            <div class="text-xs text-slate-400">Themes, Style & Legacy</div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-600">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© 2024 How to Win Friends Summary</p>
+                <p class="text-slate-500 text-xs mt-1">Minimalist Design</p>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 mb-2 mobile-title">
+                    How to Win Friends and Influence People
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    A concise guide to Dale Carnegie’s timeless principles of human relations
+                </p>
+                <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-600 mx-auto mt-3 sm:mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <!-- Introduction -->
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Introduction</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            Welcome to “How to Win Friends and Influence People”
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <p class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-blue-500 pl-4 sm:pl-6 italic mobile-text justified-text">
+                            “You can make more friends in two months by becoming interested in other people 
+                            than you can in two years by trying to get other people interested in you.”
+                        </p>
+                        
+                        <p class="mobile-text justified-text">
+                            <em>How to Win Friends and Influence People</em> by Dale Carnegie is one of the most 
+                            influential self-help books ever written. First published in 1936, it condenses 
+                            years of teaching, real-life stories, and psychological insight into practical 
+                            principles for dealing with people more effectively – at work, at home, and in everyday life.
+                        </p>
+                        
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-100">
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">In this summary you will learn:</h4>
+                            <ul class="space-y-2 text-slate-700 mobile-text">
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">Who Dale Carnegie was and why this book became a classic of personal development.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">The core principles for handling people without creating resistance.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">Specific ways to make people like you and win them to your way of thinking.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">How to be a leader who changes behavior without offending or arousing resentment.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <p class="mobile-text justified-text">
+                            Use the navigation menu on the left to explore each section. The goal of this 
+                            summary is to present Carnegie’s ideas in a structured, easy-to-review format 
+                            so you can quickly absorb the key lessons and apply them in real conversations.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Part 1 – Context -->
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">
+                            Author, Historical Background & Structure of the Book
+                        </h3>
+                        <p class="mobile-text justified-text">
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Dale Carnegie (1888–1955) was an American teacher, speaker, and writer who specialized 
+in communication, public speaking, and interpersonal skills. Born on a farm in Missouri, 
+he worked his way up from humble beginnings, eventually teaching adults in New York how to 
+speak confidently and get along better with others.
+</p>
+
+<p>
+Carnegie discovered that many people struggled not because they lacked technical skill, 
+but because they did not know how to work with other human beings – bosses, colleagues, 
+customers, or family members. His courses in “effective speaking and human relations” became 
+extremely popular. <em>How to Win Friends and Influence People</em> grew out of these classes.
+</p>
+
+<p>
+The book was first published in 1936, during the Great Depression in the United States. 
+At that time, economic conditions were difficult, competition for jobs was intense, and the 
+ability to build trust and cooperation was more valuable than ever. Surprisingly, the advice 
+still feels relevant in the 21st century, because human nature has not changed as much as 
+technology or business.
+</p>
+
+<p>
+The book is organised not as a story but as a set of principles illustrated with many 
+short real-life anecdotes from business, politics, and everyday social life. Carnegie uses 
+simple language, memorable titles, and repetition to make the lessons easy to recall.
+</p>
+
+<p>
+Traditionally, the book is divided into four main parts:
+</p>
+
+<ol>
+  <li><strong>Part One – Fundamental Techniques in Handling People</strong><br>
+  How to deal with people without arousing resentment and how to inspire cooperation instead of resistance.</li>
+
+  <li><strong>Part Two – Six Ways to Make People Like You</strong><br>
+  Practical habits that increase your likability and build stronger, warmer relationships.</li>
+
+  <li><strong>Part Three – How to Win People to Your Way of Thinking</strong><br>
+  Strategies for persuasion that avoid arguments and keep the other person’s dignity intact.</li>
+
+  <li><strong>Part Four – Be a Leader: How to Change People Without Giving Offense or Arousing Resentment</strong><br>
+  Leadership techniques for correcting, guiding, and inspiring others respectfully.</li>
+</ol>
+
+<p>
+Instead of complex theory, Carnegie offers simple rules, such as “Don’t criticize, condemn or complain” 
+and “Give honest and sincere appreciation.” Each principle is supported by examples of well-known public 
+figures as well as ordinary people who solved problems by changing the way they spoke and listened.
+</p>
+
+<p>
+You can think of the book as a manual for emotional intelligence before that term existed. It shows 
+how to work with basic human desires – the need to feel important, appreciated, and understood – rather 
+than fighting against them. This is why the advice works in both professional and personal life.
+</p>
+
+<p>
+In this summary, we will not reproduce every story, but we will walk through the core principles 
+and group them into a clear, memorable structure you can quickly review before an important 
+conversation, meeting, or negotiation.
+</p>
+
+</div>
+                        </p>
+                        
+                        <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl">
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Key Facts:</h4>
+                            <ul class="space-y-2 mobile-text">
+                                <li class="justified-text"><strong>1936:</strong><br>First publication of <em>How to Win Friends and Influence People</em>.</li> 
+                                <li class="justified-text"><strong>Millions of copies sold:</strong><br>One of the best-selling self-help books of all time, translated into many languages.</li>
+                                <li class="justified-text"><strong>Core promise:</strong><br>Improving your relationships and influence by changing <em>your</em> behavior, not controlling others.</li>
+                            </ul>
+                        </div>
+                        
+                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">How This Summary Is Structured</h3>
+                        <p class="mobile-text justified-text">
+                            To keep things practical, we’ll treat the book as four focus areas, 
+                            mirroring Carnegie’s original structure but in streamlined form.
+                        </p>
+                        
+                        <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-amber-200">
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Four Core Focus Areas of This Summary:</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                                <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                                    <h5 class="font-medium text-blue-700 text-sm sm:text-base">Focus 1</h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        Fundamental techniques for handling people without conflict.
+                                    </p>
+                                </div>
+                                <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                                    <h5 class="font-medium text-green-700 text-sm sm:text-base">Focus 2</h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        Habits that make people naturally like and trust you.
+                                    </p>
+                                </div>
+                                <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                                    <h5 class="font-medium text-purple-700 text-sm sm:text-base">Focus 3</h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        Principles for persuading others and avoiding useless arguments.
+                                    </p>
+                                </div>
+                                <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                                    <h5 class="font-medium text-red-700 text-sm sm:text-base">Focus 4</h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        Leadership methods for changing behavior without crushing morale.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 2 – Core Principles: Handling People -->
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            Fundamental Techniques in Handling People
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <div class="bg-blue-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
+                            <h3 class="text-lg sm:text-xl font-semibold text-blue-800 mb-3 mobile-subtitle">
+                                Key Idea: People are driven more by feelings than by logic
+                            </h3>
+                            <p class="text-blue-700 italic mobile-text justified-text">
+                                If you ignore people’s need to feel important, respected, and understood, 
+                                even the smartest argument will fail.
+                            </p>
+                        </div>
+
+                        <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+<p>
+Carnegie opens the book with three “fundamental techniques” for dealing with people. 
+They sound simple, but they are often the opposite of what we instinctively do when we are 
+annoyed, stressed, or in a hurry.
+</p>
+
+<h3>Principle 1 – Don’t Criticize, Condemn or Complain</h3>
+
+<p>
+Criticism, especially when delivered harshly, almost always creates defensiveness. 
+People justify themselves, blame others, and close their ears. They may comply on the surface, 
+but inside they feel resentment.
+</p>
+
+<p>
+Carnegie doesn’t say you should never give feedback. Instead, he warns against the habit of 
+attacking people’s character and complaining constantly. His suggestion: try to understand why 
+people behave as they do before you condemn them. See mistakes as results of causes – pressure, 
+ignorance, fear – instead of pure evil or stupidity.
+</p>
+
+<p>
+When you truly must correct someone, do it carefully (later parts of the book explain how). 
+But as a general rule, reducing criticism and complaining immediately improves your relationships.
+</p>
+
+<h3>Principle 2 – Give Honest and Sincere Appreciation</h3>
+
+<p>
+One of the deepest human desires is to feel important. Carnegie argues that this desire is 
+stronger than we realize and that most people rarely receive genuine appreciation. Flattery – 
+saying nice things you don’t believe – is manipulation and often detected as such. Honest recognition, 
+however, energizes people.
+</p>
+
+<p>
+Practically, this means training yourself to notice what others do well, however small, and 
+expressing appreciation in specific terms: “I really value how carefully you checked that report,” 
+not just “Good job.” The more specific the praise, the more credible and motivating it becomes.
+</p>
+
+<h3>Principle 3 – Arouse in the Other Person an Eager Want</h3>
+
+<p>
+To influence someone, you must talk about what <em>they</em> want, not what <em>you</em> want. 
+This doesn’t mean becoming selfish or manipulative; it means presenting ideas in a way that clearly 
+connects to the other person’s interests.
+</p>
+
+<p>
+Instead of saying, “I need you to do this,” you can frame it as, “Here’s how this will help you,” 
+or “Here’s the benefit to your team / your goals / your growth.” The shift might be only in words, 
+but it reflects a deeper mental habit: constantly asking, “What does this person want or fear, and 
+how can I align my request with that?”
+</p>
+
+<p>
+Carnegie gives many examples of salespeople, managers, and parents who achieved better results by 
+showing others the benefits of cooperation rather than demanding obedience.
+</p>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-green-200">
+                            <h4 class="font-semibold text-green-800 mb-3 text-sm sm:text-base mobile-subtitle">
+                                Summary of Fundamental Techniques:
+                            </h4>
+                            <ul class="space-y-2 text-green-700 mobile-text">
+                                <li class="justified-text">• Resist the impulse to criticize; seek to understand first.</li>
+                                <li class="justified-text">• Replace vague praise with honest, specific appreciation.</li>
+                                <li class="justified-text">• Frame requests in terms of what the other person wants.</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl">
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Practical Reading Notes:</h4>
+                            <ol class="space-y-2 text-slate-700 mobile-text">
+                                <li class="justified-text">1. For one week, track how often you complain or criticize. Just becoming aware is a powerful first step.</li>
+                                <li class="justified-text">2. Each day, deliberately give at least one person sincere appreciation.</li>
+                                <li class="justified-text">3. Before important conversations, write down: “What does this person want? How can I connect my request to that?”</li>
+                            </ol>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 3 – Make People Like You & Agree -->
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            Making People Like You & Winning Them to Your Way of Thinking
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <p class="text-base sm:text-lg text-slate-600 mobile-text justified-text">
+                            The next parts of the book give concrete habits for building likability and 
+                            influencing opinions without argument or pressure.
+                        </p>
+                        
+                        <div class="bg-green-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-green-200">
+                            <h3 class="text-base sm:text-lg font-semibold text-green-800 mb-3 mobile-subtitle">
+                                Six Ways to Make People Like You
+                            </h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Carnegie proposes six simple, powerful habits:
+</p>
+
+<ol>
+  <li><strong>Become genuinely interested in other people.</strong><br>
+  Most people are more interested in themselves than in others. When you show real curiosity about their 
+  work, hobbies, or family, you stand out immediately.</li>
+
+  <li><strong>Smile.</strong><br>
+  A genuine smile signals friendliness and openness. It costs nothing but can soften tension and create 
+  a warmer atmosphere.</li>
+
+  <li><strong>Remember that a person’s name is, to that person, the sweetest and most important sound.</strong><br>
+  Using someone’s name carefully (and remembering it correctly) shows respect and attention.</li>
+
+  <li><strong>Be a good listener. Encourage others to talk about themselves.</strong><br>
+  Instead of waiting for your turn to speak, you ask questions and listen actively. People feel valued 
+  when they are heard.</li>
+
+  <li><strong>Talk in terms of the other person’s interests.</strong><br>
+  Connect your stories and examples to what matters to them, not just to you.</li>
+
+  <li><strong>Make the other person feel important – and do it sincerely.</strong><br>
+  Like earlier, the emphasis is on authentic recognition, not flattery.</li>
+</ol>
+
+<p>
+These six habits may sound obvious, but most people do not practice them consistently. Applying even two 
+or three of them regularly can transform social interactions.
+</p>
+
+</div>
+                        </div>
+                            
+                        <div class="bg-blue-50 p-6 rounded-xl border border-blue-200">
+                            <h3 class="text-lg font-semibold text-blue-800 mb-3">How to Win People to Your Way of Thinking</h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Carnegie then shifts to persuasion. His main idea: you cannot force people to agree with you; 
+you can only create conditions where they freely move in your direction.
+</p>
+
+<p>
+Key principles from this section include:
+</p>
+
+<ul>
+  <li><strong>The only way to get the best of an argument is to avoid it.</strong><br>
+  Arguments rarely produce true agreement; they usually create winners and losers. Avoid turning discussions into verbal battles.</li>
+
+  <li><strong>Show respect for the other person’s opinions. Never say, “You’re wrong.”</strong><br>
+  Even when you disagree, you can phrase it as, “I may be wrong; let’s look at the facts,” which keeps the other person’s dignity intact.</li>
+
+  <li><strong>If you are wrong, admit it quickly and emphatically.</strong><br>
+  Honest, prompt self-criticism builds trust and often reduces hostility.</li>
+
+  <li><strong>Begin in a friendly way.</strong><br>
+  Start difficult conversations with warmth, appreciation, or common ground.</li>
+
+  <li><strong>Get the other person saying “yes, yes” immediately.</strong><br>
+  Begin with points of agreement to create a cooperative rhythm, then move gradually to the more delicate issues.</li>
+
+  <li><strong>Let the other person do a great deal of the talking.</strong><br>
+  People are more convinced by ideas they discover themselves than by ideas forced on them.</li>
+
+  <li><strong>Let the other person feel that the idea is his or hers.</strong><br>
+  Involve them in shaping the solution so they feel ownership, not obedience.</li>
+
+  <li><strong>Try honestly to see things from the other person’s point of view.</strong><br>
+  Empathy reduces anger and opens the door to compromise.</li>
+
+  <li><strong>Be sympathetic with the other person’s ideas and desires.</strong><br>
+  Acknowledge their feelings before presenting your own perspective.</li>
+
+  <li><strong>Appeal to the nobler motives.</strong><br>
+  Highlight values like fairness, responsibility, and pride in good work.</li>
+
+  <li><strong>Dramatize your ideas.</strong><br>
+  Present them vividly – with stories, visuals, or concrete examples – so they become memorable.</li>
+
+  <li><strong>Throw down a challenge.</strong><br>
+  Sometimes people respond best when invited to meet a worthy challenge.</li>
+</ul>
+
+<p>
+Taken together, these principles form a style of persuasion based on respect and psychological insight, 
+instead of pressure or manipulation.
+</p>
+
+</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 4 – People Patterns & Relationships -->
+                <section id="part4" class="content-section p-8">
+                    <div class="mb-6">
+                        <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-sm font-medium rounded-full mb-4">Part 4</span>
+                        <h2 class="text-3xl font-bold text-slate-800 mb-4">People Patterns & Relationship Dynamics</h2>
+                    </div>
+                    
+                    <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Unlike a novel, <em>How to Win Friends and Influence People</em> does not have fictional 
+characters. Instead, it uses many real-life stories to illustrate repeatable patterns: bosses, 
+employees, salespeople, customers, spouses, and friends who either clash or cooperate depending 
+on how they speak and listen.
+</p>
+
+<p>
+You can think in terms of three “relationship clusters” that Carnegie returns to again and again:
+</p>
+
+<ol>
+  <li><strong>You and your coworkers / team members</strong></li>
+  <li><strong>You and your customers / clients</strong></li>
+  <li><strong>You and your close personal relationships</strong></li>
+</ol>
+
+</div>
+
+                        
+                        <div class="bg-gradient-to-r from-purple-50 to-indigo-50 p-6 rounded-xl border border-purple-200">
+                            <h3 class="text-xl font-semibold text-purple-800 mb-4">At Work: Bosses, Colleagues, and Direct Reports</h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+In workplace examples, Carnegie shows that technical ability often matters less than the ability 
+to get along with people. Employees who criticize publicly, point out others’ mistakes harshly, or 
+focus only on their own success usually create resistance.
+</p>
+
+<p>
+By contrast, leaders who:
+</p>
+
+<ul>
+  <li>Notice good performance and praise it specifically,</li>
+  <li>Correct mistakes indirectly and with tact,</li>
+  <li>Ask for input instead of issuing orders,</li>
+  <li>Recognize people by name and treat them as individuals,</li>
+</ul>
+
+<p>
+tend to earn loyalty and cooperation. Many stories show managers turning “difficult” employees 
+into motivated partners simply by changing their attitude and language.
+</p>
+
+</div>
+
+                            <div class="bg-white p-4 rounded-lg mb-4">
+                                <h4 class="font-semibold text-slate-800 mb-2">Leadership techniques (preview of Part Four in the book):</h4>
+                                <ul class="space-y-1 text-slate-700 text-sm">
+                                    <li>• Begin with praise and honest appreciation.</li>
+                                    <li>• Call attention to people’s mistakes indirectly.</li>
+                                    <li>• Talk about your own mistakes before criticizing others.</li>
+                                    <li>• Ask questions instead of giving direct orders.</li>
+                                    <li>• Let the other person save face.</li>
+                                    <li>• Praise the slightest improvement and encourage every improvement.</li>
+                                    <li>• Give the other person a fine reputation to live up to.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200">
+                            <h3 class="text-xl font-semibold text-green-800 mb-4">With Customers and Clients</h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+In sales and customer service, Carnegie highlights a simple truth: people don’t buy products, 
+they buy solutions to their own wants, fears, and hopes. The most successful salespeople:
+</p>
+
+<ul>
+  <li>Ask thoughtful questions to understand the customer’s situation.</li>
+  <li>Listen more than they talk.</li>
+  <li>Explain benefits in the customer’s language, not in technical jargon.</li>
+  <li>Admit limitations honestly instead of overpromising.</li>
+</ul>
+
+<p>
+He also warns that winning a single argument with a customer but losing their goodwill is 
+poor business. The long-term relationship is worth more than the short-term victory.
+</p>
+
+</div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-blue-50 to-cyan-50 p-6 rounded-xl border border-blue-200">
+                            <h3 class="text-xl font-semibold text-blue-800 mb-4">In Personal Relationships</h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Carnegie’s principles also apply at home. Many examples show how spouses and parents ruin 
+relationships by constantly correcting, criticizing, or trying to “win” every debate.
+</p>
+
+<p>
+Small changes such as:
+</p>
+
+<ul>
+  <li>Appreciating effort instead of focusing only on flaws,</li>
+  <li>Listening to complaints patiently before responding,</li>
+  <li>Noticing and mentioning positive traits regularly,</li>
+  <li>Sharing credit for successes,</li>
+</ul>
+
+<p>
+often transform the emotional climate of a family. The patterns are the same: people need 
+respect, appreciation, and a chance to express themselves without fear of humiliation.
+</p>
+
+</div>
+                        </div>
+
+                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">Why These Patterns Matter</h3>
+                        <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+The stories in Carnegie’s book may feel dated in some details (letters instead of emails, 
+factory work instead of remote jobs), but the patterns of emotion and behavior are stable. 
+We still dislike being criticized, still enjoy sincere appreciation, and still resist ideas 
+forced upon us.
+</p>
+
+<p>
+Recognizing these patterns helps you treat people not as obstacles to your goals, but as 
+partners with their own needs and perspectives. This shift in mindset is at the heart of 
+Carnegie’s method.
+</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 5 – Themes & Legacy -->
+                <section id="part5" class="content-section p-8">
+                    <div class="mb-6">
+                        <span class="inline-block px-3 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-full mb-4">Part 5</span>
+                        <h2 class="text-3xl font-bold text-slate-800 mb-4">Themes, Style & Legacy</h2>
+                    </div>
+                    
+                    <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-gradient-to-r from-red-50 to-pink-50 p-6 rounded-xl border border-red-200">
+                            <h3 class="text-xl font-semibold text-red-800 mb-4">Core Themes of the Book</h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Several big ideas run through all of Carnegie’s principles:
+</p>
+
+</div>
+                            <div class="space-y-4">
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h4 class="font-semibold text-red-700 mb-2">1. Respect for Human Dignity</h4>
+                                    <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+The book assumes that people, no matter how flawed, want to feel respected. 
+If you threaten someone’s self-respect, you trigger resistance. If you protect and 
+strengthen it, you unlock cooperation.
+</p>
+
+</div>
+                                </div>
+                                
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h4 class="font-semibold text-red-700 mb-2">2. Influence Through Empathy, Not Force</h4>
+                                    <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Carnegie rejects the idea that you can “win” by dominating others. 
+His approach is to understand the other person’s point of view and align your message 
+with their motivations. Real influence is cooperative, not coercive.
+</p>
+
+</div>
+                                </div>
+
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h4 class="font-semibold text-red-700 mb-2">3. Change Yourself First</h4>
+                                    <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+The book does not teach techniques for controlling others. 
+It repeatedly emphasizes changing your own habits – how you speak, listen, and react. 
+When you change, other people’s responses tend to change naturally.
+</p>
+
+</div>
+                                </div>
+                            </div>
+                            
+                            <h3 class="text-xl font-semibold text-red-800 mt-6 mb-3">Style and Structure</h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Carnegie writes in a simple, conversational style, using:
+</p>
+
+<ul>
+  <li>Short chapters, each focused on one principle.</li>
+  <li>Memorable headings that summarize the key idea.</li>
+  <li>Real-world examples rather than abstract theory.</li>
+  <li>Repetition of key phrases to make them stick.</li>
+</ul>
+
+<p>
+This makes the book easy to dip into and review. You can read a chapter in a few minutes and 
+immediately try its suggestion in your next interaction.
+</p>
+
+</div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-amber-50 to-yellow-50 p-6 rounded-xl border border-amber-200">
+                            <h3 class="text-xl font-semibold text-amber-800 mb-4">Overall Significance</h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+<em>How to Win Friends and Influence People</em> has influenced generations of leaders, 
+salespeople, teachers, and everyday readers. Its ideas appear in modern books on emotional 
+intelligence, leadership, and customer relations.
+</p>
+
+<p>
+It remains popular because:
+</p>
+
+<ul>
+  <li>It deals with fundamental human emotions that haven’t changed.</li>
+  <li>Its advice is practical and immediately testable.</li>
+  <li>It invites you to take responsibility for your part in any relationship.</li>
+</ul>
+
+</div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-xl border border-indigo-200">
+                            <h3 class="text-xl font-semibold text-indigo-800 mb-4">Applying the Book Today</h3>
+                            <p class="text-indigo-700 mb-4">
+                                Even in a digital world of chats and social media, Carnegie’s principles still apply:
+                            </p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-medium text-indigo-700 mb-2">In Daily Communication:</h5>
+                                    <ul class="text-sm text-slate-600 space-y-1">
+                                        <li>• Avoid online arguments; ask questions and seek to understand.</li>
+                                        <li>• Use people’s names in messages and remember small details.</li>
+                                        <li>• Express appreciation publicly; correct privately.</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-medium text-indigo-700 mb-2">For Growth & Leadership:</h5>
+                                    <ul class="text-sm text-slate-600 space-y-1">
+                                        <li>• Before giving feedback, find something to praise honestly.</li>
+                                        <li>• Invite others to help shape decisions, so they feel ownership.</li>
+                                        <li>• Regularly ask, “How did my words make this person feel?”</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200">
+                            <h3 class="text-xl font-semibold text-emerald-800 mb-4">Final Reflection</h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Carnegie’s message can be condensed into one sentence: 
+<strong>if you want results with people, first learn to genuinely care about them.</strong> 
+The principles in this book are not tricks; they are disciplined ways of expressing respect, 
+interest, and empathy.
+</p>
+
+<p>
+Practicing even a few of them consistently can change how others respond to you – and how you 
+feel about your own ability to build strong, positive relationships.
+</p>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
