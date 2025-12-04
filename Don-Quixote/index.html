@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Don Quixote – Miguel de Cervantes | Summary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .active-tab { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        /* Mobile Responsive Text */
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.6; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 14px; line-height: 1.5; }
+            .mobile-title { font-size: 1.75rem !important; }
+            .mobile-subtitle { font-size: 1.125rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        /* Navigation Drawer Styles */
+        .nav-drawer {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 320px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1e293b 0%, #334155 100%);
+            transition: left 0.3s ease-in-out;
+            z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-drawer.open {
+            left: 0;
+        }
+        
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+            z-index: 999;
+        }
+        
+        .nav-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .drawer-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .drawer-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+        
+        .drawer-toggle.open {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+        
+        .hamburger {
+            width: 24px;
+            height: 18px;
+            position: relative;
+        }
+        
+        .hamburger span {
+            display: block;
+            position: absolute;
+            height: 3px;
+            width: 100%;
+            background: white;
+            border-radius: 2px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+        
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        
+        .drawer-toggle.open .hamburger span:nth-child(1) {
+            top: 7px;
+            transform: rotate(135deg);
+        }
+        
+        .drawer-toggle.open .hamburger span:nth-child(2) {
+            opacity: 0;
+            left: -60px;
+        }
+        
+        .drawer-toggle.open .hamburger span:nth-child(3) {
+            top: 7px;
+            transform: rotate(-135deg);
+        }
+        
+        .nav-item {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .nav-item:hover::before {
+            left: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-drawer {
+                width: 280px;
+                left: -280px;
+            }
+            .drawer-toggle {
+                top: 15px;
+                left: 15px;
+                padding: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nav-drawer {
+                width: 260px;
+                left: -260px;
+            }
+            .drawer-toggle {
+                top: 12px;
+                left: 12px;
+                padding: 8px;
+            }
+            .hamburger {
+                width: 20px;
+                height: 15px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+    <!-- Navigation Drawer Toggle -->
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <!-- Navigation Overlay -->
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <!-- Navigation Drawer -->
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-600">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">D</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Don Quixote</h2>
+                    <p class="text-slate-300 text-sm">Book Summary</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-300 text-sm font-medium uppercase tracking-wider mb-4 px-2">Table of Contents</h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">📖</span>
+                        <span>Introduction</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 1</div>
+                            <div class="text-xs text-slate-400">Author, Context & Structure</div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 2</div>
+                            <div class="text-xs text-slate-400">Plot Overview – Part I</div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 3</div>
+                            <div class="text-xs text-slate-400">Plot Overview – Part II</div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 4</div>
+                            <div class="text-xs text-slate-400">Characters & Relationships</div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 5</div>
+                            <div class="text-xs text-slate-400">Themes, Style & Legacy</div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-600">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© 2024 Don Quixote Summary</p>
+                <p class="text-slate-500 text-xs mt-1">Minimalist Design</p>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 mb-2 mobile-title">Don Quixote</h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    A concise guide to Miguel de Cervantes’s groundbreaking novel
+                </p>
+                <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-600 mx-auto mt-3 sm:mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <!-- Content Area -->
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <!-- Introduction -->
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Introduction</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            Welcome to the World of Don Quixote
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <p class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-blue-500 pl-4 sm:pl-6 italic mobile-text justified-text">
+                            “Don Quixote is not only the story of a mad knight – it is a playful, profound reflection on reality, imagination, and what it means to live by an ideal.”
+                        </p>
+                        
+                        <p class="mobile-text justified-text">
+                            <em>Don Quixote</em> by Miguel de Cervantes is often called the first modern novel. 
+                            Written in early 17th-century Spain, it follows a middle-aged minor nobleman who becomes obsessed with old chivalric romances and decides to become a wandering knight-errant. 
+                            His ridiculous yet sincere quest, together with his squire Sancho Panza, creates a story that is both comic and deeply philosophical.
+                        </p>
+                        
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-100">
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">In this summary you will learn:</h4>
+                            <ul class="space-y-2 text-slate-700 mobile-text">
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">The historical background of Cervantes and Golden Age Spain</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">A clear overview of the plot in Part I and Part II of the novel</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">Key characters such as Don Quixote, Sancho Panza, Dulcinea, and others</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">Major themes: illusion vs. reality, literature and storytelling, madness, honor, and identity</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <p class="mobile-text justified-text">
+                            Use the navigation menu on the left to explore each section in more depth. 
+                            Each part is designed to give you a structured, practical understanding of the novel – useful for readers, students, or anyone who wants to remember Don Quixote’s journey without re-reading all 1,000+ pages.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Part 1 – Context -->
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">Author, Historical Background & Structure of the Novel</h3>
+                        <p class="mobile-text justified-text">
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Miguel de Cervantes Saavedra (1547–1616) was a Spanish writer, soldier, and tax collector who lived through wars, imprisonment, and financial hardship. 
+Despite his difficult life, he produced one of the most influential works in Western literature: <em>Don Quixote</em>. 
+The novel was published in two parts, ten years apart, and quickly became famous across Europe.
+</p>
+
+<p>
+Cervantes wrote at a time known as the Spanish Golden Age – a period of intense artistic and literary activity. 
+Spain was a powerful empire, but it also faced economic problems, social inequality, and political tensions. 
+Chivalric romances – stories of heroic knights, enchanted castles, and noble ladies – were extremely popular. 
+Cervantes both parodied and honored these stories by placing an aging dreamer in a very ordinary, realistic Spanish landscape.
+</p>
+
+<p>
+The main character, Alonso Quixano, is a minor nobleman (a hidalgo) who reads so many books of chivalry that he loses touch with reality. 
+He renames himself Don Quixote de la Mancha, puts on old armor, renames a farm girl Dulcinea del Toboso and imagines her as his ideal lady, and rides out to “right wrongs” and “defend the helpless.” 
+The problem: the world around him no longer matches the heroic codes he believes in.
+</p>
+
+<p>
+The novel is divided into two major parts:
+</p>
+
+<ol>
+  <li><strong>Part I (1605)</strong> – Introduces Don Quixote, his squire Sancho Panza, and their first series of misadventures. The tone is mostly comic and satirical.</li>
+  <li><strong>Part II (1615)</strong> – Written after the huge success of Part I and after an unauthorized “fake” sequel by another writer. Part II is more self-aware, darker, and more reflective about fame, identity, and the impact of stories.</li>
+</ol>
+
+<p>
+Cervantes plays constantly with fiction and reality. A narrator claims to have found an old Arabic manuscript about Don Quixote and “translates” it, creating a story inside a story. 
+In Part II, characters have read Part I of <em>Don Quixote</em> and recognize the knight and his squire from the book. 
+This meta-fictional style – where a story comments on itself as a story – is one reason the novel is considered “modern.”
+</p>
+
+<p>
+At the same time, the book is full of everyday life in 17th-century Spain: inns, farms, dusty roads, priests, barbers, merchants, beggars, nobles, and convicts. 
+Don Quixote moves through this realistic world while seeing giants instead of windmills and castles instead of inns. 
+The contrast between his inner vision and outer reality drives most of the humor and tragedy of the novel.
+</p>
+
+<p>
+From the beginning, readers have disagreed: is Don Quixote simply a fool to be laughed at, or a noble idealist trapped in the wrong world? 
+Cervantes purposely keeps both possibilities open. The novel starts as a parody of silly knight stories, but slowly becomes a moving portrait of a man who insists on living by a code of honor, even if the world calls him mad.
+</p>
+
+<p>
+Before moving into detailed plot, it helps to keep four big “angles” in mind when reading <em>Don Quixote</em>:
+</p>
+
+<ol>
+  <li><strong>Comic Adventure:</strong> A series of ridiculous episodes – attacking windmills, freeing criminals, fighting wineskins – that mock unrealistic heroism.</li>
+  <li><strong>Psychological Portrait:</strong> A study of a man whose imagination is stronger than the reality around him.</li>
+  <li><strong>Social Satire:</strong> A critique of Spanish society – its class system, justice, religion, and attitudes toward honor and reputation.</li>
+  <li><strong>Reflection on Literature:</strong> A book about the power of books, how stories shape people, and how fiction and reality influence each other.</li>
+</ol>
+
+<p>
+These dimensions intertwine throughout the novel. Sometimes Don Quixote is ridiculous; sometimes he is unexpectedly wise. 
+Sancho Panza sometimes seems foolish and greedy, yet at other times becomes the voice of common sense. 
+Cervantes gives us a story that entertains on the surface but invites deeper reflection the more we think about it.
+</p>
+
+<p>
+With this context in mind, the next parts of this summary will walk through the main events of Part I and Part II, then explore the characters, themes, and lasting significance of this classic.
+</p>
+
+</div>
+                        </p>
+                        
+                        <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl">
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Key Dates:</h4>
+                            <ul class="space-y-2 mobile-text">
+                                <li class="justified-text"><strong>1547:</strong><br>Miguel de Cervantes is born in Alcalá de Henares, Spain.</li> 
+                                <li class="justified-text"><strong>1605:</strong><br>Publication of <em>Don Quixote</em>, Part I.</li>
+                                <li class="justified-text"><strong>1615:</strong><br>Publication of <em>Don Quixote</em>, Part II.</li>
+                                <li class="justified-text"><strong>17th–21st centuries:</strong><br>The novel spreads across Europe and the world, influencing countless writers and becoming a central text of world literature.</li>
+                            </ul>
+                        </div>
+                        
+                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">How This Summary Is Structured</h3>
+                        <p class="mobile-text justified-text">
+                            To make this long and complex work easier to digest, we will treat the book as four main focus areas, each developed in later sections.
+                        </p>
+                        
+                        <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-amber-200">
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Four Core Focus Areas of This Summary:</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                                <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                                    <h5 class="font-medium text-blue-700 text-sm sm:text-base">Focus 1</h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">Author background, historical context, and the structure of the novel.</p>
+                                </div>
+                                <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                                    <h5 class="font-medium text-green-700 text-sm sm:text-base">Focus 2</h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">Main events and episodes in Part I (early adventures).</p>
+                                </div>
+                                <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                                    <h5 class="font-medium text-purple-700 text-sm sm:text-base">Focus 3</h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">Main events in Part II and how the tone becomes deeper and more reflective.</p>
+                                </div>
+                                <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                                    <h5 class="font-medium text-red-700 text-sm sm:text-base">Focus 4</h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">Characters, themes, style, and the novel’s lasting legacy.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 2 – Plot Part I -->
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            Plot Overview – Part I: The Birth of a Knight-Errant
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <div class="bg-blue-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
+                            <h3 class="text-lg sm:text-xl font-semibold text-blue-800 mb-3 mobile-subtitle">Key Idea: When Imagination Overpowers Reality</h3>
+                            <p class="text-blue-700 italic mobile-text justified-text">
+                                Don Quixote chooses to live inside the stories he loves, even when the world refuses to cooperate.
+                            </p>
+                        </div>
+
+                        <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+<p>
+Part I of <em>Don Quixote</em> begins in a small village in La Mancha. 
+Alonso Quixano, a solitary hidalgo, spends most of his time reading books about knights, dragons, and heroic quests. 
+He becomes so absorbed in these fantasies that he loses his sense of reality. 
+He decides to become a knight-errant himself and adopt the name Don Quixote de la Mancha.
+</p>
+
+<p>
+He cleans an old suit of armor, renames his skinny farm horse “Rocinante,” and selects a peasant woman named Aldonza Lorenzo as his imagined lady, calling her “Dulcinea del Toboso.” 
+Although she never appears in person, her idealized image guides his actions: he wants to win glory in her honor.
+</p>
+
+<h3>The First Sally (Short First Departure)</h3>
+
+<p>
+Don Quixote rides out alone without telling anyone. 
+He quickly realizes that he has skipped an important step: a true knight must be formally dubbed. 
+He arrives at an inn, but in his mind, it is a grand castle. 
+The innkeeper, amused, plays along and “knights” him in a comic ceremony in the courtyard. 
+Early episodes already show the pattern of the book: ordinary people and places are misread by Don Quixote through the lens of chivalric romance.
+</p>
+
+<p>
+After a few mishaps, his friends – a priest and a barber – bring him home, worried about his mental state. 
+They burn many of his books in an attempt to cure him, but the result is the opposite: soon he is ready for a second, longer journey.
+</p>
+
+<h3>The Second Sally (With Sancho Panza)</h3>
+
+<p>
+In his second departure, Don Quixote recruits a simple, pragmatic farmer, Sancho Panza, as his squire. 
+Sancho joins him in hopes of material reward – especially the promise that Don Quixote will make him governor of an island one day. 
+From this point on, the novel is driven by the contrast between Don Quixote’s lofty fantasies and Sancho’s earthy common sense.
+</p>
+
+<p>
+The pair meet various people on the road, and Don Quixote repeatedly misinterprets situations:
+</p>
+
+<ul>
+  <li><strong>The Windmills:</strong> Don Quixote attacks windmills, believing they are giants. He is knocked to the ground when a blade strikes him. This becomes the novel’s most famous image: a man fighting imaginary enemies.</li>
+  <li><strong>The Flock of Sheep:</strong> He mistakes a flock of sheep for an army and charges, only to be beaten and injured when the shepherds throw stones at him.</li>
+  <li><strong>Freeing Convicts:</strong> He frees a chain-gang of prisoners, thinking they are oppressed by injustice. The criminals immediately rob him and Sancho and run away.</li>
+  <li><strong>Inns as Castles:</strong> Again and again, he believes modest inns are enchanted castles, leading to misunderstandings, fights, and beatings.</li>
+</ul>
+
+<p>
+Cervantes uses these episodes to parody the unrealistic heroics of knightly tales. 
+Yet he also lets Don Quixote speak with unexpected dignity. 
+Some of his speeches on freedom, bravery, and the golden age of the past are surprisingly noble. 
+Readers start to feel both amusement and sympathy.
+</p>
+
+<h3>Friends Intervene: The “Cage” Episode</h3>
+
+<p>
+Don Quixote’s friends – the priest and the barber – become increasingly concerned. 
+They decide to bring him home by tricking him instead of arguing with him. 
+They arrange for him to be placed in a wooden cage on a cart, telling him that an enchantment is transporting him. 
+He accepts this explanation and returns to his village, still convinced he is a knight under a magical spell.
+</p>
+
+<p>
+Part I ends with Don Quixote back home, resting and recovering from his adventures. 
+Cervantes closes with a playful claim that the story comes from the manuscript of a Moorish (Muslim) historian, Cide Hamete Benengeli, whose work the narrator is “translating.” 
+This humorous frame strengthens the sense that the novel is conscious of itself as a piece of fiction.
+</p>
+
+                        </div>
+
+                        <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-green-200">
+                            <h4 class="font-semibold text-green-800 mb-3 text-sm sm:text-base mobile-subtitle">Key Moments in Part I:</h4>
+                            <ul class="space-y-2 text-green-700 mobile-text">
+                                <li class="justified-text">• Don Quixote’s decision to become a knight and his reinvention of identity.</li>
+                                <li class="justified-text">• The first “knighting” at the inn – comic birth of a knight-errant.</li>
+                                <li class="justified-text">• The windmill episode – symbol of misplaced heroism and stubborn imagination.</li>
+                                <li class="justified-text">• The partnership with Sancho Panza – idealism meets realism.</li>
+                                <li class="justified-text">• The “rescue” and return home in a cage – gentle intervention instead of harsh punishment.</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl">
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Practical Reading Notes:</h4>
+                            <ol class="space-y-2 text-slate-700 mobile-text">
+                                <li class="justified-text">1. Part I reads like a string of adventures, but look for the pattern: fantasy collides with ordinary life.</li>
+                                <li class="justified-text">2. Notice how Sancho slowly starts adopting some of Don Quixote’s language, while Don Quixote sometimes shows flashes of lucidity.</li>
+                                <li class="justified-text">3. Pay attention to the narrator’s jokes about manuscripts, translations, and “lost pages” – they hint at the novel’s self-awareness.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 3 – Plot Part II -->
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            Plot Overview – Part II: Fame, Disillusion, and Maturity
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <p class="text-base sm:text-lg text-slate-600 mobile-text justified-text">
+                            Part II of <em>Don Quixote</em>, published in 1615, is more reflective and self-conscious than Part I. 
+                            Cervantes assumes that his readers already know the earlier adventures – and within the story, many characters have read Part I as well.
+                        </p>
+                        
+                        <div class="space-y-4 sm:space-y-6">
+                            <div class="bg-green-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-green-200">
+                                <h3 class="text-base sm:text-lg font-semibold text-green-800 mb-3 mobile-subtitle">
+                                    Don Quixote Becomes Famous in His Own Story
+                                </h3>
+                                <p class="mobile-text justified-text">
+                                    <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+At the start of Part II, Don Quixote has recovered physically but not mentally. 
+He and Sancho once again set out as knight and squire, but the world has changed: people recognize them because they have read the book of their earlier adventures. 
+This creates a strange and modern situation – fictional characters meeting readers of their own story inside the story.
+</p>
+
+<p>
+Don Quixote still seeks opportunities to prove his chivalric ideals. 
+Sancho still dreams of his promised island. 
+But now powerful and playful nobles – especially a Duke and Duchess – decide to entertain themselves by staging elaborate pranks around the pair. 
+They take advantage of Don Quixote’s delusions and Sancho’s ambitions, turning them into live actors in a cruel private theatre.
+</p>
+
+<p>
+Sancho is briefly “made” governor of an imaginary island (actually a small town under the Duke’s control). 
+He surprises everyone by judging disputes with practical wisdom and fairness, drawing on his experience and common sense. 
+However, the role is a test and a joke; when he realizes the stress and responsibility are too heavy, he resigns and returns to Don Quixote.
+</p>
+
+<p>
+Meanwhile, Don Quixote faces more “adventures” designed by others: enchantments, staged battles, and illusions arranged by the nobles. 
+The more he is manipulated, the more the novel invites us to ask: who is truly mad – the knight who believes in impossible ideals, or the aristocrats who treat people as toys for their amusement?
+</p>
+
+</div>
+                                </p>
+                                <div class="bg-white p-3 sm:p-4 rounded-lg">
+                                    <p class="mobile-text justified-text">
+                                        <strong>Key turn:</strong> In Part II, Don Quixote is less the driver of his adventures and more their victim. 
+                                        This shift gives the book a more bittersweet and critical tone.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-blue-50 p-6 rounded-xl border border-blue-200">
+                                <h3 class="text-lg font-semibold text-blue-800 mb-3">Toward the End: Barcelona and the Final Defeat</h3>
+                                <p class="mobile-text justified-text">
+                                    <h3>Journey to Barcelona</h3>
+                                    <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+One of the high points of Part II is Don Quixote’s visit to Barcelona – one of the few clearly identified real cities in the novel. 
+He sees the sea for the first time, is impressed by the busy harbor, and is confronted more directly with the reality of the modern world. 
+In Barcelona he also meets a student, Sansón Carrasco, in disguise.
+</p>
+
+<p>
+Carrasco had already tried to “cure” Don Quixote earlier by challenging him in armor as the “Knight of the Mirrors.” 
+Don Quixote won that first duel. 
+Now, Carrasco returns disguised as the “Knight of the White Moon” and issues another challenge in Barcelona. 
+He declares that if Don Quixote loses, he must give up knight-errantry and return home for at least a year.
+</p>
+
+<p>
+Don Quixote accepts the terms. 
+In the fight, he is defeated. 
+He keeps his word – even in madness, he lives by his code of honor. 
+He decides to abandon his quest and return to La Mancha with Sancho.
+</p>
+
+</div>
+                                </p>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <strong>Emotional shift:</strong> The ending of Part II is quieter and sadder than Part I. 
+                                    It moves from broad comedy toward reflection on aging, failure, and dignity.
+                                </div>
+                            </div>
+                            
+                            <div class="bg-yellow-50 p-6 rounded-xl border border-yellow-200">
+                                <h3 class="text-lg font-semibold text-yellow-800 mb-3">The Final Chapter: From Knight to Alonso Quixano Again</h3>
+                                <p class="mobile-text justified-text">
+                                    <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Back in his village, Don Quixote becomes ill. 
+In his last days, something unexpected happens: he regains his sanity. 
+He renounces the name Don Quixote and calls himself again Alonso Quixano. 
+He rejects chivalric romances as foolish fantasies and makes a sensible will.
+</p>
+
+<p>
+Sancho, now genuinely attached to him, begs him to ride out again and continue their adventures. 
+But Alonso Quixano is firm: the dream is over. 
+He dies surrounded by his friends, with the priest and the barber present. 
+Cervantes closes by insisting that no other writer should dare to continue the story – a direct jab at the earlier unauthorized sequel.
+</p>
+
+<p>
+The ending leaves readers with mixed feelings. 
+On one hand, it is a victory for “reality” and common sense. 
+On the other, there is a sense of loss: the world without Don Quixote’s crazy idealism feels a little poorer. 
+The novel refuses to give a simple answer, and this is part of its power.
+</p>
+
+</div>
+                                </p>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <strong>Reading insight:</strong> In Part II, Don Quixote becomes both more tragic and more admirable. 
+                                    His madness does not disappear, but his loyalty, courage, and honesty stand in contrast to the cynicism of many “sane” characters.
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 4 – Characters -->
+                <section id="part4" class="content-section p-8">
+                    <div class="mb-6">
+                        <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-sm font-medium rounded-full mb-4">Part 4</span>
+                        <h2 class="text-3xl font-bold text-slate-800 mb-4">Characters & Relationships</h2>
+                    </div>
+                    
+                    <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+<em>Don Quixote</em> is memorable not only for its plot, but especially for its characters and their relationships. 
+Cervantes builds a rich psychological portrait of two central figures – Don Quixote and Sancho Panza – and surrounds them with a varied supporting cast that reflects different layers of Spanish society.
+</p>
+
+<p>
+This section focuses on three major character “clusters”:
+</p>
+
+<ol>
+  <li><strong>Don Quixote as the Idealist</strong></li>
+  <li><strong>Sancho Panza as the Pragmatic Companion</strong></li>
+  <li><strong>The Social World Around Them: Friends, Nobles, and Dulcinea</strong></li>
+</ol>
+
+</div>
+
+                        
+                        <div class="bg-gradient-to-r from-purple-50 to-indigo-50 p-6 rounded-xl border border-purple-200">
+                            <h3 class="text-xl font-semibold text-purple-800 mb-4">Don Quixote: The Idealist in the Wrong Age</h3>
+                            <p class="text-purple-700 mb-4">
+                                <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Don Quixote is at once ridiculous and admirable. 
+He is ridiculous because he misreads almost everything around him: windmills become giants, inns become castles, peasant girls become enchanted princesses. 
+Yet he is admirable because he commits fully to a moral code that values courage, generosity, and defense of the weak.
+</p>
+
+<p>
+Psychologically, he is caught between two worlds. 
+One is the decaying rural Spain of his time – full of poverty, corruption, and boredom. 
+The other is the world of books – full of honor, adventure, and clear distinctions between good and evil. 
+Instead of accepting that his ideals do not fit his age, he chooses to act as if the old values can still be lived.
+</p>
+
+<p>
+Over the course of the novel, Don Quixote develops. 
+In Part I he is more one-dimensional: a comical madman crashing into reality. 
+In Part II, his inner life becomes more complex. 
+He sometimes senses that his world is slipping away, and there are moments when he speaks with striking clarity about freedom, fate, and human dignity.
+</p>
+
+<p>
+By the end, when he regains sanity and renounces his knightly identity, readers are left to decide what has truly been lost or gained. 
+Has he finally “woken up,” or has the world silenced one of its last idealists?
+</p>
+
+</div>
+                            </p>
+                            <div class="bg-white p-4 rounded-lg mb-4">
+                                <h4 class="font-semibold text-slate-800 mb-2">Key Traits of Don Quixote:</h4>
+                                <ul class="space-y-1 text-slate-700">
+                                    <li>• Deeply influenced by literature and imagination</li>
+                                    <li>• Brave, courteous, and committed to his personal code</li>
+                                    <li>• Blind to practical reality, yet sometimes morally insightful</li>
+                                    <li>• Both a figure of satire and a symbol of idealism</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200">
+                            <h3 class="text-xl font-semibold text-green-800 mb-4">Sancho Panza: The Earthy Companion</h3>
+                            <p class="text-green-700 mb-4">
+                                <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Sancho Panza is, on the surface, Don Quixote’s opposite. 
+He is short, round, married, and concerned with concrete things: food, money, sleep, and the promise of an “island” to govern. 
+He speaks in proverbs and folk wisdom rather than in grand speeches.
+</p>
+
+<p>
+However, as their relationship deepens, the two men influence each other. 
+Don Quixote learns occasionally to see the world with more realism, while Sancho gradually absorbs some of Don Quixote’s language and dreams. 
+By Part II, Sancho sometimes defends his master’s vision to others and plays along not just for profit, but from loyalty and affection.
+</p>
+
+<p>
+Sancho’s brief governorship shows another side of him: when given power, he shows fairness, compassion, and surprising intelligence. 
+He is overwhelmed by the responsibilities and eventually gives up the role, but his decisions as governor reveal that the “simple peasant” contains hidden depths.
+</p>
+
+<p>
+Together, Don Quixote and Sancho form one of literature’s great pairs – a kind of symbolic partnership between idealism and realism, dream and practicality, sky and earth.
+</p>
+
+</div>
+                            </p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-medium text-green-700 mb-2">Sancho as Individual:</h5>
+                                    <ul class="text-sm text-slate-600 space-y-1">
+                                        <li>• Practical and skeptical</li>
+                                        <li>• Motivated at first by material reward</li>
+                                        <li>• Speaks in vivid, humorous proverbs</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-medium text-green-700 mb-2">Sancho in Relationship:</h5>
+                                    <ul class="text-sm text-slate-600 space-y-1">
+                                        <li>• Loyal to Don Quixote despite fear and doubt</li>
+                                        <li>• Gradually “infected” by his master’s imagination</li>
+                                        <li>• Becomes emotionally attached to the knight and the shared journey</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="bg-gradient-to-r from-blue-50 to-cyan-50 p-6 rounded-xl border border-blue-200">
+                            <h3 class="text-xl font-semibold text-blue-800 mb-4">The Surrounding World: Friends, Nobles, and Dulcinea</h3>
+                            <p class="text-blue-700 mb-4">
+                                <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Around Don Quixote and Sancho, Cervantes builds a social landscape that comments on different human responses to madness and idealism.
+</p>
+
+<ul>
+  <li><strong>The Priest and the Barber:</strong> They represent “reasonable” village authority. They see Don Quixote’s condition as a sickness to be contained, but they still care for him as a friend. Their book-burning episode is both comic and slightly disturbing – a reminder of how societies react to dangerous ideas.</li>
+  <li><strong>The Duke and Duchess:</strong> Wealthy nobles in Part II who have read about Don Quixote and decide to treat him as entertainment. They stage elaborate pranks to watch how he and Sancho react. Their cruelty is always masked as play, making them some of the most troubling figures in the book.</li>
+  <li><strong>Sansón Carrasco:</strong> A young scholar who tries to “cure” Don Quixote by defeating him in combat. His intentions are partly kind and partly vanity. His role as the Knight of the White Moon gives the story its decisive turning point.</li>
+  <li><strong>Dulcinea del Toboso:</strong> In reality, she is Aldonza Lorenzo, a peasant woman. In Don Quixote’s mind, she is an exalted noble lady. She never appears directly, but her “presence” organizes his quest. In Part II, the idea that she is “enchanted” becomes a central running joke and a symbol of how ideals are always partly imaginary.</li>
+</ul>
+
+<p>
+Through these characters, Cervantes asks how society responds to people who don’t fit its norms. 
+Some laugh, some try to fix, some exploit, and some quietly love and support. 
+Together they create the moral background against which Don Quixote’s madness – and his dignity – can be judged.
+</p>
+
+</div>
+                            </p>
+                            <div class="bg-white p-4 rounded-lg">
+                                <h4 class="font-semibold text-slate-800 mb-2">Relationship Map (Simplified):</h4>
+                                <ul class="space-y-1 text-slate-600">
+                                    <li>• Don Quixote ↔ Sancho Panza: idealism & realism shaping one another.</li>
+                                    <li>• Don Quixote ↔ Friends (priest, barber): care mixed with control.</li>
+                                    <li>• Don Quixote ↔ Nobles: victim of manipulation and social cruelty.</li>
+                                    <li>• Don Quixote ↔ Dulcinea: the power of imagined love and unreachable ideals.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">Why the Characters Matter</h3>
+                        <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+<p>
+The characters of <em>Don Quixote</em> are not flat symbols; they feel alive and contradictory. 
+That is part of what makes the novel so modern. 
+People can be foolish and wise, cruel and kind, realistic and naïve – sometimes in the same scene. 
+Cervantes invites us not only to laugh at his characters, but also to recognize parts of ourselves in them.
+</p>
+
+<p>
+With the main figures and relationships in mind, we can now move to the deeper level of analysis: the themes, style, and lasting influence of the novel.
+</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 5 – Themes & Legacy -->
+                <section id="part5" class="content-section p-8">
+                    <div class="mb-6">
+                        <span class="inline-block px-3 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-full mb-4">Part 5</span>
+                        <h2 class="text-3xl font-bold text-slate-800 mb-4">Themes, Style & Legacy</h2>
+                    </div>
+                    
+                    <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-gradient-to-r from-red-50 to-pink-50 p-6 rounded-xl border border-red-200">
+                            <h3 class="text-xl font-semibold text-red-800 mb-4">Core Themes of Don Quixote</h3>
+                            <p class="text-red-700 mb-4">
+                                <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+The power of <em>Don Quixote</em> lies not only in what happens, but in what the story means. 
+Cervantes weaves together many themes; here are three of the most important.
+</p>
+
+</div>
+                            </p>
+                            <br>
+                            <div class="space-y-4">
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h4 class="font-semibold text-red-700 mb-2">1. Illusion vs. Reality</h4>
+                                    <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+<p>
+The most obvious theme is the clash between Don Quixote’s fantasy and the world as it is. 
+He sees giants where others see windmills, a glorious past where others see poverty and dust. 
+Yet the novel constantly raises a question: is it always better to accept “reality” as it is, especially when that reality is unjust or empty?
+</p>
+
+<p>
+Sometimes Don Quixote’s illusions lead to harm – he frees criminals who harm others, he provokes fights, he puts Sancho in danger. 
+At other times, his illusions lead to beautiful moments – he inspires noble behavior, speaks movingly about justice, and treats ordinary people with a respect they rarely receive.
+</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h4 class="font-semibold text-red-700 mb-2">2. The Power of Stories</h4>
+                                    <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+<p>
+Cervantes shows both the danger and the power of literature. 
+Books drive Don Quixote mad, but they also give him a sense of purpose. 
+The novel constantly includes other stories – tales told at inns, inserted novellas, references to plays and poems – creating a world saturated with narratives.
+</p>
+
+<p>
+In Part II, the fact that characters have read Part I is crucial. 
+They shape their behavior based on a book. 
+This anticipates our modern world, where media, fiction, and public images shape how people see themselves and others.
+</p>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h4 class="font-semibold text-red-700 mb-2">3. Identity, Honor, and Failure</h4>
+                                    <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+<p>
+Don Quixote is obsessed with living as a “true knight.” 
+He measures himself against an ideal that no longer fits his world. 
+This tension raises questions still relevant today: How do we build an identity in a world that may not respect our deepest values? 
+Is it better to compromise with reality or to risk everything for an ideal?
+</p>
+
+<p>
+In the end, Don Quixote fails in worldly terms – he does not restore chivalry, win great battles, or marry his lady. 
+Yet his stubborn commitment to his chosen identity leaves a deep mark on everyone around him and on generations of readers.
+</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h3 class="text-xl font-semibold text-red-800 mt-6 mb-3">Style and Structure</h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+<p>
+Cervantes mixes comedy, tragedy, and reflection in a flexible, open style. 
+He shifts between tones: farce, romance, satire, psychological observation, and philosophical musing. 
+The narrator comments on his own storytelling, mentions missing manuscripts, and debates with the invented historian Cide Hamete Benengeli.
+</p>
+
+<p>
+This layered style – stories inside stories, a narrator who is not fully reliable, characters who know they are in a book – makes <em>Don Quixote</em> feel surprisingly modern. 
+Many later novelists, from Laurence Sterne to Kafka to Borges, owe something to Cervantes’s experimental narrative play.
+</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-amber-50 to-yellow-50 p-6 rounded-xl border border-amber-200">
+                            <h3 class="text-xl font-semibold text-amber-800 mb-4">🟡 Overall Significance</h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+<em>Don Quixote</em> is widely considered:
+</p>
+
+<ul>
+  <li><strong>A foundation of the modern novel:</strong> because of its complex characters, self-aware narration, and mixture of realism and fantasy.</li>
+  <li><strong>A mirror of human contradiction:</strong> we all live between who we are and who we would like to be, between reality and our inner stories.</li>
+  <li><strong>A lasting symbol:</strong> “tilting at windmills” has become a metaphor for fighting imaginary enemies or pursuing hopeless causes.</li>
+</ul>
+
+<p>
+The novel has been adapted into plays, films, ballets, and even a famous musical (<em>Man of La Mancha</em>). 
+Artists and philosophers return to Don Quixote when they want to talk about idealism, madness, art, and the meaning of a life that does not “fit” its time.
+</p>
+
+                            </div>
+                        </div>
+                        <br>
+                        <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-xl border border-indigo-200">
+                            <h3 class="text-xl font-semibold text-indigo-800 mb-4">🚀 Applying Don Quixote Today</h3>
+                            <p class="text-indigo-700 mb-4">
+                                Even outside literature classes, the novel offers useful lenses for personal reflection:
+                            </p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-medium text-indigo-700 mb-2">For Personal Life:</h5>
+                                    <ul class="text-sm text-slate-600 space-y-1">
+                                        <li>• Ask where your ideals inspire you – and where they may blind you.</li>
+                                        <li>• Notice the “stories” you live by: family myths, cultural narratives, media images.</li>
+                                        <li>• Balance Sancho’s realism with Don Quixote’s courage to dream.</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-medium text-indigo-700 mb-2">For Work & Society:</h5>
+                                    <ul class="text-sm text-slate-600 space-y-1">
+                                        <li>• Question systems that treat people as entertainment or tools, like the Duke and Duchess do.</li>
+                                        <li>• Reflect on leadership: do you lead by imposing “reality,” or also by inspiring imagination?</li>
+                                        <li>• Use stories carefully – they can mislead, but they can also give meaning and motivation.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200">
+                            <h3 class="text-xl font-semibold text-emerald-800 mb-4">💡 Final Reflection</h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+At the end of <em>Don Quixote</em>, the knight dies and the man returns – Alonso Quixano recovers his sanity and leaves his fantasies behind. 
+Yet for readers, something of Don Quixote survives. 
+His stubborn insistence on seeing the world not only as it is, but as it could be, keeps challenging us.
+</p>
+
+<p>
+Perhaps the deepest question Cervantes leaves us with is this: 
+<strong>How can we live in a flawed, often disappointing world without entirely abandoning our ideals?</strong> 
+We may never find a perfect balance between Quixote and Sancho, but the journey of trying – like their long ride through La Mancha – is itself part of being human.
+</p>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all nav buttons
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            // Show selected section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            // Highlight active nav button
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            // Scroll to top of content
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Close drawer when pressing Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
