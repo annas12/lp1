@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The 48 Laws of Power — Robert Greene | Trilingual Summary</title>
+    <title>The 48 Laws of Power — Robert Greene | Summary</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -13,10 +13,10 @@
         .active-tab { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); }
         .content-section { display: none; }
         .content-section.active { display: block; }
-
+        
         .justified-text { text-align: justify; }
         .mobile-text { font-size: 16px; line-height: 1.6; }
-
+        
         @media (max-width: 640px) {
             .mobile-text { font-size: 14px; line-height: 1.5; }
             .mobile-title { font-size: 1.75rem !important; }
@@ -24,7 +24,7 @@
             .mobile-padding { padding: 1rem !important; }
             .mobile-margin { margin-bottom: 1rem !important; }
         }
-
+        
         /* Navigation Drawer Styles */
         .nav-drawer {
             position: fixed;
@@ -37,8 +37,9 @@
             z-index: 1000;
             box-shadow: 4px 0 20px rgba(0, 0, 0, 0.25);
         }
+        
         .nav-drawer.open { left: 0; }
-
+        
         .nav-overlay {
             position: fixed;
             top: 0;
@@ -51,11 +52,12 @@
             transition: all 0.3s ease-in-out;
             z-index: 999;
         }
+        
         .nav-overlay.active {
             opacity: 1;
             visibility: visible;
         }
-
+        
         .drawer-toggle {
             position: fixed;
             top: 20px;
@@ -69,20 +71,23 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
+        
         .drawer-toggle:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
         }
+        
         .drawer-toggle.open {
             background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
             box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
         }
-
+        
         .hamburger {
             width: 24px;
             height: 18px;
             position: relative;
         }
+        
         .hamburger span {
             display: block;
             position: absolute;
@@ -95,22 +100,26 @@
             transform: rotate(0deg);
             transition: .25s ease-in-out;
         }
+        
         .hamburger span:nth-child(1) { top: 0px; }
         .hamburger span:nth-child(2) { top: 7px; }
         .hamburger span:nth-child(3) { top: 14px; }
+        
         .drawer-toggle.open .hamburger span:nth-child(1) {
             top: 7px;
             transform: rotate(135deg);
         }
+        
         .drawer-toggle.open .hamburger span:nth-child(2) {
             opacity: 0;
             left: -60px;
         }
+        
         .drawer-toggle.open .hamburger span:nth-child(3) {
             top: 7px;
             transform: rotate(-135deg);
         }
-
+        
         .nav-item { position: relative; overflow: hidden; }
         .nav-item::before {
             content: '';
@@ -123,50 +132,16 @@
             transition: left 0.5s;
         }
         .nav-item:hover::before { left: 100%; }
-
+        
         @media (max-width: 768px) {
             .nav-drawer { width: 280px; left: -280px; }
             .drawer-toggle { top: 15px; left: 15px; padding: 10px; }
         }
+        
         @media (max-width: 480px) {
             .nav-drawer { width: 260px; left: -260px; }
             .drawer-toggle { top: 12px; left: 12px; padding: 8px; }
             .hamburger { width: 20px; height: 15px; }
-        }
-
-        /* Language visibility */
-        .lang-en, .lang-id, .lang-hi { display: none; }
-
-        [data-lang="en"] .lang-en { display: inline; }
-        [data-lang="en"] .block-lang-en { display: block; }
-        [data-lang="en"] .inline-flex-lang-en { display: inline-flex; }
-
-        [data-lang="id"] .lang-id { display: inline; }
-        [data-lang="id"] .block-lang-id { display: block; }
-        [data-lang="id"] .inline-flex-lang-id { display: inline-flex; }
-
-        [data-lang="hi"] .lang-hi { display: inline; }
-        [data-lang="hi"] .block-lang-hi { display: block; }
-        [data-lang="hi"] .inline-flex-lang-hi { display: inline-flex; }
-
-        /* Hide other language block types when not active */
-        [data-lang="en"] .block-lang-id,
-        [data-lang="en"] .block-lang-hi,
-        [data-lang="id"] .block-lang-en,
-        [data-lang="id"] .block-lang-hi,
-        [data-lang="hi"] .block-lang-en,
-        [data-lang="hi"] .block-lang-id { display: none; }
-
-        [data-lang="en"] .inline-flex-lang-id,
-        [data-lang="en"] .inline-flex-lang-hi,
-        [data-lang="id"] .inline-flex-lang-en,
-        [data-lang="id"] .inline-flex-lang-hi,
-        [data-lang="hi"] .inline-flex-lang-en,
-        [data-lang="hi"] .inline-flex-lang-id { display: none; }
-
-        .lang-switch-active {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-            color: #fff;
         }
     </style>
 </head>
@@ -191,119 +166,63 @@
                     <span class="text-white font-bold text-lg">48</span>
                 </div>
                 <div>
-                    <h2 class="text-white font-semibold text-lg">
-                        <span class="lang-en">The 48 Laws of Power</span>
-                        <span class="lang-id">The 48 Laws of Power</span>
-                        <span class="lang-hi">द 48 लॉज़ ऑफ पावर</span>
-                    </h2>
-                    <p class="text-slate-400 text-sm">
-                        <span class="lang-en">Book Summary</span>
-                        <span class="lang-id">Ringkasan Buku</span>
-                        <span class="lang-hi">पुस्तक सार</span>
-                    </p>
+                    <h2 class="text-white font-semibold text-lg">The 48 Laws of Power</h2>
+                    <p class="text-slate-400 text-sm">Book Summary</p>
                 </div>
             </div>
         </div>
         
         <div class="p-4">
-            <h3 class="text-slate-300 text-sm font-medium uppercase tracking-wider mb-4 px-2">
-                <span class="lang-en">Table of Contents</span>
-                <span class="lang-id">Daftar Isi</span>
-                <span class="lang-hi">सामग्री सूची</span>
-            </h3>
+            <h3 class="text-slate-300 text-sm font-medium uppercase tracking-wider mb-4 px-2">Table of Contents</h3>
             <ul class="space-y-2">
                 <li class="nav-item">
-                    <button onclick="showSection('intro', event); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 active-tab text-white flex items-center space-x-3">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 active-tab text-white flex items-center space-x-3">
                         <span class="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-xs font-bold">📖</span>
-                        <span>
-                            <span class="lang-en">Introduction</span>
-                            <span class="lang-id">Pendahuluan</span>
-                            <span class="lang-hi">भूमिका</span>
-                        </span>
+                        <span>Introduction</span>
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button onclick="showSection('part1', event); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
                         <span class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
                         <div class="text-left">
-                            <div class="font-medium">
-                                <span class="lang-en">Part 1</span>
-                                <span class="lang-id">Bagian 1</span>
-                                <span class="lang-hi">भाग 1</span>
-                            </div>
-                            <div class="text-xs text-slate-400">
-                                <span class="lang-en">Author, Context & Power Lens</span>
-                                <span class="lang-id">Penulis, Konteks & Cara Pandang Kekuatan</span>
-                                <span class="lang-hi">लेखक, संदर्भ और शक्ति का दृष्टिकोण</span>
-                            </div>
+                            <div class="font-medium">Part 1</div>
+                            <div class="text-xs text-slate-400">Author, Context & Power Lens</div>
                         </div>
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button onclick="showSection('part2', event); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
                         <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
                         <div class="text-left">
-                            <div class="font-medium">
-                                <span class="lang-en">Part 2</span>
-                                <span class="lang-id">Bagian 2</span>
-                                <span class="lang-hi">भाग 2</span>
-                            </div>
-                            <div class="text-xs text-slate-400">
-                                <span class="lang-en">Logic & Human Nature</span>
-                                <span class="lang-id">Logika & Sifat Manusia</span>
-                                <span class="lang-hi">तर्क और मानवीय स्वभाव</span>
-                            </div>
+                            <div class="font-medium">Part 2</div>
+                            <div class="text-xs text-slate-400">Logic of the Laws & View of Human Nature</div>
                         </div>
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button onclick="showSection('part3', event); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
                         <span class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
                         <div class="text-left">
-                            <div class="font-medium">
-                                <span class="lang-en">Part 3</span>
-                                <span class="lang-id">Bagian 3</span>
-                                <span class="lang-hi">भाग 3</span>
-                            </div>
-                            <div class="text-xs text-slate-400">
-                                <span class="lang-en">Key Themes & Patterns</span>
-                                <span class="lang-id">Tema & Pola Utama</span>
-                                <span class="lang-hi">मुख्य विषय और पैटर्न</span>
-                            </div>
+                            <div class="font-medium">Part 3</div>
+                            <div class="text-xs text-slate-400">Key Themes Across the 48 Laws</div>
                         </div>
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button onclick="showSection('part4', event); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
                         <span class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
                         <div class="text-left">
-                            <div class="font-medium">
-                                <span class="lang-en">Part 4</span>
-                                <span class="lang-id">Bagian 4</span>
-                                <span class="lang-hi">भाग 4</span>
-                            </div>
-                            <div class="text-xs text-slate-400">
-                                <span class="lang-en">Dark Side & Criticism</span>
-                                <span class="lang-id">Sisi Gelap & Kritik</span>
-                                <span class="lang-hi">अंधेरा पक्ष और आलोचना</span>
-                            </div>
+                            <div class="font-medium">Part 4</div>
+                            <div class="text-xs text-slate-400">Dark Side, Risks & Criticism</div>
                         </div>
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button onclick="showSection('part5', event); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
                         <span class="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
                         <div class="text-left">
-                            <div class="font-medium">
-                                <span class="lang-en">Part 5</span>
-                                <span class="lang-id">Bagian 5</span>
-                                <span class="lang-hi">भाग 5</span>
-                            </div>
-                            <div class="text-xs text-slate-400">
-                                <span class="lang-en">Using the Book Wisely</span>
-                                <span class="lang-id">Menggunakan Buku Ini dengan Bijak</span>
-                                <span class="lang-hi">पुस्तक का समझदारी से उपयोग</span>
-                            </div>
+                            <div class="font-medium">Part 5</div>
+                            <div class="text-xs text-slate-400">Using the Book Wisely & Practically</div>
                         </div>
                     </button>
                 </li>
@@ -321,33 +240,14 @@
     <!-- Header -->
     <header class="bg-slate-900/90 shadow-sm border-b border-slate-800">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-            <div class="flex flex-col items-center gap-4 text-center">
-                <div>
-                    <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-50 mb-2 mobile-title">
-                        <span class="lang-en">The 48 Laws of Power</span>
-                        <span class="lang-id">The 48 Laws of Power</span>
-                        <span class="lang-hi">द 48 लॉज़ ऑफ पावर</span>
-                    </h1>
-                    <p class="text-sm sm:text-base md:text-lg text-slate-300 font-medium px-2">
-                        <span class="lang-en">A strategic guide to power, influence, and human behavior</span>
-                        <span class="lang-id">Panduan strategis tentang kekuasaan, pengaruh, dan perilaku manusia</span>
-                        <span class="lang-hi">शक्ति, प्रभाव और मानवीय व्यवहार पर एक रणनीतिक मार्गदर्शिका</span>
-                    </p>
-                    <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-red-500 to-amber-500 mx-auto mt-3 sm:mt-4 rounded-full"></div>
-                </div>
-
-                <!-- Language Switcher -->
-                <div class="inline-flex-lang-en inline-flex-lang-id inline-flex-lang-hi inline-flex items-center gap-2 bg-slate-800/80 px-3 py-2 rounded-full border border-slate-700">
-                    <button onclick="setLanguage('en')" id="btn-en" class="px-3 py-1 rounded-full text-xs sm:text-sm font-medium text-slate-200 hover:bg-slate-700 transition">
-                        🇺🇸 EN
-                    </button>
-                    <button onclick="setLanguage('id')" id="btn-id" class="px-3 py-1 rounded-full text-xs sm:text-sm font-medium text-slate-200 hover:bg-slate-700 transition">
-                        🇮🇩 ID
-                    </button>
-                    <button onclick="setLanguage('hi')" id="btn-hi" class="px-3 py-1 rounded-full text-xs sm:text-sm font-medium text-slate-200 hover:bg-slate-700 transition">
-                        🇮🇳 HI
-                    </button>
-                </div>
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-50 mb-2 mobile-title">
+                    The 48 Laws of Power
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-300 font-medium px-2">
+                    A strategic, controversial guide to power, manipulation and human behavior
+                </p>
+                <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-red-500 to-amber-500 mx-auto mt-3 sm:mt-4 rounded-full"></div>
             </div>
         </div>
     </header>
@@ -360,520 +260,616 @@
                 <!-- Introduction -->
                 <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-red-100 text-red-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
-                            <span class="lang-en">Introduction</span>
-                            <span class="lang-id">Pendahuluan</span>
-                            <span class="lang-hi">भूमिका</span>
-                        </span>
+                        <span class="inline-block px-3 py-1 bg-red-100 text-red-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Introduction</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            <span class="lang-en">Entering the World of Power</span>
-                            <span class="lang-id">Memasuki Dunia Kekuasaan</span>
-                            <span class="lang-hi">शक्ति की दुनिया में प्रवेश</span>
+                            Entering the World of Power
                         </h2>
                     </div>
                     
-                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6 block-lang-en block-lang-id block-lang-hi">
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <p class="text-base sm:text-lg md:text-xl text-slate-700 font-medium border-l-4 border-red-500 pl-4 sm:pl-6 italic mobile-text justified-text">
-                            <span class="lang-en">
-                                “The 48 Laws of Power” does not describe an ideal moral world.  
-                                It describes how power often works in reality—strategic, emotional, and sometimes ruthless.
-                            </span>
-                            <span class="lang-id">
-                                “The 48 Laws of Power” tidak menggambarkan dunia yang ideal secara moral.  
-                                Buku ini menjelaskan bagaimana kekuasaan sering bekerja di dunia nyata—strategis, emosional, dan kadang kejam.
-                            </span>
-                            <span class="lang-hi">
-                                “द 48 लॉज़ ऑफ पावर” आदर्श नैतिक दुनिया का वर्णन नहीं करती,  
-                                बल्कि यह दिखाती है कि असली जीवन में शक्ति अक्सर कैसे काम करती है—रणनीतिक, भावनात्मक और कभी-कभी निर्मम।
-                            </span>
+                            “The 48 Laws of Power” does not tell you how people <strong>should</strong> behave in an ideal world.  
+                            It describes how power often works in the real world – ruthless, strategic, and driven by ego and fear.
                         </p>
                         
                         <p class="mobile-text justified-text">
-                            <span class="lang-en">
-                                Robert Greene builds this book from 3,000 years of history—kings, generals, courtiers, 
-                                and politicians. From their victories and failures he extracts 48 “laws” that explain 
-                                how people gain, keep, and lose power.
-                            </span>
-                            <span class="lang-id">
-                                Robert Greene menyusun buku ini dari 3.000 tahun sejarah—raja, jenderal, bangsawan istana, 
-                                dan politisi. Dari kemenangan dan kegagalan mereka ia merumuskan 48 “hukum” yang menjelaskan 
-                                bagaimana orang mendapatkan, mempertahankan, dan kehilangan kekuasaan.
-                            </span>
-                            <span class="lang-hi">
-                                रॉबर्ट ग्रीन ने यह किताब लगभग 3,000 साल के इतिहास से बनाई है—राजा, सेनापति, दरबारी और राजनीतिज्ञ।  
-                                उनकी जीत और हार से वह 48 “कानून” निकालते हैं जो बताते हैं कि लोग शक्ति कैसे पाते हैं, बचाते हैं और खो देते हैं।
-                            </span>
+                            <em>The 48 Laws of Power</em> by Robert Greene is a handbook on strategy and influence, 
+                            built on 3,000 years of history, politics, warfare, and court intrigue.  
+                            Greene extracts recurring patterns of behavior from figures like Machiavelli, 
+                            Sun Tzu, Louis XIV, Napoleon, and many others, and turns them into 48 “laws” for gaining, keeping, 
+                            and defending power.
                         </p>
                         
                         <div class="bg-gradient-to-r from-slate-50 to-slate-100 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-slate-200">
-                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">
-                                <span class="lang-en">In this summary you will learn:</span>
-                                <span class="lang-id">Dalam ringkasan ini Anda akan belajar:</span>
-                                <span class="lang-hi">इस सार में आप जानेंगे:</span>
-                            </h4>
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">In this summary you will learn:</h4>
                             <ul class="space-y-2 text-slate-700 mobile-text">
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">
-                                        <span class="lang-en">Who Robert Greene is and the mindset behind the 48 laws.</span>
-                                        <span class="lang-id">Siapa Robert Greene dan pola pikir di balik 48 hukum ini.</span>
-                                        <span class="lang-hi">रॉबर्ट ग्रीन कौन हैं और 48 नियमों के पीछे की सोच क्या है।</span>
-                                    </span>
+                                    <span class="justified-text">Who Robert Greene is and how he builds his philosophy of power.</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">
-                                        <span class="lang-en">How the book views human nature: emotional, proud, and strategic.</span>
-                                        <span class="lang-id">Bagaimana buku ini memandang sifat manusia: emosional, penuh ego, dan strategis.</span>
-                                        <span class="lang-hi">यह पुस्तक मानव स्वभाव को कैसे देखती है: भावुक, अहंकारी और रणनीतिक।</span>
-                                    </span>
+                                    <span class="justified-text">The core logic behind the 48 laws and their view of human nature.</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">
-                                        <span class="lang-en">The main themes across the laws: reputation, emotion, timing, and alliances.</span>
-                                        <span class="lang-id">Tema utama dalam hukum-hukum ini: reputasi, emosi, timing, dan aliansi.</span>
-                                        <span class="lang-hi">इन नियमों के मुख्य विषय: प्रतिष्ठा, भावनाएँ, समय-चयन और गठबंधन।</span>
-                                    </span>
+                                    <span class="justified-text">The main themes: reputation, timing, emotional control, manipulation, and defense.</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">
-                                        <span class="lang-en">How to use these ideas wisely—either to protect yourself or to play the game.</span>
-                                        <span class="lang-id">Cara menggunakan ide-ide ini dengan bijak—untuk melindungi diri atau bermain dalam permainan.</span>
-                                        <span class="lang-hi">इन विचारों का समझदारी से उपयोग कैसे करें—खुद को बचाने के लिए या खेल को बेहतर खेलने के लिए।</span>
-                                    </span>
+                                    <span class="justified-text">The dangers, ethical concerns, and how to use or defend against these ideas.</span>
                                 </li>
                             </ul>
                         </div>
+                        
+                        <p class="mobile-text justified-text">
+                            This summary does not list every law in detail. Instead, it groups the laws into key themes and 
+                            explains the mindset behind them, so you can understand the book’s philosophy and decide how – 
+                            or if – you want to apply it in your own life.
+                        </p>
                     </div>
                 </section>
 
                 <!-- Part 1 – Author, Context & Power Lens -->
                 <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
-                            <span class="lang-en">Part 1</span>
-                            <span class="lang-id">Bagian 1</span>
-                            <span class="lang-hi">भाग 1</span>
-                        </span>
+                        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
                     </div>
                     
-                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6 block-lang-en block-lang-id block-lang-hi">
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">
-                            <span class="lang-en">Robert Greene & Why He Wrote This Book</span>
-                            <span class="lang-id">Robert Greene & Alasan Buku Ini Ditulis</span>
-                            <span class="lang-hi">रॉबर्ट ग्रीन और यह किताब क्यों लिखी गई</span>
+                            Robert Greene, Historical Method & Why This Book Exists
                         </h3>
                         <p class="mobile-text justified-text">
-                            <span class="lang-en">
-                                Robert Greene worked in Hollywood and publishing, surrounded by politics, ego, and hidden agendas. 
-                                He noticed that people rarely say “I want power”, but their actions clearly show it.  
-                                Instead of ignoring this, he decided to study power honestly through history.
-                            </span>
-                            <span class="lang-id">
-                                Robert Greene pernah bekerja di Hollywood dan dunia penerbitan, dikelilingi politik kantor, ego, dan agenda tersembunyi.  
-                                Ia menyadari bahwa orang jarang berkata “saya ingin kekuasaan”, tetapi tindakan mereka jelas menunjukkannya.  
-                                Alih-alih pura-pura tidak tahu, ia memilih mempelajari kekuasaan secara jujur lewat sejarah.
-                            </span>
-                            <span class="lang-hi">
-                                रॉबर्ट ग्रीन ने हॉलीवुड और पब्लिशिंग की दुनिया में काम किया, जहाँ राजनीति, अहंकार और छुपे एजेंडा भरे हुए थे।  
-                                उसने देखा कि लोग शायद ही कभी कहते हैं “मुझे शक्ति चाहिए”, लेकिन उनके काम यह साफ दिखाते हैं।  
-                                इसे अनदेखा करने की बजाय उसने इतिहास के ज़रिए शक्ति को ईमानदारी से समझने का फैसला किया।
-                            </span>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Robert Greene worked in Hollywood and publishing before writing <em>The 48 Laws of Power</em>. 
+Spending years in competitive, political environments convinced him that people often play hidden games: 
+they say one thing but pursue another, they smile while plotting, they obey in public but resist in private.
+</p>
+
+<p>
+Instead of pretending that power games do not exist, Greene decided to study them honestly.  
+He immersed himself in biographies, history, philosophy and military strategy. Out of thousands of stories, 
+he extracted recurring patterns: the same tricks, traps and tactics appeared again and again across cultures 
+and centuries.
+</p>
+
+<p>
+The book is structured as 48 “laws”, and each law has:
+</p>
+
+<ul>
+  <li>A statement of the law,</li>
+  <li>Historical examples of people who applied it successfully,</li>
+  <li>Reversals or exceptions where the law can backfire.</li>
+</ul>
+
+<p>
+Greene’s tone is intentionally cold and analytical. He describes power as it <strong>is</strong>, not as it 
+morally <strong>should be</strong>. This is why the book is both popular and controversial: 
+some see it as a survival manual, others as a guidebook for manipulators.
+</p>
+
+<h3>Who Is This Book For?</h3>
+
+<p>
+Greene writes primarily for people who:
+</p>
+
+<ul>
+  <li>Work in competitive environments (politics, business, entertainment, law, etc.),</li>
+  <li>Feel naive, easily manipulated or repeatedly outplayed,</li>
+  <li>Want to better understand hidden motives and strategies around them.</li>
+</ul>
+
+<p>
+He repeatedly warns that the laws should not be used mechanically or aggressively in every situation.  
+Power, in his view, is context-dependent and deeply psychological.
+</p>
+
+</div>
                         </p>
                         
-                        <p class="mobile-text justified-text">
-                            <span class="lang-en">
-                                He read biographies, war memoirs, and philosophical texts.  
-                                From hundreds of stories—of kings, CEOs, con artists, and generals—he extracted repeating patterns.  
-                                Those patterns became the 48 laws.
-                            </span>
-                            <span class="lang-id">
-                                Ia membaca biografi, memoar perang, dan teks filsafat.  
-                                Dari ratusan kisah—raja, CEO, penipu, dan jenderal—ia menemukan pola yang terus berulang.  
-                                Pola-pola itu akhirnya dirumuskan sebagai 48 hukum.
-                            </span>
-                            <span class="lang-hi">
-                                उसने जीवनी, युद्ध संस्मरण और दार्शनिक पुस्तकों का गहन अध्ययन किया।  
-                                राजाओं, सीईओ, ठगों और सेनानायकों की सैकड़ों कहानियों से उसने बार-बार दिखने वाले पैटर्न देखे,  
-                                और यही पैटर्न 48 नियमों में बदले।
-                            </span>
-                        </p>
-
                         <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl">
-                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">
-                                <span class="lang-en">Key facts about the book:</span>
-                                <span class="lang-id">Fakta penting tentang buku ini:</span>
-                                <span class="lang-hi">किताब के कुछ मुख्य तथ्य:</span>
-                            </h4>
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Key Facts:</h4>
                             <ul class="space-y-2 mobile-text">
-                                <li class="justified-text">
-                                    <strong>• </strong>
-                                    <span class="lang-en">Published in 1998 and still widely read in business, politics, and entertainment.</span>
-                                    <span class="lang-id">Terbit tahun 1998 dan masih banyak dibaca di dunia bisnis, politik, dan hiburan.</span>
-                                    <span class="lang-hi">1998 में प्रकाशित, और आज भी बिजनेस, राजनीति और मनोरंजन की दुनिया में बहुत पढ़ी जाती है।</span>
-                                </li>
-                                <li class="justified-text">
-                                    <strong>• </strong>
-                                    <span class="lang-en">Each law comes with stories, “keys to power”, and possible reversals.</span>
-                                    <span class="lang-id">Setiap hukum disertai kisah nyata, “kunci kekuasaan”, dan kemungkinan pengecualian.</span>
-                                    <span class="lang-hi">हर नियम के साथ उदाहरण, “शक्ति की कुंजी” और जहाँ नियम उल्टा भी पड़ सकता है, उसकी चर्चा है।</span>
-                                </li>
-                                <li class="justified-text">
-                                    <strong>• </strong>
-                                    <span class="lang-en">The tone is cold and realistic, not motivational or moralistic.</span>
-                                    <span class="lang-id">Nada buku ini dingin dan realistis, bukan motivasional atau menggurui secara moral.</span>
-                                    <span class="lang-hi">य​ह किताब प्रेरणादायी अंदाज़ से ज़्यादा ठंडी और यथार्थवादी भाषा में लिखी गई है।</span>
-                                </li>
+                                <li class="justified-text"><strong>Publication year:</strong><br>1998.</li> 
+                                <li class="justified-text"><strong>Structure:</strong><br>48 “laws” of power, each with examples, keys to power, and reversals.</li>
+                                <li class="justified-text"><strong>Core aim:</strong><br>To reveal the hidden rules of power games, so readers can use them or defend against them.</li>
                             </ul>
+                        </div>
+                        
+                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">Neutral Observation, Not Moral Instruction</h3>
+                        <p class="mobile-text justified-text">
+                            Greene does not tell you to be “good”. He tells you to be <strong>aware</strong>.  
+                            His assumption is that in any hierarchy – from royal courts to modern offices – 
+                            power is being pursued and defended, whether people admit it or not.  
+                            Ignoring this does not make you ethical; it often just makes you vulnerable.
+                        </p>
+                        
+                        <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-amber-200">
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Three Inputs Behind the Laws:</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                                <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                                    <h5 class="font-medium text-red-700 text-sm sm:text-base">History</h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        Kings, courtiers and generals show recurring tactics of domination and survival.
+                                    </p>
+                                </div>
+                                <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                                    <h5 class="font-medium text-emerald-700 text-sm sm:text-base">Psychology</h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        Ego, envy, insecurity, and vanity drive many power moves.
+                                    </p>
+                                </div>
+                                <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                                    <h5 class="font-medium text-indigo-700 text-sm sm:text-base">Strategy</h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        Sun Tzu, Machiavelli, and others supply the logic behind indirect action.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Part 2 – Logic & Human Nature -->
+                <!-- Part 2 – Logic of the Laws & Human Nature -->
                 <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
-                            <span class="lang-en">Part 2</span>
-                            <span class="lang-id">Bagian 2</span>
-                            <span class="lang-hi">भाग 2</span>
-                        </span>
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            <span class="lang-en">The Logic of the Laws & Human Nature</span>
-                            <span class="lang-id">Logika Hukum & Sifat Manusia</span>
-                            <span class="lang-hi">नियमों का तर्क और मानवीय स्वभाव</span>
+                            The Logic Behind the 48 Laws & Human Nature
                         </h2>
                     </div>
                     
-                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6 block-lang-en block-lang-id block-lang-hi">
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <div class="bg-blue-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
                             <h3 class="text-lg sm:text-xl font-semibold text-blue-800 mb-3 mobile-subtitle">
-                                <span class="lang-en">Power as Perception</span>
-                                <span class="lang-id">Kekuasaan sebagai Persepsi</span>
-                                <span class="lang-hi">धारणा के रूप में शक्ति</span>
+                                Power as a Game of Perception
                             </h3>
                             <p class="text-blue-700 italic mobile-text justified-text">
-                                <span class="lang-en">
-                                    In Greene’s world, power is not just about titles or money.  
-                                    It is about how strong, dangerous, or useful you <em>appear</em> to others.
-                                </span>
-                                <span class="lang-id">
-                                    Dalam pandangan Greene, kekuasaan bukan hanya soal jabatan atau uang.  
-                                    Ini tentang seberapa kuat, berbahaya, atau berguna Anda <em>terlihat</em> bagi orang lain.
-                                </span>
-                                <span class="lang-hi">
-                                    ग्रीन के अनुसार शक्ति सिर्फ पद या पैसे से नहीं आती,  
-                                    यह इस बात से आती है कि आप दूसरों को कितने ताकतवर, ख़तरनाक या उपयोगी <em>दिखते</em> हैं।
-                                </span>
+                                In Greene’s world, power rarely depends only on formal titles.  
+                                It depends on perception: how strong, competent, mysterious, or dangerous you appear to others.
                             </p>
                         </div>
 
-                        <p class="mobile-text justified-text">
-                            <span class="lang-en">
-                                Many laws assume that people are emotional first, rational second.  
-                                Pride, envy, fear, and insecurity often drive behavior more than pure logic.
-                            </span>
-                            <span class="lang-id">
-                                Banyak hukum berangkat dari asumsi bahwa manusia lebih dulu emosional, baru rasional.  
-                                Rasa bangga, iri, takut, dan tidak aman sering lebih kuat daripada logika murni.
-                            </span>
-                            <span class="lang-hi">
-                                कई नियम यह मानते हैं कि इंसान पहले भावुक होते हैं, बाद में तर्कसंगत।  
-                                घमंड, जलन, डर और असुरक्षा अक्सर साफ़ तर्क से ज़्यादा व्यवहार को नियंत्रित करती हैं।
-                            </span>
-                        </p>
+                        <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+<p>
+Across the 48 laws, several assumptions appear again and again:
+</p>
+
+<ul>
+  <li>People are driven by pride, envy, and insecurity as much as by logic.</li>
+  <li>Many conflicts are indirect; people rarely say what they truly want.</li>
+  <li>Reputation is more fragile (and more powerful) than raw force.</li>
+  <li>Those who understand emotions, appearances and timing often beat those who rely only on “being right.”</li>
+</ul>
+
+<h3>Patterns in the Laws</h3>
+
+<p>
+The laws are varied, but the logic behind them is consistent.  
+Some examples of underlying principles (in paraphrased form):
+</p>
+
+<ul>
+  <li><strong>Do not outshine your master.</strong><br>
+  Never make a superior feel small or threatened by your talents, or they will remove you.</li>
+
+  <li><strong>Conceal your intentions.</strong><br>
+  If people can predict you, they can block you. Indirection keeps you flexible.</li>
+
+  <li><strong>Always say less than necessary.</strong><br>
+  Mystery creates respect; oversharing creates vulnerability.</li>
+
+  <li><strong>Win through actions, not argument.</strong><br>
+  Arguments attack ego and create enemies. Demonstrated results are harder to resist.</li>
+
+  <li><strong>Protect your reputation.</strong><br>
+  Reputation amplifies your power; once stained, everything becomes harder.</li>
+</ul>
+
+<p>
+These short samples illustrate the style of the book: concise, sharp, and often cynical.  
+Greene asks you to assume that many people will act selfishly under pressure, and that power games are 
+a permanent feature of human life.
+</p>
+
+<h3>Human Nature Through Greene’s Eyes</h3>
+
+<p>
+In this book, human beings are:
+</p>
+
+<ul>
+  <li>Emotional before they are rational,</li>
+  <li>Deeply sensitive to status and slight,</li>
+  <li>Attracted to confidence, boldness, and mystery,</li>
+  <li>Suspicious of those who are too honest or too open.</li>
+</ul>
+
+<p>
+This view is deliberately dark. It exaggerates the competitive side of life to force the reader to wake up 
+to dynamics they may have ignored. Whether you agree fully or not, it is a useful lens for analyzing certain 
+situations – especially in politics, corporate power struggles, and high-stakes negotiations.
+</p>
+                        </div>
 
                         <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-emerald-200">
                             <h4 class="font-semibold text-green-800 mb-3 text-sm sm:text-base mobile-subtitle">
-                                <span class="lang-en">Core assumptions behind many laws:</span>
-                                <span class="lang-id">Asumsi inti di balik banyak hukum:</span>
-                                <span class="lang-hi">कई नियमों के पीछे छिपी मूल धारणाएँ:</span>
+                                Summary: What the Laws Assume
                             </h4>
                             <ul class="space-y-2 text-green-700 mobile-text">
-                                <li class="justified-text">
-                                    <span class="lang-en">• People care deeply about status, respect, and not being humiliated.</span>
-                                    <span class="lang-id">• Manusia sangat peduli pada status, rasa dihargai, dan tidak dipermalukan.</span>
-                                    <span class="lang-hi">• लोग दर्जे, इज़्ज़त और अपमान से बचने को लेकर बहुत संवेदनशील होते हैं।</span>
-                                </li>
-                                <li class="justified-text">
-                                    <span class="lang-en">• Arguments rarely change minds; visible results and symbols do.</span>
-                                    <span class="lang-id">• Perdebatan jarang mengubah pikiran; hasil nyata dan simbol yang mengesankan lebih kuat.</span>
-                                    <span class="lang-hi">• बहस कम ही किसी का मन बदलती है; दिखने वाले नतीजे और मजबूत प्रतीक ज़्यादा असर करते हैं।</span>
-                                </li>
-                                <li class="justified-text">
-                                    <span class="lang-en">• Those who control emotions and appearances often beat those who only rely on “being right”.</span>
-                                    <span class="lang-id">• Mereka yang mengendalikan emosi dan citra sering menang atas mereka yang hanya mengandalkan “saya benar”.</span>
-                                    <span class="lang-hi">• जो लोग भावनाओं और इमेज को नियंत्रित करना जानते हैं, वे अक्सर सिर्फ “मैं सही हूँ” पर टिके लोगों से आगे निकल जाते हैं।</span>
-                                </li>
+                                <li class="justified-text">• Power is about control of options, perception and emotions – not just resources.</li>
+                                <li class="justified-text">• People rarely say “I want power” but act as if they do.</li>
+                                <li class="justified-text">• You must learn to read motives and manage appearances to survive and succeed.</li>
                             </ul>
                         </div>
                     </div>
                 </section>
 
-                <!-- Part 3 – Key Themes -->
+                <!-- Part 3 – Key Themes Across the 48 Laws -->
                 <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
-                            <span class="lang-en">Part 3</span>
-                            <span class="lang-id">Bagian 3</span>
-                            <span class="lang-hi">भाग 3</span>
-                        </span>
+                        <span class="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            <span class="lang-en">Key Themes Across the 48 Laws</span>
-                            <span class="lang-id">Tema Utama dalam 48 Hukum</span>
-                            <span class="lang-hi">48 नियमों में दिखने वाले मुख्य विषय</span>
+                            Key Themes Across the 48 Laws of Power
                         </h2>
                     </div>
                     
-                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6 block-lang-en block-lang-id block-lang-hi">
-                        <!-- Reputation & Image -->
-                        <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-slate-200">
-                            <h3 class="text-base sm:text-lg font-semibold text-slate-800 mb-3 mobile-subtitle">
-                                <span class="lang-en">1. Reputation & Image</span>
-                                <span class="lang-id">1. Reputasi & Citra</span>
-                                <span class="lang-hi">1. प्रतिष्ठा और छवि</span>
-                            </h3>
-                            <p class="mobile-text justified-text">
-                                <span class="lang-en">
-                                    Many laws warn you to guard your reputation like a treasure.  
-                                    Once people believe you are weak, chaotic, or untrustworthy, every move becomes harder.
-                                </span>
-                                <span class="lang-id">
-                                    Banyak hukum menekankan pentingnya menjaga reputasi seperti harta.  
-                                    Ketika orang percaya Anda lemah, berantakan, atau tidak bisa dipercaya, setiap langkah akan lebih berat.
-                                </span>
-                                <span class="lang-hi">
-                                    कई नियम आपको चेतावनी देते हैं कि अपनी प्रतिष्ठा को ख़ज़ाने की तरह संभालें।  
-                                    अगर लोग एक बार मान लें कि आप कमजोर या अविश्वसनीय हैं, तो आपका हर कदम मुश्किल हो जाता है।
-                                </span>
-                            </p>
-                        </div>
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <p class="text-base sm:text-lg text-slate-600 mobile-text justified-text">
+                            Rather than memorizing 48 rules, it is more useful to understand the 
+                            <strong>clusters</strong> of ideas behind them. Below are some major themes.
+                        </p>
                         
-                        <!-- Emotional Control -->
-                        <div class="bg-blue-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
-                            <h3 class="text-base sm:text-lg font-semibold text-blue-800 mb-3 mobile-subtitle">
-                                <span class="lang-en">2. Emotional Control</span>
-                                <span class="lang-id">2. Kontrol Emosi</span>
-                                <span class="lang-hi">2. भावनाओं पर नियंत्रण</span>
-                            </h3>
-                            <p class="mobile-text justified-text">
-                                <span class="lang-en">
-                                    Those who cannot control anger, jealousy, or panic are easy to provoke and manipulate.  
-                                    The laws repeatedly tell you: stay calm on the surface, think several moves ahead.
-                                </span>
-                                <span class="lang-id">
-                                    Mereka yang tidak bisa mengendalikan marah, cemburu, atau panik mudah dipancing dan dimanipulasi.  
-                                    Hukum-hukum ini terus mengingatkan: tetap tenang di permukaan, pikirkan beberapa langkah ke depan.
-                                </span>
-                                <span class="lang-hi">
-                                    जो लोग ग़ुस्सा, जलन या घबराहट पर काबू नहीं रख पाते, उन्हें भड़काना और इस्तेमाल करना आसान होता है।  
-                                    नियम बार-बार कहते हैं: बाहर से शांत रहो, अंदर से कई चाल आगे तक सोचो।
-                                </span>
-                            </p>
-                        </div>
-                        
-                        <!-- Indirection & Strategy -->
-                        <div class="bg-purple-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-purple-200">
-                            <h3 class="text-base sm:text-lg font-semibold text-purple-800 mb-3 mobile-subtitle">
-                                <span class="lang-en">3. Indirect Strategy</span>
-                                <span class="lang-id">3. Strategi Tidak Langsung</span>
-                                <span class="lang-hi">3. अप्रत्यक्ष रणनीति</span>
-                            </h3>
-                            <p class="mobile-text justified-text">
-                                <span class="lang-en">
-                                    Greene borrows from warfare and politics: direct attacks are often costly.  
-                                    Many laws encourage disguise, misdirection, and allowing others to reveal themselves first.
-                                </span>
-                                <span class="lang-id">
-                                    Greene banyak mengambil inspirasi dari perang dan politik: serangan frontal sering mahal.  
-                                    Banyak hukum menganjurkan penyamaran, pengalihan, dan membiarkan orang lain membuka diri lebih dulu.
-                                </span>
-                                <span class="lang-hi">
-                                    ग्रीन युद्ध और राजनीति से सीख लेते हैं: सीधा हमला अक्सर महँगा पड़ता है।  
-                                    कई नियम भेष बदलने, भटकाने और पहले दूसरों को खुलकर सामने आने देने की सलाह देते हैं।
-                                </span>
-                            </p>
-                        </div>
+                        <div class="space-y-4 sm:space-y-6">
+                            <!-- Reputation & Image -->
+                            <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-slate-200">
+                                <h3 class="text-base sm:text-lg font-semibold text-slate-800 mb-3 mobile-subtitle">
+                                    1. Reputation, Image & Mystery
+                                </h3>
+                                <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
 
-                        <!-- Alliances & Dependence -->
-                        <div class="bg-emerald-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-emerald-200">
-                            <h3 class="text-base sm:text-lg font-semibold text-emerald-800 mb-3 mobile-subtitle">
-                                <span class="lang-en">4. Alliances & Dependence</span>
-                                <span class="lang-id">4. Aliansi & Ketergantungan</span>
-                                <span class="lang-hi">4. गठबंधन और निर्भरता</span>
-                            </h3>
-                            <p class="mobile-text justified-text">
-                                <span class="lang-en">
-                                    Power is relational. You are strong when others need you more than you need them.  
-                                    Some laws teach you to make superiors feel safe, and subordinates feel dependent.
-                                </span>
-                                <span class="lang-id">
-                                    Kekuasaan itu relasional. Anda kuat ketika orang lain lebih membutuhkan Anda daripada Anda membutuhkan mereka.  
-                                    Beberapa hukum mengajarkan membuat atasan merasa aman, dan bawahan merasa bergantung.
-                                </span>
-                                <span class="lang-hi">
-                                    शक्ति रिश्तों से बनती है। जब लोग आपको आपसे ज़्यादा ज़रूरतमंद हों, तब आप मज़बूत होते हैं।  
-                                    कुछ नियम सिखाते हैं कि ऊपर वालों को सुरक्षित और नीचे वालों को आपके सहारे पर निर्भर महसूस कराएँ।
-                                </span>
-                            </p>
+<p>
+Many laws focus on controlling how others see you. In Greene’s view, reputation is a kind of 
+“credit score” for power: once high, it makes everything easier; once damaged, it makes 
+every move more difficult.
+</p>
+
+<p>
+Key ideas in this cluster:
+</p>
+
+<ul>
+  <li>Guard your reputation as your most valuable asset.</li>
+  <li>Let others talk and reveal themselves; you remain slightly reserved.</li>
+  <li>Cultivate an air of unpredictability so others cannot easily anticipate your moves.</li>
+  <li>Use bold gestures and symbols to project strength and confidence.</li>
+</ul>
+
+<p>
+The goal is not to be fake in every way, but to be strategic about what you reveal and what you hide.  
+You are both yourself and your “public version” of yourself.
+</p>
+
+                                </div>
+                            </div>
+                            
+                            <!-- Emotional Control & Detachment -->
+                            <div class="bg-blue-50 p-6 rounded-xl border border-blue-200">
+                                <h3 class="text-lg font-semibold text-blue-800 mb-3">2. Emotional Control & Detachment</h3>
+                                <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Another cluster of laws teaches you to remain calm and calculating in situations where others 
+lose their composure. People who cannot control their anger, envy or fear are easy to manipulate.
+</p>
+
+<p>
+Common messages in this group:
+</p>
+
+<ul>
+  <li>Do not react immediately when attacked; observe and plan a response.</li>
+  <li>Avoid complaining, explaining, or begging – these express weakness.</li>
+  <li>Stay above petty fights; sometimes silence and distance are more powerful than direct confrontation.</li>
+  <li>Channel emotions into strategy instead of outbursts.</li>
+</ul>
+
+<p>
+Power, in Greene’s world, belongs to those who can remain cold when others burn hot.
+</p>
+
+                                </div>
+                            </div>
+                            
+                            <!-- Indirection, Deception & Strategy -->
+                            <div class="bg-purple-50 p-6 rounded-xl border border-purple-200">
+                                <h3 class="text-lg font-semibold text-purple-800 mb-3">3. Indirection, Deception & Strategic Moves</h3>
+                                <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Many laws involve indirect action: feints, diversions, and controlled appearances.  
+Greene borrows heavily from military strategy, where frontal attacks are often costly and foolish.
+</p>
+
+<p>
+Typical ideas in this group:
+</p>
+
+<ul>
+  <li>Hide your true plans behind a decoy or a harmless front.</li>
+  <li>Let others underestimate you until it is too late to resist.</li>
+  <li>Use other people’s work, knowledge or resources and give them just enough credit.</li>
+  <li>Turn enemies against each other while you remain in the background.</li>
+</ul>
+
+<p>
+These are the most Machiavellian parts of the book. Even if you never want to use such tactics, 
+understanding them helps you see when others might be using them on you.
+</p>
+
+                                </div>
+                            </div>
+                            
+                            <!-- Dependence, Alliances & Hierarchies -->
+                            <div class="bg-emerald-50 p-6 rounded-xl border border-emerald-200">
+                                <h3 class="text-lg font-semibold text-emerald-800 mb-3">4. Alliances, Hierarchies & Dependence</h3>
+                                <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Greene emphasizes that power is relational. You rarely hold power alone; you hold it 
+because others depend on you more than you depend on them.
+</p>
+
+<p>
+Ideas in this theme:
+</p>
+
+<ul>
+  <li>Make superiors feel valued and indispensable, never threatened.</li>
+  <li>Make subordinates and allies need you – through knowledge, access, or protection.</li>
+  <li>Use gifts, favors and strategic kindness to create obligations.</li>
+  <li>Be careful with friends (who may envy you) and learn to use enemies (who are more predictable).</li>
+</ul>
+
+<p>
+The goal is to construct a web of dependence where you are a central node that others cannot easily remove.
+</p>
+
+                                </div>
+                            </div>
+                            
+                            <!-- Timing, Patience & Momentum -->
+                            <div class="bg-amber-50 p-6 rounded-xl border border-amber-200">
+                                <h3 class="text-lg font-semibold text-amber-800 mb-3">5. Timing, Patience & the Art of Exit</h3>
+                                <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Finally, several laws deal with timing: when to act, when to wait, and when to withdraw.
+</p>
+
+<p>
+Key principles:
+</p>
+
+<ul>
+  <li>Do not rush when the situation is unclear; gather information first.</li>
+  <li>Strike suddenly and decisively when the moment is ripe.</li>
+  <li>Know when to end a relationship, project, or role before it collapses on its own.</li>
+  <li>Leave situations with dignity and narrative control, not in visible defeat.</li>
+</ul>
+
+<p>
+Timing transforms an average move into a powerful one. Greene sees patience not as passivity, 
+but as strategic waiting.
+</p>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Part 4 – Dark Side & Criticism -->
-                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
-                    <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
-                            <span class="lang-en">Part 4</span>
-                            <span class="lang-id">Bagian 4</span>
-                            <span class="lang-hi">भाग 4</span>
-                        </span>
-                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            <span class="lang-en">Dark Side, Risks & Criticism</span>
-                            <span class="lang-id">Sisi Gelap, Risiko & Kritik</span>
-                            <span class="lang-hi">अंधेरा पक्ष, जोखिम और आलोचना</span>
-                        </h2>
+                <!-- Part 4 – Dark Side, Risks & Criticism -->
+                <section id="part4" class="content-section p-8">
+                    <div class="mb-6">
+                        <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-sm font-medium rounded-full mb-4">Part 4</span>
+                        <h2 class="text-3xl font-bold text-slate-800 mb-4">Dark Side, Risks & Criticism</h2>
                     </div>
                     
-                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6 block-lang-en block-lang-id block-lang-hi">
-                        <div class="bg-gradient-to-r from-red-50 to-pink-50 p-4 sm:p-6 rounded-xl border border-red-200">
-                            <h3 class="text-lg font-semibold text-red-800 mb-3">
-                                <span class="lang-en">Is This a Manual for Manipulators?</span>
-                                <span class="lang-id">Apakah Ini Buku Manual Manipulator?</span>
-                                <span class="lang-hi">क्या यह चालबाज़ों की किताब है?</span>
-                            </h3>
-                            <p class="mobile-text justified-text">
-                                <span class="lang-en">
-                                    Critics say the book promotes lying, using people, and being ruthless.  
-                                    Greene replies that he is describing how power already works, not inventing it.  
-                                    Still, the danger is real: used without empathy, these laws can poison relationships.
-                                </span>
-                                <span class="lang-id">
-                                    Para pengkritik menilai buku ini mendorong kebohongan, memanipulasi orang, dan bersikap kejam.  
-                                    Greene menjawab bahwa ia hanya menggambarkan cara kerja kekuasaan yang sudah ada, bukan menciptakannya.  
-                                    Namun risikonya nyata: jika dipakai tanpa empati, hukum-hukum ini dapat merusak hubungan.
-                                </span>
-                                <span class="lang-hi">
-                                    आलोचक कहते हैं यह किताब झूठ बोलने, लोगों को इस्तेमाल करने और निर्दयी बनने को बढ़ावा देती है।  
-                                    ग्रीन का जवाब है कि वह सिर्फ वही बता रहे हैं जो शक्ति पहले से करती है, वे कुछ नया नहीं बना रहे।  
-                                    फिर भी, ख़तरा असली है: अगर बिना संवेदना के उपयोग हो, तो ये नियम रिश्तों को ज़हरीला बना सकते हैं।
-                                </span>
-                            </p>
-                        </div>
+                    <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
 
-                        <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-4 sm:p-6 rounded-xl border border-indigo-200">
-                            <h3 class="text-lg font-semibold text-indigo-800 mb-3">
-                                <span class="lang-en">Two Ways to Read the Book</span>
-                                <span class="lang-id">Dua Cara Membaca Buku Ini</span>
-                                <span class="lang-hi">किताब पढ़ने के दो नज़रिए</span>
-                            </h3>
-                            <ul class="list-disc pl-6 space-y-2 mobile-text">
-                                <li class="justified-text">
-                                    <span class="lang-en"><strong>As a weapon:</strong> to dominate, manipulate, and “win” at any cost.</span>
-                                    <span class="lang-id"><strong>Sebagai senjata:</strong> untuk mendominasi, memanipulasi, dan “menang” dengan cara apa pun.</span>
-                                    <span class="lang-hi"><strong>हथियार की तरह:</strong> दूसरों पर हावी होने, उन्हें मोड़ने और किसी भी कीमत पर “जीतने” के लिए।</span>
-                                </li>
-                                <li class="justified-text">
-                                    <span class="lang-en"><strong>As a shield:</strong> to recognize games, protect yourself, and stay less naive.</span>
-                                    <span class="lang-id"><strong>Sebagai perisai:</strong> untuk mengenali permainan, melindungi diri, dan tidak terlalu naif.</span>
-                                    <span class="lang-hi"><strong>ढाल की तरह:</strong> खेलों को पहचानने, खुद की रक्षा करने और कम भोला रहने के लिए।</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
+<p>
+It is impossible to talk about <em>The 48 Laws of Power</em> without addressing its dark side.  
+Many readers love it; others hate it. Some call it realistic, others call it toxic.
+</p>
 
-                <!-- Part 5 – Using the Book Wisely -->
-                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
-                    <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
-                            <span class="lang-en">Part 5</span>
-                            <span class="lang-id">Bagian 5</span>
-                            <span class="lang-hi">भाग 5</span>
-                        </span>
-                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            <span class="lang-en">Using the 48 Laws Wisely</span>
-                            <span class="lang-id">Menggunakan 48 Hukum dengan Bijak</span>
-                            <span class="lang-hi">48 नियमों का समझदारी से उपयोग</span>
-                        </h2>
-                    </div>
-                    
-                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6 block-lang-en block-lang-id block-lang-hi">
-                        <div class="bg-gradient-to-r from-slate-50 to-slate-100 p-4 sm:p-6 rounded-xl border border-slate-200">
-                            <h3 class="text-lg font-semibold text-slate-900 mb-3">
-                                <span class="lang-en">Practical Applications</span>
-                                <span class="lang-id">Penerapan Praktis</span>
-                                <span class="lang-hi">व्यावहारिक उपयोग</span>
-                            </h3>
-                            <ul class="list-disc pl-6 space-y-2 mobile-text">
-                                <li class="justified-text">
-                                    <span class="lang-en"><strong>Awareness:</strong> notice when people flatter, guilt-trip, or threaten you.</span>
-                                    <span class="lang-id"><strong>Kewaspadaan:</strong> perhatikan saat orang memuji berlebihan, membuat Anda merasa bersalah, atau mengancam.</span>
-                                    <span class="lang-hi"><strong>सचेतना:</strong> देखें कब लोग आपको ज़्यादा चापलूसी, अपराध-बोध या धमकी से घुमाने की कोशिश करते हैं।</span>
-                                </li>
-                                <li class="justified-text">
-                                    <span class="lang-en"><strong>Boundaries:</strong> say no more confidently; do not let others use your kindness blindly.</span>
-                                    <span class="lang-id"><strong>Batas sehat:</strong> lebih berani berkata tidak; jangan biarkan kebaikan Anda dimanfaatkan.</span>
-                                    <span class="lang-hi"><strong>सीमाएँ:</strong> अधिक आत्मविश्वास से “ना” कहें; अपनी भलमनसाहत को अंधा संसाधन न बनने दें।</span>
-                                </li>
-                                <li class="justified-text">
-                                    <span class="lang-en"><strong>Reputation:</strong> protect your name, keep your promises realistic, avoid public drama.</span>
-                                    <span class="lang-id"><strong>Reputasi:</strong> jaga nama baik, buat janji yang realistis, hindari drama di depan umum.</span>
-                                    <span class="lang-hi"><strong>प्रतिष्ठा:</strong> अपने नाम की रक्षा करें, वादे ज़मीन से जुड़े रखें, सार्वजनिक ड्रामा से बचें।</span>
-                                </li>
-                            </ul>
+</div>
+
+                        <div class="bg-gradient-to-r from-red-50 to-pink-50 p-6 rounded-xl border border-red-200">
+                            <h3 class="text-xl font-semibold text-red-800 mb-4">Ethical Concerns & Misuse</h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Critics argue that the book:
+</p>
+
+<ul>
+  <li>Encourages manipulation, deceit and ruthless self-interest,</li>
+  <li>Normalizes exploitation instead of cooperation,</li>
+  <li>Can be dangerous in the hands of people with no empathy or moral limits.</li>
+</ul>
+
+<p>
+These criticisms are not wrong. Used without conscience, the laws can destroy trust, damage relationships 
+and create toxic cultures. Greene himself admits that overusing or misusing the laws can lead to isolation, 
+paranoia, and backlash.
+</p>
+
+<p>
+The book is like a sharp tool: it can be used to defend or to harm.  
+Greene frames his work as descriptive rather than prescriptive, but the line between the two is thin.
+</p>
+
+                            </div>
+
+                            <div class="bg-white p-4 rounded-lg mb-4">
+                                <h4 class="font-semibold text-slate-800 mb-2">Backfire Risk</h4>
+                                <p class="text-slate-700 text-sm">
+                                    If you treat every relationship as a power game, people eventually notice.  
+                                    When they stop trusting you, your power becomes fragile and dependent on fear, not respect.
+                                </p>
+                            </div>
                         </div>
                         
-                        <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-4 sm:p-6 rounded-xl border border-emerald-200">
-                            <h3 class="text-lg font-semibold text-emerald-800 mb-3">
-                                <span class="lang-en">Power + Integrity</span>
-                                <span class="lang-id">Kekuatan + Integritas</span>
-                                <span class="lang-hi">शक्ति + ईमानदारी</span>
-                            </h3>
-                            <p class="mobile-text justified-text">
-                                <span class="lang-en">
-                                    You do not have to copy every law. You can understand them, use some, ignore others,  
-                                    and build your own code of ethics. The goal is not to become colder, but to become less naive.
-                                </span>
-                                <span class="lang-id">
-                                    Anda tidak wajib meniru semua hukum. Anda bisa memahaminya, memakai sebagian, mengabaikan yang lain,  
-                                    dan membangun kode etik Anda sendiri. Tujuannya bukan menjadi lebih dingin, tetapi menjadi kurang naif.
-                                </span>
-                                <span class="lang-hi">
-                                    आपको हर नियम को अपनाना ज़रूरी नहीं। आप इन्हें समझ सकते हैं, कुछ का उपयोग कर सकते हैं, कुछ को छोड़ सकते हैं  
-                                    और अपना नैतिक कोड बना सकते हैं। लक्ष्य ठंडा दिल बनना नहीं, बल्कि कम भोला बनना है।
-                                </span>
-                            </p>
-                        </div>
+                        <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-xl border border-indigo-200">
+                            <h3 class="text-xl font-semibold text-indigo-800 mb-4">Self-Protection Reading vs. Aggressor Reading</h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
 
-                        <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-4 sm:p-6 rounded-xl border border-indigo-200">
-                            <h3 class="text-lg font-semibold text-indigo-800 mb-3">
-                                <span class="lang-en">Final Thought</span>
-                                <span class="lang-id">Penutup</span>
-                                <span class="lang-hi">अंतिम विचार</span>
-                            </h3>
-                            <p class="mobile-text justified-text">
-                                <span class="lang-en">
-                                    In one sentence, the book says:  
-                                    <strong>Power flows to those who understand people, manage appearances, and think several moves ahead.</strong>  
-                                    What you do with that insight—protect, build, or exploit—is your responsibility.
-                                </span>
-                                <span class="lang-id">
-                                    Dalam satu kalimat, buku ini berkata:  
-                                    <strong>Kekuasaan mengalir kepada mereka yang memahami manusia, mengelola citra, dan berpikir beberapa langkah ke depan.</strong>  
-                                    Apa yang Anda lakukan dengan wawasan itu—melindungi, membangun, atau mengeksploitasi—adalah tanggung jawab Anda.
-                                </span>
-                                <span class="lang-hi">
-                                    एक वाक्य में, यह किताब कहती है:  
-                                    <strong>शक्ति उन लोगों के पास जाती है जो इंसानों को समझते हैं, अपनी छवि संभालते हैं और कई चाल आगे तक सोचते हैं।</strong>  
-                                    इस समझ का आप क्या उपयोग करते हैं—रक्षा, निर्माण या शोषण—यह पूरी तरह आपकी ज़िम्मेदारी है।
-                                </span>
-                            </p>
+<p>
+There are at least two ways to read this book:
+</p>
+
+<ul>
+  <li><strong>As a manual for domination.</strong><br>
+  You adopt the laws to control, manipulate, and outplay others.</li>
+
+  <li><strong>As a manual for awareness and self-protection.</strong><br>
+  You study the laws so you can recognize when others use them on you and respond intelligently.</li>
+</ul>
+
+<p>
+This summary leans toward the second approach. Understanding the dynamics does not require you to 
+admire or copy every tactic. You can combine clear-eyed realism with your own ethical framework.
+</p>
+
+<p>
+Greene also includes “reversals” for many laws, showing that rigid application is dangerous. 
+Context, personality and culture all matter.
+</p>
+
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200">
+                            <h3 class="text-xl font-semibold text-emerald-800 mb-4">Psychological Cost of Constant Power Games</h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Living as if life is only about power can:
+</p>
+
+<ul>
+  <li>Make you suspicious of genuine kindness,</li>
+  <li>Turn every interaction into a calculation,</li>
+  <li>Damage your capacity for intimacy and trust.</li>
+</ul>
+
+<p>
+Even if you choose to use some laws strategically, you may want to limit how much you let them rule your 
+inner life. Power is one dimension of human existence, not the only one.
+</p>
+
+                            </div>
                         </div>
                     </div>
                 </section>
 
+                <!-- Part 5 – Using the Book Wisely & Practically -->
+                <section id="part5" class="content-section p-8">
+                    <div class="mb-6">
+                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-700 text-sm font-medium rounded-full mb-4">Part 5</span>
+                        <h2 class="text-3xl font-bold text-slate-800 mb-4">Using the 48 Laws Wisely</h2>
+                    </div>
+                    
+                    <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-gradient-to-r from-slate-50 to-slate-100 p-6 rounded-xl border border-slate-200">
+                            <h3 class="text-xl font-semibold text-slate-900 mb-4">Practical Ways to Use the Ideas</h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Here are some balanced ways to apply insights from <em>The 48 Laws of Power</em>:
+</p>
+
+<ul>
+  <li><strong>1. Awareness Training.</strong><br>
+  Notice when people use flattery, guilt, threats, or strategic silence.  
+  Instead of reacting emotionally, pause and ask: “Which game is being played here?”</li>
+
+  <li><strong>2. Reputation Management.</strong><br>
+  Be more conscious of how your behavior affects your reputation at work or in your community. 
+  Avoid public outbursts, sloppy promises, or visible desperation.</li>
+
+  <li><strong>3. Healthy Boundaries.</strong><br>
+  Use power concepts to say no, negotiate better, and avoid being used – not to crush others.</li>
+
+  <li><strong>4. Strategic Communication.</strong><br>
+  Speak less, listen more. Reveal information gradually. Choose your timing carefully.</li>
+
+  <li><strong>5. Leadership Insight.</strong><br>
+  If you lead a team, understanding these laws helps you design systems that limit destructive politics 
+  and reward collaboration rather than sabotage.</li>
+</ul>
+
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200">
+                            <h3 class="text-xl font-semibold text-emerald-800 mb-4">Combining Power with Integrity</h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+You do not have to choose between being powerful and being principled.  
+You can:
+</p>
+
+<ul>
+  <li>Recognize manipulation without becoming a manipulator,</li>
+  <li>Use strategy without abandoning empathy,</li>
+  <li>Protect yourself without constantly attacking others.</li>
+</ul>
+
+<p>
+A mature approach to this book is to take it as a map of potential behaviors – some you may use, 
+many you will only defend against. You can decide which laws align with your values and context, 
+and which cross your ethical red lines.
+</p>
+
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-xl border border-indigo-200">
+                            <h3 class="text-xl font-semibold text-indigo-800 mb-4">Final Reflection</h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+<em>The 48 Laws of Power</em> is provocative, uncomfortable, and sometimes extreme – and that is exactly 
+why it has influenced so many readers. It forces you to confront the side of human nature that polite 
+culture often hides.
+</p>
+
+<p>
+Summarized in one sentence, the book says:
+<br>
+<strong>Power flows to those who understand human psychology, control their emotions, manage appearances, 
+and think several moves ahead.</strong>
+</p>
+
+<p>
+Whether you use this knowledge mainly to advance, to protect yourself, or simply to see the world more clearly 
+is a choice only you can make. The wisest use of the book may be this:  
+<strong>be naive no longer, but remain human.</strong>
+</p>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </main>
     </div>
@@ -899,61 +895,45 @@
             toggle.classList.remove('open');
         }
         
-        function showSection(sectionId, event) {
+        function showSection(sectionId) {
+            // Hide all sections
             const sections = document.querySelectorAll('.content-section');
-            sections.forEach(section => section.classList.remove('active'));
-
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all nav buttons
             const navButtons = document.querySelectorAll('.nav-btn');
             navButtons.forEach(btn => {
                 btn.classList.remove('active-tab', 'text-white');
                 btn.classList.add('text-slate-300');
             });
             
+            // Show selected section
             const targetSection = document.getElementById(sectionId);
             if (targetSection) {
                 targetSection.classList.add('active', 'fade-in');
             }
             
-            if (event && event.target) {
-                const activeButton = event.target.closest('.nav-btn');
-                if (activeButton) {
-                    activeButton.classList.add('active-tab', 'text-white');
-                    activeButton.classList.remove('text-slate-300');
-                }
+            // Highlight active nav button
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
             }
             
+            // Scroll to top of content
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-
-        function setLanguage(lang) {
-            const html = document.documentElement;
-            html.setAttribute('data-lang', lang);
-
-            const buttons = {
-                en: document.getElementById('btn-en'),
-                id: document.getElementById('btn-id'),
-                hi: document.getElementById('btn-hi')
-            };
-
-            Object.keys(buttons).forEach(code => {
-                if (!buttons[code]) return;
-                if (code === lang) {
-                    buttons[code].classList.add('lang-switch-active');
-                } else {
-                    buttons[code].classList.remove('lang-switch-active');
-                }
-            });
-        }
-
-        // Init default language button
-        setLanguage('en');
-
+        
+        // Close drawer when pressing Escape
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeDrawer();
             }
         });
         
+        // Close drawer on large screens
         window.addEventListener('resize', function() {
             if (window.innerWidth > 1024) {
                 closeDrawer();
