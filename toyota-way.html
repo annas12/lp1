@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Toyota Way - Summary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .active-tab { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        /* Mobile Responsive Text */
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.6; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 14px; line-height: 1.5; }
+            .mobile-title { font-size: 1.75rem !important; }
+            .mobile-subtitle { font-size: 1.125rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        /* Navigation Drawer Styles */
+        .nav-drawer {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 320px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1e293b 0%, #334155 100%);
+            transition: left 0.3s ease-in-out;
+            z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-drawer.open {
+            left: 0;
+        }
+        
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+            z-index: 999;
+        }
+        
+        .nav-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .drawer-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .drawer-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+        
+        .drawer-toggle.open {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+        
+        .hamburger {
+            width: 24px;
+            height: 18px;
+            position: relative;
+        }
+        
+        .hamburger span {
+            display: block;
+            position: absolute;
+            height: 3px;
+            width: 100%;
+            background: white;
+            border-radius: 2px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+        
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        
+        .drawer-toggle.open .hamburger span:nth-child(1) {
+            top: 7px;
+            transform: rotate(135deg);
+        }
+        
+        .drawer-toggle.open .hamburger span:nth-child(2) {
+            opacity: 0;
+            left: -60px;
+        }
+        
+        .drawer-toggle.open .hamburger span:nth-child(3) {
+            top: 7px;
+            transform: rotate(-135deg);
+        }
+        
+        .nav-item {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .nav-item:hover::before {
+            left: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-drawer {
+                width: 280px;
+                left: -280px;
+            }
+            .drawer-toggle {
+                top: 15px;
+                left: 15px;
+                padding: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nav-drawer {
+                width: 260px;
+                left: -260px;
+            }
+            .drawer-toggle {
+                top: 12px;
+                left: 12px;
+                padding: 8px;
+            }
+            .hamburger {
+                width: 20px;
+                height: 15px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+    <!-- Navigation Drawer Toggle -->
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <!-- Navigation Overlay -->
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <!-- Navigation Drawer -->
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-600">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">T</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">The Toyota Way</h2>
+                    <p class="text-slate-300 text-sm">Book Summary</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-300 text-sm font-medium uppercase tracking-wider mb-4 px-2">Table of Contents</h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">📖</span>
+                        <span>Preface</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 1</div>
+                            <div class="text-xs text-slate-400">Toyota Background</div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 2</div>
+                            <div class="text-xs text-slate-400">Long-Term Philosophy</div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 3</div>
+                            <div class="text-xs text-slate-400">The Right Process</div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 4</div>
+                            <div class="text-xs text-slate-400">Developing People & Partners</div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 5</div>
+                            <div class="text-xs text-slate-400">Continuous Problem Solving</div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-600">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© 2024 Toyota Way Summary</p>
+                <p class="text-slate-500 text-xs mt-1">Minimalist Design</p>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 mb-2 mobile-title">The Toyota Way</h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    14 Management Principles from the World’s Largest Manufacturing Company
+                </p>
+                <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-600 mx-auto mt-3 sm:mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <!-- Content Area -->
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <!-- Intro / Preface -->
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Preface</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            Welcome to The Toyota Way
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <p class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-blue-500 pl-4 sm:pl-6 italic mobile-text justified-text">
+                            "Toyota’s success is not just about building high-quality cars, but about a way of thinking and a philosophy that has been tested over decades."
+                        </p>
+                        
+                        <p class="mobile-text justified-text">
+                            The book <em>The Toyota Way</em> reveals the secrets behind Toyota’s success as one of the largest and most efficient manufacturing companies in the world. More than just a production system, the Toyota Way is a comprehensive management philosophy.
+                        </p>
+                        
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-100">
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">What You Will Learn:</h4>
+                            <ul class="space-y-2 text-slate-700 mobile-text">
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">The history and background of Toyota’s philosophy</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">The 14 fundamental principles that form the 4 main pillars</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">Real case studies and practical implementation</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">Its relevance for modern businesses across industries</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <p class="mobile-text justified-text">
+                            Use the menu on the left to navigate through each part in depth. Every part is designed to give you a comprehensive and practical understanding of The Toyota Way.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Part 1 -->
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">A Brief History of Toyota</h3>
+                        <p class="mobile-text justified-text">
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+The book <em>The Toyota Way</em> by Jeffrey K. Liker is one of the key works that explains the secrets behind Toyota’s success as the world’s leading automotive company. The book does not only talk about cars, machines, or production technology; it digs into the culture, philosophy, and management principles that form Toyota’s core strength. In this Part 1, we explore the background of how the Toyota Way philosophy was born, why it is considered unique, and an overview of the four main pillars before diving deeper into each principle.
+</p>
+
+<p>
+Toyota was founded in 1937 by Kiichiro Toyoda, the son of Sakichi Toyoda, who was famous for inventing the automatic loom. Initially, Toyota was a very small company operating in a country going through severe economic hardship due to war. Japan at that time lacked resources, capital, and access to modern technology. But from this scarcity emerged a culture of frugality, efficiency, and a focus on quality that eventually evolved into a world-class Toyota production system. The early challenges left Toyota with no choice but to find smarter ways to manufacture cars using limited resources.
+</p>
+
+<p>
+After World War II, Japan’s economy was devastated. Large American companies like Ford and General Motors produced cars in huge quantities using mass production systems. Toyota had no chance to compete on volume. This pushed them to think differently: if they could not win in quantity, they had to excel in quality, reliability, and efficiency. From this came what we now know as the <strong>Toyota Production System (TPS)</strong>, which became the backbone of <em>The Toyota Way</em>.
+</p>
+
+<p>
+TPS focuses on two main pillars: <em>Just-in-Time</em> (producing only what is needed, when it is needed, instead of building excess inventory) and <em>Jidoka</em> (ensuring machines and people stop immediately when a problem occurs, so quality is maintained). Jeffrey Liker emphasizes that TPS is just one manifestation of a larger culture at Toyota—namely, <em>The Toyota Way</em>. This philosophy is what gives birth to the 14 famous management principles.
+</p>
+
+<p>
+Before going into the details of the 14 principles, the book highlights the importance of understanding the <strong>four major pillars</strong> that form the overall framework of the Toyota Way:
+</p>
+
+<ol>
+  <li><strong>Long-Term Philosophy</strong> – All decisions are made with a long-term orientation, even if they require sacrificing short-term financial gains. Toyota views the company as a living entity that exists to benefit society.</li>
+  <li><strong>The Right Process Will Produce the Right Results</strong> – Toyota believes that results cannot be forced. If processes are designed correctly, good results will follow. The focus is on workflow, waste elimination, standardization, and making problems visible.</li>
+  <li><strong>Developing People and Partners</strong> – Toyota places great importance on people. Employees, leaders, and suppliers are treated as long-term assets that must be trained, coached, and developed.</li>
+  <li><strong>Continuous Problem Solving and Organizational Learning</strong> – Toyota encourages a culture of reflection, learning from mistakes, and continuous improvement (Kaizen) as part of the organization’s DNA.</li>
+</ol>
+
+<p>
+These four pillars are interconnected and together create a holistic culture. The long-term philosophy is the foundation; the right process is the structure; people development is the driving energy; and problem solving is the mechanism for constant renewal. All four must operate in balance—they cannot stand alone.
+</p>
+
+<p>
+Why is <em>The Toyota Way</em> considered special? Because while many companies around the world focus only on annual profits, Toyota dares to prioritize a broader mission. They are not afraid to delay expansion, to resist the urge to chase short-term profits, and to invest heavily in areas that do not immediately generate financial returns, such as employee training and supplier development. This philosophy makes Toyota more stable and consistent than many of its competitors.
+</p>
+
+<p>
+Jeffrey Liker also explains that many companies try to copy Toyota by adopting technical tools such as Kanban, JIT, or Kaizen. But what they often fail to grasp is the underlying <em>spirit</em>: long-term commitment, respect for people, and a disciplined culture. This is what makes the Toyota Way different. It is not just a set of management tools but a <strong>way of thinking</strong> and a <strong>way of life for the organization</strong>.
+</p>
+
+<p>
+One concrete example is how Toyota treats suppliers. Other automotive companies typically push for the lowest price possible, forcing suppliers to compete and even cutting contracts if the terms are no longer profitable. Toyota, on the other hand, builds long-term relationships, helps suppliers improve efficiency, and even sends its engineers to train supplier teams. Toyota believes that if suppliers grow stronger, the entire supply chain becomes more robust, and ultimately Toyota itself will benefit. This philosophy stems from a long-term mindset that is rare among other companies.
+</p>
+
+<p>
+In a global context, <em>The Toyota Way</em> is also fascinating because it combines Japanese culture—emphasizing togetherness, discipline, and simplicity—with modern management practices centered on productivity and quality. The combination creates a unique approach that can be adopted around the world, although it is not always easy because it requires cultural transformation, not just technical changes.
+</p>
+
+<p>
+As we reach the end of Part 1, it is important to highlight how Toyota places <strong>Long-Term Philosophy</strong> as the first and most crucial pillar. According to Jeffrey Liker, without this foundation, the other principles cannot operate effectively. Long-term philosophy means a company must have a vision that goes beyond profit. It must be able to answer: <em>Why does this company exist? What value does it create for the world?</em> These questions push Toyota to remain focused on quality, safety, sustainability, and social contribution—not just profit figures.
+</p>
+
+<p>
+Part 1 simply opens the door to understanding how the Toyota Way truly works. In Part 2, we will dive into the <strong>first pillar in detail</strong>, examining how long-term philosophy is applied in practice, the challenges it poses, and how it can become a role model for companies around the world.
+</p>
+
+</div>
+                        </p>
+                        
+                        <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl">
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Key Timeline:</h4>
+                            <ul class="space-y-2 mobile-text">
+                                <li class="justified-text"><strong>1937:</strong><br>Establishment of Toyota Motor Corporation</li> 
+                                <li class="justified-text"><strong>1950s:</strong><br>Development of the Toyota Production System (TPS)</li>
+                                <li class="justified-text"><strong>1960s:</strong><br>Expansion into international markets</li>
+                                <li class="justified-text"><strong>1990s:</strong><br>Formalization of "The Toyota Way"</li>
+                            </ul>
+                        </div>
+                        
+                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">Why Did The Toyota Way Emerge?</h3>
+                        <p class="mobile-text justified-text">
+                            The Toyota Way emerged from the need to create a system capable of delivering high quality with maximum efficiency. This philosophy was developed through learning from crises, continuous innovation, and a strong commitment to ongoing improvement (Kaizen).
+                        </p>
+                        
+                        <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-amber-200">
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">4 Main Pillars of The Toyota Way:</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                                <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                                    <h5 class="font-medium text-blue-700 text-sm sm:text-base">Pillar 1</h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">Long-Term Philosophy</p>
+                                </div>
+                                <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                                    <h5 class="font-medium text-green-700 text-sm sm:text-base">Pillar 2</h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">The Right Process</p>
+                                </div>
+                                <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                                    <h5 class="font-medium text-purple-700 text-sm sm:text-base">Pillar 3</h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">Developing People & Partners</p>
+                                </div>
+                                <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                                    <h5 class="font-medium text-red-700 text-sm sm:text-base">Pillar 4</h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">Continuous Problem Solving</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 2 -->
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            Pillar 1: Long-Term Philosophy
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <div class="bg-blue-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
+                            <h3 class="text-lg sm:text-xl font-semibold text-blue-800 mb-3 mobile-subtitle">Principle 1: Base Management Decisions on a Long-Term Philosophy</h3>
+                            <p class="text-blue-700 italic mobile-text justified-text">
+                                "Base your management decisions on a long-term philosophy, even at the expense of short-term financial goals."
+                            </p>
+                        </div>
+                        <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+In this chapter, Jeffrey K. Liker emphasizes that the heart of <em>The Toyota Way</em> begins with a foundation: a long-term philosophy. Toyota believes that all business decisions must be grounded in a long-term vision, even if that means sacrificing short-term financial profit. This principle is the basis of the entire Toyota system, and without it the other 13 principles cannot function at their full potential. This long-term philosophy is what differentiates Toyota from most large companies that are obsessed with quick profits, short-term shareholder interests, or temporary market trends.
+</p>
+
+<p>
+Toyota does not view itself merely as an economic entity but as a social institution. They believe that a company exists to create broader value for society, customers, employees, suppliers, and future generations. Therefore, the primary goal is not just profitability, but sustainability and meaningful contribution. With this mindset, Toyota has managed to survive many crises and remain relevant up to today.
+</p>
+
+<p>
+For example, in the 1950s and 1960s, Toyota faced serious constraints due to limited capital and competitive pressure from the global automotive industry dominated by the U.S. While Western companies chased production volume as aggressively as possible, Toyota instead chose to build a system that was slower but stable. They delayed large-scale expansion until they were sure that the work culture and quality could be maintained. These strategic decisions often looked "not aggressive" but proved far more effective in the long run.
+</p>
+
+<p>
+The long-term philosophy also appears in how Toyota measures success. While many companies only judge performance by annual financial reports, Toyota looks at metrics such as: how much they improve people’s lives, how many jobs they create, how stable their supplier relationships are, and how much innovation they contribute to the industry. Profit becomes a natural consequence of achieving higher goals—not the only goal.
+</p>
+
+<h3>Benefits of a Long-Term Philosophy</h3>
+
+<p>
+There are several reasons why the long-term philosophy is so important in the Toyota Way:
+</p>
+
+<ul>
+  <li><strong>It provides a clear strategic direction.</strong> With a consistent philosophy, the entire organization knows where it is going. Every level, from top management to line workers, understands that their decisions must align with the larger purpose.</li>
+  <li><strong>It prevents reactive short-term decisions.</strong> Many companies collapse because they make panicked decisions based on market pressure. Toyota is relatively more resilient because it has a long-term principle to guide its actions.</li>
+  <li><strong>It builds trust.</strong> Consistent philosophy enables customers, employees, and partners to trust Toyota’s commitment. This trust becomes a valuable form of social capital.</li>
+  <li><strong>It encourages investment in people and innovation.</strong> Since Toyota is not focused on quick gains, it dares to invest heavily in training, research, and future product development.</li>
+</ul>
+
+<p>
+One clear example is Toyota’s decision to develop the Prius hybrid car in the 1990s. At the time, research and production costs were extremely high, and short-term financial returns were minimal. Yet Toyota continued with the project because they believed the future of the automotive industry lay in environmentally friendly technology. The result: Prius became a global hybrid pioneer and strengthened Toyota’s image as an innovative and eco-conscious company. This is concrete proof of how a long-term philosophy works.
+</p>
+
+<h3>Differences with Western Companies</h3>
+
+<p>
+Many Western companies—especially in the U.S.—operate under heavy shareholder pressure to increase quarterly profits. CEOs are often judged by how high the stock price rises in a short time. As a result, many decisions are made simply to hit short-term numbers, even if they damage the company’s foundation over the long term. Examples include slashing training budgets or cutting ties with suppliers in the name of short-term efficiency. These moves might look good on an annual report but slowly weaken the organization.
+</p>
+
+<p>
+Toyota takes the opposite route. They are willing to sacrifice temporary financial gains to protect quality and long-term relationships. For instance, during recessions, Toyota tries as much as possible to avoid mass layoffs. Instead, they reduce working hours or move employees to other departments. This may be costly in the short term, but in the long run it creates extraordinary benefits in the form of employee loyalty. Toyota sees workers as assets, not just costs.
+</p>
+
+<h3>Applying the Long-Term Philosophy in Organizations</h3>
+
+<p>
+This principle can be applied in many types of organizations, not only in the automotive sector. Some practical steps include:
+</p>
+
+<ol>
+  <li><strong>Define a vision and mission that go beyond profit.</strong> Ask: what is the organization’s bigger purpose? What impact will it create in the world? Make sure this vision is clearly understood by everyone.</li>
+  <li><strong>Use the long-term vision as the basis for decision making.</strong> Don’t just look at immediate benefits; consider the impact 5, 10, or even 20 years into the future.</li>
+  <li><strong>Build a consistent company culture.</strong> Philosophy cannot just sit in a slogan; it must be translated into policies and everyday behavior.</li>
+  <li><strong>Invest in people and innovation.</strong> Treat spending on training and R&D as investment, not cost.</li>
+</ol>
+
+<p>
+In Toyota’s context, the long-term philosophy is also embodied in the concept of "Kaizen" or continuous improvement. Kaizen is not a temporary project; it is a way of life for the organization. Because they are oriented toward the long term, Toyota always aims to make small improvements every day that lead to big impacts over time.
+</p>
+
+<h3>Challenges in Practicing Long-Term Philosophy</h3>
+
+<p>
+Of course, practicing a long-term philosophy is not easy. Some common challenges include:
+</p>
+
+<ul>
+  <li><strong>External pressure.</strong> Public companies often face investor demands for quick profits.</li>
+  <li><strong>Organizational culture.</strong> If an organization is accustomed to short-term thinking, changing that culture takes a long time.</li>
+  <li><strong>Leadership patience.</strong> Long-term philosophy requires leaders who are patient, consistent, and willing to go against the mainstream.</li>
+  <li><strong>Business uncertainty.</strong> The business environment changes quickly. Keeping the long-term philosophy relevant requires constant adaptation.</li>
+</ul>
+
+<p>
+Yet Toyota has shown that with discipline, this philosophy can work. They never compromise on their core principles, even during economic storms, technological shifts, or global pressure.
+</p>
+
+<h3>Lessons for Leaders</h3>
+
+<p>
+The long-term philosophy offers several important lessons for leaders:
+</p>
+
+<ol>
+  <li>Leaders must be role models in prioritizing the long-term vision, not just chasing personal achievement or annual bonuses.</li>
+  <li>Leaders must be patient enough to plant “seeds” even if the results only appear years later.</li>
+  <li>Leaders must be brave enough to make unpopular decisions that may be criticized for not being instantly profitable.</li>
+  <li>Leaders must balance organizational sustainability, customer satisfaction, and employee well-being.</li>
+</ol>
+
+<p>
+Toyota is clear that without a long-term philosophy, production systems and management methods become empty techniques that do not yield maximum results. This philosophy is the “soul” of the entire organization.
+</p>
+
+<h4 class="text-base sm:text-lg font-semibold text-slate-800 mobile-subtitle">Principle Details:</h4>
+
+<p class="mobile-text justified-text">
+Toyota believes that true success comes from long-term commitment to core values, not just hitting quarterly financial targets. This philosophy includes:
+</p>
+
+<ul class="space-y-3 mobile-text">
+    <li class="flex items-start">
+        <span class="w-3 h-3 bg-blue-500 rounded-full mt-1.5 mr-3 flex-shrink-0"></span>
+        <div class="justified-text">
+            <strong>Creating value for customers:</strong> Prioritizing customer needs and satisfaction above short-term profit.
+        </div>
+    </li>
+    <li class="flex items-start">
+        <span class="w-3 h-3 bg-blue-500 rounded-full mt-1.5 mr-3 flex-shrink-0"></span>
+        <div class="justified-text">
+            <strong>Social responsibility:</strong> Contributing positively to society and the environment.
+        </div>
+    </li>
+    <li class="flex items-start">
+        <span class="w-3 h-3 bg-blue-500 rounded-full mt-1.5 mr-3 flex-shrink-0"></span>
+        <div class="justified-text">
+            <strong>Sustainable growth:</strong> Building a strong foundation for future generations.
+        </div>
+    </li>
+</ul>
+
+<p>
+Therefore, Part 2 reinforces that a long-term philosophy is not just a management theory but a mindset that guides every Toyota decision. This is the foundation that makes Toyota distinct, resilient, and respected around the world. In Part 3, we will explore the Second Pillar in more detail: <strong>The Right Process Will Produce the Right Results</strong>, which covers principles 2 to 8, including Just-in-Time, Kanban, Heijunka, Jidoka, standard work, visual control, and the role of technology.
+</p>
+
+</div>
+                        
+                        <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-green-200">
+                            <h4 class="font-semibold text-green-800 mb-3 text-sm sm:text-base mobile-subtitle">📈 Real Example: 2008 Financial Crisis</h4>
+                            <p class="text-green-700 mb-3 mobile-text justified-text">
+                                When the global financial crisis hit in 2008, many automotive companies carried out massive layoffs. Toyota chose a different approach:
+                            </p>
+                            <ul class="space-y-2 text-green-700 mobile-text">
+                                <li class="justified-text">• Retaining employees even when experiencing losses</li>
+                                <li class="justified-text">• Using the time for training and development</li>
+                                <li class="justified-text">• Focusing on long-term innovation and efficiency</li>
+                                <li class="justified-text">• Result: Faster recovery and stronger employee loyalty</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl">
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">🎯 Practical Implementation:</h4>
+                            <ol class="space-y-2 text-slate-700 mobile-text">
+                                <li class="justified-text">1. Set a clear long-term vision (10–50 years)</li>
+                                <li class="justified-text">2. Evaluate decisions based on long-term impact</li>
+                                <li class="justified-text">3. Invest in R&D even if it is not immediately profitable</li>
+                                <li class="justified-text">4. Build long-term relationships with stakeholders</li>
+                            </ol>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 3 -->
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            Pillar 2: The Right Process Will Produce the Right Results
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <p class="text-base sm:text-lg text-slate-600 mobile-text justified-text">
+                            The second pillar consists of seven principles (Principles 2–8) focused on designing processes that consistently produce the right results.
+                        </p>
+                        
+                        <div class="space-y-4 sm:space-y-6">
+                            <!-- Principle 2 -->
+                            <div class="bg-green-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-green-200">
+                                <h3 class="text-base sm:text-lg font-semibold text-green-800 mb-3 mobile-subtitle">
+                                    Principle 2: Create Continuous Process Flow
+                                </h3>
+                                <p class="text-green-700 mb-3 mobile-text justified-text">
+                                    <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+The second pillar of <em>The Toyota Way</em> stresses that good results cannot be forced directly. Toyota believes that if processes are properly designed, quality, efficiency, and profitability will follow naturally. This philosophy aligns with a Japanese saying: “A good process produces good results.” In this context, Jeffrey Liker outlines seven principles (Principles 2–8) at the core of the second pillar. Each principle supports the others to form a production system that is robust, adaptive, and free from waste.
+</p>
+
+<p>
+Before breaking down each principle, it’s important to understand that Toyota always focuses on <strong>eliminating waste</strong>, or <em>Muda</em> in Japanese. For Toyota, waste is anything that does not add value for the customer: waiting, excess inventory, unnecessary motion, overproduction, defects, and so on. By reducing waste, workflow becomes smoother, lead times shorter, and quality more reliable.
+</p>
+
+<p>
+Toyota emphasizes the importance of <em>flow</em>—a process that moves continuously without unnecessary interruption from start to finish. Traditional production systems often create large batches that wait at each stage. For example, hundreds of components are produced and then stacked before moving to the next process. The result is long waiting times and piles of work-in-progress. Toyota reversed this paradigm by prioritizing continuous, small-batch flow.
+</p>
+
+<p>
+With continuous flow, each step immediately feeds into the next without unnecessary delay. For instance, in a car assembly line, once a door is attached, it does not sit for days in a warehouse; it moves directly to the next stage. This principle makes problems more visible, because if there is a disruption, the entire flow is affected. This forces teams to quickly identify and fix the root causes, instead of hiding or bypassing the issues.
+</p>
+
+</div>
+                                </p>
+                                <div class="bg-white p-3 sm:p-4 rounded-lg">
+                                    <p class="mobile-text justified-text">
+                                        <strong>Case Study:</strong> Toyota’s Just-in-Time (JIT) system dramatically reduced inventory levels and improved quality by detecting problems much earlier in the process.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- Principle 3 -->
+                            <div class="bg-blue-50 p-6 rounded-xl border border-blue-200">
+                                <h3 class="text-lg font-semibold text-blue-800 mb-3">Principle 3: Use a Pull System</h3>
+                                <p class="text-blue-700 mb-3 mobile-text justified-text">
+                                    <h3>Principle 3 – Use a Pull System Instead of a Push System</h3>
+
+<p class="text-base sm:text-lg text-slate-600 mobile-text justified-text">
+Traditional systems generally use a <em>push</em> approach, producing goods based on demand forecasts. The main risk is overproduction and excessive inventory, which wastes space, money, and labor. Toyota replaced this with a <em>pull system</em>, where production only occurs when there is a real demand from the next process.
+</p>
+
+<p>
+This concept is implemented through <strong>Kanban</strong>, a card or visual signal indicating when to produce or replenish items. For example, if a box of 20 bolts is emptied at the assembly line, a Kanban card is sent back to production to make another 20 bolts. This ensures production is always aligned with real needs, not guesses. The result is drastic reduction of excess inventory, lower waste, and more flexibility in responding to shifts in demand.
+</p>
+                                </p>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <strong>Case Study:</strong> Toyota’s Kanban system helped cut waste significantly by producing only what customers actually needed.
+                                </div>
+                            </div>
+                            
+                            <!-- Principle 4 -->
+                            <div class="bg-purple-50 p-6 rounded-xl border border-purple-200">
+                                <h3 class="text-lg font-semibold text-purple-800 mb-3">Principle 4: Level the Workload (Heijunka)</h3>
+                                <p class="text-purple-700 mb-3 mobile-text justified-text">
+                                    <h3>Principle 4 – Leveling the Workload (Heijunka)</h3>
+
+<p class="text-base sm:text-lg text-slate-600 mobile-text justified-text">
+The fourth principle is <em>Heijunka</em>, which means leveling production so that there are no extreme spikes. Many companies experience “rollercoaster” production patterns depending on season, demand, or short-term targets. This leads to employees being overworked at some times and underutilized at others, while machines are pushed beyond normal capacity.
+</p>
+
+<p>
+Toyota chooses to level the workload. For example, if monthly demand is 3,000 units, Toyota will not produce 500 units in the first week and then rush the rest at the end of the month. They might break it down into 150 units per day, keeping the workload stable and consistent. This approach maintains rhythm, improves quality, and reduces stress for both workers and equipment. Heijunka reflects how Toyota prioritizes sustainability over short-lived performance spikes.
+</p>
+                                </p>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <strong>Case Study:</strong> Production leveling helped Toyota increase efficiency significantly while reducing employee burnout and machine strain.
+                                </div>
+                            </div>
+                            
+                            <!-- Principle 5 -->
+                            <div class="bg-red-50 p-6 rounded-xl border border-red-200">
+                                <h3 class="text-lg font-semibold text-red-800 mb-3">Principle 5: Build a Culture of Stopping to Fix Problems (Jidoka)</h3>
+                                <p class="text-red-700 mb-3 mobile-text justified-text">
+                                    <h3>Principle 5 – Building a Culture of Stopping to Fix Problems (Jidoka)</h3>
+
+<p class="text-base sm:text-lg text-slate-600 mobile-text justified-text">
+Toyota introduced the principle of <em>Jidoka</em>, which means “automation with a human touch.” It means that machines and people must be able to stop the process as soon as a problem occurs, preventing defects from being passed down the line. In many conventional factories, workers are reluctant to halt a production line, even when they see defects, because they fear reducing output. Toyota reverses this mindset: quality is more important than quantity.
+</p>
+
+<p>
+For instance, on Toyota’s assembly lines there is an <strong>andon cord</strong>—a rope or button that any worker can pull if they detect a problem. When pulled, the line stops, a team comes to fix the issue, and work resumes only after a solution is in place. While this may appear to slow production, it significantly improves quality over the long term, because defects are not allowed to accumulate. Jidoka helps create a culture in which each individual feels responsible for product quality.
+</p>
+                                </p>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <strong>Case Study:</strong> The Andon system empowered workers to stop the line, helping reduce defect rates dramatically.
+                                </div>
+                            </div>
+                            
+                            <!-- Principles 6–8 -->
+                            <div class="bg-yellow-50 p-6 rounded-xl border border-yellow-200">
+                                <h3 class="text-lg font-semibold text-yellow-800 mb-3">
+                                    Principles 6–8: Standardization, Visual Control & Proper Use of Technology
+                                </h3>
+                                <p class="text-yellow-700 mb-3 mobile-text justified-text">
+                                    <h3>Principle 6 – Standardized Tasks as the Foundation for Continuous Improvement</h3>
+
+<p class="text-base sm:text-lg text-slate-600 mobile-text justified-text">
+Toyota believes there can be no improvement without standards. Standards do not limit creativity; they provide a baseline so processes remain consistent. Without standards, it is difficult to measure whether a change is truly an improvement. With standards, every worker knows the best-known method and can use it as a starting point for further Kaizen.
+</p>
+
+<p>
+For example, in tightening door bolts on a car, Toyota sets a standard for the number of turns, torque, and sequence. If problems arise, this standard becomes the reference point for root-cause analysis. When a worker discovers a more effective method, the standard can be updated so the entire team benefits. Hence, standards are not rigid rules but a foundation for ongoing innovation.
+</p>
+
+<h3>Principle 7 – Use Visual Control So No Problems Stay Hidden</h3>
+
+<p>
+Toyota emphasizes <em>visual management</em> to make normal and abnormal conditions clearly visible to anyone. With visual control, problems are apparent instantly, without the need for complex reports. This is why Toyota factories are full of boards, color codes, lines, and simple signals that convey real-time information.
+</p>
+
+<p>
+Yellow lines on the floor show safe walking paths, red lights indicate machine issues, and Kanban cards show production status. With these tools, managers can see at a glance whether daily targets are on track, if there are bottlenecks, or if any area is overloaded. Visual transparency speeds up response times and strengthens accountability.
+</p>
+
+<h3>Principle 8 – Use Only Reliable, Thoroughly Tested Technology That Serves the Process</h3>
+
+<p>
+Unlike many companies that chase the latest technology for its own sake, Toyota is extremely selective in adopting new tools. Principle 8 states that technology should only be used when it clearly supports the process and adds value. Otherwise, it is better to keep using manual or simpler methods.
+</p>
+
+<p>
+Before adopting a new technology, Toyota runs extensive trials. They ensure the technology is not just impressive on paper but suitable for the culture, easy for workers to use, and actually improving quality or efficiency. For instance, they will not blindly replace workers with robots. Instead, they use automation for repetitive, high-risk tasks while keeping humans in charge of decision making and quality control.
+</p>
+
+<p>
+This approach helps Toyota avoid costly tech investments that do not deliver real value. It also underscores a key belief: people come before machines. Technology is merely a tool—not the end goal.
+</p>
+
+<h3>Overall View of the Second Pillar</h3>
+
+<p>
+Together, Principles 2–8 create a tightly integrated production system. Continuous flow (Principle 2) increases efficiency, pull systems (Principle 3) reduce excess inventory, Heijunka (Principle 4) levels the workload, Jidoka (Principle 5) protects quality, standardized work (Principle 6) supports improvement, visual control (Principle 7) improves transparency, and thoughtful technology use (Principle 8) ensures innovation is purposeful. All these elements work together within the Toyota Production System, now admired worldwide.
+</p>
+
+<p>
+Many companies have tried to copy this second pillar by implementing techniques like Kanban or Just-in-Time. Often, however, the results are underwhelming because they fail to adopt the underlying culture. Toyota does not simply implement tools; it builds discipline, responsibility, and a deep focus on quality. Without that culture, the tools become empty rituals.
+</p>
+
+<p>
+For organizations outside Toyota, the main lesson from the second pillar is the importance of fixing processes before pushing for results. Instead of forcing targets, organizations should focus on creating smooth flow, clear standards, and visible problems. Then good results will come naturally, not through pressure.
+</p>
+
+<p>
+With this pillar explained, we can better understand why Toyota is known for having one of the most efficient and high-quality production systems in the world. In <strong>Part 4</strong>, we move on to <strong>Pillar 3: Developing People and Partners</strong> (Principles 9–11), which highlights leadership, teamwork, and long-term relationships with suppliers as keys to Toyota’s success.
+</p>
+
+                                </p>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <strong>Case Study:</strong> Methods like 5S and <em>poka-yoke</em> (error-proofing) significantly reduced operational mistakes and strengthened process reliability.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 4 -->
+                <section id="part4" class="content-section p-8">
+                    <div class="mb-6">
+                        <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-sm font-medium rounded-full mb-4">Part 4</span>
+                        <h2 class="text-3xl font-bold text-slate-800 mb-4">Pillar 3: Developing People & Partners</h2>
+                    </div>
+                    
+                    <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+After exploring the long-term philosophy (First Pillar) and the right process (Second Pillar), <em>The Toyota Way</em> turns to the third pillar: <strong>Developing People and Partners</strong>. Toyota believes that no matter how advanced a system or technology is, it means little without disciplined, committed people who understand the essence of the system. People are the organization’s most valuable asset. Line workers, managers, executives, and external suppliers are all part of Toyota’s ecosystem that must be developed seriously and systematically.
+</p>
+
+<p>
+Jeffrey Liker explains three main principles at the heart of this pillar:
+</p>
+
+<ol>
+  <li><strong>Principle 9:</strong><br> Grow leaders who thoroughly understand the work, live the philosophy, and teach it to others.</li>
+  <li><strong>Principle 10:</strong><br> Develop exceptional people and teams who follow the company’s philosophy.</li>
+  <li><strong>Principle 11:</strong><br> Respect partners and suppliers by challenging them and helping them improve.</li>
+</ol>
+
+<p>
+These three principles reflect Toyota’s belief that organizational success is determined not only by strategy but by the people who carry it out. Let’s look at each principle in more detail.
+</p>
+
+</div>
+                        
+                        <div class="bg-gradient-to-r from-purple-50 to-indigo-50 p-6 rounded-xl border border-purple-200">
+                            <h3 class="text-xl font-semibold text-purple-800 mb-4">Principle 9: Develop Leaders Who Understand the Work</h3>
+                            <p class="text-purple-700 mb-4 mobile-text justified-text">
+                                <h3>Principle 9 – Developing Leaders Who Understand the Work</h3>
+                                <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+<p>
+Toyota places heavy emphasis on leaders who grow from within the organization. A Toyota leader cannot be someone who merely manages numbers from an office. Leaders must understand the work on the ground, have gone through the process themselves, and have real experience solving problems. Toyota believes that true leaders are those who can lead by example, not just by giving orders.
+</p>
+
+<p>
+This philosophy contrasts with many Western companies that often hire CEOs or top managers from outside with high compensation based mainly on reputation or previous success elsewhere. Toyota prefers to cultivate future leaders from lower levels, rotate them through different departments, and gradually give them more responsibility. This ensures that Toyota leaders deeply understand operations and can make decisions aligned with the company’s philosophy.
+</p>
+
+<p>
+A Toyota leader must also “live” the long-term philosophy. They cannot simply chase short-term profits or personal achievements. They are expected to balance the company’s interests with those of employees, customers, and society at large. Leaders also serve as teachers: they are responsible for transmitting Toyota values, mentoring people, and ensuring the philosophy is passed down to the next generation. In this way, Toyota’s philosophy does not stop with one generation of leaders but is sustained over time.
+</p>
+</div>
+                            </p>
+                            
+                            <div class="bg-white p-4 rounded-lg mb-4">
+                                <h4 class="font-semibold text-slate-800 mb-2">Key Characteristics of Toyota Leaders:</h4>
+                                <ul class="space-y-1 text-slate-700">
+                                    <li>• They start from the bottom and understand the details of the work.</li>
+                                    <li>• They teach through example, not just instruction.</li>
+                                    <li>• They focus on long-term development, not short-term applause.</li>
+                                    <li>• They embrace learning from mistakes and encourage reflection.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200">
+                            <h3 class="text-xl font-semibold text-green-800 mb-4">Principle 10: Develop Exceptional People and Teams</h3>
+                            <p class="text-green-700 mb-4 mobile-text justified-text">
+                                <h3>Principle 10 – Developing Exceptional People and Teams</h3>
+                                <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+<p>
+Toyota believes that a strong team is more valuable than a single brilliant individual. This philosophy is visible in how they build their work culture. The Toyota system is not designed to rely on a few “superstars,” but to create robust teamwork where everyone contributes according to their role.
+</p>
+
+<p>
+Toyota invests heavily in employee training. They allocate time for learning, simulations, and deepening understanding of the production system. Training goes beyond technical skills; it instills discipline, responsibility, and a mindset of continuous improvement. Workers are taught to think critically, identify waste, and propose improvements. As a result, employees are not simply order-takers but active contributors to organizational progress.
+</p>
+
+<p>
+Team strength is also reinforced by a reward system that emphasizes group success over individual performance. Toyota rarely hands out special bonuses only for certain individuals. Instead, they celebrate team achievements and collective performance. This builds a sense of togetherness, reduces ego, and boosts cross-functional collaboration.
+</p>
+
+<p>
+For example, if a team discovers a new way to cut production time by 10%, the recognition and reward go to the team—not just the person who came up with the idea. This motivates everyone to work together rather than compete internally. It also creates a healthier work environment in which people feel part of a shared mission.
+</p>
+</div>
+                            </p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-medium text-green-700 mb-2">Individual Development:</h5>
+                                    <ul class="text-sm text-slate-600 space-y-1">
+                                        <li>• Ongoing training and education</li>
+                                        <li>• Job rotation to broaden experience</li>
+                                        <li>• Intensive mentoring and coaching</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-medium text-green-700 mb-2">Team Development:</h5>
+                                    <ul class="text-sm text-slate-600 space-y-1">
+                                        <li>• Quality circles and improvement groups</li>
+                                        <li>• Cross-functional collaboration</li>
+                                        <li>• Shared responsibility for results</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-blue-50 to-cyan-50 p-6 rounded-xl border border-blue-200">
+                            <h3 class="text-xl font-semibold text-blue-800 mb-4">Principle 11: Respect Partners and Suppliers</h3>
+                            <p class="text-blue-700 mb-4 mobile-text justified-text">
+                                <h3>Principle 11 – Respecting Partners and Suppliers</h3>
+                                <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+<p>
+Unlike many companies that simply squeeze suppliers to get the lowest possible price, Toyota builds long-term relationships with its partners. They believe that a strong supply chain is foundational to company success. Suppliers, therefore, are treated not as disposable vendors but as members of an extended family.
+</p>
+
+<p>
+Toyota applies a “challenge and support” approach. They demand high quality, competitive pricing, and efficiency—but at the same time, they help suppliers achieve those goals. When a supplier struggles, Toyota often sends engineers to help improve their processes. When suppliers face technological hurdles, Toyota is willing to share knowledge and best practices. This philosophy builds long-term trust.
+</p>
+
+<p>
+In return, suppliers feel loyal to Toyota. They don’t just ship parts; they feel responsible for Toyota’s success as well. The mutually beneficial relationship strengthens the supply chain, enabling Toyota to maintain quality even in global crises. This strategy also makes Toyota more resilient than companies that chase only the cheapest price without regarding supplier sustainability.
+</p>
+</div>
+                            </p>
+                            
+                            <div class="bg-white p-4 rounded-lg">
+                                <h4 class="font-semibold text-slate-800 mb-2">Real Example: Supplier Development Programs</h4>
+                                <p class="text-slate-700 mb-2">
+                                    Toyota helps suppliers improve quality and efficiency through:
+                                </p>
+                                <ul class="space-y-1 text-slate-600">
+                                    <li>• Knowledge transfer and sharing of best practices</li>
+                                    <li>• Joint improvement projects</li>
+                                    <li>• Long-term partnership agreements</li>
+                                    <li>• Result: Significant improvements in supplier performance over time</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h2><b>Relationship Between the Principles of the Third Pillar</b></h2>
+                        <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+<p>
+Principles 9, 10, and 11 are closely connected. Leaders who understand the work (Principle 9) serve as role models for teams, strong teams (Principle 10) build a solid internal culture, and healthy partnerships with suppliers (Principle 11) ensure quality from upstream to downstream. If any of these elements are weak, the Toyota system cannot function at its best.
+</p>
+
+<p>
+For example, if leaders are disconnected from the shop floor, they will struggle to guide teams properly. If teams are weak, collaboration with suppliers becomes difficult because internal coordination is already fragile. Conversely, if suppliers are not respected, production quality suffers due to inconsistent materials. Toyota therefore stresses the balance between internal and external “people systems.”
+</p>
+
+<h3>Lessons for Other Organizations</h3>
+
+<p>
+The third pillar of <em>The Toyota Way</em> offers valuable lessons beyond the automotive industry, such as:
+</p>
+
+<ul>
+  <li><strong>Leaders should grow from real experience.</strong> Don’t choose leaders solely based on titles or prestige—choose those who truly understand the work.</li>
+  <li><strong>Build strong teams, not individual heroes.</strong> A good system allows everyone to contribute. Group success is more sustainable than reliance on one star.</li>
+  <li><strong>Treat partners as part of the family.</strong> Long-term relationships are more valuable than short-term gains from the lowest bidder.</li>
+  <li><strong>Maintain continuous learning and coaching.</strong> Organizations must create time and space for people to learn and improve.</li>
+</ul>
+
+<p>
+These lessons are especially important today, when many companies are tempted by short-term results. Toyota proves that investing in people and partners yields far greater long-term returns.
+</p>
+
+<h3>Challenges in Developing People and Partners</h3>
+
+<p>
+Of course, this pillar is not easy to implement. Some common challenges include:
+</p>
+
+<ul>
+  <li><strong>Time and cost.</strong> Training, coaching, and partner development require heavy investment that does not always show immediate results.</li>
+  <li><strong>Cultural resistance.</strong> In many places, work culture is individualistic or transactional. Shifting it toward collaboration takes time.</li>
+  <li><strong>Balancing challenge and support.</strong> Pushing partners too hard can damage relationships, but being too soft can lower standards.</li>
+  <li><strong>Leadership consistency.</strong> Frequent leadership changes or inconsistent behavior can undermine long-term philosophy.</li>
+</ul>
+
+<p>
+Still, Toyota has shown that with discipline and consistency, these challenges can be overcome. They have managed to build a stable work culture across decades and generations—proof of the strength of their philosophy.
+</p>
+
+<h3>Conclusion of the Third Pillar</h3>
+
+<p>
+The third pillar of <em>The Toyota Way</em> shows that people are at the center of everything. Wise, experienced leaders, strong teams, and loyal partners form a combination that enables Toyota to survive and grow. Without these, even the best systems and technologies will not carry the company far.
+</p>
+
+<p>
+The big lesson from this pillar is: <strong>investing in people is the best long-term investment</strong>. Leaders, teams, and partners are the foundations that maintain quality, consistency, and organizational sustainability. Toyota demonstrates that developing human beings is just as important as developing products.
+</p>
+
+<p>
+With the third pillar complete, we now move on to the <strong>Fourth Pillar</strong> in Part 5: <strong>Continuous Problem Solving</strong>, which covers principles 12–14. This pillar explains how Toyota builds a culture of learning, reflection, and ongoing improvement that keeps them one step ahead.
+</p>
+</div>
+                    </div>
+                </section>
+
+                <!-- Part 5 -->
+                <section id="part5" class="content-section p-8">
+                    <div class="mb-6">
+                        <span class="inline-block px-3 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-full mb-4">Part 5</span>
+                        <h2 class="text-3xl font-bold text-slate-800 mb-4">Pillar 4: Continuous Problem Solving</h2>
+                    </div>
+                    
+                    <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-gradient-to-r from-red-50 to-pink-50 p-6 rounded-xl border border-red-200">
+                            <h3 class="text-xl font-semibold text-red-800 mb-4">Principles 12–14: Continuous Problem Solving</h3>
+                            <p class="text-red-700 mb-4 mobile-text justified-text">
+                                <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+After understanding the first three pillars—long-term philosophy, the right process, and developing people and partners—<em>The Toyota Way</em> completes its framework with the fourth pillar: <strong>Continuous Problem Solving</strong>. This pillar emphasizes reflection, organizational learning, and the courage to continually improve. Toyota recognizes that the business world is never static. Challenges, technologies, customer expectations, and global crises change constantly. The only way to survive is to become a learning organization that can consistently adapt.
+</p>
+
+<p>
+This fourth pillar is built on three main principles:
+</p>
+
+<ol>
+  <li><strong>Principle 12:</strong><br> Go and see for yourself to thoroughly understand the situation (<em>Genchi Genbutsu</em>).</li>
+  <li><strong>Principle 13:</strong><br> Make decisions slowly through consensus, but implement them quickly (<em>Nemawashi</em>).</li>
+  <li><strong>Principle 14:</strong><br> Become a learning organization through relentless reflection (<em>Hansei</em>) and continuous improvement (<em>Kaizen</em>).</li>
+</ol>
+
+<p>
+These three principles create mechanisms that keep Toyota evolving. Let’s unpack each one.
+</p>
+
+</div>
+                            </p>
+                            
+                            <div class="space-y-4">
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h4 class="font-semibold text-red-700 mb-2">Principle 12: Go and See (Genchi Genbutsu)</h4>
+                                    <h3>Principle 12 – Go and See for Yourself (Genchi Genbutsu)</h3>
+                                    <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+<p>
+Toyota strongly upholds the philosophy of <em>Genchi Genbutsu</em>, which means “go to the source and see it for yourself.” This principle states that a deep understanding of a problem cannot come from reports, spreadsheets, or PowerPoint presentations alone. To truly understand, leaders and teams must go to the site, observe the process, talk to the people involved, and see the real conditions firsthand.
+</p>
+
+<p>
+For instance, if there is a defect problem with car doors, a Toyota manager will not be satisfied with a summary report. They will visit the assembly line, watch how workers install the doors, inspect the components, talk to technicians, and follow the workflow themselves. This produces a richer and more accurate understanding, enabling more effective solutions.
+</p>
+
+<p>
+This philosophy contrasts with a management style that relies heavily on filtered reports that may be biased to please superiors. With Genchi Genbutsu, Toyota cuts through bias and grounds decisions in the actual reality of the shop floor.
+</p>
+
+<p>
+Genchi Genbutsu also nurtures humility. Leaders are not “too important” to go down to the front lines. Instead, they demonstrate that understanding real work is a core part of their responsibility. It also embodies respect for workers, since decisions are made only after truly listening to those who do the work.
+</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h4 class="font-semibold text-red-700 mb-2">Principle 13: Make Decisions Slowly, Implement Rapidly</h4>
+                                    <h3>Principle 13 – Make Decisions Slowly with Consensus, Implement Them Quickly</h3>
+                                    <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+<p>
+The thirteenth principle highlights Toyota’s unique decision-making style. They do not rush into decisions. Instead, they spend time gathering data, discussing options, and building consensus. This process is known in Japanese as <em>Nemawashi</em>—laying the groundwork and securing support before a decision is formally made.
+</p>
+
+<p>
+Nemawashi involves engaging all relevant stakeholders, listening to their perspectives, identifying potential problems, and refining plans until everyone is comfortable with the direction. This may take time, but the payoff is significant: by the time a decision is made, people understand it and are committed to carrying it out.
+</p>
+
+<p>
+Once consensus is reached, however, Toyota moves quickly in execution. Because alignment is already in place, there is little resistance or confusion. This stands in contrast to organizations that make decisions hastily, only to face major pushback during implementation.
+</p>
+
+<p>
+For example, when Toyota decided to build a plant in the United States in the 1980s, they took time to thoroughly research the location, talk with local communities, governments, and potential employees. The final decision was made only after careful thought. But once decided, construction and ramp-up proceeded efficiently and with strong local support, because everyone had been involved early on.
+</p>
+
+<p>
+The lesson here is that speed is not about making decisions as fast as possible, but about making sure those decisions can be executed smoothly and effectively.
+</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h4 class="font-semibold text-red-700 mb-2">Principle 14: Become a Learning Organization</h4>
+                                    <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+<p>
+The final principle of the Toyota Way is a commitment to becoming a learning organization through <em>Hansei</em> (self-reflection) and <em>Kaizen</em> (continuous improvement). Hansei means acknowledging weaknesses or mistakes and reflecting on how to improve. Kaizen means making small, steady improvements day after day. Together, they form the core of Toyota’s learning culture.
+</p>
+
+<p>
+Toyota sees failure not as something to hide, but as a valuable learning opportunity. When a problem occurs, teams carry out deep reflection and root-cause analysis. They do not look for scapegoats; they focus on system flaws. From there, they draw lessons and implement corrective actions to prevent recurrence. This cycle repeats endlessly, making the organization stronger over time.
+</p>
+
+<p>
+Kaizen, meanwhile, is not limited to large projects. It includes small ideas from every individual. Each employee is encouraged to suggest improvements—no matter how minor—to increase efficiency, quality, or safety. Thousands of small improvements over a year can lead to massive cumulative change. This is one of the reasons Toyota continues to progress, even without dramatic “reinventions” every year.
+</p>
+
+<p>
+The culture of Hansei and Kaizen also trains humility. No process is ever perfect, and no success is final. Toyota believes there is always room to improve. This mindset protects the organization from complacency, which often marks the beginning of decline for large companies.
+</p>     
+
+<div>
+    <p class="text-slate-700">
+        In short, Principle 14 helps Toyota maintain relentless reflection and continuous improvement at every level of the organization.
+    </p>
+</div>
+
+<h3>The Fourth Pillar as a Whole</h3>
+
+<p>
+These three principles form a powerful learning cycle. Genchi Genbutsu ensures decisions are grounded in reality. Nemawashi ensures decisions are thoughtful and broadly supported. Hansei and Kaizen ensure the organization keeps learning and improving. Without this fourth pillar, the other three pillars would not remain strong for long. Long-term philosophy, good processes, and people development can only thrive if the organization continuously renews itself.
+</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-r from-amber-50 to-yellow-50 p-6 rounded-xl border border-amber-200">
+                                <h3 class="text-xl font-semibold text-amber-800 mb-4">🌟 Conclusion</h3>
+                                <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+<em>The Toyota Way</em> is much more than a production system. It is a comprehensive management philosophy that covers vision, processes, people, and learning. Its four pillars and 14 principles form a complete framework explaining why Toyota has become one of the most consistent and respected companies in the world.
+</p>
+
+<p>
+In summary, the essence of <em>The Toyota Way</em> is:
+</p>
+
+<ul>
+  <li><strong>First Pillar:</strong> Long-term philosophy that places sustainability and social contribution above short-term gain.</li>
+  <li><strong>Second Pillar:</strong> The right process, achieved through waste elimination, continuous flow, pull systems, standardization, visualization, and appropriate technology.</li>
+  <li><strong>Third Pillar:</strong> Developing people, leaders, teams, and partners as the foundation of success.</li>
+  <li><strong>Fourth Pillar:</strong> Continuous problem solving and learning through Genchi Genbutsu, Nemawashi, Hansei, and Kaizen.</li>
+</ul>
+
+<p>
+These four pillars complement each other and cannot be separated. Long-term philosophy sets the direction, the right process forms the structure, people and partners provide the driving force, and continuous learning ensures ongoing relevance. Together, they create the harmony that differentiates Toyota from most companies.
+</p>
+
+<h3>Relevance of The Toyota Way in the Modern Era</h3>
+
+<p>
+Although this book is rooted in the automotive industry, its principles are highly relevant across sectors. Educational institutions can adopt Toyota’s long-term philosophy by emphasizing the development of future-ready graduates instead of just chasing test scores. Hospitals can apply flow and Kaizen to improve patient care. Tech companies can practice Nemawashi when deciding new product features. Governments can use Hansei to admit policy mistakes and correct them transparently.
+</p>
+
+<p>
+In the digital age, where change is extraordinarily fast, Toyota’s learning philosophy is more important than ever. Organizations that rely purely on short-term strategies will quickly become obsolete. Those that embed reflection, continuous improvement, and people development into their culture will be better equipped to survive disruption.
+</p>
+
+<h3>Lessons for Today’s Leaders</h3>
+
+<p>
+For today’s leaders, <em>The Toyota Way</em> offers several critical lessons:
+</p>
+
+<ol>
+  <li><strong>Leaders must lead by example.</strong> Don’t just manage from behind a desk—go to the front lines, understand the work, and listen to people.</li>
+  <li><strong>Decisions should be thoughtful and inclusive.</strong> Take time to build consensus, then execute decisively and consistently.</li>
+  <li><strong>Never become complacent.</strong> Success is never final. There is always something that can be improved.</li>
+  <li><strong>Invest in people above all.</strong> Systems and technology will change, but people who embrace the philosophy will carry the organization through any transformation.</li>
+</ol>
+
+<h3>Closing Thoughts</h3>
+
+<p>
+<em>The Toyota Way</em> is not just theory—it is real-world practice that has stood the test of time. Toyota’s success is not an accident; it is the result of a consistent philosophy that has been applied across generations. By understanding and implementing these 14 principles, any organization can learn how to build a system that is resilient, sustainable, and full of purpose—not only to generate profit, but to create meaningful value for the world.
+</p>
+
+</div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-xl border border-indigo-200">
+                                <h3 class="text-xl font-semibold text-indigo-800 mb-4">🚀 Application Beyond Toyota</h3>
+                                <p class="text-indigo-700 mb-4">
+                                    The Toyota Way principles have been successfully applied in many other industries:
+                                </p>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="bg-white p-4 rounded-lg">
+                                        <h5 class="font-medium text-indigo-700 mb-2">Healthcare:</h5>
+                                        <p class="text-sm text-slate-600">
+                                            Hospitals and clinics use lean principles to reduce errors, enhance patient flow, and improve safety.
+                                        </p>
+                                    </div>
+                                    <div class="bg-white p-4 rounded-lg">
+                                        <h5 class="font-medium text-indigo-700 mb-2">Software:</h5>
+                                        <p class="text-sm text-slate-600">
+                                            Agile and DevOps practices adopt continuous improvement and customer-focus, mirroring Toyota’s Kaizen spirit.
+                                        </p>
+                                    </div>
+                                    <div class="bg-white p-4 rounded-lg">
+                                        <h5 class="font-medium text-indigo-700 mb-2">Retail:</h5>
+                                        <p class="text-sm text-slate-600">
+                                            Retail giants apply lean operations and customer obsession to keep costs low while enhancing experience.
+                                        </p>
+                                    </div>
+                                    <div class="bg-white p-4 rounded-lg">
+                                        <h5 class="font-medium text-indigo-700 mb-2">Startups:</h5>
+                                        <p class="text-sm text-slate-600">
+                                            The Lean Startup method uses build–measure–learn cycles directly inspired by Toyota’s learning approach.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200">
+                                <h3 class="text-xl font-semibold text-emerald-800 mb-4">💡 Relevance for Modern Business</h3>
+                                <p class="text-emerald-700 mb-4">
+                                    In today’s digital and highly competitive world, Toyota Way principles are more relevant than ever:
+                                </p>
+                                <ul class="space-y-2 text-emerald-700">
+                                    <li>• <strong>Agility:</strong> The ability to adapt quickly to change.</li>
+                                    <li>• <strong>Quality:</strong> Focusing on excellence despite speed and cost pressures.</li>
+                                    <li>• <strong>Sustainability:</strong> Thinking long-term in an era dominated by short-term metrics.</li>
+                                    <li>• <strong>Human-centric:</strong> Prioritizing human development in an age of automation.</li>
+                                    <li>• <strong>Continuous Learning:</strong> Essential for survival amid constant disruption.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
