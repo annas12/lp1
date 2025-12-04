@@ -25,17 +25,16 @@
             .mobile-margin { margin-bottom: 1rem !important; }
         }
         
-        /* Navigation Drawer Styles */
         .nav-drawer {
             position: fixed;
             top: 0;
             left: -320px;
             width: 320px;
             height: 100vh;
-            background: linear-gradient(180deg, #111827 0%, #1f2937 100%);
+            background: linear-gradient(180deg, #1e293b 0%, #334155 100%);
             transition: left 0.3s ease-in-out;
             z-index: 1000;
-            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.25);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
         }
         
         .nav-drawer.open { left: 0; }
@@ -78,8 +77,8 @@
         }
         
         .drawer-toggle.open {
-            background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
         }
         
         .hamburger {
@@ -145,7 +144,7 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 to-slate-900 min-h-screen">
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
     <!-- Navigation Drawer Toggle -->
     <button class="drawer-toggle" onclick="toggleDrawer()">
         <div class="hamburger">
@@ -160,14 +159,14 @@
     
     <!-- Navigation Drawer -->
     <nav class="nav-drawer">
-        <div class="p-6 border-b border-slate-700">
+        <div class="p-6 border-b border-slate-600">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-amber-500 rounded-lg flex items-center justify-center">
-                    <span class="text-white font-bold text-lg">48</span>
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">1</span>
                 </div>
                 <div>
                     <h2 class="text-white font-semibold text-lg">The 48 Laws of Power</h2>
-                    <p class="text-slate-400 text-sm">Book Summary</p>
+                    <p class="text-slate-300 text-sm">Book Summary</p>
                 </div>
             </div>
         </div>
@@ -176,60 +175,60 @@
             <h3 class="text-slate-300 text-sm font-medium uppercase tracking-wider mb-4 px-2">Table of Contents</h3>
             <ul class="space-y-2">
                 <li class="nav-item">
-                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 active-tab text-white flex items-center space-x-3">
-                        <span class="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-xs font-bold">📖</span>
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">📖</span>
                         <span>Introduction</span>
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
                         <span class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
                         <div class="text-left">
                             <div class="font-medium">Part 1</div>
-                            <div class="text-xs text-slate-400">Author, Context & Power Lens</div>
+                            <div class="text-xs text-slate-400">Author, Context & View of Power</div>
                         </div>
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
                         <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
                         <div class="text-left">
                             <div class="font-medium">Part 2</div>
-                            <div class="text-xs text-slate-400">Logic of the Laws & View of Human Nature</div>
+                            <div class="text-xs text-slate-400">Core Themes & Representative Laws</div>
                         </div>
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
                         <span class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
                         <div class="text-left">
                             <div class="font-medium">Part 3</div>
-                            <div class="text-xs text-slate-400">Key Themes Across the 48 Laws</div>
+                            <div class="text-xs text-slate-400">Tactics, Strategy & Social Intelligence</div>
                         </div>
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
-                        <span class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
-                        <div class="text-left">
-                            <div class="font-medium">Part 4</div>
-                            <div class="text-xs text-slate-400">Dark Side, Risks & Criticism</div>
-                        </div>
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                            <span class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                            <div class="text-left">
+                                <div class="font-medium">Part 4</div>
+                                <div class="text-xs text-slate-400">Risks, Ethics & Criticism</div>
+                            </div>
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
-                        <span class="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
-                        <div class="text-left">
-                            <div class="font-medium">Part 5</div>
-                            <div class="text-xs text-slate-400">Using the Book Wisely & Practically</div>
-                        </div>
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                            <span class="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                            <div class="text-left">
+                                <div class="font-medium">Part 5</div>
+                                <div class="text-xs text-slate-400">Applying the Laws Wisely Today</div>
+                            </div>
                     </button>
                 </li>
             </ul>
         </div>
         
-        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-600">
             <div class="text-center">
                 <p class="text-slate-400 text-xs">© 2024 The 48 Laws of Power Summary</p>
                 <p class="text-slate-500 text-xs mt-1">Minimalist Design</p>
@@ -238,79 +237,84 @@
     </nav>
 
     <!-- Header -->
-    <header class="bg-slate-900/90 shadow-sm border-b border-slate-800">
+    <header class="bg-white shadow-sm border-b border-slate-200">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
             <div class="text-center">
-                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-50 mb-2 mobile-title">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 mb-2 mobile-title">
                     The 48 Laws of Power
                 </h1>
-                <p class="text-sm sm:text-base md:text-lg text-slate-300 font-medium px-2">
-                    A strategic, controversial guide to power, manipulation and human behavior
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    Timeless strategies for power, influence, and human behavior
                 </p>
-                <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-red-500 to-amber-500 mx-auto mt-3 sm:mt-4 rounded-full"></div>
+                <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-600 mx-auto mt-3 sm:mt-4 rounded-full"></div>
             </div>
         </div>
     </header>
 
     <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
-        <!-- Content Area -->
         <main>
             <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
-                
+                    
                 <!-- Introduction -->
                 <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-red-100 text-red-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Introduction</span>
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Introduction</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            Entering the World of Power
+                            Welcome to “The 48 Laws of Power”
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
-                        <p class="text-base sm:text-lg md:text-xl text-slate-700 font-medium border-l-4 border-red-500 pl-4 sm:pl-6 italic mobile-text justified-text">
-                            “The 48 Laws of Power” does not tell you how people <strong>should</strong> behave in an ideal world.  
-                            It describes how power often works in the real world – ruthless, strategic, and driven by ego and fear.
+                        <p class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-blue-500 pl-4 sm:pl-6 italic mobile-text justified-text">
+                            Power is always present where people interact. The question is not whether it exists, 
+                            but whether you understand it, ignore it, or let others use it against you.
                         </p>
                         
                         <p class="mobile-text justified-text">
-                            <em>The 48 Laws of Power</em> by Robert Greene is a handbook on strategy and influence, 
-                            built on 3,000 years of history, politics, warfare, and court intrigue.  
-                            Greene extracts recurring patterns of behavior from figures like Machiavelli, 
-                            Sun Tzu, Louis XIV, Napoleon, and many others, and turns them into 48 “laws” for gaining, keeping, 
-                            and defending power.
+                            <em>The 48 Laws of Power</em> by Robert Greene is a modern handbook on power dynamics, 
+                            inspired by history, philosophy, and strategy. It does not tell you how the world 
+                            <strong>should</strong> work; it describes how people often behave when status, ego, and 
+                            survival are involved. The tone is cold, strategic, and sometimes ruthless.
+                        </p>
+
+                        <p class="mobile-text justified-text">
+                            Many readers approach this book in different ways: some use it as a guide, others as a 
+                            warning system to recognize manipulation. This summary focuses on understanding the main 
+                            ideas, not copying every law. You will see how the laws cluster into themes such as 
+                            appearance, timing, emotional control, and psychological distance.
                         </p>
                         
-                        <div class="bg-gradient-to-r from-slate-50 to-slate-100 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-slate-200">
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-100">
                             <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">In this summary you will learn:</h4>
                             <ul class="space-y-2 text-slate-700 mobile-text">
                                 <li class="flex items-start">
-                                    <span class="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">Who Robert Greene is and how he builds his philosophy of power.</span>
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">Who Robert Greene is and how the book is structured.</span>
                                 </li>
                                 <li class="flex items-start">
-                                    <span class="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">The core logic behind the 48 laws and their view of human nature.</span>
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">Key patterns that connect many of the laws (image, timing, emotion, distance).</span>
                                 </li>
                                 <li class="flex items-start">
-                                    <span class="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">The main themes: reputation, timing, emotional control, manipulation, and defense.</span>
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">How the book suggests using strategy, charm, and indirection instead of brute force.</span>
                                 </li>
                                 <li class="flex items-start">
-                                    <span class="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">The dangers, ethical concerns, and how to use or defend against these ideas.</span>
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">The ethical risks and how to apply the ideas with awareness and responsibility.</span>
                                 </li>
                             </ul>
                         </div>
                         
                         <p class="mobile-text justified-text">
-                            This summary does not list every law in detail. Instead, it groups the laws into key themes and 
-                            explains the mindset behind them, so you can understand the book’s philosophy and decide how – 
-                            or if – you want to apply it in your own life.
+                            Use the navigation menu on the left to move between sections. 
+                            Each part presents a high-level overview of the laws, grouped into practical themes, 
+                            so you can see how the book’s ideas relate to your work, relationships, and long-term plans.
                         </p>
                     </div>
                 </section>
 
-                <!-- Part 1 – Author, Context & Power Lens -->
+                <!-- Part 1 – Author, Context & View of Power -->
                 <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
@@ -318,96 +322,95 @@
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">
-                            Robert Greene, Historical Method & Why This Book Exists
+                            Robert Greene, Historical Sources & the Core View of Power
                         </h3>
-                        <p class="mobile-text justified-text">
-                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+                        <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
 
 <p>
-Robert Greene worked in Hollywood and publishing before writing <em>The 48 Laws of Power</em>. 
-Spending years in competitive, political environments convinced him that people often play hidden games: 
-they say one thing but pursue another, they smile while plotting, they obey in public but resist in private.
+Robert Greene is an American author known for blending history, psychology, and strategy. 
+Before writing <em>The 48 Laws of Power</em>, he worked in many different jobs and became fascinated 
+with how some people quietly rose to influence while others, who seemed talented, stayed stuck or 
+were destroyed by politics.
 </p>
 
 <p>
-Instead of pretending that power games do not exist, Greene decided to study them honestly.  
-He immersed himself in biographies, history, philosophy and military strategy. Out of thousands of stories, 
-he extracted recurring patterns: the same tricks, traps and tactics appeared again and again across cultures 
-and centuries.
-</p>
-
-<p>
-The book is structured as 48 “laws”, and each law has:
+To write this book he studied:
 </p>
 
 <ul>
-  <li>A statement of the law,</li>
-  <li>Historical examples of people who applied it successfully,</li>
-  <li>Reversals or exceptions where the law can backfire.</li>
+  <li>Court life in Renaissance Europe,</li>
+  <li>Ancient Chinese and Japanese strategy,</li>
+  <li>Military history and diplomacy,</li>
+  <li>Lives of rulers, artists, and con artists.</li>
 </ul>
 
 <p>
-Greene’s tone is intentionally cold and analytical. He describes power as it <strong>is</strong>, not as it 
-morally <strong>should be</strong>. This is why the book is both popular and controversial: 
-some see it as a survival manual, others as a guidebook for manipulators.
+From these stories he extracted “laws” — patterns of behavior that repeatedly led to power or loss of power. 
+Each law in the book follows a formula: a short statement, historical examples, and a “reversal” section 
+that explains when the law should be used with caution or even ignored.
 </p>
 
-<h3>Who Is This Book For?</h3>
-
 <p>
-Greene writes primarily for people who:
+The core idea is uncomfortable but clear: <strong>people do not always act from pure motives.</strong>  
+Envy, insecurity, ambition, vanity, and fear drive much of human behavior. If you ignore this, 
+you become vulnerable. Greene argues it is better to:
 </p>
 
 <ul>
-  <li>Work in competitive environments (politics, business, entertainment, law, etc.),</li>
-  <li>Feel naive, easily manipulated or repeatedly outplayed,</li>
-  <li>Want to better understand hidden motives and strategies around them.</li>
+  <li>See the game that is already being played,</li>
+  <li>Understand the hidden rules,</li>
+  <li>Decide consciously how you want to respond.</li>
 </ul>
 
 <p>
-He repeatedly warns that the laws should not be used mechanically or aggressively in every situation.  
-Power, in his view, is context-dependent and deeply psychological.
+The book is not about kindness or fairness. It is about <strong>effectiveness</strong> in environments where 
+power is contested — courts, companies, creative industries, and even families. How you use that knowledge 
+is a separate moral choice.
+</p>
+
+<p>
+The 48 laws are not meant to be followed blindly all the time. They are tools. Some are more relevant 
+in dangerous or highly political settings; others are useful simply to understand what people around 
+you might be doing.
 </p>
 
 </div>
-                        </p>
                         
                         <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl">
                             <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Key Facts:</h4>
                             <ul class="space-y-2 mobile-text">
                                 <li class="justified-text"><strong>Publication year:</strong><br>1998.</li> 
-                                <li class="justified-text"><strong>Structure:</strong><br>48 “laws” of power, each with examples, keys to power, and reversals.</li>
-                                <li class="justified-text"><strong>Core aim:</strong><br>To reveal the hidden rules of power games, so readers can use them or defend against them.</li>
+                                <li class="justified-text"><strong>Author:</strong><br>Robert Greene.</li>
+                                <li class="justified-text"><strong>Central claim:</strong><br>Power follows recurring psychological and social patterns. Those who ignore them are often controlled by those who do not.</li>
                             </ul>
                         </div>
                         
-                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">Neutral Observation, Not Moral Instruction</h3>
+                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">How the Laws Are Structured</h3>
                         <p class="mobile-text justified-text">
-                            Greene does not tell you to be “good”. He tells you to be <strong>aware</strong>.  
-                            His assumption is that in any hierarchy – from royal courts to modern offices – 
-                            power is being pursued and defended, whether people admit it or not.  
-                            Ignoring this does not make you ethical; it often just makes you vulnerable.
+                            Instead of reading the book as a linear story, you can see it as a toolbox. 
+                            Some laws warn you what <strong>not</strong> to do (for example, exposing your plans too early), 
+                            others suggest more active moves (creating mystery, managing your image, or using absence strategically).
                         </p>
                         
                         <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-amber-200">
-                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Three Inputs Behind the Laws:</h4>
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Three Foundational Ideas in the Book:</h4>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                                 <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                                    <h5 class="font-medium text-red-700 text-sm sm:text-base">History</h5>
+                                    <h5 class="font-medium text-blue-700 text-sm sm:text-base">Power is Perception</h5>
                                     <p class="text-xs sm:text-sm text-slate-600 justified-text">
-                                        Kings, courtiers and generals show recurring tactics of domination and survival.
+                                        How others <em>see</em> you often matters more than your intentions or inner reality.
                                     </p>
                                 </div>
                                 <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                                    <h5 class="font-medium text-emerald-700 text-sm sm:text-base">Psychology</h5>
+                                    <h5 class="font-medium text-green-700 text-sm sm:text-base">Indirection</h5>
                                     <p class="text-xs sm:text-sm text-slate-600 justified-text">
-                                        Ego, envy, insecurity, and vanity drive many power moves.
+                                        Direct confrontation is risky. Influence often works best through subtle moves and timing.
                                     </p>
                                 </div>
                                 <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                                    <h5 class="font-medium text-indigo-700 text-sm sm:text-base">Strategy</h5>
+                                    <h5 class="font-medium text-purple-700 text-sm sm:text-base">Emotional Control</h5>
                                     <p class="text-xs sm:text-sm text-slate-600 justified-text">
-                                        Sun Tzu, Machiavelli, and others supply the logic behind indirect action.
+                                        The powerful keep their emotions in check and learn to read, trigger, or defuse emotions in others.
                                     </p>
                                 </div>
                             </div>
@@ -415,455 +418,405 @@ Power, in his view, is context-dependent and deeply psychological.
                     </div>
                 </section>
 
-                <!-- Part 2 – Logic of the Laws & Human Nature -->
+                <!-- Part 2 – Core Themes & Representative Laws -->
                 <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            The Logic Behind the 48 Laws & Human Nature
+                            Core Themes & Representative Laws
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <div class="bg-blue-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
                             <h3 class="text-lg sm:text-xl font-semibold text-blue-800 mb-3 mobile-subtitle">
-                                Power as a Game of Perception
+                                Theme 1: Appearances & Image Management
                             </h3>
                             <p class="text-blue-700 italic mobile-text justified-text">
-                                In Greene’s world, power rarely depends only on formal titles.  
-                                It depends on perception: how strong, competent, mysterious, or dangerous you appear to others.
+                                The book repeatedly shows that people make decisions based on how things look, not what is true behind the scenes.
                             </p>
                         </div>
 
                         <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
 <p>
-Across the 48 laws, several assumptions appear again and again:
+Many laws emphasize the importance of <strong>controlling your image</strong>. You are advised to appear competent, calm, 
+and slightly mysterious. Revealing too much, complaining, or broadcasting insecurity all weaken your position.
+</p>
+
+<p>
+Examples of this theme include laws that encourage you to:
 </p>
 
 <ul>
-  <li>People are driven by pride, envy, and insecurity as much as by logic.</li>
-  <li>Many conflicts are indirect; people rarely say what they truly want.</li>
-  <li>Reputation is more fragile (and more powerful) than raw force.</li>
-  <li>Those who understand emotions, appearances and timing often beat those who rely only on “being right.”</li>
+  <li>Hide the full extent of your ambitions until the right moment,</li>
+  <li>Let your achievements speak louder than your explanations,</li>
+  <li>Cultivate a reputation that makes people underestimate or overestimate you strategically.</li>
 </ul>
 
-<h3>Patterns in the Laws</h3>
+<p>
+The lesson is not to become fake, but to accept that people do not see your inner world. 
+They only see what you consistently project. If you ignore this, you may be technically capable 
+but politically weak.
+</p>
+
+<h3>Theme 2: Emotional Distance & Self-Control</h3>
 
 <p>
-The laws are varied, but the logic behind them is consistent.  
-Some examples of underlying principles (in paraphrased form):
+Another cluster of laws revolves around emotional control. Greene advises you to:
 </p>
 
 <ul>
-  <li><strong>Do not outshine your master.</strong><br>
-  Never make a superior feel small or threatened by your talents, or they will remove you.</li>
-
-  <li><strong>Conceal your intentions.</strong><br>
-  If people can predict you, they can block you. Indirection keeps you flexible.</li>
-
-  <li><strong>Always say less than necessary.</strong><br>
-  Mystery creates respect; oversharing creates vulnerability.</li>
-
-  <li><strong>Win through actions, not argument.</strong><br>
-  Arguments attack ego and create enemies. Demonstrated results are harder to resist.</li>
-
-  <li><strong>Protect your reputation.</strong><br>
-  Reputation amplifies your power; once stained, everything becomes harder.</li>
+  <li>Stay calm when others are reactive,</li>
+  <li>Avoid taking insults personally,</li>
+  <li>Make decisions based on strategy, not wounded pride.</li>
 </ul>
 
 <p>
-These short samples illustrate the style of the book: concise, sharp, and often cynical.  
-Greene asks you to assume that many people will act selfishly under pressure, and that power games are 
-a permanent feature of human life.
+When you lose your temper, you become predictable and easy to provoke. People can push your buttons 
+and steer you into errors. By contrast, someone who stays composed — even when attacked — tends to 
+look stronger and more authoritative.
 </p>
 
-<h3>Human Nature Through Greene’s Eyes</h3>
+<h3>Theme 3: Timing, Patience & Indirect Action</h3>
 
 <p>
-In this book, human beings are:
+A third major theme is <strong>timing</strong>. Many laws suggest doing less in the short term so you can achieve 
+more later. Instead of fighting every battle, you:
 </p>
 
 <ul>
-  <li>Emotional before they are rational,</li>
-  <li>Deeply sensitive to status and slight,</li>
-  <li>Attracted to confidence, boldness, and mystery,</li>
-  <li>Suspicious of those who are too honest or too open.</li>
+  <li>Wait for the right moment,</li>
+  <li>Let opponents overextend themselves,</li>
+  <li>Prepare quietly before making a visible move.</li>
 </ul>
 
 <p>
-This view is deliberately dark. It exaggerates the competitive side of life to force the reader to wake up 
-to dynamics they may have ignored. Whether you agree fully or not, it is a useful lens for analyzing certain 
-situations – especially in politics, corporate power struggles, and high-stakes negotiations.
+This appears in laws that recommend:
 </p>
+
+<ul>
+  <li>Making your victories seem effortless,</li>
+  <li>Using absence to create respect,</li>
+  <li>Letting others speak first while you observe.</li>
+</ul>
+
+<p>
+The book’s stories show that impatience and the need to be constantly seen often destroy careers. 
+Powerful people rarely look rushed. They move at chosen moments with preparation behind them.
+</p>
+
                         </div>
 
-                        <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-emerald-200">
+                        <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-green-200">
                             <h4 class="font-semibold text-green-800 mb-3 text-sm sm:text-base mobile-subtitle">
-                                Summary: What the Laws Assume
+                                Summary: What Many Laws Have in Common
                             </h4>
                             <ul class="space-y-2 text-green-700 mobile-text">
-                                <li class="justified-text">• Power is about control of options, perception and emotions – not just resources.</li>
-                                <li class="justified-text">• People rarely say “I want power” but act as if they do.</li>
-                                <li class="justified-text">• You must learn to read motives and manage appearances to survive and succeed.</li>
+                                <li class="justified-text">• Protect your image: look stable, capable, and in control.</li>
+                                <li class="justified-text">• Control your emotions: never let anger or neediness dictate your actions.</li>
+                                <li class="justified-text">• Respect timing: prepare quietly and move when the odds are in your favor.</li>
                             </ul>
                         </div>
                     </div>
                 </section>
 
-                <!-- Part 3 – Key Themes Across the 48 Laws -->
+                <!-- Part 3 – Tactics, Strategy & Social Intelligence -->
                 <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            Key Themes Across the 48 Laws of Power
+                            Tactics, Strategy & Social Intelligence
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <p class="text-base sm:text-lg text-slate-600 mobile-text justified-text">
-                            Rather than memorizing 48 rules, it is more useful to understand the 
-                            <strong>clusters</strong> of ideas behind them. Below are some major themes.
+                            Beyond theory, Greene’s laws are full of concrete tactics. Some feel elegant and smart; 
+                            others feel manipulative or dangerous. Understanding them helps you see both opportunities 
+                            and threats more clearly.
                         </p>
                         
-                        <div class="space-y-4 sm:space-y-6">
-                            <!-- Reputation & Image -->
-                            <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-slate-200">
-                                <h3 class="text-base sm:text-lg font-semibold text-slate-800 mb-3 mobile-subtitle">
-                                    1. Reputation, Image & Mystery
-                                </h3>
-                                <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+                        <div class="bg-green-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-green-200">
+                            <h3 class="text-base sm:text-lg font-semibold text-green-800 mb-3 mobile-subtitle">
+                                Offensive & Defensive Uses of the Laws
+                            </h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
 
 <p>
-Many laws focus on controlling how others see you. In Greene’s view, reputation is a kind of 
-“credit score” for power: once high, it makes everything easier; once damaged, it makes 
-every move more difficult.
-</p>
-
-<p>
-Key ideas in this cluster:
+Some readers are attracted to the “offensive” side of the laws: using strategy to gain advantage, 
+defeat rivals, or climb hierarchies. Examples include:
 </p>
 
 <ul>
-  <li>Guard your reputation as your most valuable asset.</li>
-  <li>Let others talk and reveal themselves; you remain slightly reserved.</li>
-  <li>Cultivate an air of unpredictability so others cannot easily anticipate your moves.</li>
-  <li>Use bold gestures and symbols to project strength and confidence.</li>
+  <li>Drawing attention through bold moves instead of timid ones,</li>
+  <li>Taking credit strategically while minimizing visible mistakes,</li>
+  <li>Using charm and flattery to influence more powerful people.</li>
 </ul>
 
 <p>
-The goal is not to be fake in every way, but to be strategic about what you reveal and what you hide.  
-You are both yourself and your “public version” of yourself.
+Equally important, however, is the <strong>defensive</strong> use of the book. Many laws can be inverted as warnings:
 </p>
 
-                                </div>
-                            </div>
+<ul>
+  <li>Notice when someone is isolating you from other allies,</li>
+  <li>Recognize when praise is being used to disarm you,</li>
+  <li>See when your emotions are being stirred to cloud your judgment.</li>
+</ul>
+
+<p>
+Used this way, the book becomes less about controlling others and more about 
+not being controlled yourself.
+</p>
+
+</div>
+                        </div>
                             
-                            <!-- Emotional Control & Detachment -->
-                            <div class="bg-blue-50 p-6 rounded-xl border border-blue-200">
-                                <h3 class="text-lg font-semibold text-blue-800 mb-3">2. Emotional Control & Detachment</h3>
-                                <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+                        <div class="bg-blue-50 p-6 rounded-xl border border-blue-200">
+                            <h3 class="text-lg font-semibold text-blue-800 mb-3">Social Intelligence & Reading People</h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
 
 <p>
-Another cluster of laws teaches you to remain calm and calculating in situations where others 
-lose their composure. People who cannot control their anger, envy or fear are easy to manipulate.
-</p>
-
-<p>
-Common messages in this group:
+Many laws depend on accurate reading of people. You are encouraged to:
 </p>
 
 <ul>
-  <li>Do not react immediately when attacked; observe and plan a response.</li>
-  <li>Avoid complaining, explaining, or begging – these express weakness.</li>
-  <li>Stay above petty fights; sometimes silence and distance are more powerful than direct confrontation.</li>
-  <li>Channel emotions into strategy instead of outbursts.</li>
+  <li>Observe how people react to praise and criticism,</li>
+  <li>Identify their insecurities, ambitions, and hidden fears,</li>
+  <li>Listen more than you speak, especially early on.</li>
 </ul>
 
 <p>
-Power, in Greene’s world, belongs to those who can remain cold when others burn hot.
-</p>
-
-                                </div>
-                            </div>
-                            
-                            <!-- Indirection, Deception & Strategy -->
-                            <div class="bg-purple-50 p-6 rounded-xl border border-purple-200">
-                                <h3 class="text-lg font-semibold text-purple-800 mb-3">3. Indirection, Deception & Strategic Moves</h3>
-                                <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-
-<p>
-Many laws involve indirect action: feints, diversions, and controlled appearances.  
-Greene borrows heavily from military strategy, where frontal attacks are often costly and foolish.
+Greene suggests that most people reveal more than they realize in their patterns of speech, 
+stories they repeat, and what triggers them emotionally. If you listen carefully, you can adapt 
+your approach to each person rather than using a single style on everyone.
 </p>
 
 <p>
-Typical ideas in this group:
+In practical terms this means:
 </p>
 
 <ul>
-  <li>Hide your true plans behind a decoy or a harmless front.</li>
-  <li>Let others underestimate you until it is too late to resist.</li>
-  <li>Use other people’s work, knowledge or resources and give them just enough credit.</li>
-  <li>Turn enemies against each other while you remain in the background.</li>
+  <li>Avoiding unnecessary honesty that hurts pride,</li>
+  <li>Framing ideas so others feel they “own” them,</li>
+  <li>Knowing when to withdraw, stay neutral, or remain silent.</li>
 </ul>
 
 <p>
-These are the most Machiavellian parts of the book. Even if you never want to use such tactics, 
-understanding them helps you see when others might be using them on you.
+In environments full of politics, this flexibility can protect you from avoidable conflicts.
 </p>
 
-                                </div>
-                            </div>
-                            
-                            <!-- Dependence, Alliances & Hierarchies -->
-                            <div class="bg-emerald-50 p-6 rounded-xl border border-emerald-200">
-                                <h3 class="text-lg font-semibold text-emerald-800 mb-3">4. Alliances, Hierarchies & Dependence</h3>
-                                <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+</div>
+                        </div>
 
-<p>
-Greene emphasizes that power is relational. You rarely hold power alone; you hold it 
-because others depend on you more than you depend on them.
-</p>
-
-<p>
-Ideas in this theme:
-</p>
-
-<ul>
-  <li>Make superiors feel valued and indispensable, never threatened.</li>
-  <li>Make subordinates and allies need you – through knowledge, access, or protection.</li>
-  <li>Use gifts, favors and strategic kindness to create obligations.</li>
-  <li>Be careful with friends (who may envy you) and learn to use enemies (who are more predictable).</li>
-</ul>
-
-<p>
-The goal is to construct a web of dependence where you are a central node that others cannot easily remove.
-</p>
-
-                                </div>
-                            </div>
-                            
-                            <!-- Timing, Patience & Momentum -->
-                            <div class="bg-amber-50 p-6 rounded-xl border border-amber-200">
-                                <h3 class="text-lg font-semibold text-amber-800 mb-3">5. Timing, Patience & the Art of Exit</h3>
-                                <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-
-<p>
-Finally, several laws deal with timing: when to act, when to wait, and when to withdraw.
-</p>
-
-<p>
-Key principles:
-</p>
-
-<ul>
-  <li>Do not rush when the situation is unclear; gather information first.</li>
-  <li>Strike suddenly and decisively when the moment is ripe.</li>
-  <li>Know when to end a relationship, project, or role before it collapses on its own.</li>
-  <li>Leave situations with dignity and narrative control, not in visible defeat.</li>
-</ul>
-
-<p>
-Timing transforms an average move into a powerful one. Greene sees patience not as passivity, 
-but as strategic waiting.
-</p>
-
-                                </div>
-                            </div>
+                        <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl">
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Practical Ways to Train Your “Power Radar”:</h4>
+                            <ol class="space-y-2 text-slate-700 mobile-text">
+                                <li class="justified-text">1. In meetings, focus on who talks, who interrupts, and who actually decides.</li>
+                                <li class="justified-text">2. Notice which colleagues influence opinions even when they are not officially in charge.</li>
+                                <li class="justified-text">3. Reflect on situations where you felt pressured or manipulated and connect them to specific laws.</li>
+                                <li class="justified-text">4. Practice pausing before reacting emotionally to provocations.</li>
+                            </ol>
                         </div>
                     </div>
                 </section>
 
-                <!-- Part 4 – Dark Side, Risks & Criticism -->
+                <!-- Part 4 – Risks, Ethics & Criticism -->
                 <section id="part4" class="content-section p-8">
                     <div class="mb-6">
                         <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-sm font-medium rounded-full mb-4">Part 4</span>
-                        <h2 class="text-3xl font-bold text-slate-800 mb-4">Dark Side, Risks & Criticism</h2>
+                        <h2 class="text-3xl font-bold text-slate-800 mb-4">Risks, Ethics & Criticism</h2>
                     </div>
                     
                     <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
                         <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
 
 <p>
-It is impossible to talk about <em>The 48 Laws of Power</em> without addressing its dark side.  
-Many readers love it; others hate it. Some call it realistic, others call it toxic.
+<em>The 48 Laws of Power</em> is powerful partly because it is honest about manipulation. 
+That same honesty also makes it controversial. Many critics argue that the book encourages 
+paranoia, cynicism, and cruelty. Greene replies that he is simply describing what people 
+already do, not inventing it.
 </p>
 
 </div>
 
-                        <div class="bg-gradient-to-r from-red-50 to-pink-50 p-6 rounded-xl border border-red-200">
-                            <h3 class="text-xl font-semibold text-red-800 mb-4">Ethical Concerns & Misuse</h3>
+                        <div class="bg-gradient-to-r from-purple-50 to-indigo-50 p-6 rounded-xl border border-purple-200">
+                            <h3 class="text-xl font-semibold text-purple-800 mb-4">Main Risks of Misusing the Laws</h3>
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
 
 <p>
-Critics argue that the book:
+If you apply the laws without wisdom, several problems can appear:
 </p>
 
 <ul>
-  <li>Encourages manipulation, deceit and ruthless self-interest,</li>
-  <li>Normalizes exploitation instead of cooperation,</li>
-  <li>Can be dangerous in the hands of people with no empathy or moral limits.</li>
+  <li><strong>Short-term wins, long-term damage.</strong><br>
+  You may gain advantage now but create deep resentment. People remember betrayal and humiliation.</li>
+
+  <li><strong>Loss of authenticity.</strong><br>
+  Acting from constant calculation can erode your sense of self and your capacity for genuine connection.</li>
+
+  <li><strong>Escalation of conflict.</strong><br>
+  In some situations, power games invite retaliation and can spiral into open war.</li>
+
+  <li><strong>Misreading the environment.</strong><br>
+  Not every context tolerates aggressive strategizing. In high-trust cultures, these moves can backfire quickly.</li>
 </ul>
 
 <p>
-These criticisms are not wrong. Used without conscience, the laws can destroy trust, damage relationships 
-and create toxic cultures. Greene himself admits that overusing or misusing the laws can lead to isolation, 
-paranoia, and backlash.
+The book itself regularly notes that laws have “reversals” — moments where the usual advice should be inverted. 
+For example, sometimes showing vulnerability creates trust, and sometimes total honesty is the best strategy.
 </p>
 
-<p>
-The book is like a sharp tool: it can be used to defend or to harm.  
-Greene frames his work as descriptive rather than prescriptive, but the line between the two is thin.
-</p>
-
-                            </div>
+</div>
 
                             <div class="bg-white p-4 rounded-lg mb-4">
-                                <h4 class="font-semibold text-slate-800 mb-2">Backfire Risk</h4>
+                                <h4 class="font-semibold text-slate-800 mb-2">Ethical Reading of the Book</h4>
                                 <p class="text-slate-700 text-sm">
-                                    If you treat every relationship as a power game, people eventually notice.  
-                                    When they stop trusting you, your power becomes fragile and dependent on fear, not respect.
+                                    One balanced way to read <em>The 48 Laws of Power</em> is as a 
+                                    <strong>map of dangerous terrain</strong>. You learn where the traps, 
+                                    games, and manipulations tend to be, so you can protect yourself and choose 
+                                    your own behavior consciously instead of naively.
                                 </p>
                             </div>
                         </div>
                         
-                        <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-xl border border-indigo-200">
-                            <h3 class="text-xl font-semibold text-indigo-800 mb-4">Self-Protection Reading vs. Aggressor Reading</h3>
+                        <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200">
+                            <h3 class="text-xl font-semibold text-green-800 mb-4">Integrating Power with Your Values</h3>
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
 
 <p>
-There are at least two ways to read this book:
+Greene rarely talks about moral ideals, but you can bring your own values to the table. 
+Understanding power does not force you to become ruthless. It can help you:
 </p>
 
 <ul>
-  <li><strong>As a manual for domination.</strong><br>
-  You adopt the laws to control, manipulate, and outplay others.</li>
-
-  <li><strong>As a manual for awareness and self-protection.</strong><br>
-  You study the laws so you can recognize when others use them on you and respond intelligently.</li>
+  <li>Protect your team from unfair attacks,</li>
+  <li>Negotiate better on behalf of people you care about,</li>
+  <li>Refuse roles or deals where the power imbalance is too dangerous.</li>
 </ul>
 
 <p>
-This summary leans toward the second approach. Understanding the dynamics does not require you to 
-admire or copy every tactic. You can combine clear-eyed realism with your own ethical framework.
+In other words, the same awareness that could be used for manipulation can also be used for 
+<strong>defense, boundaries, and wise leadership</strong>. The responsibility for that choice rests with the reader.
 </p>
 
-<p>
-Greene also includes “reversals” for many laws, showing that rigid application is dangerous. 
-Context, personality and culture all matter.
-</p>
-
-                            </div>
-                        </div>
-                        
-                        <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200">
-                            <h3 class="text-xl font-semibold text-emerald-800 mb-4">Psychological Cost of Constant Power Games</h3>
-                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-
-<p>
-Living as if life is only about power can:
-</p>
-
-<ul>
-  <li>Make you suspicious of genuine kindness,</li>
-  <li>Turn every interaction into a calculation,</li>
-  <li>Damage your capacity for intimacy and trust.</li>
-</ul>
-
-<p>
-Even if you choose to use some laws strategically, you may want to limit how much you let them rule your 
-inner life. Power is one dimension of human existence, not the only one.
-</p>
-
-                            </div>
+</div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Part 5 – Using the Book Wisely & Practically -->
+                <!-- Part 5 – Applying the Laws Wisely Today -->
                 <section id="part5" class="content-section p-8">
                     <div class="mb-6">
-                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-700 text-sm font-medium rounded-full mb-4">Part 5</span>
-                        <h2 class="text-3xl font-bold text-slate-800 mb-4">Using the 48 Laws Wisely</h2>
+                        <span class="inline-block px-3 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-full mb-4">Part 5</span>
+                        <h2 class="text-3xl font-bold text-slate-800 mb-4">Applying the Laws Wisely Today</h2>
                     </div>
                     
                     <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
-                        <div class="bg-gradient-to-r from-slate-50 to-slate-100 p-6 rounded-xl border border-slate-200">
-                            <h3 class="text-xl font-semibold text-slate-900 mb-4">Practical Ways to Use the Ideas</h3>
+                        <div class="bg-gradient-to-r from-red-50 to-pink-50 p-6 rounded-xl border border-red-200">
+                            <h3 class="text-xl font-semibold text-red-800 mb-4">From Theory to Practice</h3>
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
 
 <p>
-Here are some balanced ways to apply insights from <em>The 48 Laws of Power</em>:
+To make this book useful, you do not need to memorize all 48 laws. 
+Instead, you can focus on a small number of principles and build habits around them.
+</p>
+
+<p>
+A simple implementation roadmap:
 </p>
 
 <ul>
-  <li><strong>1. Awareness Training.</strong><br>
-  Notice when people use flattery, guilt, threats, or strategic silence.  
-  Instead of reacting emotionally, pause and ask: “Which game is being played here?”</li>
+  <li><strong>Step 1 – Observe before acting.</strong><br>
+  Spend a few weeks simply noticing power dynamics at work, in your community, and online. 
+  Ask: who influences whom, and how?</li>
 
-  <li><strong>2. Reputation Management.</strong><br>
-  Be more conscious of how your behavior affects your reputation at work or in your community. 
-  Avoid public outbursts, sloppy promises, or visible desperation.</li>
+  <li><strong>Step 2 – Strengthen your emotional control.</strong><br>
+  Practice delaying reactions, especially when you feel attacked or ignored. This alone raises your power.</li>
 
-  <li><strong>3. Healthy Boundaries.</strong><br>
-  Use power concepts to say no, negotiate better, and avoid being used – not to crush others.</li>
+  <li><strong>Step 3 – Clarify your image.</strong><br>
+  Decide how you want to be perceived (reliable, calm, creative, strategic) and align your behavior with that image.</li>
 
-  <li><strong>4. Strategic Communication.</strong><br>
-  Speak less, listen more. Reveal information gradually. Choose your timing carefully.</li>
+  <li><strong>Step 4 – Learn to say “no” strategically.</strong><br>
+  Protect your time and energy from people or games that do not serve your long-term goals.</li>
 
-  <li><strong>5. Leadership Insight.</strong><br>
-  If you lead a team, understanding these laws helps you design systems that limit destructive politics 
-  and reward collaboration rather than sabotage.</li>
+  <li><strong>Step 5 – Use the laws mainly for defense and boundary-setting.</strong><br>
+  Start by protecting yourself rather than trying to dominate others.</li>
 </ul>
 
+</div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-amber-50 to-yellow-50 p-6 rounded-xl border border-amber-200">
+                            <h3 class="text-xl font-semibold text-amber-800 mb-4">Modern Relevance</h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+
+<p>
+Even though the historical examples come from courts and empires, the laws of power feel very modern:
+</p>
+
+<ul>
+  <li>In companies, political games often matter as much as formal structure.</li>
+  <li>On social media, image and attention function as new forms of power.</li>
+  <li>In personal life, emotional manipulation and control can appear in subtle ways.</li>
+</ul>
+
+<p>
+Understanding these dynamics helps you navigate them with less confusion and less naive trust. 
+You can choose when to step in, when to step back, and when to walk away.
+</p>
+
+</div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-xl border border-indigo-200">
+                            <h3 class="text-xl font-semibold text-indigo-800 mb-4">Practical Applications</h3>
+                            <p class="text-indigo-700 mb-4">
+                                Here are some concrete ways you might apply the spirit of the laws without losing your integrity:
+                            </p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-medium text-indigo-700 mb-2">At Work & in Business</h5>
+                                    <ul class="text-sm text-slate-600 space-y-1">
+                                        <li>• Prepare thoroughly before important presentations while making the result look effortless.</li>
+                                        <li>• Avoid oversharing fears or doubts in highly political environments.</li>
+                                        <li>• Observe alliances and rivalries before committing to a side.</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-medium text-indigo-700 mb-2">In Personal Life</h5>
+                                    <ul class="text-sm text-slate-600 space-y-1">
+                                        <li>• Recognize guilt trips, gaslighting, and emotional blackmail more quickly.</li>
+                                        <li>• Set boundaries with people who constantly test your limits.</li>
+                                        <li>• Choose partners and friends who do not rely on manipulation as a normal habit.</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                         
                         <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200">
-                            <h3 class="text-xl font-semibold text-emerald-800 mb-4">Combining Power with Integrity</h3>
+                            <h3 class="text-xl font-semibold text-emerald-800 mb-4">Final Reflection</h3>
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
 
 <p>
-You do not have to choose between being powerful and being principled.  
-You can:
+At its heart, <em>The 48 Laws of Power</em> is a mirror held up to the darker side of human interaction. 
+It shows how ambition, fear, and ego drive people to play games — some subtle, some brutal.
+</p>
+
+<p>
+You do not have to become a cold strategist to learn from it. You can:
 </p>
 
 <ul>
-  <li>Recognize manipulation without becoming a manipulator,</li>
-  <li>Use strategy without abandoning empathy,</li>
-  <li>Protect yourself without constantly attacking others.</li>
+  <li>Use it to sharpen your awareness,</li>
+  <li>Protect yourself from manipulation,</li>
+  <li>Guide your own rise in a way that respects your values.</li>
 </ul>
 
 <p>
-A mature approach to this book is to take it as a map of potential behaviors – some you may use, 
-many you will only defend against. You can decide which laws align with your values and context, 
-and which cross your ethical red lines.
-</p>
-
-                            </div>
-                        </div>
-                        
-                        <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-xl border border-indigo-200">
-                            <h3 class="text-xl font-semibold text-indigo-800 mb-4">Final Reflection</h3>
-                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-
-<p>
-<em>The 48 Laws of Power</em> is provocative, uncomfortable, and sometimes extreme – and that is exactly 
-why it has influenced so many readers. It forces you to confront the side of human nature that polite 
-culture often hides.
-</p>
-
-<p>
-Summarized in one sentence, the book says:
-<br>
-<strong>Power flows to those who understand human psychology, control their emotions, manage appearances, 
-and think several moves ahead.</strong>
-</p>
-
-<p>
-Whether you use this knowledge mainly to advance, to protect yourself, or simply to see the world more clearly 
-is a choice only you can make. The wisest use of the book may be this:  
-<strong>be naive no longer, but remain human.</strong>
+The most powerful combination is <strong>clarity without naivety</strong>: 
+you see the game, you understand the moves, and you still choose who you want to be.
 </p>
 
                             </div>
@@ -896,44 +849,37 @@ is a choice only you can make. The wisest use of the book may be this:
         }
         
         function showSection(sectionId) {
-            // Hide all sections
             const sections = document.querySelectorAll('.content-section');
             sections.forEach(section => {
                 section.classList.remove('active');
             });
             
-            // Remove active class from all nav buttons
             const navButtons = document.querySelectorAll('.nav-btn');
             navButtons.forEach(btn => {
                 btn.classList.remove('active-tab', 'text-white');
                 btn.classList.add('text-slate-300');
             });
             
-            // Show selected section
             const targetSection = document.getElementById(sectionId);
             if (targetSection) {
                 targetSection.classList.add('active', 'fade-in');
             }
             
-            // Highlight active nav button
             const activeButton = event.target.closest('.nav-btn');
             if (activeButton) {
                 activeButton.classList.add('active-tab', 'text-white');
                 activeButton.classList.remove('text-slate-300');
             }
             
-            // Scroll to top of content
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         
-        // Close drawer when pressing Escape
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeDrawer();
             }
         });
         
-        // Close drawer on large screens
         window.addEventListener('resize', function() {
             if (window.innerWidth > 1024) {
                 closeDrawer();
