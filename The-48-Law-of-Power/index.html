@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The 48 Laws of Power — Robert Greene | Summary</title>
+    <title>The 48 Laws of Power — Robert Greene | Bilingual Summary</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -16,6 +16,10 @@
         
         .justified-text { text-align: justify; }
         .mobile-text { font-size: 16px; line-height: 1.6; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } /* Default hidden */
+        .lang-en { display: block; }
         
         @media (max-width: 640px) {
             .mobile-text { font-size: 14px; line-height: 1.5; }
@@ -26,126 +30,72 @@
         }
         
         .nav-drawer {
-            position: fixed;
-            top: 0;
-            left: -320px;
-            width: 320px;
-            height: 100vh;
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
             background: linear-gradient(180deg, #1e293b 0%, #334155 100%);
-            transition: left 0.3s ease-in-out;
-            z-index: 1000;
+            transition: left 0.3s ease-in-out; z-index: 1000;
             box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
         }
-        
         .nav-drawer.open { left: 0; }
         
         .nav-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease-in-out;
-            z-index: 999;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
         }
-        
-        .nav-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
         
         .drawer-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1001;
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
             background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            border: none;
-            border-radius: 12px;
-            padding: 12px;
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            display: flex; align-items: center; gap: 6px;
         }
-        
-        .drawer-toggle:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-        }
-        
-        .drawer-toggle.open {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-        }
-        
-        .hamburger {
-            width: 24px;
-            height: 18px;
-            position: relative;
-        }
-        
-        .hamburger span {
-            display: block;
-            position: absolute;
-            height: 3px;
-            width: 100%;
-            background: white;
-            border-radius: 2px;
-            opacity: 1;
-            left: 0;
-            transform: rotate(0deg);
-            transition: .25s ease-in-out;
-        }
-        
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #3b82f6; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
         .hamburger span:nth-child(1) { top: 0px; }
         .hamburger span:nth-child(2) { top: 7px; }
         .hamburger span:nth-child(3) { top: 14px; }
-        
-        .drawer-toggle.open .hamburger span:nth-child(1) {
-            top: 7px;
-            transform: rotate(135deg);
-        }
-        
-        .drawer-toggle.open .hamburger span:nth-child(2) {
-            opacity: 0;
-            left: -60px;
-        }
-        
-        .drawer-toggle.open .hamburger span:nth-child(3) {
-            top: 7px;
-            transform: rotate(-135deg);
-        }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
         
         .nav-item { position: relative; overflow: hidden; }
-        .nav-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
         .nav-item:hover::before { left: 100%; }
         
-        @media (max-width: 768px) {
-            .nav-drawer { width: 280px; left: -280px; }
-            .drawer-toggle { top: 15px; left: 15px; padding: 10px; }
-        }
-        
-        @media (max-width: 480px) {
-            .nav-drawer { width: 260px; left: -260px; }
-            .drawer-toggle { top: 12px; left: 12px; padding: 8px; }
-            .hamburger { width: 20px; height: 15px; }
-        }
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
     </style>
 </head>
 <body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
-    <!-- Navigation Drawer Toggle -->
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
     <button class="drawer-toggle" onclick="toggleDrawer()">
         <div class="hamburger">
             <span></span>
@@ -154,10 +104,8 @@
         </div>
     </button>
     
-    <!-- Navigation Overlay -->
     <div class="nav-overlay" onclick="closeDrawer()"></div>
     
-    <!-- Navigation Drawer -->
     <nav class="nav-drawer">
         <div class="p-6 border-b border-slate-600">
             <div class="flex items-center space-x-3">
@@ -166,18 +114,25 @@
                 </div>
                 <div>
                     <h2 class="text-white font-semibold text-lg">The 48 Laws of Power</h2>
-                    <p class="text-slate-300 text-sm">Book Summary</p>
+                    <p class="text-slate-300 text-sm">
+                        <span class="lang-en">Book Summary</span>
+                        <span class="lang-id">Ringkasan Buku</span>
+                    </p>
                 </div>
             </div>
         </div>
         
         <div class="p-4">
-            <h3 class="text-slate-300 text-sm font-medium uppercase tracking-wider mb-4 px-2">Table of Contents</h3>
+            <h3 class="text-slate-300 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">Table of Contents</span>
+                <span class="lang-id">Daftar Isi</span>
+            </h3>
             <ul class="space-y-2">
                 <li class="nav-item">
                     <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 active-tab text-white flex items-center space-x-3">
                         <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">📖</span>
-                        <span>Introduction</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
                     </button>
                 </li>
                 <li class="nav-item">
@@ -185,7 +140,10 @@
                         <span class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
                         <div class="text-left">
                             <div class="font-medium">Part 1</div>
-                            <div class="text-xs text-slate-400">The Book & 48-Law Framework</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">The Book & 48-Law Framework</span>
+                                <span class="lang-id">Buku & Kerangka 48 Hukum</span>
+                            </div>
                         </div>
                     </button>
                 </li>
@@ -194,7 +152,10 @@
                         <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
                         <div class="text-left">
                             <div class="font-medium">Part 2</div>
-                            <div class="text-xs text-slate-400">Image & Perception Laws</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Image & Perception Laws</span>
+                                <span class="lang-id">Hukum Citra & Persepsi</span>
+                            </div>
                         </div>
                     </button>
                 </li>
@@ -203,26 +164,35 @@
                         <span class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
                         <div class="text-left">
                             <div class="font-medium">Part 3</div>
-                            <div class="text-xs text-slate-400">Emotion & Psychology Laws</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Emotion & Psychology Laws</span>
+                                <span class="lang-id">Hukum Emosi & Psikologi</span>
+                            </div>
                         </div>
                     </button>
                 </li>
                 <li class="nav-item">
                     <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
-                            <span class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
-                            <div class="text-left">
-                                <div class="font-medium">Part 4</div>
-                                <div class="text-xs text-slate-400">Timing & Strategic Laws</div>
+                        <span class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 4</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Timing & Strategic Laws</span>
+                                <span class="lang-id">Hukum Waktu & Strategi</span>
                             </div>
+                        </div>
                     </button>
                 </li>
                 <li class="nav-item">
                     <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
-                            <span class="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
-                            <div class="text-left">
-                                <div class="font-medium">Part 5</div>
-                                <div class="text-xs text-slate-400">Dominance, Protection & Conclusion</div>
+                        <span class="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 5</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Dominance, Protection & Conclusion</span>
+                                <span class="lang-id">Dominasi, Perlindungan & Kesimpulan</span>
                             </div>
+                        </div>
                     </button>
                 </li>
             </ul>
@@ -236,7 +206,6 @@
         </div>
     </nav>
 
-    <!-- Header -->
     <header class="bg-white shadow-sm border-b border-slate-200">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
             <div class="text-center">
@@ -244,7 +213,8 @@
                     The 48 Laws of Power
                 </h1>
                 <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
-                    Historical strategies for power, influence, and self-protection
+                    <span class="lang-en">Historical strategies for power, influence, and self-protection</span>
+                    <span class="lang-id">Strategi historis untuk kekuasaan, pengaruh, dan perlindungan diri</span>
                 </p>
                 <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-600 mx-auto mt-3 sm:mt-4 rounded-full"></div>
             </div>
@@ -255,64 +225,77 @@
         <main>
             <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
                     
-                <!-- Introduction -->
                 <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Introduction</span>
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">Introduction</span>
+                            <span class="lang-id">Pendahuluan</span>
+                        </span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            Welcome to “The 48 Laws of Power”
+                            <span class="lang-en">Welcome to “The 48 Laws of Power”</span>
+                            <span class="lang-id">Selamat Datang di “The 48 Laws of Power”</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
-                        <p class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-blue-500 pl-4 sm:pl-6 italic mobile-text justified-text">
-                            Power is present wherever humans gather — in families, companies, politics, 
-                            and friendships. If you do not understand it, you are often controlled by those who do.
-                        </p>
+                        <div class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-blue-500 pl-4 sm:pl-6 italic mobile-text justified-text">
+                            <span class="lang-en">Power is present wherever humans gather — in families, companies, politics, and friendships. If you do not understand it, you are often controlled by those who do.</span>
+                            <span class="lang-id">Kekuasaan hadir di mana pun manusia berkumpul — dalam keluarga, perusahaan, politik, dan persahabatan. Jika Anda tidak memahaminya, Anda sering dikendalikan oleh mereka yang memahaminya.</span>
+                        </div>
                         
-                        <p class="mobile-text justified-text">
-                            <em>The 48 Laws of Power</em> by Robert Greene is a provocative manual on power dynamics. 
-                            It analyzes how people gain, keep, and lose power across history — from royal courts and 
-                            battlefields to salons, corporations, and artistic circles. The tone is cold, strategic, 
-                            and often amoral: Greene describes what people <strong>do</strong>, not what they 
-                            <strong>should</strong> do.
-                        </p>
+                        <div class="mobile-text justified-text">
+                            <span class="lang-en">
+                                <em>The 48 Laws of Power</em> by Robert Greene is a provocative manual on power dynamics. It analyzes how people gain, keep, and lose power across history — from royal courts and battlefields to salons, corporations, and artistic circles. The tone is cold, strategic, and often amoral: Greene describes what people <strong>do</strong>, not what they <strong>should</strong> do.
+                            </span>
+                            <span class="lang-id">
+                                <em>The 48 Laws of Power</em> karya Robert Greene adalah panduan provokatif tentang dinamika kekuasaan. Buku ini menganalisis bagaimana orang mendapatkan, mempertahankan, dan kehilangan kekuasaan sepanjang sejarah — dari istana kerajaan dan medan perang hingga salon, perusahaan, dan lingkaran artistik. Nadanya dingin, strategis, dan sering kali amoral: Greene menjelaskan apa yang orang <strong>lakukan</strong>, bukan apa yang <strong>seharusnya</strong> mereka lakukan.
+                            </span>
+                        </div>
 
-                        <p class="mobile-text justified-text">
-                            This summary keeps the original structure (all 48 laws) but organizes them 
-                            into four big themes: <strong>image & perception</strong>, 
-                            <strong>emotion & psychology</strong>, <strong>timing & strategy</strong>, 
-                            and <strong>dominance & protection</strong>. You will see how each law fits into these 
-                            clusters while still retaining its original number and essence.
-                        </p>
+                        <div class="mobile-text justified-text">
+                            <span class="lang-en">
+                                This summary keeps the original structure (all 48 laws) but organizes them into four big themes: <strong>image & perception</strong>, <strong>emotion & psychology</strong>, <strong>timing & strategy</strong>, and <strong>dominance & protection</strong>. You will see how each law fits into these clusters while still retaining its original number and essence.
+                            </span>
+                            <span class="lang-id">
+                                Ringkasan ini mempertahankan struktur asli (seluruh 48 hukum) tetapi mengelompokkannya ke dalam empat tema besar: <strong>citra & persepsi</strong>, <strong>emosi & psikologi</strong>, <strong>waktu & strategi</strong>, serta <strong>dominasi & perlindungan</strong>. Anda akan melihat bagaimana setiap hukum sesuai dengan kelompok ini sambil tetap mempertahankan nomor dan esensi aslinya.
+                            </span>
+                        </div>
                         
                         <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-100">
-                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">What you will find in this summary:</h4>
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">
+                                <span class="lang-en">What you will find in this summary:</span>
+                                <span class="lang-id">Apa yang akan Anda temukan dalam ringkasan ini:</span>
+                            </h4>
                             <ul class="space-y-2 text-slate-700 mobile-text">
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">A quick overview of the book’s structure and mindset (Part 1).</span>
+                                    <span class="justified-text lang-en">A quick overview of the book’s structure and mindset (Part 1).</span>
+                                    <span class="justified-text lang-id">Tinjauan cepat tentang struktur dan pola pikir buku (Bagian 1).</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">All 48 laws explained, grouped by theme, in clear modern language (Parts 2–5).</span>
+                                    <span class="justified-text lang-en">All 48 laws explained, grouped by theme, in clear modern language (Parts 2–5).</span>
+                                    <span class="justified-text lang-id">Semua 48 hukum dijelaskan, dikelompokkan berdasarkan tema, dalam bahasa modern yang jelas (Bagian 2–5).</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">A closing reflection on how to apply this knowledge without losing your values (Part 5).</span>
+                                    <span class="justified-text lang-en">A closing reflection on how to apply this knowledge without losing your values (Part 5).</span>
+                                    <span class="justified-text lang-id">Refleksi penutup tentang cara menerapkan pengetahuan ini tanpa kehilangan nilai-nilai Anda (Bagian 5).</span>
                                 </li>
                             </ul>
                         </div>
                         
-                        <p class="mobile-text justified-text">
-                            You can read straight through or jump directly to the parts that matter most to you — 
-                            for example, how to manage your image at work, protect yourself from manipulation, 
-                            or better understand the “games” being played in politics and business.
-                        </p>
+                        <div class="mobile-text justified-text">
+                            <span class="lang-en">
+                                You can read straight through or jump directly to the parts that matter most to you — for example, how to manage your image at work, protect yourself from manipulation, or better understand the “games” being played in politics and business.
+                            </span>
+                            <span class="lang-id">
+                                Anda dapat membaca secara berurutan atau langsung melompat ke bagian yang paling penting bagi Anda — misalnya, cara mengelola citra Anda di tempat kerja, melindungi diri dari manipulasi, atau lebih memahami "permainan" yang dimainkan dalam politik dan bisnis.
+                            </span>
+                        </div>
                     </div>
                 </section>
 
-                <!-- Part 1 – The Book & 48-Law Framework -->
                 <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
@@ -320,529 +303,478 @@
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">
-                            Robert Greene, Historical Sources & the 48-Law Architecture
+                            <span class="lang-en">Robert Greene, Historical Sources & the 48-Law Architecture</span>
+                            <span class="lang-id">Robert Greene, Sumber Sejarah & Arsitektur 48 Hukum</span>
                         </h3>
                         <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
 
-<p>
-Robert Greene is an American author who worked many different jobs before writing. 
-He became obsessed with why some people quietly rise to power while others — sometimes more talented — 
-get stuck or destroyed by politics. <em>The 48 Laws of Power</em> (1998) was his attempt to map those patterns.
-</p>
+                            <p class="lang-en">
+                                Robert Greene is an American author who worked many different jobs before writing. He became obsessed with why some people quietly rise to power while others — sometimes more talented — get stuck or destroyed by politics. <em>The 48 Laws of Power</em> (1998) was his attempt to map those patterns.
+                            </p>
+                            <p class="lang-id">
+                                Robert Greene adalah seorang penulis Amerika yang bekerja di berbagai pekerjaan sebelum menulis. Dia menjadi terobsesi dengan mengapa beberapa orang diam-diam naik ke kekuasaan sementara yang lain — terkadang lebih berbakat — terjebak atau dihancurkan oleh politik. <em>The 48 Laws of Power</em> (1998) adalah usahanya untuk memetakan pola-pola tersebut.
+                            </p>
+                            <br>
 
-<p>
-To build the book, Greene studied:
-</p>
+                            <p class="lang-en">To build the book, Greene studied:</p>
+                            <p class="lang-id">Untuk membangun buku ini, Greene mempelajari:</p>
 
-<ul>
-  <li>European royal courts and the art of court politics,</li>
-  <li>Chinese and Japanese strategic texts,</li>
-  <li>Military campaigns and diplomatic negotiations,</li>
-  <li>Artists, con artists, revolutionaries, and rulers.</li>
-</ul>
+                            <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                <li>European royal courts and the art of court politics,</li>
+                                <li>Chinese and Japanese strategic texts,</li>
+                                <li>Military campaigns and diplomatic negotiations,</li>
+                                <li>Artists, con artists, revolutionaries, and rulers.</li>
+                            </ul>
+                            <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                <li>Istana kerajaan Eropa dan seni politik istana,</li>
+                                <li>Teks strategis Tiongkok dan Jepang,</li>
+                                <li>Kampanye militer dan negosiasi diplomatik,</li>
+                                <li>Seniman, penipu, revolusioner, dan penguasa.</li>
+                            </ul>
+                            <br>
 
-<p>
-From these stories, he extracted “laws” — recurring principles about power. 
-Each law has a similar structure: a bold statement, historical examples, interpretation, 
-and a “reversal” that shows when the law might backfire or shouldn’t be used.
-</p>
+                            <p class="lang-en">
+                                From these stories, he extracted “laws” — recurring principles about power. Each law has a similar structure: a bold statement, historical examples, interpretation, and a “reversal” that shows when the law might backfire or shouldn’t be used.
+                            </p>
+                            <p class="lang-id">
+                                Dari kisah-kisah ini, dia menyarikan "hukum" — prinsip berulang tentang kekuasaan. Setiap hukum memiliki struktur serupa: pernyataan tegas, contoh sejarah, interpretasi, dan "pembalikan" yang menunjukkan kapan hukum mungkin menjadi bumerang atau tidak boleh digunakan.
+                            </p>
+                            <br>
 
-<h3>The 48 Laws as a Toolkit</h3>
+                            <h3 class="lang-en">The 48 Laws as a Toolkit</h3>
+                            <h3 class="lang-id">48 Hukum sebagai Perangkat Alat</h3>
 
-<p>
-The book is not a narrative; it is a toolkit of 48 strategic rules. Some examples:
-</p>
+                            <p class="lang-en">The book is not a narrative; it is a toolkit of 48 strategic rules. Some examples:</p>
+                            <p class="lang-id">Buku ini bukan narasi; ini adalah seperangkat alat berisi 48 aturan strategis. Beberapa contoh:</p>
 
-<ul>
-  <li>Laws about <strong>image and perception</strong> (how you appear in public).</li>
-  <li>Laws about <strong>emotion and psychology</strong> (how to read and influence people).</li>
-  <li>Laws about <strong>timing and strategy</strong> (when and how to act).</li>
-  <li>Laws about <strong>dominance and protection</strong> (how to win or avoid being crushed).</li>
-</ul>
+                            <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                <li>Laws about <strong>image and perception</strong> (how you appear in public).</li>
+                                <li>Laws about <strong>emotion and psychology</strong> (how to read and influence people).</li>
+                                <li>Laws about <strong>timing and strategy</strong> (when and how to act).</li>
+                                <li>Laws about <strong>dominance and protection</strong> (how to win or avoid being crushed).</li>
+                            </ul>
+                            <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                <li>Hukum tentang <strong>citra dan persepsi</strong> (bagaimana Anda tampil di depan umum).</li>
+                                <li>Hukum tentang <strong>emosi dan psikologi</strong> (cara membaca dan memengaruhi orang).</li>
+                                <li>Hukum tentang <strong>waktu dan strategi</strong> (kapan dan bagaimana bertindak).</li>
+                                <li>Hukum tentang <strong>dominasi dan perlindungan</strong> (cara menang atau menghindari kehancuran).</li>
+                            </ul>
+                            <br>
 
-<p>
-Greene does not tell you to use all the laws all the time. 
-He expects readers to:
-</p>
+                            <p class="lang-en">
+                                Greene does not tell you to use all the laws all the time. He expects readers to:
+                            </p>
+                            <p class="lang-id">
+                                Greene tidak menyuruh Anda menggunakan semua hukum setiap saat. Dia mengharapkan pembaca untuk:
+                            </p>
 
-<ul>
-  <li>Recognize these patterns in others,</li>
-  <li>Protect themselves from manipulation,</li>
-  <li>Use some laws selectively, in line with their own goals and ethics.</li>
-</ul>
+                            <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                <li>Recognize these patterns in others,</li>
+                                <li>Protect themselves from manipulation,</li>
+                                <li>Use some laws selectively, in line with their own goals and ethics.</li>
+                            </ul>
+                            <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                <li>Mengenali pola-pola ini pada orang lain,</li>
+                                <li>Melindungi diri dari manipulasi,</li>
+                                <li>Menggunakan beberapa hukum secara selektif, sejalan dengan tujuan dan etika mereka sendiri.</li>
+                            </ul>
 
-<p>
-This summary keeps the original numbering (Law 1 to Law 48) but groups the laws into four main parts. 
-That way you can see how the rules fit into bigger themes instead of feeling like a random list.
-</p>
-
-</div>
+                        </div>
                         
                         <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl">
-                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Key facts about the book:</h4>
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">
+                                <span class="lang-en">Key facts about the book:</span>
+                                <span class="lang-id">Fakta kunci tentang buku ini:</span>
+                            </h4>
                             <ul class="space-y-2 mobile-text">
-                                <li class="justified-text"><strong>Publication year:</strong><br>1998.</li> 
-                                <li class="justified-text"><strong>Author:</strong><br>Robert Greene.</li>
-                                <li class="justified-text"><strong>Core claim:</strong><br>Power follows psychological and social patterns that repeat across time. Ignoring them makes you vulnerable.</li>
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>Publication year:</strong> 1998.</span>
+                                    <span class="lang-id"><strong>Tahun terbit:</strong> 1998.</span>
+                                </li> 
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>Author:</strong> Robert Greene.</span>
+                                    <span class="lang-id"><strong>Penulis:</strong> Robert Greene.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>Core claim:</strong> Power follows psychological and social patterns that repeat across time. Ignoring them makes you vulnerable.</span>
+                                    <span class="lang-id"><strong>Klaim inti:</strong> Kekuasaan mengikuti pola psikologis dan sosial yang berulang sepanjang masa. Mengabaikannya membuat Anda rentan.</span>
+                                </li>
                             </ul>
                         </div>
                         
-                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">How to Read the 48 Laws</h3>
+                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">
+                            <span class="lang-en">How to Read the 48 Laws</span>
+                            <span class="lang-id">Cara Membaca 48 Hukum</span>
+                        </h3>
                         <p class="mobile-text justified-text">
-                            There are two main ways to approach this book:
+                            <span class="lang-en">There are two main ways to approach this book:</span>
+                            <span class="lang-id">Ada dua cara utama untuk mendekati buku ini:</span>
                         </p>
                         
                         <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-amber-200">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                                 <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                                    <h5 class="font-medium text-blue-700 text-sm sm:text-base">As an Offensive Manual</h5>
-                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
-                                        Learn how to gain advantage, impress superiors, outmaneuver rivals, 
-                                        and design long-term strategies in competitive environments.
-                                    </p>
+                                    <h5 class="font-medium text-blue-700 text-sm sm:text-base">
+                                        <span class="lang-en">As an Offensive Manual</span>
+                                        <span class="lang-id">Sebagai Panduan Ofensif</span>
+                                    </h5>
+                                    <div class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        <span class="lang-en">Learn how to gain advantage, impress superiors, outmaneuver rivals, and design long-term strategies in competitive environments.</span>
+                                        <span class="lang-id">Pelajari cara mendapatkan keuntungan, mengesankan atasan, mengungguli saingan, dan merancang strategi jangka panjang dalam lingkungan yang kompetitif.</span>
+                                    </div>
                                 </div>
                                 <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                                    <h5 class="font-medium text-green-700 text-sm sm:text-base">As a Defensive Radar</h5>
-                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
-                                        Learn to recognize manipulation, emotional games, and power traps so 
-                                        you can protect your dignity, boundaries, and long-term position.
-                                    </p>
+                                    <h5 class="font-medium text-green-700 text-sm sm:text-base">
+                                        <span class="lang-en">As a Defensive Radar</span>
+                                        <span class="lang-id">Sebagai Radar Defensif</span>
+                                    </h5>
+                                    <div class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        <span class="lang-en">Learn to recognize manipulation, emotional games, and power traps so you can protect your dignity, boundaries, and long-term position.</span>
+                                        <span class="lang-id">Belajar mengenali manipulasi, permainan emosional, dan jebakan kekuasaan sehingga Anda dapat melindungi martabat, batasan, dan posisi jangka panjang Anda.</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <p class="mobile-text justified-text">
-                            In the next parts, we go through all 48 laws, but grouped by theme so that you can connect 
-                            them to real situations in work, politics, and personal life.
+                            <span class="lang-en">In the next parts, we go through all 48 laws, but grouped by theme so that you can connect them to real situations in work, politics, and personal life.</span>
+                            <span class="lang-id">Di bagian selanjutnya, kita akan membahas semua 48 hukum, tetapi dikelompokkan berdasarkan tema sehingga Anda dapat menghubungkannya dengan situasi nyata dalam pekerjaan, politik, dan kehidupan pribadi.</span>
                         </p>
                     </div>
                 </section>
 
-                <!-- Part 2 – Image & Perception Laws -->
                 <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            Laws of Image & Perception
+                            <span class="lang-en">Laws of Image & Perception</span>
+                            <span class="lang-id">Hukum Citra & Persepsi</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <div class="bg-blue-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
                             <h3 class="text-lg sm:text-xl font-semibold text-blue-800 mb-3 mobile-subtitle">
-                                Why Appearance and Reputation Matter
+                                <span class="lang-en">Why Appearance and Reputation Matter</span>
+                                <span class="lang-id">Mengapa Penampilan dan Reputasi Itu Penting</span>
                             </h3>
                             <p class="text-blue-700 mobile-text justified-text">
-                                People rarely see your intentions or inner reality. They see your <strong>signal</strong>: 
-                                how you speak, move, dress, and perform. These laws show how Greene thinks you should 
-                                manage that signal to increase power, or at least avoid unnecessary danger.
+                                <span class="lang-en">People rarely see your intentions or inner reality. They see your <strong>signal</strong>: how you speak, move, dress, and perform. These laws show how Greene thinks you should manage that signal to increase power, or at least avoid unnecessary danger.</span>
+                                <span class="lang-id">Orang jarang melihat niat atau realitas batin Anda. Mereka melihat <strong>sinyal</strong> Anda: cara Anda berbicara, bergerak, berpakaian, dan tampil. Hukum-hukum ini menunjukkan bagaimana Greene berpikir Anda harus mengelola sinyal itu untuk meningkatkan kekuasaan, atau setidaknya menghindari bahaya yang tidak perlu.</span>
                             </p>
                         </div>
 
                         <div class="bg-gradient-to-r from-slate-50 to-slate-100 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-slate-200">
                             <ol class="list-decimal ml-5 space-y-3 mobile-text text-slate-700">
                                 <li class="justified-text">
-                                    <strong>Law 1 – Never Outshine the Master.</strong><br>
-                                    Do not make your superior feel overshadowed. If you appear too brilliant or independent, 
-                                    you can trigger envy and fear. Instead, let them shine and subtly connect your success to theirs.
+                                    <span class="lang-en"><strong>Law 1 – Never Outshine the Master.</strong><br>Do not make your superior feel overshadowed. If you appear too brilliant or independent, you can trigger envy and fear. Instead, let them shine and subtly connect your success to theirs.</span>
+                                    <span class="lang-id"><strong>Hukum 1 – Jangan Pernah Mengungguli Atasan.</strong><br>Jangan membuat atasan Anda merasa tersaingi. Jika Anda tampak terlalu brilian atau mandiri, Anda dapat memicu iri hati dan ketakutan. Biarkan mereka bersinar dan hubungkan kesuksesan Anda dengan kesuksesan mereka.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 3 – Conceal Your Intentions.</strong><br>
-                                    If people see your true goal too early, they can block or undermine it. 
-                                    Greene suggests appearing harmless, distracted, or interested in something else, 
-                                    while your real plan develops quietly in the background.
+                                    <span class="lang-en"><strong>Law 3 – Conceal Your Intentions.</strong><br>If people see your true goal too early, they can block or undermine it. Greene suggests appearing harmless, distracted, or interested in something else, while your real plan develops quietly in the background.</span>
+                                    <span class="lang-id"><strong>Hukum 3 – Sembunyikan Niat Anda.</strong><br>Jika orang melihat tujuan Anda terlalu dini, mereka dapat menghalangi atau merusaknya. Greene menyarankan untuk tampil tidak berbahaya atau teralihkan, sementara rencana Anda berkembang diam-diam.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 4 – Always Say Less Than Necessary.</strong><br>
-                                    The more you talk, the more you reveal insecurities, contradictions, and plans. 
-                                    Powerful people tend to be economical with words. Silence, or short controlled statements, 
-                                    often create more respect and mystery.
+                                    <span class="lang-en"><strong>Law 4 – Always Say Less Than Necessary.</strong><br>The more you talk, the more you reveal insecurities, contradictions, and plans. Powerful people tend to be economical with words. Silence, or short controlled statements, often create more respect and mystery.</span>
+                                    <span class="lang-id"><strong>Hukum 4 – Selalu Bicara Lebih Sedikit dari yang Diperlukan.</strong><br>Semakin banyak Anda bicara, semakin banyak Anda mengungkapkan rasa tidak aman. Orang berkuasa cenderung hemat kata-kata. Keheningan sering menciptakan rasa hormat dan misteri.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 5 – So Much Depends on Reputation – Guard It with Your Life.</strong><br>
-                                    Reputation is like a power bank: people decide how to treat you based on what they have heard. 
-                                    Protect it fiercely, respond quickly to serious attacks, and build a track record that makes 
-                                    others hesitate before crossing you.
+                                    <span class="lang-en"><strong>Law 5 – So Much Depends on Reputation – Guard It with Your Life.</strong><br>Reputation is like a power bank: people decide how to treat you based on what they have heard. Protect it fiercely, respond quickly to serious attacks, and build a track record that makes others hesitate before crossing you.</span>
+                                    <span class="lang-id"><strong>Hukum 5 – Begitu Banyak Bergantung pada Reputasi – Jagalah dengan Nyawa Anda.</strong><br>Reputasi seperti bank kekuasaan. Lindungi dengan keras, tanggapi serangan serius dengan cepat, dan bangun rekam jejak yang membuat orang ragu untuk melawan Anda.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 6 – Court Attention at All Costs.</strong><br>
-                                    In crowded environments, being invisible is dangerous. Greene advises making yourself 
-                                    visible through bold actions, strong symbols, or memorable behavior — but without looking desperate. 
-                                    The key is standing out with purpose.
+                                    <span class="lang-en"><strong>Law 6 – Court Attention at All Costs.</strong><br>In crowded environments, being invisible is dangerous. Greene advises making yourself visible through bold actions, strong symbols, or memorable behavior — but without looking desperate. The key is standing out with purpose.</span>
+                                    <span class="lang-id"><strong>Hukum 6 – Cari Perhatian dengan Segala Cara.</strong><br>Di lingkungan yang ramai, tidak terlihat itu berbahaya. Greene menyarankan untuk membuat diri Anda terlihat melalui tindakan berani atau simbol yang kuat — tetapi tanpa terlihat putus asa.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 26 – Keep Your Hands Clean.</strong><br>
-                                    When unpopular actions must be taken, the powerful often keep their own image “pure” while 
-                                    delegating the dirty work. This law warns that being too closely associated with scandals or 
-                                    cruelty will ruin your public standing.
+                                    <span class="lang-en"><strong>Law 26 – Keep Your Hands Clean.</strong><br>When unpopular actions must be taken, the powerful often keep their own image “pure” while delegating the dirty work. This law warns that being too closely associated with scandals or cruelty will ruin your public standing.</span>
+                                    <span class="lang-id"><strong>Hukum 26 – Jaga Tangan Anda Tetap Bersih.</strong><br>Ketika tindakan tidak populer harus diambil, orang berkuasa sering menjaga citra mereka tetap "murni" sambil mendelegasikan pekerjaan kotor. Terlalu dekat dengan skandal akan merusak posisi Anda.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 27 – Play on People’s Need to Believe to Create a Cultlike Following.</strong><br>
-                                    Many people crave meaning, direction, and something bigger than themselves. 
-                                    Leaders who provide a strong story, rituals, and symbols can build intense loyalty — 
-                                    though this can be used for good or manipulation.
+                                    <span class="lang-en"><strong>Law 27 – Play on People’s Need to Believe to Create a Cultlike Following.</strong><br>Many people crave meaning, direction, and something bigger than themselves. Leaders who provide a strong story, rituals, and symbols can build intense loyalty — though this can be used for good or manipulation.</span>
+                                    <span class="lang-id"><strong>Hukum 27 – Mainkan Kebutuhan Orang untuk Percaya guna Menciptakan Pengikut Setia.</strong><br>Banyak orang mendambakan makna. Pemimpin yang memberikan cerita, ritual, dan simbol yang kuat dapat membangun loyalitas yang intens.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 30 – Make Your Accomplishments Seem Effortless.</strong><br>
-                                    When you display too much visible struggle, people may doubt your competence. 
-                                    Greene suggests hiding the sweat and letting your results look smooth and natural, 
-                                    as if they were simply the product of your character and talent.
+                                    <span class="lang-en"><strong>Law 30 – Make Your Accomplishments Seem Effortless.</strong><br>When you display too much visible struggle, people may doubt your competence. Greene suggests hiding the sweat and letting your results look smooth and natural, as if they were simply the product of your character and talent.</span>
+                                    <span class="lang-id"><strong>Hukum 30 – Buat Pencapaian Anda Tampak Tanpa Usaha.</strong><br>Jika Anda terlihat terlalu berjuang, orang meragukan kompetensi Anda. Sembunyikan keringat dan biarkan hasil Anda terlihat alami, seolah-olah itu produk dari bakat Anda.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 34 – Be Royal in Your Own Fashion: Act Like a King to Be Treated Like One.</strong><br>
-                                    People take cues from how you treat yourself. If you act with dignity, set high standards, 
-                                    and refuse poor treatment, others are more likely to respect you. If you accept disrespect, 
-                                    they learn that it is allowed.
+                                    <span class="lang-en"><strong>Law 34 – Be Royal in Your Own Fashion: Act Like a King to Be Treated Like One.</strong><br>People take cues from how you treat yourself. If you act with dignity, set high standards, and refuse poor treatment, others are more likely to respect you. If you accept disrespect, they learn that it is allowed.</span>
+                                    <span class="lang-id"><strong>Hukum 34 – Bertindaklah Seperti Raja agar Diperlakukan Seperti Raja.</strong><br>Orang mengambil isyarat dari cara Anda memperlakukan diri sendiri. Jika Anda bertindak dengan bermartabat dan menetapkan standar tinggi, orang lain akan lebih menghormati Anda.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 37 – Create Compelling Spectacles.</strong><br>
-                                    Dramatic gestures, events, or visual symbols can shape perception more strongly than 
-                                    logical arguments. Spectacles fix your image in memory and can rally support or intimidate rivals.
+                                    <span class="lang-en"><strong>Law 37 – Create Compelling Spectacles.</strong><br>Dramatic gestures, events, or visual symbols can shape perception more strongly than logical arguments. Spectacles fix your image in memory and can rally support or intimidate rivals.</span>
+                                    <span class="lang-id"><strong>Hukum 37 – Ciptakan Tontonan yang Memikat.</strong><br>Gerakan dramatis atau simbol visual dapat membentuk persepsi lebih kuat daripada argumen logis. Tontonan menanamkan citra Anda dalam ingatan.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 38 – Think as You Like but Behave Like Others.</strong><br>
-                                    You can keep unconventional ideas inside, but openly rejecting social norms in a rigid way 
-                                    often triggers resistance or isolation. Adapt on the surface while preserving your freedom of thought.
+                                    <span class="lang-en"><strong>Law 38 – Think as You Like but Behave Like Others.</strong><br>You can keep unconventional ideas inside, but openly rejecting social norms in a rigid way often triggers resistance or isolation. Adapt on the surface while preserving your freedom of thought.</span>
+                                    <span class="lang-id"><strong>Hukum 38 – Berpikirlah Sesuka Hati tetapi Bertindaklah Seperti Orang Lain.</strong><br>Menolak norma sosial secara terbuka sering memicu resistensi. Beradaptasilah di permukaan sambil menjaga kebebasan berpikir Anda.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 46 – Never Appear Too Perfect.</strong><br>
-                                    Perfection provokes envy and hidden hostility. Showing small, harmless flaws can make you 
-                                    more human and less threatening, reducing the urge of others to attack you.
+                                    <span class="lang-en"><strong>Law 46 – Never Appear Too Perfect.</strong><br>Perfection provokes envy and hidden hostility. Showing small, harmless flaws can make you more human and less threatening, reducing the urge of others to attack you.</span>
+                                    <span class="lang-id"><strong>Hukum 46 – Jangan Pernah Terlihat Terlalu Sempurna.</strong><br>Kesempurnaan memancing rasa iri. Menunjukkan kelemahan kecil dapat membuat Anda lebih manusiawi dan tidak terlalu mengancam.</span>
                                 </li>
                             </ol>
                         </div>
 
                         <p class="mobile-text justified-text">
-                            These laws remind you that in many arenas you are judged first by how you <em>appear</em>, 
-                            not by your inner intentions. Managing perception is not about lying to yourself; 
-                            it is about understanding how other people actually make decisions.
+                            <span class="lang-en">These laws remind you that in many arenas you are judged first by how you <em>appear</em>, not by your inner intentions. Managing perception is not about lying to yourself; it is about understanding how other people actually make decisions.</span>
+                            <span class="lang-id">Hukum-hukum ini mengingatkan Anda bahwa di banyak arena Anda dinilai pertama kali dari bagaimana Anda <em>tampak</em>, bukan dari niat batin Anda. Mengelola persepsi bukan tentang membohongi diri sendiri; ini tentang memahami bagaimana orang lain membuat keputusan.</span>
                         </p>
                     </div>
                 </section>
 
-                <!-- Part 3 – Emotion & Psychology Laws -->
                 <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            Laws of Emotion & Psychology
+                            <span class="lang-en">Laws of Emotion & Psychology</span>
+                            <span class="lang-id">Hukum Emosi & Psikologi</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <p class="text-base sm:text-lg text-slate-600 mobile-text justified-text">
-                            Power is not just about visible moves; it is deeply psychological. 
-                            These laws focus on trust, fear, envy, desire, and belief — and how Greene thinks 
-                            they can be used or defended against.
+                            <span class="lang-en">Power is not just about visible moves; it is deeply psychological. These laws focus on trust, fear, envy, desire, and belief — and how Greene thinks they can be used or defended against.</span>
+                            <span class="lang-id">Kekuasaan bukan hanya tentang langkah yang terlihat; ini sangat psikologis. Hukum-hukum ini berfokus pada kepercayaan, ketakutan, iri hati, hasrat, dan keyakinan.</span>
                         </p>
                         
                         <div class="bg-green-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-green-200">
                             <ol class="list-decimal ml-5 space-y-3 mobile-text text-slate-700">
                                 <li class="justified-text">
-                                    <strong>Law 2 – Never Put Too Much Trust in Friends, Learn How to Use Enemies.</strong><br>
-                                    Friends may turn envious, entitled, or careless with your interests. 
-                                    Former enemies, once reconciled, sometimes prove more loyal because they have something to prove. 
-                                    The deeper lesson: do not be blind about human motives.
+                                    <span class="lang-en"><strong>Law 2 – Never Put Too Much Trust in Friends, Learn How to Use Enemies.</strong><br>Friends may turn envious, entitled, or careless with your interests. Former enemies, once reconciled, sometimes prove more loyal because they have something to prove.</span>
+                                    <span class="lang-id"><strong>Hukum 2 – Jangan Terlalu Percaya pada Teman, Belajarlah Menggunakan Musuh.</strong><br>Teman bisa menjadi iri atau ceroboh. Mantan musuh, setelah berdamai, terkadang terbukti lebih setia karena mereka harus membuktikan diri.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 10 – Infection: Avoid the Unhappy and Unlucky.</strong><br>
-                                    Emotions spread. Constant exposure to negativity, chaos, or victim mentality 
-                                    can quietly sabotage your mindset. Greene recommends limiting your exposure 
-                                    to chronically miserable people if you want a clearer, stronger inner state.
+                                    <span class="lang-en"><strong>Law 10 – Infection: Avoid the Unhappy and Unlucky.</strong><br>Emotions spread. Constant exposure to negativity, chaos, or victim mentality can quietly sabotage your mindset. Greene recommends limiting your exposure to chronically miserable people.</span>
+                                    <span class="lang-id"><strong>Hukum 10 – Infeksi: Hindari Orang yang Tidak Bahagia dan Sial.</strong><br>Emosi menular. Paparan terus-menerus terhadap kenegatifan atau mentalitas korban dapat menyabotase pola pikir Anda.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 11 – Learn to Keep People Dependent on You.</strong><br>
-                                    If others truly need your skills, networks, or decisions, they are less likely to discard you. 
-                                    Greene argues that being too replaceable weakens your position; cultivating unique value 
-                                    stabilizes your influence.
+                                    <span class="lang-en"><strong>Law 11 – Learn to Keep People Dependent on You.</strong><br>If others truly need your skills, networks, or decisions, they are less likely to discard you. Greene argues that being too replaceable weakens your position.</span>
+                                    <span class="lang-id"><strong>Hukum 11 – Belajarlah Membuat Orang Bergantung pada Anda.</strong><br>Jika orang lain benar-benar membutuhkan keterampilan atau keputusan Anda, mereka tidak akan membuang Anda. Terlalu mudah digantikan melemahkan posisi Anda.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 12 – Use Selective Honesty and Generosity to Disarm Your Victim.</strong><br>
-                                    A well-timed act of honesty or generosity can create trust that covers many later moves. 
-                                    Greene warns that people lower their guard when they feel you are “on their side,” 
-                                    making them easier to influence.
+                                    <span class="lang-en"><strong>Law 12 – Use Selective Honesty and Generosity to Disarm Your Victim.</strong><br>A well-timed act of honesty or generosity can create trust that covers many later moves. Greene warns that people lower their guard when they feel you are “on their side.”</span>
+                                    <span class="lang-id"><strong>Hukum 12 – Gunakan Kejujuran dan Kemurahan Hati Selektif untuk Melucuti Korban.</strong><br>Tindakan jujur yang tepat waktu dapat menciptakan kepercayaan. Orang menurunkan pertahanan saat merasa Anda di pihak mereka.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 13 – When Asking for Help, Appeal to People’s Self-Interest.</strong><br>
-                                    Rather than begging for pity, show others how helping you will benefit their goals, image, 
-                                    or security. People are more responsive to opportunities than to pure charity.
+                                    <span class="lang-en"><strong>Law 13 – When Asking for Help, Appeal to People’s Self-Interest.</strong><br>Rather than begging for pity, show others how helping you will benefit their goals, image, or security. People are more responsive to opportunities than to pure charity.</span>
+                                    <span class="lang-id"><strong>Hukum 13 – Saat Meminta Bantuan, Panggil Kepentingan Diri Orang Lain.</strong><br>Daripada memohon belas kasihan, tunjukkan bagaimana membantu Anda akan menguntungkan mereka. Orang lebih responsif terhadap peluang.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 17 – Keep Others in Suspended Terror: Cultivate an Air of Unpredictability.</strong><br>
-                                    If people cannot easily predict you, they hesitate to attack or oppose you. 
-                                    Occasional, controlled unpredictability can make others cautious — 
-                                    though overuse can make you seem unstable.
+                                    <span class="lang-en"><strong>Law 17 – Keep Others in Suspended Terror: Cultivate an Air of Unpredictability.</strong><br>If people cannot easily predict you, they hesitate to attack or oppose you. Occasional, controlled unpredictability can make others cautious.</span>
+                                    <span class="lang-id"><strong>Hukum 17 – Biarkan Orang Lain dalam Teror yang Tertunda: Tumbuhkan Suasana Tidak Dapat Diprediksi.</strong><br>Jika orang tidak bisa memprediksi Anda, mereka ragu untuk menyerang. Ketidakpastian yang terkendali membuat orang lain berhati-hati.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 32 – Play to People’s Fantasies.</strong><br>
-                                    People are often driven more by dreams and illusions than by rational analysis. 
-                                    Appealing to their fantasies — of freedom, status, romance, or security — 
-                                    can be far more persuasive than cold facts.
+                                    <span class="lang-en"><strong>Law 32 – Play to People’s Fantasies.</strong><br>People are often driven more by dreams and illusions than by rational analysis. Appealing to their fantasies — of freedom, status, romance, or security — can be far more persuasive.</span>
+                                    <span class="lang-id"><strong>Hukum 32 – Mainkan Fantasi Orang.</strong><br>Orang sering didorong oleh mimpi daripada analisis rasional. Menarik fantasi mereka — tentang kebebasan, status, atau keamanan — bisa jauh lebih persuasif.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 33 – Discover Each Man’s Thumbscrew.</strong><br>
-                                    Everyone has a pressure point: a fear, desire, secret, or need for validation. 
-                                    Observing what excites or upsets them reveals how they can be motivated or manipulated. 
-                                    Ethically, this awareness can also help you avoid being exploited.
+                                    <span class="lang-en"><strong>Law 33 – Discover Each Man’s Thumbscrew.</strong><br>Everyone has a pressure point: a fear, desire, secret, or need for validation. Observing what excites or upsets them reveals how they can be motivated or manipulated.</span>
+                                    <span class="lang-id"><strong>Hukum 33 – Temukan Titik Lemah Setiap Orang.</strong><br>Setiap orang punya titik tekan: ketakutan, hasrat, atau kebutuhan validasi. Mengamati ini mengungkapkan cara memotivasi mereka.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 39 – Stir Up Waters to Catch Fish.</strong><br>
-                                    When emotions are stirred, people show their true character. 
-                                    Greene recommends intentionally creating “waves” at times — not out of cruelty, 
-                                    but to reveal hidden agendas and weaknesses.
+                                    <span class="lang-en"><strong>Law 39 – Stir Up Waters to Catch Fish.</strong><br>When emotions are stirred, people show their true character. Greene recommends intentionally creating “waves” at times to reveal hidden agendas and weaknesses.</span>
+                                    <span class="lang-id"><strong>Hukum 39 – Aduk Air untuk Menangkap Ikan.</strong><br>Saat emosi diaduk, orang menunjukkan karakter asli mereka. Greene menyarankan menciptakan "gelombang" untuk mengungkap kelemahan.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 40 – Despise the Free Lunch.</strong><br>
-                                    What appears free almost always has strings attached. 
-                                    Accepting too many favors can trap you in invisible debts. 
-                                    Maintaining independence — financial and emotional — keeps your mind clearer.
+                                    <span class="lang-en"><strong>Law 40 – Despise the Free Lunch.</strong><br>What appears free almost always has strings attached. Accepting too many favors can trap you in invisible debts. Maintaining independence keeps your mind clearer.</span>
+                                    <span class="lang-id"><strong>Hukum 40 – Benci Makan Siang Gratis.</strong><br>Apa yang tampak gratis hampir selalu ada pamrihnya. Menerima terlalu banyak bantuan bisa menjebak Anda dalam hutang tak terlihat.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 43 – Work on the Hearts and Minds of Others.</strong><br>
-                                    Lasting power comes from internal buy-in, not just external obedience. 
-                                    Engage people’s feelings, values, and sense of meaning, so they follow you willingly, 
-                                    not just out of fear.
+                                    <span class="lang-en"><strong>Law 43 – Work on the Hearts and Minds of Others.</strong><br>Lasting power comes from internal buy-in, not just external obedience. Engage people’s feelings, values, and sense of meaning, so they follow you willingly.</span>
+                                    <span class="lang-id"><strong>Hukum 43 – Kerjakan Hati dan Pikiran Orang Lain.</strong><br>Kekuasaan yang langgeng datang dari penerimaan internal. Libatkan perasaan dan nilai orang agar mereka mengikuti Anda dengan sukarela.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 44 – Disarm and Infuriate with the Mirror Effect.</strong><br>
-                                    By reflecting someone’s behavior — their tone, arguments, or even aggression — 
-                                    you can unsettle them and expose their tactics. They become frustrated when they see 
-                                    their own moves used against them.
+                                    <span class="lang-en"><strong>Law 44 – Disarm and Infuriate with the Mirror Effect.</strong><br>By reflecting someone’s behavior — their tone, arguments, or even aggression — you can unsettle them and expose their tactics.</span>
+                                    <span class="lang-id"><strong>Hukum 44 – Lucuti dan Marahkan dengan Efek Cermin.</strong><br>Dengan memantulkan perilaku seseorang — nada atau argumen mereka — Anda bisa membuat mereka gelisah dan mengungkap taktik mereka.</span>
                                 </li>
                             </ol>
                         </div>
 
                         <p class="mobile-text justified-text">
-                            These laws highlight that power is deeply emotional. 
-                            Whether you agree with Greene’s tone or not, understanding how fear, desire, pride, 
-                            and envy operate can help you navigate relationships more skillfully and protect your own mind.
+                            <span class="lang-en">These laws highlight that power is deeply emotional. Whether you agree with Greene’s tone or not, understanding how fear, desire, pride, and envy operate can help you navigate relationships more skillfully and protect your own mind.</span>
+                            <span class="lang-id">Hukum-hukum ini menyoroti bahwa kekuasaan sangat emosional. Memahami cara kerja rasa takut, hasrat, kebanggaan, dan iri hati dapat membantu Anda menavigasi hubungan dengan lebih terampil.</span>
                         </p>
                     </div>
                 </section>
 
-                <!-- Part 4 – Timing & Strategic Laws -->
                 <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            Laws of Timing & Strategy
+                            <span class="lang-en">Laws of Timing & Strategy</span>
+                            <span class="lang-id">Hukum Waktu & Strategi</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <p class="mobile-text justified-text">
-                            Here Greene focuses on planning, momentum, and the strategic use of actions. 
-                            The message: success is not just about what you do, but when and how you do it — 
-                            and how prepared you are beforehand.
+                            <span class="lang-en">Here Greene focuses on planning, momentum, and the strategic use of actions. The message: success is not just about what you do, but when and how you do it.</span>
+                            <span class="lang-id">Di sini Greene berfokus pada perencanaan, momentum, dan penggunaan tindakan yang strategis. Pesannya: kesuksesan bukan hanya tentang apa yang Anda lakukan, tetapi kapan dan bagaimana Anda melakukannya.</span>
                         </p>
                         
                         <div class="bg-purple-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-purple-200">
                             <ol class="list-decimal ml-5 space-y-3 mobile-text text-slate-700">
                                 <li class="justified-text">
-                                    <strong>Law 7 – Get Others to Do the Work for You, but Always Take the Credit.</strong><br>
-                                    Coordinate talent rather than doing everything yourself. 
-                                    By organizing others’ efforts into a coherent result, you appear as the architect of success — 
-                                    the person at the center of the web.
+                                    <span class="lang-en"><strong>Law 7 – Get Others to Do the Work for You, but Always Take the Credit.</strong><br>Coordinate talent rather than doing everything yourself. By organizing others’ efforts, you appear as the architect of success.</span>
+                                    <span class="lang-id"><strong>Hukum 7 – Buat Orang Lain Bekerja untuk Anda, tapi Selalu Ambil Kreditnya.</strong><br>Koordinasikan bakat daripada melakukan semuanya sendiri. Dengan mengorganisir upaya orang lain, Anda tampil sebagai arsitek kesuksesan.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 8 – Make Other People Come to You – Use Bait if Necessary.</strong><br>
-                                    Constantly chasing others puts you in a weaker position. 
-                                    Greene suggests creating conditions or incentives that draw people into your sphere, 
-                                    where you control the ground and terms.
+                                    <span class="lang-en"><strong>Law 8 – Make Other People Come to You – Use Bait if Necessary.</strong><br>Constantly chasing others puts you in a weaker position. Greene suggests creating conditions or incentives that draw people into your sphere.</span>
+                                    <span class="lang-id"><strong>Hukum 8 – Buat Orang Lain Datang kepada Anda – Gunakan Umpan jika Perlu.</strong><br>Terus mengejar orang lain menempatkan Anda di posisi yang lebih lemah. Ciptakan kondisi yang menarik orang ke wilayah Anda.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 9 – Win Through Your Actions, Never Through Argument.</strong><br>
-                                    Arguments rarely change deep beliefs and often create resentment. 
-                                    Demonstrating results, on the other hand, is hard to refute and silently persuades observers.
+                                    <span class="lang-en"><strong>Law 9 – Win Through Your Actions, Never Through Argument.</strong><br>Arguments rarely change deep beliefs and often create resentment. Demonstrating results is hard to refute and silently persuades observers.</span>
+                                    <span class="lang-id"><strong>Hukum 9 – Menanglah Melalui Tindakan Anda, Jangan Pernah Melalui Argumen.</strong><br>Argumen jarang mengubah keyakinan. Menunjukkan hasil sulit dibantah dan secara diam-diam meyakinkan pengamat.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 14 – Pose as a Friend, Work as a Spy.</strong><br>
-                                    Information is strategic gold. 
-                                    Greene controversially suggests that appearing friendly while listening carefully 
-                                    can reveal what others really want, fear, or plan — knowledge you can then use.
+                                    <span class="lang-en"><strong>Law 14 – Pose as a Friend, Work as a Spy.</strong><br>Information is strategic gold. Greene suggests that appearing friendly while listening carefully can reveal what others really want, fear, or plan.</span>
+                                    <span class="lang-id"><strong>Hukum 14 – Menyamar sebagai Teman, Bekerja sebagai Mata-mata.</strong><br>Informasi adalah emas strategis. Tampil ramah sambil mendengarkan dengan cermat dapat mengungkapkan apa yang sebenarnya diinginkan orang lain.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 19 – Know Who You’re Dealing With – Do Not Offend the Wrong Person.</strong><br>
-                                    People differ in temperament. Some forgive; some never do. 
-                                    Misjudging someone’s capacity for revenge can be fatal. 
-                                    Study character before provoking anyone.
+                                    <span class="lang-en"><strong>Law 19 – Know Who You’re Dealing With – Do Not Offend the Wrong Person.</strong><br>People differ in temperament. Some forgive; some never do. Misjudging someone’s capacity for revenge can be fatal.</span>
+                                    <span class="lang-id"><strong>Hukum 19 – Ketahui Siapa yang Anda Hadapi – Jangan Menyinggung Orang yang Salah.</strong><br>Salah menilai kemampuan seseorang untuk membalas dendam bisa berakibat fatal. Pelajari karakter sebelum memprovokasi siapa pun.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 20 – Do Not Commit to Anyone.</strong><br>
-                                    When you commit too early or too clearly, you lose bargaining power. 
-                                    By remaining slightly detached, others compete for your support and reveal more than they intend.
+                                    <span class="lang-en"><strong>Law 20 – Do Not Commit to Anyone.</strong><br>When you commit too early, you lose bargaining power. By remaining slightly detached, others compete for your support.</span>
+                                    <span class="lang-id"><strong>Hukum 20 – Jangan Berkomitmen pada Siapapun.</strong><br>Ketika Anda berkomitmen terlalu dini, Anda kehilangan daya tawar. Dengan tetap sedikit berjarak, orang lain akan bersaing untuk dukungan Anda.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 21 – Play a Sucker to Catch a Sucker – Seem Dumber Than Your Mark.</strong><br>
-                                    If others think they are smarter than you, they relax and underestimate you. 
-                                    Pretending to be less capable can encourage them to expose their plans and weaknesses.
+                                    <span class="lang-en"><strong>Law 21 – Play a Sucker to Catch a Sucker – Seem Dumber Than Your Mark.</strong><br>If others think they are smarter than you, they relax and underestimate you. Pretending to be less capable can encourage them to expose their plans.</span>
+                                    <span class="lang-id"><strong>Hukum 21 – Pura-pura Bodoh untuk Menangkap Orang Bodoh.</strong><br>Jika orang lain berpikir mereka lebih pintar, mereka meremehkan Anda. Berpura-pura kurang mampu dapat mendorong mereka mengungkap rencana mereka.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 22 – Use the Surrender Tactic: Transform Weakness into Power.</strong><br>
-                                    When you truly lack strength, fighting on can worsen your position. 
-                                    Strategic retreat — surrendering for now — can buy time, conserve resources, 
-                                    and let your opponent overextend.
+                                    <span class="lang-en"><strong>Law 22 – Use the Surrender Tactic: Transform Weakness into Power.</strong><br>When you lack strength, fighting on can worsen your position. Strategic retreat can buy time and let your opponent overextend.</span>
+                                    <span class="lang-id"><strong>Hukum 22 – Gunakan Taktik Menyerah: Ubah Kelemahan Menjadi Kekuatan.</strong><br>Saat kurang kuat, terus melawan bisa memperburuk posisi. Mundur secara strategis bisa membeli waktu.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 23 – Concentrate Your Forces.</strong><br>
-                                    Spreading your efforts too thin leads to mediocrity. 
-                                    Concentrating time, money, and attention on a few critical points creates breakthroughs.
+                                    <span class="lang-en"><strong>Law 23 – Concentrate Your Forces.</strong><br>Spreading your efforts too thin leads to mediocrity. Concentrating time, money, and attention on a few critical points creates breakthroughs.</span>
+                                    <span class="lang-id"><strong>Hukum 23 – Konsentrasikan Kekuatan Anda.</strong><br>Menyebarkan upaya terlalu tipis menyebabkan hasil rata-rata. Konsentrasi pada poin kritis menciptakan terobosan.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 24 – Play the Perfect Courtier.</strong><br>
-                                    In any hierarchy, unrefined aggression usually fails. 
-                                    The “perfect courtier” masters indirectness, diplomacy, charm, and timing — 
-                                    knowing when to flatter, when to step back, and when to deliver value.
+                                    <span class="lang-en"><strong>Law 24 – Play the Perfect Courtier.</strong><br>In any hierarchy, unrefined aggression usually fails. The “perfect courtier” masters indirectness, diplomacy, charm, and timing.</span>
+                                    <span class="lang-id"><strong>Hukum 24 – Mainkan Peran Abdi yang Sempurna.</strong><br>Dalam hierarki, agresi kasar biasanya gagal. Kuasai diplomasi, pesona, dan waktu yang tepat.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 28 – Enter Action with Boldness.</strong><br>
-                                    Hesitation invites attack. 
-                                    Once you decide on a move, execute it with confidence and full energy so that others 
-                                    have less time and courage to resist.
+                                    <span class="lang-en"><strong>Law 28 – Enter Action with Boldness.</strong><br>Hesitation invites attack. Once you decide on a move, execute it with confidence and full energy.</span>
+                                    <span class="lang-id"><strong>Hukum 28 – Masuk ke dalam Tindakan dengan Keberanian.</strong><br>Keraguan mengundang serangan. Begitu memutuskan langkah, eksekusi dengan percaya diri dan energi penuh.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 29 – Plan All the Way to the End.</strong><br>
-                                    Many people think only about the next step. Greene insists on seeing the chain of consequences: 
-                                    best-case, worst-case, and possible reactions — to avoid being surprised later.
+                                    <span class="lang-en"><strong>Law 29 – Plan All the Way to the End.</strong><br>Many people think only about the next step. Greene insists on seeing the chain of consequences to avoid being surprised later.</span>
+                                    <span class="lang-id"><strong>Hukum 29 – Rencanakan Sampai Akhir.</strong><br>Banyak orang hanya memikirkan langkah berikutnya. Greene mendesak untuk melihat rantai konsekuensi agar tidak terkejut nanti.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 31 – Control the Options: Get Others to Play with the Cards You Deal.</strong><br>
-                                    Rather than forcing people directly, structure situations so whatever they choose 
-                                    still benefits your goal. This is strategy at the level of systems, not just orders.
+                                    <span class="lang-en"><strong>Law 31 – Control the Options: Get Others to Play with the Cards You Deal.</strong><br>Rather than forcing people directly, structure situations so whatever they choose still benefits your goal.</span>
+                                    <span class="lang-id"><strong>Hukum 31 – Kendalikan Pilihan: Buat Orang Lain Bermain dengan Kartu yang Anda Bagikan.</strong><br>Daripada memaksa, susun situasi sehingga apa pun yang mereka pilih tetap menguntungkan tujuan Anda.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 35 – Master the Art of Timing.</strong><br>
-                                    The same action can succeed or fail depending on timing. 
-                                    Learn to sense when people are ready, when situations are ripe, 
-                                    and when waiting is more powerful than acting.
+                                    <span class="lang-en"><strong>Law 35 – Master the Art of Timing.</strong><br>The same action can succeed or fail depending on timing. Learn to sense when people are ready and situations are ripe.</span>
+                                    <span class="lang-id"><strong>Hukum 35 – Kuasai Seni Waktu.</strong><br>Tindakan yang sama bisa sukses atau gagal tergantung waktunya. Belajarlah merasakan kapan situasi sudah matang.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 36 – Disdain Things You Cannot Have: Ignoring Them Is the Best Revenge.</strong><br>
-                                    Obsessing over what you cannot get only amplifies its power over you. 
-                                    By appearing indifferent, you protect your pride and sometimes reduce the object’s status.
+                                    <span class="lang-en"><strong>Law 36 – Disdain Things You Cannot Have: Ignoring Them Is the Best Revenge.</strong><br>Obsessing over what you cannot get only amplifies its power over you. By appearing indifferent, you protect your pride.</span>
+                                    <span class="lang-id"><strong>Hukum 36 – Remehkan Hal yang Tidak Bisa Anda Miliki.</strong><br>Terobsesi pada apa yang tidak bisa didapat hanya memperbesar kekuatannya atas Anda. Dengan tampak acuh tak acuh, Anda melindungi harga diri.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 45 – Preach the Need for Change, but Never Reform Too Much at Once.</strong><br>
-                                    People say they want change but easily panic when too much changes too fast. 
-                                    Introduce reforms gradually and symbolically, preserving enough of the old to calm fears.
+                                    <span class="lang-en"><strong>Law 45 – Preach the Need for Change, but Never Reform Too Much at Once.</strong><br>People panic when too much changes too fast. Introduce reforms gradually and symbolically.</span>
+                                    <span class="lang-id"><strong>Hukum 45 – Khotbahkan Perlunya Perubahan, tapi Jangan Reformasi Terlalu Banyak Sekaligus.</strong><br>Perkenalkan reformasi secara bertahap dan simbolis untuk menenangkan ketakutan.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 47 – Do Not Go Past the Mark You Aimed For; in Victory, Learn When to Stop.</strong><br>
-                                    After victory, greed and overconfidence tempt you to push further. 
-                                    Greene warns that many downfalls begin after success, when people don’t know when enough is enough.
+                                    <span class="lang-en"><strong>Law 47 – Do Not Go Past the Mark You Aimed For; in Victory, Learn When to Stop.</strong><br>After victory, greed can tempt you to push further. Greene warns that many downfalls begin after success.</span>
+                                    <span class="lang-id"><strong>Hukum 47 – Jangan Melewati Tanda yang Anda Tuju; dalam Kemenangan, Belajarlah Kapan Harus Berhenti.</strong><br>Keserakahan setelah kemenangan bisa menggoda Anda untuk melangkah terlalu jauh.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 48 – Assume Formlessness.</strong><br>
-                                    If you are rigid in one identity, style, or strategy, opponents can study and counter you. 
-                                    Flexibility — the ability to change form, approach, and alliances — makes you harder to trap.
+                                    <span class="lang-en"><strong>Law 48 – Assume Formlessness.</strong><br>If you are rigid in one identity, opponents can study you. Flexibility makes you harder to trap.</span>
+                                    <span class="lang-id"><strong>Hukum 48 – Asumsikan Ketidakberbentukan.</strong><br>Jika Anda kaku dalam satu identitas, lawan bisa mempelajari Anda. Fleksibilitas membuat Anda lebih sulit dijebak.</span>
                                 </li>
                             </ol>
                         </div>
 
                         <p class="mobile-text justified-text">
-                            These strategic laws encourage long-term thinking, patience, and control over when and how you move. 
-                            Even if you reject some of the tactics, the emphasis on planning and timing can sharpen your own decisions.
+                            <span class="lang-en">These strategic laws encourage long-term thinking, patience, and control over when and how you move.</span>
+                            <span class="lang-id">Hukum-hukum strategis ini mendorong pemikiran jangka panjang, kesabaran, dan kendali atas kapan serta bagaimana Anda bergerak.</span>
                         </p>
                     </div>
                 </section>
 
-                <!-- Part 5 – Dominance, Protection & Conclusion -->
                 <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-red-100 text-red-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            Laws of Dominance, Self-Protection & Final Reflection
+                            <span class="lang-en">Laws of Dominance, Self-Protection & Final Reflection</span>
+                            <span class="lang-id">Hukum Dominasi, Perlindungan Diri & Refleksi Akhir</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
                         <p class="mobile-text justified-text">
-                            These laws touch the sharpest edges of power: total victory, destruction of threats, 
-                            and personal survival in hostile environments. They are the most controversial — and the most dangerous — 
-                            if misunderstood or abused.
+                            <span class="lang-en">These laws touch the sharpest edges of power: total victory, destruction of threats, and personal survival. They are the most controversial — and dangerous — if misunderstood.</span>
+                            <span class="lang-id">Hukum-hukum ini menyentuh sisi paling tajam dari kekuasaan: kemenangan total, penghancuran ancaman, dan kelangsungan hidup pribadi. Ini yang paling kontroversial — dan berbahaya — jika disalahpahami.</span>
                         </p>
 
                         <div class="bg-red-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-red-200">
                             <ol class="list-decimal ml-5 space-y-3 mobile-text text-slate-700">
                                 <li class="justified-text">
-                                    <strong>Law 15 – Crush Your Enemy Totally.</strong><br>
-                                    Greene argues that leaving a rival half-defeated often invites future revenge. 
-                                    In contexts of serious, open conflict, he recommends removing their ability to strike back. 
-                                    Ethically, this law is disturbing — but historically, partial victories often did lead 
-                                    to long, destructive feuds.
+                                    <span class="lang-en"><strong>Law 15 – Crush Your Enemy Totally.</strong><br>Greene argues that leaving a rival half-defeated often invites future revenge. In serious conflicts, he recommends removing their ability to strike back.</span>
+                                    <span class="lang-id"><strong>Hukum 15 – Hancurkan Musuh Anda Sepenuhnya.</strong><br>Meninggalkan saingan setengah kalah sering mengundang balas dendam. Dalam konflik serius, hilangkan kemampuan mereka untuk menyerang balik.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 16 – Use Absence to Increase Respect and Honor.</strong><br>
-                                    Constant presence can make people take you for granted. 
-                                    Strategic absence — stepping back at the right moment — can reset value, 
-                                    make others miss you, and protect your energy from overuse.
+                                    <span class="lang-en"><strong>Law 16 – Use Absence to Increase Respect and Honor.</strong><br>Strategic absence can reset value, make others miss you, and protect your energy from overuse.</span>
+                                    <span class="lang-id"><strong>Hukum 16 – Gunakan Ketidakhadiran untuk Meningkatkan Rasa Hormat.</strong><br>Ketidakhadiran strategis dapat mengatur ulang nilai Anda, membuat orang lain merindukan Anda, dan melindungi energi Anda.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 18 – Do Not Build Fortresses to Protect Yourself – Isolation Is Dangerous.</strong><br>
-                                    Total isolation cuts you off from information, allies, and early warning signals. 
-                                    Greene warns that you should build networks and remain socially present, 
-                                    even if you keep an inner circle small.
+                                    <span class="lang-en"><strong>Law 18 – Do Not Build Fortresses to Protect Yourself – Isolation Is Dangerous.</strong><br>Total isolation cuts you off from information. Greene warns that you should build networks and remain socially present.</span>
+                                    <span class="lang-id"><strong>Hukum 18 – Jangan Membangun Benteng untuk Melindungi Diri – Isolasi Itu Berbahaya.</strong><br>Isolasi total memutus informasi. Bangun jaringan dan tetap hadir secara sosial.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 25 – Re-Create Yourself.</strong><br>
-                                    Do not let other people define your role forever. 
-                                    Powerful individuals reinvent themselves as circumstances change, 
-                                    shedding old skins and identities to avoid being trapped by expectations.
+                                    <span class="lang-en"><strong>Law 25 – Re-Create Yourself.</strong><br>Do not let other people define your role. Powerful individuals reinvent themselves as circumstances change.</span>
+                                    <span class="lang-id"><strong>Hukum 25 – Ciptakan Kembali Diri Anda.</strong><br>Jangan biarkan orang lain mendefinisikan peran Anda. Individu yang kuat menemukan kembali diri mereka seiring perubahan keadaan.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 41 – Avoid Stepping into a Great Man’s Shoes.</strong><br>
-                                    Succeeding a legendary figure often leads to endless comparisons you cannot win. 
-                                    Greene advises creating your own path, style, or domain rather than living in someone else’s shadow.
+                                    <span class="lang-en"><strong>Law 41 – Avoid Stepping into a Great Man’s Shoes.</strong><br>Succeeding a legendary figure often leads to comparisons you cannot win. Create your own path and style.</span>
+                                    <span class="lang-id"><strong>Hukum 41 – Hindari Menggantikan Posisi Orang Besar.</strong><br>Menggantikan sosok legendaris sering mengarah pada perbandingan yang tidak bisa Anda menangkan. Ciptakan jalan Anda sendiri.</span>
                                 </li>
                                 <li class="justified-text">
-                                    <strong>Law 42 – Strike the Shepherd and the Sheep Will Scatter.</strong><br>
-                                    Groups are often held together by a central figure. 
-                                    Neutralizing or removing that person — through demotion, exposure, or isolation — 
-                                    can cause the group’s resistance to collapse. This law is blunt and ruthless, 
-                                    and must be handled with extreme caution.
+                                    <span class="lang-en"><strong>Law 42 – Strike the Shepherd and the Sheep Will Scatter.</strong><br>Neutralizing the central figure can cause a group’s resistance to collapse.</span>
+                                    <span class="lang-id"><strong>Hukum 42 – Pukul Gembala dan Domba Akan Berserakan.</strong><br>Menetralisir tokoh sentral dapat menyebabkan perlawanan kelompok runtuh.</span>
                                 </li>
                             </ol>
                         </div>
 
                         <div class="bg-gradient-to-r from-amber-50 to-yellow-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-amber-200">
-                            <h3 class="text-lg sm:text-xl font-semibold text-amber-800 mb-3 mobile-subtitle">Ethical Risks & How to Use This Book Safely</h3>
+                            <h3 class="text-lg sm:text-xl font-semibold text-amber-800 mb-3 mobile-subtitle">
+                                <span class="lang-en">Ethical Risks & How to Use This Book Safely</span>
+                                <span class="lang-id">Risiko Etis & Cara Menggunakan Buku Ini dengan Aman</span>
+                            </h3>
                             <p class="mobile-text justified-text">
-                                Used blindly, these laws can turn you into someone manipulative, paranoid, or cruel. 
-                                Used consciously, they can act as an <strong>early warning system</strong>, helping you:
+                                <span class="lang-en">Used blindly, these laws can turn you into someone manipulative. Used consciously, they act as an <strong>early warning system</strong>.</span>
+                                <span class="lang-id">Jika digunakan secara membabi buta, hukum ini bisa membuat Anda manipulatif. Jika digunakan secara sadar, ini bertindak sebagai <strong>sistem peringatan dini</strong>.</span>
                             </p>
                             <ul class="list-disc ml-5 space-y-1 mobile-text text-slate-700">
-                                <li class="justified-text">Recognize when others are playing power games with you.</li>
-                                <li class="justified-text">Set clearer boundaries and avoid exploitive relationships.</li>
-                                <li class="justified-text">Choose your battles and alliances with open eyes.</li>
-                            </ul>
-                            <p class="mobile-text justified-text mt-2">
-                                The book itself rarely talks about kindness or justice. 
-                                That part is your job. You bring your own values and decide:
-                            </p>
-                            <ul class="list-disc ml-5 space-y-1 mobile-text text-slate-700">
-                                <li class="justified-text">Which laws to apply in your life.</li>
-                                <li class="justified-text">Which tactics are unacceptable, even if they “work.”</li>
-                                <li class="justified-text">When walking away is better than winning.</li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Recognize when others are playing power games with you.</span>
+                                    <span class="lang-id">Kenali saat orang lain memainkan permainan kekuasaan dengan Anda.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Set clearer boundaries and avoid exploitive relationships.</span>
+                                    <span class="lang-id">Tetapkan batasan yang lebih jelas dan hindari hubungan eksploitatif.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Choose your battles and alliances with open eyes.</span>
+                                    <span class="lang-id">Pilih pertempuran dan aliansi Anda dengan mata terbuka.</span>
+                                </li>
                             </ul>
                         </div>
 
                         <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-emerald-200">
-                            <h3 class="text-lg sm:text-xl font-semibold text-emerald-800 mb-3 mobile-subtitle">Final Reflection: Clarity Without Naivety</h3>
+                            <h3 class="text-lg sm:text-xl font-semibold text-emerald-800 mb-3 mobile-subtitle">
+                                <span class="lang-en">Final Reflection: Clarity Without Naivety</span>
+                                <span class="lang-id">Refleksi Akhir: Kejelasan Tanpa Kenaifan</span>
+                            </h3>
                             <p class="mobile-text justified-text">
-                                At its core, <em>The 48 Laws of Power</em> is a mirror held up to the darker side of human interaction. 
-                                You do not have to like everything you see in it. But refusing to look does not make the patterns disappear.
-                            </p>
-                            <p class="mobile-text justified-text">
-                                The most powerful stance is to combine <strong>awareness</strong> with <strong>choice</strong>:
-                            </p>
-                            <ul class="list-disc ml-5 space-y-1 mobile-text text-slate-700">
-                                <li class="justified-text">You understand the laws, so you are harder to deceive.</li>
-                                <li class="justified-text">You can protect yourself without becoming needlessly ruthless.</li>
-                                <li class="justified-text">You can guide teams, families, or communities with open eyes, seeing both light and shadow.</li>
-                            </ul>
-                            <p class="mobile-text justified-text mt-2">
-                                You do not have to play every game. But knowing the rules of power 
-                                gives you more freedom to decide which arenas to enter — and who you want to be inside them.
+                                <span class="lang-en">At its core, <em>The 48 Laws of Power</em> is a mirror held up to the darker side of human interaction. The most powerful stance is to combine <strong>awareness</strong> with <strong>choice</strong>: understand the laws so you are harder to deceive, but choose which ones align with your values.</span>
+                                <span class="lang-id">Pada intinya, <em>The 48 Laws of Power</em> adalah cermin bagi sisi gelap interaksi manusia. Sikap paling kuat adalah menggabungkan <strong>kesadaran</strong> dengan <strong>pilihan</strong>: pahami hukum-hukumnya agar Anda lebih sulit ditipu, tetapi pilihlah yang sesuai dengan nilai-nilai Anda.</span>
                             </p>
                         </div>
                     </div>
@@ -852,6 +784,31 @@ That way you can see how the rules fit into bigger themes instead of feeling lik
     </div>
 
     <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const btn = document.querySelector('.lang-btn-simple');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#3b82f6'; // Blue
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#ef4444'; // Red
+            }
+        }
+
         function toggleDrawer() {
             const drawer = document.querySelector('.nav-drawer');
             const overlay = document.querySelector('.nav-overlay');
