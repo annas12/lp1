@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Erroneous Zones — Wayne Dyer | Detailed Summary</title>
+    <title>Your Erroneous Zones — Wayne Dyer | Bilingual Summary</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -16,6 +16,10 @@
         
         .justified-text { text-align: justify; }
         .mobile-text { font-size: 16px; line-height: 1.7; }
+        
+        /* Language Utilities */
+        .lang-id { display: none; } /* Default hidden */
+        .lang-en { display: block; }
         
         @media (max-width: 640px) {
             .mobile-text { font-size: 15px; line-height: 1.6; }
@@ -70,81 +74,55 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
         }
-        
-        .drawer-toggle:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
-        }
-        
-        .drawer-toggle.open {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-        }
-        
-        .hamburger {
-            width: 24px;
-            height: 18px;
-            position: relative;
-        }
-        
-        .hamburger span {
-            display: block;
-            position: absolute;
-            height: 3px;
-            width: 100%;
+
+        /* Language Switcher Floating Button */
+        .lang-switch-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1002;
             background: white;
-            border-radius: 2px;
-            opacity: 1;
-            left: 0;
-            transform: rotate(0deg);
-            transition: .25s ease-in-out;
+            border: 2px solid #0d9488;
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #0d9488;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .lang-switch-float:hover {
+            background: #0d9488;
+            color: white;
+            transform: translateY(-3px);
         }
         
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; transition: .25s ease-in-out; }
         .hamburger span:nth-child(1) { top: 0px; }
         .hamburger span:nth-child(2) { top: 7px; }
         .hamburger span:nth-child(3) { top: 14px; }
         
-        .drawer-toggle.open .hamburger span:nth-child(1) {
-            top: 7px;
-            transform: rotate(135deg);
-        }
-        
-        .drawer-toggle.open .hamburger span:nth-child(2) {
-            opacity: 0;
-            left: -60px;
-        }
-        
-        .drawer-toggle.open .hamburger span:nth-child(3) {
-            top: 7px;
-            transform: rotate(-135deg);
-        }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
         
         .nav-item { position: relative; overflow: hidden; }
-        .nav-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
         .nav-item:hover::before { left: 100%; }
         
         @media (max-width: 768px) {
             .nav-drawer { width: 280px; left: -280px; }
-            .drawer-toggle { top: 15px; left: 15px; padding: 10px; }
-        }
-        
-        @media (max-width: 480px) {
-            .nav-drawer { width: 260px; left: -260px; }
-            .drawer-toggle { top: 12px; left: 12px; padding: 8px; }
-            .hamburger { width: 20px; height: 15px; }
         }
     </style>
 </head>
 <body class="bg-gradient-to-br from-slate-50 to-teal-50 min-h-screen">
+
+    <button class="lang-switch-float" onclick="toggleLanguage()">
+        <span class="lang-text">🇮🇩 Switch to ID</span>
+    </button>
+
     <button class="drawer-toggle" onclick="toggleDrawer()">
         <div class="hamburger">
             <span></span>
@@ -163,18 +141,25 @@
                 </div>
                 <div>
                     <h2 class="text-white font-semibold text-lg">Your Erroneous Zones</h2>
-                    <p class="text-gray-400 text-sm">Detailed Summary</p>
+                    <p class="text-gray-400 text-sm">
+                        <span class="lang-en">Detailed Summary</span>
+                        <span class="lang-id">Ringkasan Detail</span>
+                    </p>
                 </div>
             </div>
         </div>
         
         <div class="p-4">
-            <h3 class="text-gray-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">Table of Contents</h3>
+            <h3 class="text-gray-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">Table of Contents</span>
+                <span class="lang-id">Daftar Isi</span>
+            </h3>
             <ul class="space-y-2">
                 <li class="nav-item">
                     <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-gray-700 active-tab text-white flex items-center space-x-3">
                         <span class="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center text-xs font-bold">📖</span>
-                        <span>Introduction</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
                     </button>
                 </li>
                 <li class="nav-item">
@@ -182,7 +167,10 @@
                         <span class="w-8 h-8 bg-sky-500 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
                         <div class="text-left">
                             <div class="font-medium">Part 1</div>
-                            <div class="text-xs text-gray-400">Taking Charge & Self-Love</div>
+                            <div class="text-xs text-gray-400">
+                                <span class="lang-en">Taking Charge & Self-Love</span>
+                                <span class="lang-id">Kendali Diri & Mencintai Diri</span>
+                            </div>
                         </div>
                     </button>
                 </li>
@@ -191,7 +179,10 @@
                         <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
                         <div class="text-left">
                             <div class="font-medium">Part 2</div>
-                            <div class="text-xs text-gray-400">Approval & The Past</div>
+                            <div class="text-xs text-gray-400">
+                                <span class="lang-en">Approval & The Past</span>
+                                <span class="lang-id">Persetujuan & Masa Lalu</span>
+                            </div>
                         </div>
                     </button>
                 </li>
@@ -200,7 +191,10 @@
                         <span class="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
                         <div class="text-left">
                             <div class="font-medium">Part 3</div>
-                            <div class="text-xs text-gray-400">Guilt & Worry</div>
+                            <div class="text-xs text-gray-400">
+                                <span class="lang-en">Guilt & Worry</span>
+                                <span class="lang-id">Rasa Bersalah & Khawatir</span>
+                            </div>
                         </div>
                     </button>
                 </li>
@@ -209,7 +203,10 @@
                             <span class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
                             <div class="text-left">
                                 <div class="font-medium">Part 4</div>
-                                <div class="text-xs text-gray-400">Social Traps</div>
+                                <div class="text-xs text-gray-400">
+                                    <span class="lang-en">Social Traps</span>
+                                    <span class="lang-id">Perangkap Sosial</span>
+                                </div>
                             </div>
                     </button>
                 </li>
@@ -218,7 +215,10 @@
                             <span class="w-8 h-8 bg-rose-500 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
                             <div class="text-left">
                                 <div class="font-medium">Part 5</div>
-                                <div class="text-xs text-gray-400">The Fully Functioning Person</div>
+                                <div class="text-xs text-gray-400">
+                                    <span class="lang-en">The Fully Functioning Person</span>
+                                    <span class="lang-id">Pribadi yang Berfungsi Utuh</span>
+                                </div>
                             </div>
                     </button>
                 </li>
@@ -227,8 +227,8 @@
         
         <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
             <div class="text-center">
-                <p class="text-gray-400 text-xs">© 2024 Your Erroneous Zones Summary</p>
-                <p class="text-gray-500 text-xs mt-1">Expanded Edition</p>
+                <p class="text-gray-400 text-xs">© 2024 Your Erroneous Zones</p>
+                <p class="text-gray-500 text-xs mt-1">Wayne Dyer</p>
             </div>
         </div>
     </nav>
@@ -240,7 +240,8 @@
                     Your Erroneous Zones
                 </h1>
                 <p class="text-sm sm:text-base md:text-lg text-gray-600 font-medium px-2">
-                    A comprehensive guide to escaping negative thinking patterns
+                    <span class="lang-en">A comprehensive guide to escaping negative thinking patterns</span>
+                    <span class="lang-id">Panduan komprehensif untuk melepaskan diri dari pola pikir negatif</span>
                 </p>
                 <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-teal-500 to-cyan-600 mx-auto mt-3 sm:mt-4 rounded-full"></div>
             </div>
@@ -253,46 +254,68 @@
                     
                 <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-teal-100 text-teal-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Introduction</span>
+                        <span class="inline-block px-3 py-1 bg-teal-100 text-teal-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Introduction / Pendahuluan</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-3 sm:mb-4 mobile-title">
-                            Taking Charge of Your Mind
+                            <span class="lang-en">Taking Charge of Your Mind</span>
+                            <span class="lang-id">Mengambil Kendali atas Pikiran Anda</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-gray-700 leading-relaxed space-y-4 sm:space-y-6">
-                        <p class="text-base sm:text-lg md:text-xl text-gray-600 font-medium border-l-4 border-teal-500 pl-4 sm:pl-6 italic mobile-text justified-text">
-                            "If you believe that you are not in charge of your own life, then you have made the decision to be a slave to your environment."
-                        </p>
+                        <div class="text-base sm:text-lg md:text-xl text-gray-600 font-medium border-l-4 border-teal-500 pl-4 sm:pl-6 italic mobile-text justified-text">
+                            <span class="lang-en">"If you believe that you are not in charge of your own life, then you have made the decision to be a slave to your environment."</span>
+                            <span class="lang-id">"Jika Anda percaya bahwa Anda tidak memegang kendali atas hidup Anda sendiri, maka Anda telah membuat keputusan untuk menjadi budak lingkungan Anda."</span>
+                        </div>
                         
-                        <p class="mobile-text justified-text">
-                            <em>Your Erroneous Zones</em>, published in 1976 by Dr. Wayne Dyer, is a seminal work in the self-help genre. It operates on a single, powerful premise: <strong>happiness is a choice, not a condition.</strong> Dyer argues that most people live their lives in a state of "reaction," allowing external events, other people's opinions, and societal rules to dictate their emotional state.
-                        </p>
+                        <div class="mobile-text justified-text">
+                            <span class="lang-en">
+                                <em>Your Erroneous Zones</em>, published in 1976 by Dr. Wayne Dyer, is a seminal work in the self-help genre. It operates on a single, powerful premise: <strong>happiness is a choice, not a condition.</strong> Dyer argues that most people live their lives in a state of "reaction," allowing external events, other people's opinions, and societal rules to dictate their emotional state.
+                            </span>
+                            <span class="lang-id">
+                                <em>Your Erroneous Zones</em>, yang diterbitkan pada tahun 1976 oleh Dr. Wayne Dyer, adalah karya penting dalam genre pengembangan diri. Buku ini beroperasi pada satu premis yang kuat: <strong>kebahagiaan adalah sebuah pilihan, bukan sebuah kondisi.</strong> Dyer berargumen bahwa kebanyakan orang menjalani hidup mereka dalam keadaan "bereaksi", membiarkan peristiwa eksternal, pendapat orang lain, dan aturan masyarakat mendikte keadaan emosi mereka.
+                            </span>
+                        </div>
 
                         <div class="bg-gray-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-200">
-                             <h4 class="font-semibold text-gray-800 mb-2 text-sm sm:text-base mobile-subtitle">What is an "Erroneous Zone"?</h4>
-                             <p class="mobile-text justified-text">
-                                An erroneous zone is a deep-seated barrier within your mind that prevents you from achieving success and happiness. It is a "pocket" of self-destructive thinking. These zones include guilt, worry, dependency, the need for approval, and fear of the unknown. When triggered, these zones "immobilize" you—preventing you from taking action or feeling peace.
-                             </p>
+                             <h4 class="font-semibold text-gray-800 mb-2 text-sm sm:text-base mobile-subtitle">
+                                 <span class="lang-en">What is an "Erroneous Zone"?</span>
+                                 <span class="lang-id">Apa itu "Zona Kesalahan"?</span>
+                             </h4>
+                             <div class="mobile-text justified-text">
+                                <span class="lang-en">
+                                    An erroneous zone is a deep-seated barrier within your mind that prevents you from achieving success and happiness. It is a "pocket" of self-destructive thinking. These zones include guilt, worry, dependency, the need for approval, and fear of the unknown. When triggered, these zones "immobilize" you—preventing you from taking action or feeling peace.
+                                </span>
+                                <span class="lang-id">
+                                    Zona kesalahan adalah hambatan yang tertanam kuat dalam pikiran Anda yang menghalangi Anda mencapai kesuksesan dan kebahagiaan. Ini adalah "kantong" pemikiran yang merusak diri sendiri. Zona-zona ini meliputi rasa bersalah, kekhawatiran, ketergantungan, kebutuhan akan persetujuan, dan ketakutan akan hal yang tidak diketahui. Ketika dipicu, zona ini "melumpuhkan" Anda—mencegah Anda mengambil tindakan atau merasakan kedamaian.
+                                </span>
+                             </div>
                         </div>
                         
                         <div class="bg-gradient-to-r from-teal-50 to-emerald-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-teal-100">
-                            <h4 class="font-semibold text-gray-800 mb-3 text-sm sm:text-base mobile-subtitle">Core Themes of this Summary:</h4>
+                            <h4 class="font-semibold text-gray-800 mb-3 text-sm sm:text-base mobile-subtitle">
+                                <span class="lang-en">Core Themes of this Summary:</span>
+                                <span class="lang-id">Tema Utama Ringkasan Ini:</span>
+                            </h4>
                             <ul class="space-y-3 text-gray-700 mobile-text">
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-teal-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text"><strong>Emotional Responsibility:</strong> Understanding that you cannot have a feeling without first having a thought.</span>
+                                    <span class="justified-text lang-en"><strong>Emotional Responsibility:</strong> Understanding that you cannot have a feeling without first having a thought.</span>
+                                    <span class="justified-text lang-id"><strong>Tanggung Jawab Emosional:</strong> Memahami bahwa Anda tidak dapat memiliki perasaan tanpa terlebih dahulu memiliki pikiran.</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-teal-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text"><strong>First Love:</strong> Why self-worth must be independent of achievement and others' opinions.</span>
+                                    <span class="justified-text lang-en"><strong>First Love:</strong> Why self-worth must be independent of achievement and others' opinions.</span>
+                                    <span class="justified-text lang-id"><strong>Cinta Pertama:</strong> Mengapa harga diri harus independen dari pencapaian dan pendapat orang lain.</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-teal-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text"><strong>The Useless Emotions:</strong> A deep dive into Guilt (past) and Worry (future) as the two greatest thieves of the present moment.</span>
+                                    <span class="justified-text lang-en"><strong>The Useless Emotions:</strong> A deep dive into Guilt (past) and Worry (future) as the two greatest thieves of the present moment.</span>
+                                    <span class="justified-text lang-id"><strong>Emosi yang Sia-sia:</strong> Pembahasan mendalam tentang Rasa Bersalah (masa lalu) dan Kekhawatiran (masa depan) sebagai dua pencuri terbesar momen saat ini.</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-teal-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text"><strong>Social Freedom:</strong> Breaking free from "Shoulds," cultural traditions, and the demand for justice.</span>
+                                    <span class="justified-text lang-en"><strong>Social Freedom:</strong> Breaking free from "Shoulds," cultural traditions, and the demand for justice.</span>
+                                    <span class="justified-text lang-id"><strong>Kebebasan Sosial:</strong> Melepaskan diri dari kata "Seharusnya", tradisi budaya, dan tuntutan akan keadilan.</span>
                                 </li>
                             </ul>
                         </div>
@@ -303,59 +326,101 @@
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-sky-100 text-sky-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-3 sm:mb-4 mobile-title">
-                           The Foundation: Taking Charge & First Love
+                           <span class="lang-en">The Foundation: Taking Charge & First Love</span>
+                           <span class="lang-id">Pondasi: Mengambil Kendali & Cinta Pertama</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-gray-700 leading-relaxed space-y-4 sm:space-y-6">
                         <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mobile-subtitle">
-                            The Great Syllogism of Emotion
+                            <span class="lang-en">The Great Syllogism of Emotion</span>
+                            <span class="lang-id">Silogisme Agung Emosi</span>
                         </h3>
                         <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
 
-<p>
-Dyer begins by dismantling the cultural myth that emotions are things that "happen" to us, like a virus or a rainstorm. We often use language that reinforces this lack of control: "He <em>makes</em> me sick," "Heights <em>terrify</em> me," or "She <em>hurt</em> my feelings."
-</p>
+                            <p class="lang-en">
+                                Dyer begins by dismantling the cultural myth that emotions are things that "happen" to us, like a virus or a rainstorm. We often use language that reinforces this lack of control: "He <em>makes</em> me sick," "Heights <em>terrify</em> me," or "She <em>hurt</em> my feelings."
+                            </p>
+                            <p class="lang-id">
+                                Dyer memulai dengan membongkar mitos budaya bahwa emosi adalah hal-hal yang "terjadi" pada kita, seperti virus atau badai hujan. Kita sering menggunakan bahasa yang memperkuat kurangnya kendali ini: "Dia <em>membuat</em> saya sakit," "Ketinggian <em>menakuti</em> saya," atau "Dia <em>melukai</em> perasaan saya."
+                            </p>
+                            <br>
 
-<p>
-To counter this, Dyer presents a logical syllogism that serves as the foundation for the entire book:
-</p>
+                            <p class="lang-en">To counter this, Dyer presents a logical syllogism that serves as the foundation for the entire book:</p>
+                            <p class="lang-id">Untuk melawan ini, Dyer menyajikan silogisme logis yang menjadi dasar bagi keseluruhan buku:</p>
 
-<div class="bg-white border-l-4 border-sky-500 p-4 my-4 shadow-sm">
-    <p><strong>1. Major Premise:</strong> I can control my thoughts.</p>
-    <p><strong>2. Minor Premise:</strong> My feelings come from my thoughts.</p>
-    <p><strong>3. Conclusion:</strong> Therefore, I can control my feelings.</p>
-</div>
+                            <div class="bg-white border-l-4 border-sky-500 p-4 my-4 shadow-sm">
+                                <div class="lang-en">
+                                    <p><strong>1. Major Premise:</strong> I can control my thoughts.</p>
+                                    <p><strong>2. Minor Premise:</strong> My feelings come from my thoughts.</p>
+                                    <p><strong>3. Conclusion:</strong> Therefore, I can control my feelings.</p>
+                                </div>
+                                <div class="lang-id">
+                                    <p><strong>1. Premis Utama:</strong> Saya bisa mengendalikan pikiran saya.</p>
+                                    <p><strong>2. Premis Kedua:</strong> Perasaan saya berasal dari pikiran saya.</p>
+                                    <p><strong>3. Kesimpulan:</strong> Oleh karena itu, saya bisa mengendalikan perasaan saya.</p>
+                                </div>
+                            </div>
 
-<p>
-If you are unhappy, it is because you are thinking unhappy thoughts. You do not have to "control" the emotion (repressing it); you have to change the <em>thinking</em> that precedes it. <br><br>
-<strong>Example:</strong> It rains on your picnic. You feel angry. The rain didn't cause the anger (the rain is just water). Your thought—<em>"This shouldn't be happening, my day is ruined"</em>—caused the anger. If you changed the thought to <em>"We can have a fun indoor picnic instead,"</em> the anger vanishes.
-</p>
+                            <p class="lang-en">
+                                If you are unhappy, it is because you are thinking unhappy thoughts. You do not have to "control" the emotion (repressing it); you have to change the <em>thinking</em> that precedes it. <br><br>
+                                <strong>Example:</strong> It rains on your picnic. You feel angry. The rain didn't cause the anger (the rain is just water). Your thought—<em>"This shouldn't be happening, my day is ruined"</em>—caused the anger. If you changed the thought to <em>"We can have a fun indoor picnic instead,"</em> the anger vanishes.
+                            </p>
+                            <p class="lang-id">
+                                Jika Anda tidak bahagia, itu karena Anda memikirkan hal-hal yang tidak menyenangkan. Anda tidak perlu "mengendalikan" emosi (menekannya); Anda harus mengubah <em>pemikiran</em> yang mendahuluinya. <br><br>
+                                <strong>Contoh:</strong> Hujan turun saat piknik Anda. Anda merasa marah. Hujan tidak menyebabkan kemarahan (hujan hanyalah air). Pikiran Anda—<em>"Ini seharusnya tidak terjadi, hari saya hancur"</em>—lah yang menyebabkan kemarahan. Jika Anda mengubah pikiran menjadi <em>"Kita bisa piknik di dalam ruangan yang seru,"</em> kemarahan itu akan hilang.
+                            </p>
+                            
+                            <br>
+                            <h3 class="lang-en">First Love: The Art of Self-Worth</h3>
+                            <h3 class="lang-id">Cinta Pertama: Seni Menghargai Diri Sendiri</h3>
 
-<h3>First Love: The Art of Self-Worth</h3>
+                            <p class="lang-en">
+                                "First Love" refers to loving yourself. In many societies, self-love is equated with conceit or narcissism. Dyer argues that this is a dangerous error. If you do not love yourself, you cannot give love, because you cannot give what you do not have.
+                            </p>
+                            <p class="lang-id">
+                                "Cinta Pertama" merujuk pada mencintai diri sendiri. Di banyak masyarakat, mencintai diri sendiri disamakan dengan kesombongan atau narsisme. Dyer berpendapat bahwa ini adalah kesalahan yang berbahaya. Jika Anda tidak mencintai diri sendiri, Anda tidak bisa memberikan cinta, karena Anda tidak bisa memberikan apa yang tidak Anda miliki.
+                            </p>
 
-<p>
-"First Love" refers to loving yourself. In many societies, self-love is equated with conceit or narcissism. Dyer argues that this is a dangerous error. If you do not love yourself, you cannot give love, because you cannot give what you do not have.
-</p>
+                            <p class="lang-en"><strong>The Distinction between Self-Worth and External Value:</strong></p>
+                            <p class="lang-id"><strong>Perbedaan antara Harga Diri dan Nilai Eksternal:</strong></p>
+                            
+                            <ul class="lang-en">
+                                <li><strong>External Value:</strong> This is based on what you do. Your salary, your grades, your job title. It is changeable.</li>
+                                <li><strong>Self-Worth:</strong> This is a given. You are worthy simply because you exist. You are a human being, and your worth is not negotiable or variable.</li>
+                            </ul>
+                            <ul class="lang-id">
+                                <li><strong>Nilai Eksternal:</strong> Ini didasarkan pada apa yang Anda lakukan. Gaji Anda, nilai Anda, jabatan Anda. Ini bisa berubah.</li>
+                                <li><strong>Harga Diri:</strong> Ini adalah hal yang pasti. Anda berharga hanya karena Anda ada. Anda adalah manusia, dan nilai Anda tidak dapat ditawar atau berubah-ubah.</li>
+                            </ul>
 
-<p><strong>The Distinction between Self-Worth and External Value:</strong></p>
-<ul>
-    <li><strong>External Value:</strong> This is based on what you do. Your salary, your grades, your job title. It is changeable.</li>
-    <li><strong>Self-Worth:</strong> This is a given. You are worthy simply because you exist. You are a human being, and your worth is not negotiable or variable.</li>
-</ul>
+                            <p class="lang-en">
+                                Dyer warns against the "Performance Trap"—the belief that "I am only as good as my last achievement." If your self-worth is tied to your success, then when you fail (which is inevitable), you become worthless.
+                            </p>
+                            <p class="lang-id">
+                                Dyer memperingatkan tentang "Perangkap Kinerja"—keyakinan bahwa "Saya hanya sebaik pencapaian terakhir saya." Jika harga diri Anda terikat pada kesuksesan Anda, maka ketika Anda gagal (yang pasti terjadi), Anda menjadi tidak berharga.
+                            </p>
 
-<p>
-Dyer warns against the "Performance Trap"—the belief that "I am only as good as my last achievement." If your self-worth is tied to your success, then when you fail (which is inevitable), you become worthless.
-</p>
-
-</div>
+                        </div>
                         
                         <div class="bg-sky-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-sky-200">
-                            <h4 class="font-semibold text-sky-800 mb-3 text-sm sm:text-base mobile-subtitle">Actionable Steps to Build Self-Love:</h4>
+                            <h4 class="font-semibold text-sky-800 mb-3 text-sm sm:text-base mobile-subtitle">
+                                <span class="lang-en">Actionable Steps to Build Self-Love:</span>
+                                <span class="lang-id">Langkah Nyata Membangun Cinta Diri:</span>
+                            </h4>
                              <ul class="space-y-2 text-sky-800 mobile-text">
-                                <li class="justified-text">• <strong>Accept your body:</strong> Stop complaining about things you cannot change (height, bone structure). It is wasted energy.</li>
-                                <li class="justified-text">• <strong>Choose your own mood:</strong> When you wake up, consciously decide how you want to feel today, regardless of what happens.</li>
-                                <li class="justified-text">• <strong>Accept compliments:</strong> When someone praises you, say "Thank you" instead of deflecting with "Oh, it was nothing."</li>
+                                <li class="justified-text">
+                                    <span class="lang-en">• <strong>Accept your body:</strong> Stop complaining about things you cannot change (height, bone structure). It is wasted energy.</span>
+                                    <span class="lang-id">• <strong>Terima tubuh Anda:</strong> Berhenti mengeluh tentang hal-hal yang tidak dapat Anda ubah (tinggi badan, struktur tulang). Itu energi yang sia-sia.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">• <strong>Choose your own mood:</strong> When you wake up, consciously decide how you want to feel today, regardless of what happens.</span>
+                                    <span class="lang-id">• <strong>Pilih suasana hati Anda:</strong> Saat bangun tidur, putuskan secara sadar bagaimana Anda ingin merasa hari ini, terlepas dari apa yang terjadi.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">• <strong>Accept compliments:</strong> When someone praises you, say "Thank you" instead of deflecting with "Oh, it was nothing."</span>
+                                    <span class="lang-id">• <strong>Terima pujian:</strong> Saat seseorang memuji Anda, katakan "Terima kasih" alih-alih menolaknya dengan "Ah, itu bukan apa-apa."</span>
+                                </li>
                             </ul>
                         </div>
                         
@@ -366,53 +431,88 @@ Dyer warns against the "Performance Trap"—the belief that "I am only as good a
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-3 sm:mb-4 mobile-title">
-                            Approval Seeking & The Past
+                            <span class="lang-en">Approval Seeking & The Past</span>
+                            <span class="lang-id">Mencari Persetujuan & Masa Lalu</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-gray-700 leading-relaxed space-y-4 sm:space-y-6">
                         <div class="bg-blue-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
                             <h3 class="text-lg sm:text-xl font-semibold text-blue-800 mb-3 mobile-subtitle">
-                                The Disease of Approval Seeking
+                                <span class="lang-en">The Disease of Approval Seeking</span>
+                                <span class="lang-id">Penyakit Mencari Persetujuan</span>
                             </h3>
-                            <p class="text-blue-700 mobile-text justified-text">
-                                Wanting approval is a natural human desire; <em>needing</em> it is a psychological sickness. When you <strong>need</strong> approval, you hand over the keys to your happiness to someone else. If they approve, you are happy. If they don't, you collapse. This makes you a slave to the opinions of others.
-                            </p>
-                            <p class="text-blue-700 mobile-text justified-text mt-3">
-                                <strong>The 50/50 Rule:</strong> Dyer points out a statistical reality—on any given topic, opinion, or action, approximately 50% of people will agree with you, and 50% will disagree. If you realize that disapproval is statistically inevitable, you can stop being shocked or hurt when you encounter it.
-                            </p>
+                            <div class="text-blue-700 mobile-text justified-text">
+                                <p class="lang-en">
+                                    Wanting approval is a natural human desire; <em>needing</em> it is a psychological sickness. When you <strong>need</strong> approval, you hand over the keys to your happiness to someone else. If they approve, you are happy. If they don't, you collapse. This makes you a slave to the opinions of others.
+                                </p>
+                                <p class="lang-id">
+                                    Menginginkan persetujuan adalah hasrat manusia yang wajar; tetapi <em>membutuhkannya</em> adalah penyakit psikologis. Ketika Anda <strong>membutuhkan</strong> persetujuan, Anda menyerahkan kunci kebahagiaan Anda kepada orang lain. Jika mereka setuju, Anda bahagia. Jika tidak, Anda hancur. Ini membuat Anda menjadi budak opini orang lain.
+                                </p>
+                                <p class="lang-en mt-3">
+                                    <strong>The 50/50 Rule:</strong> Dyer points out a statistical reality—on any given topic, opinion, or action, approximately 50% of people will agree with you, and 50% will disagree. If you realize that disapproval is statistically inevitable, you can stop being shocked or hurt when you encounter it.
+                                </p>
+                                <p class="lang-id mt-3">
+                                    <strong>Aturan 50/50:</strong> Dyer menunjukkan realitas statistik—pada topik, opini, atau tindakan apa pun, kira-kira 50% orang akan setuju dengan Anda, dan 50% akan tidak setuju. Jika Anda menyadari bahwa penolakan secara statistik tidak dapat dihindari, Anda bisa berhenti merasa kaget atau sakit hati saat menghadapinya.
+                                </p>
+                            </div>
                         </div>
 
                         <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
 
-<h3>Breaking Free from the Past: The "I'm" Circles</h3>
+                            <h3 class="lang-en">Breaking Free from the Past: The "I'm" Circles</h3>
+                            <h3 class="lang-id">Bebas dari Masa Lalu: Lingkaran "Saya Adalah"</h3>
 
-<p>
-One of the most common erroneous zones is the reliance on labels from the past to justify behavior in the present. We use these labels as "safe harbors" to avoid the risk of changing.
-</p>
+                            <p class="lang-en">
+                                One of the most common erroneous zones is the reliance on labels from the past to justify behavior in the present. We use these labels as "safe harbors" to avoid the risk of changing.
+                            </p>
+                            <p class="lang-id">
+                                Salah satu zona kesalahan yang paling umum adalah ketergantungan pada label dari masa lalu untuk membenarkan perilaku di masa sekarang. Kita menggunakan label ini sebagai "pelabuhan aman" untuk menghindari risiko perubahan.
+                            </p>
 
-<p><strong>Common "I'm" Circles (Self-Labeling):</strong></p>
-<ul class="list-disc ml-5 mb-4">
-  <li>"I'm just shy." (Translation: I am afraid to interact with people, so I use this label to avoid trying.)</li>
-  <li>"I'm not good at math/technology." (Translation: I am too lazy to put in the effort to learn it now.)</li>
-  <li>"I'm clumsy." (Translation: I have always been told this, so I believe it and act it out.)</li>
-  <li>"I'm Italian/Irish/etc., so I have a bad temper." (Translation: I use my heritage as an excuse to lack self-control.)</li>
-</ul>
+                            <p class="lang-en"><strong>Common "I'm" Circles (Self-Labeling):</strong></p>
+                            <p class="lang-id"><strong>Lingkaran "Saya Adalah" yang Umum (Pelabelan Diri):</strong></p>
+                            
+                            <ul class="list-disc ml-5 mb-4 lang-en">
+                                <li>"I'm just shy." (Translation: I am afraid to interact with people, so I use this label to avoid trying.)</li>
+                                <li>"I'm not good at math/technology." (Translation: I am too lazy to put in the effort to learn it now.)</li>
+                                <li>"I'm clumsy." (Translation: I have always been told this, so I believe it and act it out.)</li>
+                                <li>"I'm Italian/Irish/etc., so I have a bad temper." (Translation: I use my heritage as an excuse to lack self-control.)</li>
+                            </ul>
+                             <ul class="list-disc ml-5 mb-4 lang-id">
+                                <li>"Saya memang pemalu." (Terjemahan: Saya takut berinteraksi dengan orang, jadi saya pakai label ini agar tidak perlu mencoba.)</li>
+                                <li>"Saya tidak pandai matematika/teknologi." (Terjemahan: Saya terlalu malas untuk berusaha mempelajarinya sekarang.)</li>
+                                <li>"Saya ceroboh." (Terjemahan: Saya selalu diberitahu begitu, jadi saya mempercayainya dan bertindak demikian.)</li>
+                                <li>"Saya orang Batak/Jawa/dll, jadi watak saya begini." (Terjemahan: Saya menggunakan latar belakang saya sebagai alasan untuk tidak mengendalikan diri.)</li>
+                            </ul>
 
-<p>
-Dyer calls this the <strong>"ruling yourself out"</strong> tactic. Every time you say "That's just the way I am," you are admitting that you are a finished product, incapable of growth. You are essentially dead. To be alive is to grow and change.
-</p>
+                            <p class="lang-en">
+                                Dyer calls this the <strong>"ruling yourself out"</strong> tactic. Every time you say "That's just the way I am," you are admitting that you are a finished product, incapable of growth. You are essentially dead. To be alive is to grow and change.
+                            </p>
+                            <p class="lang-id">
+                                Dyer menyebut ini taktik <strong>"menyingkirkan diri sendiri"</strong>. Setiap kali Anda berkata "Memang begitulah saya," Anda mengakui bahwa Anda adalah produk jadi yang tidak mampu bertumbuh. Anda pada dasarnya sudah mati. Hidup berarti bertumbuh dan berubah.
+                            </p>
 
-</div>
+                        </div>
 
                         <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
                             <h4 class="font-semibold text-blue-800 mb-3 text-sm sm:text-base mobile-subtitle">
-                                How to Eliminate the Past:
+                                <span class="lang-en">How to Eliminate the Past:</span>
+                                <span class="lang-id">Cara Menghapus Masa Lalu:</span>
                             </h4>
                             <ul class="space-y-2 text-blue-700 mobile-text">
-                                <li class="justified-text"><strong>1. Change your vocabulary:</strong> Eliminate the phrase "I've always been that way." Replace it with "I have chosen to be that way in the past, but I can choose differently now."</li>
-                                <li class="justified-text"><strong>2. Challenge the label:</strong> If you think you are "shy," force yourself to introduce yourself to three new people. Prove the label wrong through action.</li>
-                                <li class="justified-text"><strong>3. Confront disapproval:</strong> The next time someone disagrees with you, instead of changing your stance to please them, calmly say, "I understand your point, but I see it differently." Then, notice that the world didn't end.</li>
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>1. Change your vocabulary:</strong> Eliminate the phrase "I've always been that way." Replace it with "I have chosen to be that way in the past, but I can choose differently now."</span>
+                                    <span class="lang-id"><strong>1. Ubah kosakata Anda:</strong> Hapus frasa "Saya selalu begitu." Ganti dengan "Dulu saya memilih menjadi begitu, tapi sekarang saya bisa memilih yang berbeda."</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>2. Challenge the label:</strong> If you think you are "shy," force yourself to introduce yourself to three new people. Prove the label wrong through action.</span>
+                                    <span class="lang-id"><strong>2. Tantang label tersebut:</strong> Jika Anda pikir Anda "pemalu," paksa diri Anda berkenalan dengan tiga orang baru. Buktikan label itu salah melalui tindakan.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>3. Confront disapproval:</strong> The next time someone disagrees with you, instead of changing your stance to please them, calmly say, "I understand your point, but I see it differently." Then, notice that the world didn't end.</span>
+                                    <span class="lang-id"><strong>3. Hadapi ketidaksetujuan:</strong> Lain kali seseorang tidak setuju dengan Anda, alih-alih mengubah pendirian untuk menyenangkan mereka, katakan dengan tenang, "Saya mengerti poin Anda, tapi pandangan saya berbeda." Lalu, perhatikan bahwa dunia tidak kiamat karenanya.</span>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -422,50 +522,80 @@ Dyer calls this the <strong>"ruling yourself out"</strong> tactic. Every time yo
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-3 sm:mb-4 mobile-title">
-                            The Useless Emotions: Guilt & Worry
+                            <span class="lang-en">The Useless Emotions: Guilt & Worry</span>
+                            <span class="lang-id">Emosi yang Sia-sia: Rasa Bersalah & Khawatir</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-gray-700 leading-relaxed space-y-4 sm:space-y-6">
                         <p class="mobile-text justified-text">
-                            Dyer identifies two emotions as the most "futile" of all human experiences. They are the "bookends" of your life: one focuses entirely on the past, and the other entirely on the future. Neither allows you to live in the present.
+                            <span class="lang-en">Dyer identifies two emotions as the most "futile" of all human experiences. They are the "bookends" of your life: one focuses entirely on the past, and the other entirely on the future. Neither allows you to live in the present.</span>
+                            <span class="lang-id">Dyer mengidentifikasi dua emosi sebagai pengalaman manusia yang paling "sia-sia". Keduanya adalah "penjepit buku" kehidupan Anda: satu berfokus sepenuhnya pada masa lalu, dan yang lainnya sepenuhnya pada masa depan. Tak satu pun membiarkan Anda hidup di masa sekarang.</span>
                         </p>
                         
                         <div class="bg-indigo-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-indigo-200">
                             <h3 class="text-lg sm:text-xl font-semibold text-indigo-800 mb-3 mobile-subtitle">
-                                1. Guilt (Looking Backward)
+                                <span class="lang-en">1. Guilt (Looking Backward)</span>
+                                <span class="lang-id">1. Rasa Bersalah (Melihat ke Belakang)</span>
                             </h3>
-                            <p class="mobile-text justified-text text-slate-700 mb-3">
-                                Guilt is the emotional reaction to a past event. You feel bad about something you did or didn't do. Dyer distinguishes between <strong>learning from the past</strong> (which is healthy) and <strong>guilt</strong> (which is immobilizing).
-                            </p>
+                            <div class="mobile-text justified-text text-slate-700 mb-3">
+                                <span class="lang-en">Guilt is the emotional reaction to a past event. You feel bad about something you did or didn't do. Dyer distinguishes between <strong>learning from the past</strong> (which is healthy) and <strong>guilt</strong> (which is immobilizing).</span>
+                                <span class="lang-id">Rasa bersalah adalah reaksi emosional terhadap peristiwa masa lalu. Anda merasa buruk tentang sesuatu yang Anda lakukan atau tidak lakukan. Dyer membedakan antara <strong>belajar dari masa lalu</strong> (yang sehat) dan <strong>rasa bersalah</strong> (yang melumpuhkan).</span>
+                            </div>
                             <ul class="list-disc ml-5 text-slate-700 mobile-text">
-                                <li class="justified-text"><strong>The Mechanism:</strong> Guilt is often a tool used by society, religion, and parents to control behavior. "If you loved me, you wouldn't do that."</li>
-                                <li class="justified-text"><strong>Why it's useless:</strong> You can spend every second of the rest of your life feeling guilty, but it will not change what happened in the past. Not even a tiny bit.</li>
-                                <li class="justified-text"><strong>The Solution:</strong> Accept the mistake. Make amends if possible. Then, vow not to repeat the behavior. Finally, refuse to spend another moment feeling bad about it.</li>
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>The Mechanism:</strong> Guilt is often a tool used by society, religion, and parents to control behavior. "If you loved me, you wouldn't do that."</span>
+                                    <span class="lang-id"><strong>Mekanismenya:</strong> Rasa bersalah sering kali menjadi alat yang digunakan masyarakat, agama, dan orang tua untuk mengontrol perilaku. "Kalau kamu sayang aku, kamu nggak akan begitu."</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>Why it's useless:</strong> You can spend every second of the rest of your life feeling guilty, but it will not change what happened in the past. Not even a tiny bit.</span>
+                                    <span class="lang-id"><strong>Mengapa sia-sia:</strong> Anda bisa menghabiskan setiap detik sisa hidup Anda merasa bersalah, tetapi itu tidak akan mengubah apa yang terjadi di masa lalu. Sedikit pun tidak.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>The Solution:</strong> Accept the mistake. Make amends if possible. Then, vow not to repeat the behavior. Finally, refuse to spend another moment feeling bad about it.</span>
+                                    <span class="lang-id"><strong>Solusinya:</strong> Terima kesalahan itu. Perbaiki jika memungkinkan. Kemudian, berjanji untuk tidak mengulangi perilaku tersebut. Terakhir, tolak untuk menghabiskan satu momen lagi merasa buruk karenanya.</span>
+                                </li>
                             </ul>
                         </div>
 
                         <div class="bg-indigo-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-indigo-200">
                             <h3 class="text-lg sm:text-xl font-semibold text-indigo-800 mb-3 mobile-subtitle">
-                                2. Worry (Looking Forward)
+                                <span class="lang-en">2. Worry (Looking Forward)</span>
+                                <span class="lang-id">2. Khawatir (Melihat ke Depan)</span>
                             </h3>
-                            <p class="mobile-text justified-text text-slate-700 mb-3">
-                                Worry is the act of immobilizing yourself in the present over something that <em>might</em> happen in the future.
-                            </p>
+                            <div class="mobile-text justified-text text-slate-700 mb-3">
+                                <span class="lang-en">Worry is the act of immobilizing yourself in the present over something that <em>might</em> happen in the future.</span>
+                                <span class="lang-id">Khawatir adalah tindakan melumpuhkan diri sendiri di masa kini atas sesuatu yang <em>mungkin</em> terjadi di masa depan.</span>
+                            </div>
                             <ul class="list-disc ml-5 text-slate-700 mobile-text">
-                                <li class="justified-text"><strong>Worry vs. Planning:</strong> Planning is active ("I will buy insurance"). Worry is passive ("What if the house burns down?"). Worry involves repetitive, circular thoughts that lead to no action.</li>
-                                <li class="justified-text"><strong>The Physical Cost:</strong> Worry creates stress, ulcers, high blood pressure, and anxiety, literally destroying the physical vessel you live in.</li>
-                                <li class="justified-text"><strong>The Solution:</strong> The only cure for worry is action. If you can change it, do it. If you cannot (e.g., the weather, the economy, death), then worrying is a waste of your limited life time.</li>
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>Worry vs. Planning:</strong> Planning is active ("I will buy insurance"). Worry is passive ("What if the house burns down?"). Worry involves repetitive, circular thoughts that lead to no action.</span>
+                                    <span class="lang-id"><strong>Khawatir vs. Perencanaan:</strong> Perencanaan itu aktif ("Saya akan beli asuransi"). Khawatir itu pasif ("Gimana kalau rumah terbakar?"). Khawatir melibatkan pikiran berulang dan berputar-putar yang tidak menghasilkan tindakan.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>The Physical Cost:</strong> Worry creates stress, ulcers, high blood pressure, and anxiety, literally destroying the physical vessel you live in.</span>
+                                    <span class="lang-id"><strong>Biaya Fisik:</strong> Khawatir menciptakan stres, sakit maag, tekanan darah tinggi, dan kecemasan, yang secara harfiah menghancurkan tubuh tempat Anda tinggal.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>The Solution:</strong> The only cure for worry is action. If you can change it, do it. If you cannot (e.g., the weather, the economy, death), then worrying is a waste of your limited life time.</span>
+                                    <span class="lang-id"><strong>Solusinya:</strong> Satu-satunya obat untuk kekhawatiran adalah tindakan. Jika Anda bisa mengubahnya, lakukan. Jika tidak (misalnya cuaca, ekonomi, kematian), maka khawatir adalah pemborosan waktu hidup Anda yang terbatas.</span>
+                                </li>
                             </ul>
                         </div>
 
                         <div class="bg-slate-100 p-4 sm:p-6 rounded-lg sm:rounded-xl">
                             <h4 class="font-semibold text-gray-800 mb-3 text-sm sm:text-base mobile-subtitle">
-                                The Concept of "The Now"
+                                <span class="lang-en">The Concept of "The Now"</span>
+                                <span class="lang-id">Konsep "Saat Ini" (The Now)</span>
                             </h4>
-                            <p class="mobile-text justified-text">
-                                When you eliminate guilt (past) and worry (future), you are left with the present moment—the <strong>Now</strong>. Dyer argues that life can only be lived in the present moment. Most people put off living: "I'll be happy when I graduate," "when I get married," "when I retire." But when those moments arrive, they will be the "Now." If you don't know how to live in the Now, you will never be happy.
-                            </p>
+                            <div class="mobile-text justified-text">
+                                <span class="lang-en">
+                                    When you eliminate guilt (past) and worry (future), you are left with the present moment—the <strong>Now</strong>. Dyer argues that life can only be lived in the present moment. Most people put off living: "I'll be happy when I graduate," "when I get married," "when I retire." But when those moments arrive, they will be the "Now." If you don't know how to live in the Now, you will never be happy.
+                                </span>
+                                <span class="lang-id">
+                                    Ketika Anda menghilangkan rasa bersalah (masa lalu) dan kekhawatiran (masa depan), yang tersisa adalah momen saat ini—<strong>The Now</strong>. Dyer berpendapat bahwa hidup hanya bisa dijalani pada saat ini. Kebanyakan orang menunda hidup: "Saya akan bahagia kalau sudah lulus," "kalau sudah menikah," "kalau sudah pensiun." Tapi ketika momen itu tiba, itu akan menjadi "Saat Ini". Jika Anda tidak tahu cara hidup di Saat Ini, Anda tidak akan pernah bahagia.
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -474,50 +604,90 @@ Dyer calls this the <strong>"ruling yourself out"</strong> tactic. Every time yo
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-3 sm:mb-4 mobile-title">
-                            Breaking Social Traps & Conventions
+                            <span class="lang-en">Breaking Social Traps & Conventions</span>
+                            <span class="lang-id">Mematahkan Perangkap & Konvensi Sosial</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-gray-700 leading-relaxed space-y-6">
                         <p class="mobile-text justified-text">
-                            We are conditioned from birth to follow rules. While legal rules are necessary for society, many cultural and social rules are "Erroneous Zones" that limit individual freedom.
+                            <span class="lang-en">We are conditioned from birth to follow rules. While legal rules are necessary for society, many cultural and social rules are "Erroneous Zones" that limit individual freedom.</span>
+                            <span class="lang-id">Kita dikondisikan sejak lahir untuk mengikuti aturan. Meskipun aturan hukum diperlukan untuk masyarakat, banyak aturan budaya dan sosial adalah "Zona Kesalahan" yang membatasi kebebasan individu.</span>
                         </p>
 
                         <div class="bg-gradient-to-r from-purple-50 to-fuchsia-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-purple-200">
-                            <h3 class="text-lg sm:text-xl font-semibold text-purple-800 mb-3 mobile-subtitle">1. The "Shoulds" and "Oughts"</h3>
-                            <p class="mobile-text justified-text text-slate-700">
-                                This is "externalized thinking." It involves doing things not because you want to, or because they make sense, but because "It's simply done that way."
-                                <br><br>
-                                <em>Examples:</em> "You should wear black to a funeral," "You ought to write thank-you notes," "Women should do the housework."
-                                <br><br>
-                                <strong>The Fix:</strong> Shift from external to internal rules. Ask: "Does this rule make sense for <em>me</em>?" Replace "I should" with "I choose to" or "I want to." If you don't want to, and the only reason is tradition, give yourself permission to break the rule.
-                            </p>
+                            <h3 class="text-lg sm:text-xl font-semibold text-purple-800 mb-3 mobile-subtitle">
+                                <span class="lang-en">1. The "Shoulds" and "Oughts"</span>
+                                <span class="lang-id">1. "Seharusnya" dan "Semestinya"</span>
+                            </h3>
+                            <div class="mobile-text justified-text text-slate-700">
+                                <span class="lang-en">
+                                    This is "externalized thinking." It involves doing things not because you want to, or because they make sense, but because "It's simply done that way."
+                                    <br><br>
+                                    <em>Examples:</em> "You should wear black to a funeral," "You ought to write thank-you notes," "Women should do the housework."
+                                    <br><br>
+                                    <strong>The Fix:</strong> Shift from external to internal rules. Ask: "Does this rule make sense for <em>me</em>?" Replace "I should" with "I choose to" or "I want to." If you don't want to, and the only reason is tradition, give yourself permission to break the rule.
+                                </span>
+                                <span class="lang-id">
+                                    Ini adalah "pemikiran eksternal". Melibatkan melakukan sesuatu bukan karena Anda menginginkannya, atau karena masuk akal, tetapi karena "Memang begitu caranya."
+                                    <br><br>
+                                    <em>Contoh:</em> "Kamu harus pakai baju hitam ke pemakaman," "Kamu semestinya nulis surat ucapan terima kasih," "Wanita seharusnya mengerjakan pekerjaan rumah tangga."
+                                    <br><br>
+                                    <strong>Solusinya:</strong> Beralih dari aturan eksternal ke internal. Tanyakan: "Apakah aturan ini masuk akal buat <em>saya</em>?" Ganti "Saya harus" dengan "Saya memilih untuk" atau "Saya ingin". Jika Anda tidak ingin, dan satu-satunya alasan adalah tradisi, beri diri Anda izin untuk melanggar aturan tersebut.
+                                </span>
+                            </div>
                         </div>
 
                         <div class="bg-gradient-to-r from-purple-50 to-fuchsia-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-purple-200">
-                            <h3 class="text-lg sm:text-xl font-semibold text-purple-800 mb-3 mobile-subtitle">2. The Justice Trap</h3>
-                            <p class="mobile-text justified-text text-slate-700">
-                                One of the most pervasive erroneously zones is the belief that the world <em>should</em> be fair. We constantly hear, "That's not fair!"
-                                <br><br>
-                                <strong>Reality Check:</strong> Justice is a man-made concept. It does not exist in nature. Birds eat worms; it isn't fair to the worm. Good people get sick; bad people get rich.
-                                <br><br>
-                                When you demand justice, you make yourself unhappy because reality does not match your fantasy. Instead of complaining "It's not fair," ask yourself: "What am I going to do about it?"
-                            </p>
+                            <h3 class="text-lg sm:text-xl font-semibold text-purple-800 mb-3 mobile-subtitle">
+                                <span class="lang-en">2. The Justice Trap</span>
+                                <span class="lang-id">2. Perangkap Keadilan</span>
+                            </h3>
+                            <div class="mobile-text justified-text text-slate-700">
+                                <span class="lang-en">
+                                    One of the most pervasive erroneously zones is the belief that the world <em>should</em> be fair. We constantly hear, "That's not fair!"
+                                    <br><br>
+                                    <strong>Reality Check:</strong> Justice is a man-made concept. It does not exist in nature. Birds eat worms; it isn't fair to the worm. Good people get sick; bad people get rich.
+                                    <br><br>
+                                    When you demand justice, you make yourself unhappy because reality does not match your fantasy. Instead of complaining "It's not fair," ask yourself: "What am I going to do about it?"
+                                </span>
+                                <span class="lang-id">
+                                    Salah satu zona kesalahan yang paling luas adalah keyakinan bahwa dunia <em>seharusnya</em> adil. Kita terus-menerus mendengar, "Itu tidak adil!"
+                                    <br><br>
+                                    <strong>Cek Realitas:</strong> Keadilan adalah konsep buatan manusia. Itu tidak ada di alam. Burung memakan cacing; itu tidak adil bagi si cacing. Orang baik bisa sakit; orang jahat bisa kaya.
+                                    <br><br>
+                                    Ketika Anda menuntut keadilan, Anda membuat diri sendiri tidak bahagia karena kenyataan tidak sesuai dengan fantasi Anda. Daripada mengeluh "Ini tidak adil," tanyakan pada diri sendiri: "Apa yang akan saya lakukan tentang hal ini?"
+                                </span>
+                            </div>
                         </div>
 
                         <div class="bg-gradient-to-r from-purple-50 to-fuchsia-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-purple-200">
-                            <h3 class="text-lg sm:text-xl font-semibold text-purple-800 mb-3 mobile-subtitle">3. Procrastination: The Art of Keeping Up with Yesterday</h3>
-                            <p class="mobile-text justified-text text-slate-700">
-                                Procrastination is not laziness; it is a defense mechanism. It allows you to:
-                            </p>
+                            <h3 class="text-lg sm:text-xl font-semibold text-purple-800 mb-3 mobile-subtitle">
+                                <span class="lang-en">3. Procrastination: The Art of Keeping Up with Yesterday</span>
+                                <span class="lang-id">3. Penundaan: Seni Mengejar Kemarin</span>
+                            </h3>
+                            <div class="mobile-text justified-text text-slate-700">
+                                <span class="lang-en">Procrastination is not laziness; it is a defense mechanism. It allows you to:</span>
+                                <span class="lang-id">Menunda-nunda bukanlah kemalasan; itu adalah mekanisme pertahanan diri. Ini memungkinkan Anda untuk:</span>
+                            </div>
                             <ul class="list-disc ml-5 text-slate-700 mobile-text">
-                                <li class="justified-text"><strong>Avoid failure:</strong> If you don't do it, you can't fail at it.</li>
-                                <li class="justified-text"><strong>Avoid success:</strong> If you succeed, people might expect more from you.</li>
-                                <li class="justified-text"><strong>Blame time:</strong> "I would have done a great job if I had more time."</li>
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>Avoid failure:</strong> If you don't do it, you can't fail at it.</span>
+                                    <span class="lang-id"><strong>Menghindari kegagalan:</strong> Jika Anda tidak melakukannya, Anda tidak akan gagal dalam hal itu.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>Avoid success:</strong> If you succeed, people might expect more from you.</span>
+                                    <span class="lang-id"><strong>Menghindari kesuksesan:</strong> Jika Anda sukses, orang mungkin berharap lebih dari Anda.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>Blame time:</strong> "I would have done a great job if I had more time."</span>
+                                    <span class="lang-id"><strong>Menyalahkan waktu:</strong> "Saya pasti sudah melakukannya dengan baik kalau punya lebih banyak waktu."</span>
+                                </li>
                             </ul>
-                            <p class="mobile-text justified-text text-slate-700 mt-2">
-                                <strong>The Solution:</strong> Become a "Doer." Dedicate 5 minutes to the task you are avoiding. Often, the anxiety about the task is harder than the task itself.
-                            </p>
+                            <div class="mobile-text justified-text text-slate-700 mt-2">
+                                <span class="lang-en"><strong>The Solution:</strong> Become a "Doer." Dedicate 5 minutes to the task you are avoiding. Often, the anxiety about the task is harder than the task itself.</span>
+                                <span class="lang-id"><strong>Solusinya:</strong> Jadilah "Pelaku" (Doer). Dedikasikan 5 menit untuk tugas yang Anda hindari. Seringkali, kecemasan tentang tugas itu lebih berat daripada tugas itu sendiri.</span>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -526,58 +696,119 @@ Dyer calls this the <strong>"ruling yourself out"</strong> tactic. Every time yo
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-rose-100 text-rose-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-3 sm:mb-4 mobile-title">
-                            Independence & The Fully Functioning Person
+                            <span class="lang-en">Independence & The Fully Functioning Person</span>
+                            <span class="lang-id">Kemandirian & Pribadi yang Berfungsi Utuh</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-gray-700 leading-relaxed space-y-6">
                         <div class="bg-rose-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-rose-200">
-                            <h3 class="text-lg sm:text-xl font-semibold text-rose-800 mb-3 mobile-subtitle">Declaring Independence</h3>
-                            <p class="mobile-text justified-text text-slate-700 mb-3">
-                                <strong>Psychological Independence:</strong> This means being free of forced obligations in relationships. It is the ability to say: "I love you, but I do not <em>need</em> you to survive or be happy."
-                            </p>
-                            <p class="mobile-text justified-text text-slate-700">
-                                Dependency creates resentment. In a dependent marriage, one partner feels like a slave (resentful of the obligation) and the other feels like a master (fearful the slave will leave). The only healthy relationship is one between two independent people who <em>choose</em> to be together every day, not because they have to, but because they want to.
-                            </p>
+                            <h3 class="text-lg sm:text-xl font-semibold text-rose-800 mb-3 mobile-subtitle">
+                                <span class="lang-en">Declaring Independence</span>
+                                <span class="lang-id">Menyatakan Kemandirian</span>
+                            </h3>
+                            <div class="mobile-text justified-text text-slate-700 mb-3">
+                                <span class="lang-en">
+                                    <strong>Psychological Independence:</strong> This means being free of forced obligations in relationships. It is the ability to say: "I love you, but I do not <em>need</em> you to survive or be happy."
+                                </span>
+                                <span class="lang-id">
+                                    <strong>Kemandirian Psikologis:</strong> Ini berarti bebas dari kewajiban paksa dalam hubungan. Ini adalah kemampuan untuk berkata: "Aku mencintaimu, tapi aku tidak <em>membutuhkanmu</em> untuk bertahan hidup atau bahagia."
+                                </span>
+                            </div>
+                            <div class="mobile-text justified-text text-slate-700">
+                                <span class="lang-en">
+                                    Dependency creates resentment. In a dependent marriage, one partner feels like a slave (resentful of the obligation) and the other feels like a master (fearful the slave will leave). The only healthy relationship is one between two independent people who <em>choose</em> to be together every day, not because they have to, but because they want to.
+                                </span>
+                                <span class="lang-id">
+                                    Ketergantungan menciptakan kebencian. Dalam pernikahan yang dependen, satu pasangan merasa seperti budak (benci kewajiban) dan yang lainnya merasa seperti tuan (takut budaknya pergi). Satu-satunya hubungan yang sehat adalah antara dua orang mandiri yang <em>memilih</em> untuk bersama setiap hari, bukan karena harus, tapi karena ingin.
+                                </span>
+                            </div>
                         </div>
 
                         <div class="bg-rose-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-rose-200">
-                            <h3 class="text-lg sm:text-xl font-semibold text-rose-800 mb-3 mobile-subtitle">Farewell to Anger</h3>
-                            <p class="mobile-text justified-text text-slate-700">
-                                Dyer argues that anger is completely useless.
-                                <br>
-                                1. It is a choice (you choose to react with anger).
-                                <br>
-                                2. It is debilitating (it ruins your health).
-                                <br>
-                                3. It rarely changes the other person (it usually makes them defensive).
-                                <br><br>
-                                <strong>Irony:</strong> Anger is meant to punish the other person, but it actually punishes <em>you</em>. You are the one with the knot in your stomach, while the person you are angry at is often sleeping soundly.
-                            </p>
+                            <h3 class="text-lg sm:text-xl font-semibold text-rose-800 mb-3 mobile-subtitle">
+                                <span class="lang-en">Farewell to Anger</span>
+                                <span class="lang-id">Selamat Tinggal pada Kemarahan</span>
+                            </h3>
+                            <div class="mobile-text justified-text text-slate-700">
+                                <span class="lang-en">
+                                    Dyer argues that anger is completely useless.
+                                    <br>1. It is a choice (you choose to react with anger).
+                                    <br>2. It is debilitating (it ruins your health).
+                                    <br>3. It rarely changes the other person (it usually makes them defensive).
+                                    <br><br>
+                                    <strong>Irony:</strong> Anger is meant to punish the other person, but it actually punishes <em>you</em>. You are the one with the knot in your stomach, while the person you are angry at is often sleeping soundly.
+                                </span>
+                                <span class="lang-id">
+                                    Dyer berpendapat bahwa kemarahan sepenuhnya sia-sia.
+                                    <br>1. Itu adalah pilihan (Anda memilih bereaksi dengan marah).
+                                    <br>2. Itu melemahkan (merusak kesehatan Anda).
+                                    <br>3. Jarang mengubah orang lain (biasanya malah membuat mereka defensif).
+                                    <br><br>
+                                    <strong>Ironi:</strong> Kemarahan dimaksudkan untuk menghukum orang lain, tapi sebenarnya menghukum <em>Anda</em>. Andalah yang perutnya sakit melilit, sementara orang yang Anda marahi sering kali tidur nyenyak.
+                                </span>
+                            </div>
                         </div>
 
                         <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl">
-                            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-3 mobile-subtitle">Portrait of a Person Without Erroneous Zones</h3>
+                            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-3 mobile-subtitle">
+                                <span class="lang-en">Portrait of a Person Without Erroneous Zones</span>
+                                <span class="lang-id">Potret Pribadi Tanpa Zona Kesalahan</span>
+                            </h3>
                             <p class="mobile-text justified-text mb-4">
-                                In the final chapter, Dyer synthesizes all the concepts into a portrait of a person who has eliminated their erroneous zones. This is the goal:
+                                <span class="lang-en">In the final chapter, Dyer synthesizes all the concepts into a portrait of a person who has eliminated their erroneous zones. This is the goal:</span>
+                                <span class="lang-id">Di bab terakhir, Dyer menyatukan semua konsep menjadi potret orang yang telah menghilangkan zona kesalahannya. Inilah tujuannya:</span>
                             </p>
                             <ul class="space-y-3 mobile-text text-gray-700">
-                                <li class="justified-text flex"><span class="mr-2">✔️</span> <strong>They accept nature:</strong> They don't complain about rain, snow, or traffic. They accept what is and adapt.</li>
-                                <li class="justified-text flex"><span class="mr-2">✔️</span> <strong>They love privacy:</strong> They enjoy their own company and are not afraid to be alone.</li>
-                                <li class="justified-text flex"><span class="mr-2">✔️</span> <strong>They are unthreatened:</strong> They don't need everyone to agree with them. They are comfortable with differences.</li>
-                                <li class="justified-text flex"><span class="mr-2">✔️</span> <strong>They have no guilt/worry:</strong> They live entirely in the present moment.</li>
-                                <li class="justified-text flex"><span class="mr-2">✔️</span> <strong>They are childlike:</strong> They know how to play, laugh, and be curious, regardless of their age.</li>
-                                <li class="justified-text flex"><span class="mr-2">✔️</span> <strong>They are "Doers":</strong> They have high energy. They don't talk about what they are going to do; they are out doing it.</li>
+                                <li class="justified-text flex">
+                                    <span class="mr-2">✔️</span> 
+                                    <span class="lang-en"><strong>They accept nature:</strong> They don't complain about rain, snow, or traffic. They accept what is and adapt.</span>
+                                    <span class="lang-id"><strong>Mereka menerima alam:</strong> Mereka tidak mengeluh soal hujan, salju, atau macet. Mereka menerima apa adanya dan beradaptasi.</span>
+                                </li>
+                                <li class="justified-text flex">
+                                    <span class="mr-2">✔️</span> 
+                                    <span class="lang-en"><strong>They love privacy:</strong> They enjoy their own company and are not afraid to be alone.</span>
+                                    <span class="lang-id"><strong>Mereka suka privasi:</strong> Mereka menikmati kesendirian dan tidak takut sendirian.</span>
+                                </li>
+                                <li class="justified-text flex">
+                                    <span class="mr-2">✔️</span> 
+                                    <span class="lang-en"><strong>They are unthreatened:</strong> They don't need everyone to agree with them. They are comfortable with differences.</span>
+                                    <span class="lang-id"><strong>Mereka tidak merasa terancam:</strong> Mereka tidak butuh semua orang setuju. Mereka nyaman dengan perbedaan.</span>
+                                </li>
+                                <li class="justified-text flex">
+                                    <span class="mr-2">✔️</span> 
+                                    <span class="lang-en"><strong>They have no guilt/worry:</strong> They live entirely in the present moment.</span>
+                                    <span class="lang-id"><strong>Mereka tanpa rasa bersalah/khawatir:</strong> Mereka hidup sepenuhnya di saat ini.</span>
+                                </li>
+                                <li class="justified-text flex">
+                                    <span class="mr-2">✔️</span> 
+                                    <span class="lang-en"><strong>They are childlike:</strong> They know how to play, laugh, and be curious, regardless of their age.</span>
+                                    <span class="lang-id"><strong>Mereka seperti anak kecil:</strong> Mereka tahu cara bermain, tertawa, dan penasaran, berapapun usianya.</span>
+                                </li>
+                                <li class="justified-text flex">
+                                    <span class="mr-2">✔️</span> 
+                                    <span class="lang-en"><strong>They are "Doers":</strong> They have high energy. They don't talk about what they are going to do; they are out doing it.</span>
+                                    <span class="lang-id"><strong>Mereka adalah "Pelaku":</strong> Mereka berenergi tinggi. Mereka tidak bicara soal apa yang akan dilakukan; mereka sedang melakukannya.</span>
+                                </li>
                             </ul>
                         </div>
 
                         <div class="bg-gradient-to-r from-teal-50 to-emerald-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-teal-200">
-                            <h3 class="text-lg sm:text-xl font-semibold text-teal-800 mb-3 mobile-subtitle">Conclusion</h3>
+                            <h3 class="text-lg sm:text-xl font-semibold text-teal-800 mb-3 mobile-subtitle">
+                                <span class="lang-en">Conclusion</span>
+                                <span class="lang-id">Kesimpulan</span>
+                            </h3>
                             <p class="mobile-text justified-text font-medium italic border-l-4 border-teal-400 pl-4 sm:pl-6">
-                                "You are the sum total of your choices."
+                                <span class="lang-en">"You are the sum total of your choices."</span>
+                                <span class="lang-id">"Anda adalah jumlah total dari pilihan-pilihan Anda."</span>
                             </p>
                             <p class="mobile-text justified-text mt-3">
-                                <em>Your Erroneous Zones</em> is a manual for mental hygiene. Just as you clean your body daily, you must clean your mind of "garbage" thoughts. By realizing that no one can make you unhappy without your consent, you achieve the ultimate freedom: freedom from your own erroneous zones.
+                                <span class="lang-en">
+                                    <em>Your Erroneous Zones</em> is a manual for mental hygiene. Just as you clean your body daily, you must clean your mind of "garbage" thoughts. By realizing that no one can make you unhappy without your consent, you achieve the ultimate freedom: freedom from your own erroneous zones.
+                                </span>
+                                <span class="lang-id">
+                                    <em>Your Erroneous Zones</em> adalah panduan untuk kebersihan mental. Sama seperti membersihkan tubuh setiap hari, Anda harus membersihkan pikiran dari "sampah". Dengan menyadari bahwa tidak ada yang bisa membuat Anda tidak bahagia tanpa izin Anda, Anda mencapai kebebasan tertinggi: kebebasan dari zona kesalahan Anda sendiri.
+                                </span>
                             </p>
                         </div>
                     </div>
@@ -587,6 +818,31 @@ Dyer calls this the <strong>"ruling yourself out"</strong> tactic. Every time yo
     </div>
 
     <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const btnText = document.querySelector('.lang-text');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                btnText.textContent = '🇮🇩 Switch to ID';
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                btnText.textContent = '🇺🇸 Switch to EN';
+            }
+        }
+
+        // Drawer Logic
         function toggleDrawer() {
             const drawer = document.querySelector('.nav-drawer');
             const overlay = document.querySelector('.nav-overlay');
