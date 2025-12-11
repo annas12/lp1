@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Lean Startup — Detailed Edition</title>
+    <title>The Lean Startup — Deep Dive Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -11,7 +11,7 @@
         .fade-in { animation: fadeIn 0.5s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Blue/Cyan Theme for Lean Startup */
+        /* Blue/Cyan/Slate Theme */
         .active-tab { background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%); } 
         .content-section { display: none; }
         .content-section.active { display: block; }
@@ -155,8 +155,8 @@
                         <div class="text-left">
                             <div class="font-medium">Steer</div>
                             <div class="text-xs text-slate-400">
-                                <span class="lang-en">Build-Measure-Learn</span>
-                                <span class="lang-id">Bangun-Ukur-Pelajari</span>
+                                <span class="lang-en">B-M-L Feedback Loop</span>
+                                <span class="lang-id">Lingkaran Umpan Balik</span>
                             </div>
                         </div>
                     </button>
@@ -167,8 +167,8 @@
                         <div class="text-left">
                             <div class="font-medium">The MVP</div>
                             <div class="text-xs text-slate-400">
-                                <span class="lang-en">Testing Assumptions</span>
-                                <span class="lang-id">Menguji Asumsi</span>
+                                <span class="lang-en">Types & Strategies</span>
+                                <span class="lang-id">Jenis & Strategi</span>
                             </div>
                         </div>
                     </button>
@@ -177,10 +177,10 @@
                     <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
                         <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
                         <div class="text-left">
-                            <div class="font-medium">Pivot or Persevere</div>
+                            <div class="font-medium">Innovation Accounting</div>
                             <div class="text-xs text-slate-400">
-                                <span class="lang-en">Strategic Shifts</span>
-                                <span class="lang-id">Pergeseran Strategis</span>
+                                <span class="lang-en">Pivot or Persevere</span>
+                                <span class="lang-id">Pivot atau Bertahan</span>
                             </div>
                         </div>
                     </button>
@@ -203,7 +203,7 @@
         <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
             <div class="text-center">
                 <p class="text-slate-400 text-xs">© Eric Ries</p>
-                <p class="text-slate-500 text-xs mt-1">Detailed Edition</p>
+                <p class="text-slate-500 text-xs mt-1">Deep Dive Edition</p>
             </div>
         </div>
     </nav>
@@ -215,8 +215,8 @@
                     The Lean Startup
                 </h1>
                 <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
-                    <span class="lang-en">How Constant Innovation Creates Radically Successful Businesses</span>
-                    <span class="lang-id">Bagaimana Inovasi Berkelanjutan Menciptakan Bisnis yang Sukses Secara Radikal</span>
+                    <span class="lang-en">Scientific Approach to Innovation</span>
+                    <span class="lang-id">Pendekatan Ilmiah untuk Inovasi</span>
                 </p>
                 <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto mt-3 sm:mt-4 rounded-full"></div>
             </div>
@@ -242,23 +242,23 @@
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <div class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-blue-600 pl-4 sm:pl-6 italic mobile-text justified-text">
-                            <span class="lang-en">“The goal of a startup is to figure out the right thing to build—the thing customers want and will pay for—as quickly as possible.”</span>
-                            <span class="lang-id">“Tujuan startup adalah mencari tahu hal yang tepat untuk dibangun—hal yang diinginkan pelanggan dan mau mereka bayar—secepat mungkin.”</span>
+                            <span class="lang-en">“The only way to win is to learn faster than anyone else.”</span>
+                            <span class="lang-id">“Satu-satunya cara untuk menang adalah belajar lebih cepat daripada orang lain.”</span>
                         </div>
                         
                         <div class="mobile-text justified-text">
                             <span class="lang-en">
-                                Traditional management fails in startups because startups face <strong>extreme uncertainty</strong>. You cannot "plan" when you don't know who your customer is or what the product should be. The Lean Startup is a scientific approach to creating and managing startups to get a desired product to customers' hands faster.
+                                The Lean Startup methodology is born from the failure of traditional management in startups. Startups face <strong>Extreme Uncertainty</strong>. You cannot "plan" (make forecasts, rigid milestones) when you don't even know if customers want the product.
                             </span>
                             <span class="lang-id">
-                                Manajemen tradisional gagal di startup karena startup menghadapi <strong>ketidakpastian ekstrem</strong>. Anda tidak bisa "merencanakan" ketika Anda tidak tahu siapa pelanggan Anda atau seperti apa produknya seharusnya. The Lean Startup adalah pendekatan ilmiah untuk membuat dan mengelola startup agar produk yang diinginkan sampai ke tangan pelanggan lebih cepat.
+                                Metodologi Lean Startup lahir dari kegagalan manajemen tradisional dalam startup. Startup menghadapi <strong>Ketidakpastian Ekstrem</strong>. Anda tidak bisa "merencanakan" (membuat ramalan, tonggak kaku) ketika Anda bahkan tidak tahu apakah pelanggan menginginkan produk tersebut.
                             </span>
                         </div>
                         
                         <div class="bg-blue-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
                             <h4 class="font-semibold text-slate-900 mb-3 text-sm sm:text-base mobile-subtitle">
-                                <span class="lang-en">The 5 Principles:</span>
-                                <span class="lang-id">5 Prinsip Utama:</span>
+                                <span class="lang-en">The 5 Core Principles:</span>
+                                <span class="lang-id">5 Prinsip Inti:</span>
                             </h4>
                             <ul class="space-y-4 text-slate-700 mobile-text">
                                 <li class="flex flex-col">
@@ -268,8 +268,8 @@
                                         <span class="lang-id">Wirausahawan Ada di Mana-mana</span>
                                     </div>
                                     <div class="pl-9 mt-1 text-sm text-slate-600 justified-text">
-                                        <span class="lang-en">You don't need a garage. Anyone creating new products under uncertainty is an entrepreneur.</span>
-                                        <span class="lang-id">Anda tidak butuh garasi. Siapapun yang menciptakan produk baru di bawah ketidakpastian adalah wirausahawan.</span>
+                                        <span class="lang-en">You don't need a garage. Anyone creating new products/services under conditions of <strong>extreme uncertainty</strong> is an entrepreneur.</span>
+                                        <span class="lang-id">Anda tidak butuh garasi. Siapapun yang menciptakan produk/layanan baru di bawah kondisi <strong>ketidakpastian ekstrem</strong> adalah wirausahawan.</span>
                                     </div>
                                 </li>
                                 <li class="flex flex-col">
@@ -279,8 +279,8 @@
                                         <span class="lang-id">Kewirausahaan adalah Manajemen</span>
                                     </div>
                                     <div class="pl-9 mt-1 text-sm text-slate-600 justified-text">
-                                        <span class="lang-en">It's not just about the product; it's about the institution and context.</span>
-                                        <span class="lang-id">Ini bukan hanya tentang produk; ini tentang institusi dan konteksnya.</span>
+                                        <span class="lang-en">A startup is not just a product; it's an institution. It requires a new kind of management geared towards uncertainty.</span>
+                                        <span class="lang-id">Startup bukan hanya produk; itu adalah institusi. Ini membutuhkan jenis manajemen baru yang disesuaikan dengan ketidakpastian.</span>
                                     </div>
                                 </li>
                                 <li class="flex flex-col">
@@ -290,8 +290,8 @@
                                         <span class="lang-id">Pembelajaran Tervalidasi</span>
                                     </div>
                                     <div class="pl-9 mt-1 text-sm text-slate-600 justified-text">
-                                        <span class="lang-en">Startups exist to <em>learn</em> how to build a sustainable business.</span>
-                                        <span class="lang-id">Startup ada untuk <em>belajar</em> cara membangun bisnis yang berkelanjutan.</span>
+                                        <span class="lang-en">Startups exist to <em>learn</em> how to build a sustainable business. This learning can be validated scientifically by running experiments.</span>
+                                        <span class="lang-id">Startup ada untuk <em>belajar</em> cara membangun bisnis yang berkelanjutan. Pembelajaran ini dapat divalidasi secara ilmiah dengan menjalankan eksperimen.</span>
                                     </div>
                                 </li>
                             </ul>
@@ -311,51 +311,60 @@
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <div class="mobile-text justified-text">
                             <p class="lang-en">
-                                Most startups fail because they confuse "activity" with "progress." They build a product for months, launch it, and realize no one wants it. The goal is not to produce "stuff", but to produce "validated learning."
+                                In a startup, "Progress" is not writing code or achieving milestones. Progress is <strong>Validated Learning</strong>: demonstrating empirically that the team has discovered valuable truths about the customer.
                             </p>
                             <p class="lang-id">
-                                Kebanyakan startup gagal karena mereka menyamakan "aktivitas" dengan "kemajuan." Mereka membangun produk berbulan-bulan, meluncurkannya, dan sadar tidak ada yang menginginkannya. Tujuannya bukan memproduksi "barang", tapi memproduksi "pembelajaran tervalidasi."
+                                Dalam startup, "Kemajuan" bukanlah menulis kode atau mencapai tonggak sejarah. Kemajuan adalah <strong>Pembelajaran Tervalidasi</strong>: menunjukkan secara empiris bahwa tim telah menemukan kebenaran berharga tentang pelanggan.
                             </p>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="bg-blue-50 p-5 rounded-lg border border-blue-200 shadow-sm">
-                                <h4 class="font-bold text-blue-800 mb-3 lang-en text-lg">Validated Learning</h4>
-                                <h4 class="font-bold text-blue-800 mb-3 lang-id text-lg">Pembelajaran Tervalidasi</h4>
+                                <h4 class="font-bold text-blue-800 mb-3 lang-en text-lg">Value vs. Waste (Muda)</h4>
+                                <h4 class="font-bold text-blue-800 mb-3 lang-id text-lg">Nilai vs. Pemborosan (Muda)</h4>
                                 
                                 <div class="space-y-4">
-                                    <p class="text-sm text-slate-700 mt-1 justified-text lang-en">
-                                        Learning that is demonstrated by positive improvements in the startup's core metrics. It is backed by empirical data collected from real customers.
-                                    </p>
-                                    <p class="text-sm text-slate-700 mt-1 justified-text lang-id">
-                                        Pembelajaran yang ditunjukkan oleh peningkatan positif dalam metrik inti startup. Ini didukung oleh data empiris yang dikumpulkan dari pelanggan nyata.
-                                    </p>
-                                    <div class="bg-white p-3 rounded border border-blue-100">
-                                        <strong class="text-xs text-blue-600 block mb-1">EXAMPLE:</strong>
-                                        <span class="text-xs text-slate-600 lang-en">"We thought customers wanted Feature X, but data showed they only used Feature Y. We removed X and usage went up."</span>
-                                        <span class="text-xs text-slate-600 lang-id">"Kami kira pelanggan mau Fitur X, tapi data menunjukkan mereka hanya pakai Fitur Y. Kami hapus X dan penggunaan naik."</span>
+                                    <div>
+                                        <strong class="text-sm uppercase tracking-wide text-green-700 lang-en">Value Hypothesis</strong>
+                                        <strong class="text-sm uppercase tracking-wide text-green-700 lang-id">Hipotesis Nilai</strong>
+                                        <p class="text-sm text-slate-700 mt-1 lang-en">
+                                            Does the product create value for the customer? Are they willing to pay or use it?
+                                        </p>
+                                        <p class="text-sm text-slate-700 mt-1 lang-id">
+                                            Apakah produk menciptakan nilai bagi pelanggan? Apakah mereka bersedia membayar atau menggunakannya?
+                                        </p>
+                                    </div>
+                                    <div class="border-t border-blue-200 pt-3">
+                                        <strong class="text-sm uppercase tracking-wide text-red-700 lang-en">Waste (Muda)</strong>
+                                        <strong class="text-sm uppercase tracking-wide text-red-700 lang-id">Pemborosan (Muda)</strong>
+                                        <p class="text-sm text-slate-700 mt-1 lang-en">
+                                            Any human effort that does not lead to learning what the customer wants. Building a feature nobody uses is waste, no matter how efficiently it was coded.
+                                        </p>
+                                        <p class="text-sm text-slate-700 mt-1 lang-id">
+                                            Segala upaya manusia yang tidak mengarah pada pembelajaran apa yang diinginkan pelanggan. Membangun fitur yang tidak digunakan siapa pun adalah pemborosan, tidak peduli seberapa efisien pengkodeannya.
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="bg-slate-100 p-5 rounded-lg border border-slate-200 shadow-sm">
-                                <h4 class="font-bold text-slate-800 mb-3 lang-en text-lg">Value vs. Waste</h4>
-                                <h4 class="font-bold text-slate-800 mb-3 lang-id text-lg">Nilai vs. Pemborosan</h4>
+                                <h4 class="font-bold text-slate-800 mb-3 lang-en text-lg">Example: IMVU Case Study</h4>
+                                <h4 class="font-bold text-slate-800 mb-3 lang-id text-lg">Contoh: Studi Kasus IMVU</h4>
                                 
-                                <div class="space-y-4">
-                                    <div>
-                                        <strong class="text-sm uppercase tracking-wide text-green-700 lang-en">Value:</strong>
-                                        <strong class="text-sm uppercase tracking-wide text-green-700 lang-id">Nilai:</strong>
-                                        <p class="text-sm text-slate-700 mt-1 lang-en">Anything that provides benefit to the customer.</p>
-                                        <p class="text-sm text-slate-700 mt-1 lang-id">Apapun yang memberikan manfaat bagi pelanggan.</p>
-                                    </div>
-                                    <div class="border-t border-slate-300 pt-3">
-                                        <strong class="text-sm uppercase tracking-wide text-red-700 lang-en">Waste (Muda):</strong>
-                                        <strong class="text-sm uppercase tracking-wide text-red-700 lang-id">Pemborosan (Muda):</strong>
-                                        <p class="text-sm text-slate-700 mt-1 lang-en">Anything that does not contribute to learning what customers want. Even if you build a beautiful feature efficiently, it is 100% waste if nobody uses it.</p>
-                                        <p class="text-sm text-slate-700 mt-1 lang-id">Apapun yang tidak berkontribusi untuk mempelajari apa yang pelanggan inginkan. Meskipun Anda membangun fitur indah dengan efisien, itu 100% sampah jika tidak ada yang pakai.</p>
-                                    </div>
-                                </div>
+                                <p class="text-sm text-slate-700 mt-1 justified-text lang-en">
+                                    Eric Ries' team spent 6 months integrating IMVU with existing chat apps (MSN, AOL) because they <em>assumed</em> users wanted it.
+                                    <br><br>
+                                    <strong>The Result:</strong> Nobody used the add-on. Users wanted a standalone network to meet <em>new</em> people, not talk to existing friends.
+                                    <br><br>
+                                    <strong>Lesson:</strong> The 6 months of hard work was WASTE because it was based on a false assumption that wasn't tested first.
+                                </p>
+                                <p class="text-sm text-slate-700 mt-1 justified-text lang-id">
+                                    Tim Eric Ries menghabiskan 6 bulan mengintegrasikan IMVU dengan aplikasi chat yang ada (MSN, AOL) karena mereka <em>berasumsi</em> pengguna menginginkannya.
+                                    <br><br>
+                                    <strong>Hasilnya:</strong> Tidak ada yang menggunakan add-on tersebut. Pengguna menginginkan jaringan mandiri untuk bertemu orang <em>baru</em>, bukan bicara dengan teman lama.
+                                    <br><br>
+                                    <strong>Pelajaran:</strong> 6 bulan kerja keras itu PEMBOROSAN karena didasarkan pada asumsi salah yang tidak diuji dulu.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -377,8 +386,8 @@
                                 <span class="lang-id">Lingkaran Umpan Balik</span>
                             </h3>
                             <p class="text-cyan-800 mobile-text justified-text mb-4">
-                                <span class="lang-en">The fundamental activity of a startup is to turn ideas into products, measure how customers respond, and then learn whether to pivot or persevere. You want to minimize the TOTAL time through this loop.</span>
-                                <span class="lang-id">Aktivitas mendasar startup adalah mengubah ide menjadi produk, mengukur respon pelanggan, lalu belajar apakah harus pivot atau bertahan. Anda ingin meminimalkan TOTAL waktu yang dihabiskan dalam lingkaran ini.</span>
+                                <span class="lang-en">The goal is to complete this loop as fast as possible. But paradoxically, you must plan it in reverse: Figure out what you need to learn, then decide what to measure, then decide what to build.</span>
+                                <span class="lang-id">Tujuannya adalah menyelesaikan lingkaran ini secepat mungkin. Namun secara paradoks, Anda harus merencanakannya secara terbalik: Tentukan apa yang perlu dipelajari, lalu putuskan apa yang diukur, lalu putuskan apa yang dibangun.</span>
                             </p>
                             
                             <ul class="space-y-3 bg-white p-4 rounded-lg border border-cyan-100">
@@ -386,27 +395,40 @@
                                     <span class="text-cyan-600 mr-2 font-bold text-lg">1.</span>
                                     <div>
                                         <strong class="text-slate-900 lang-en">BUILD (Bangun)</strong>
-                                        <p class="text-sm text-slate-600 mt-1 lang-en">Turn the idea into a Minimum Viable Product (MVP). Don't wait for perfection.</p>
-                                        <p class="text-sm text-slate-600 mt-1 lang-id">Ubah ide menjadi Minimum Viable Product (MVP). Jangan tunggu sempurna.</p>
+                                        <p class="text-sm text-slate-600 mt-1 lang-en">Turn the idea into an MVP. Do the minimum amount of work to test the hypothesis.</p>
+                                        <p class="text-sm text-slate-600 mt-1 lang-id">Ubah ide menjadi MVP. Lakukan pekerjaan seminimal mungkin untuk menguji hipotesis.</p>
                                     </div>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="text-cyan-600 mr-2 font-bold text-lg">2.</span>
                                     <div>
                                         <strong class="text-slate-900 lang-en">MEASURE (Ukur)</strong>
-                                        <p class="text-sm text-slate-600 mt-1 lang-en">Collect data from real users. Avoid "Vanity Metrics" (likes, page views) and focus on "Actionable Metrics" (conversion rate, retention).</p>
-                                        <p class="text-sm text-slate-600 mt-1 lang-id">Kumpulkan data dari pengguna nyata. Hindari "Metrik Kesombongan" (likes, views) dan fokus ke "Metrik yang Dapat Ditindaklanjuti" (konversi, retensi).</p>
+                                        <p class="text-sm text-slate-600 mt-1 lang-en">Gather data. Use "Innovation Accounting" to track real progress, not "Vanity Metrics."</p>
+                                        <p class="text-sm text-slate-600 mt-1 lang-id">Kumpulkan data. Gunakan "Akuntansi Inovasi" untuk melacak kemajuan nyata, bukan "Metrik Kesombongan."</p>
                                     </div>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="text-cyan-600 mr-2 font-bold text-lg">3.</span>
                                     <div>
                                         <strong class="text-slate-900 lang-en">LEARN (Pelajari)</strong>
-                                        <p class="text-sm text-slate-600 mt-1 lang-en">Analyze the data. Is the hypothesis correct? Should we Pivot (change strategy) or Persevere (keep going)?</p>
-                                        <p class="text-sm text-slate-600 mt-1 lang-id">Analisis data. Apakah hipotesis benar? Haruskah kita Pivot (ganti strategi) atau Persevere (lanjutkan)?</p>
+                                        <p class="text-sm text-slate-600 mt-1 lang-en">Pivot or Persevere? Did the data support the hypothesis? If not, change direction (Pivot).</p>
+                                        <p class="text-sm text-slate-600 mt-1 lang-id">Pivot atau Bertahan? Apakah data mendukung hipotesis? Jika tidak, ubah arah (Pivot).</p>
                                     </div>
                                 </li>
                             </ul>
+                        </div>
+                        
+                        <div class="bg-yellow-50 p-4 border border-yellow-200 rounded-lg">
+                             <h4 class="font-bold text-yellow-900 mb-2 lang-en">💡 Leap of Faith Assumptions</h4>
+                             <h4 class="font-bold text-yellow-900 mb-2 lang-id">💡 Asumsi Lompatan Keyakinan</h4>
+                             <p class="text-sm text-yellow-800 lang-en">Every startup has 2 critical assumptions you must test first:</p>
+                             <p class="text-sm text-yellow-800 lang-id">Setiap startup memiliki 2 asumsi kritis yang harus diuji dulu:</p>
+                             <ul class="list-disc ml-5 mt-2 text-sm text-yellow-800">
+                                 <li><strong class="lang-en">Value Hypothesis:</strong> Does it bring value?</li>
+                                 <li><strong class="lang-id">Hipotesis Nilai:</strong> Apakah ini memberi nilai?</li>
+                                 <li><strong class="lang-en">Growth Hypothesis:</strong> How will new customers find it?</li>
+                                 <li><strong class="lang-id">Hipotesis Pertumbuhan:</strong> Bagaimana pelanggan baru akan menemukannya?</li>
+                             </ul>
                         </div>
                     </div>
                 </section>
@@ -422,42 +444,48 @@
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <p class="text-base sm:text-lg text-slate-600 mobile-text justified-text">
-                            <span class="lang-en">An MVP is not a "beta" or a "cheap product." It is the version of a new product which allows a team to collect the maximum amount of validated learning about customers with the least effort.</span>
-                            <span class="lang-id">MVP bukan "beta" atau "produk murahan." Ini adalah versi produk baru yang memungkinkan tim mengumpulkan jumlah pembelajaran tervalidasi maksimum tentang pelanggan dengan upaya paling sedikit.</span>
+                            <span class="lang-en">An MVP is the version of a new product that allows a team to collect the maximum amount of validated learning with the least effort. It is usually low quality and missing features.</span>
+                            <span class="lang-id">MVP adalah versi produk baru yang memungkinkan tim mengumpulkan jumlah pembelajaran tervalidasi maksimum dengan upaya paling sedikit. Biasanya kualitasnya rendah dan fiturnya belum lengkap.</span>
                         </p>
                         
                         <div class="flex flex-col space-y-6 my-6">
-                            <div class="relative pl-4 border-l-4 border-blue-500">
+                            <div class="relative pl-4 border-l-4 border-blue-500 bg-slate-50 p-3 rounded-r-lg">
                                 <div class="font-bold text-lg text-slate-900 mb-1">
-                                    <span class="lang-en">Video MVP (Dropbox Case Study)</span>
-                                    <span class="lang-id">Video MVP (Studi Kasus Dropbox)</span>
+                                    <span class="lang-en">1. Video MVP (Dropbox)</span>
+                                    <span class="lang-id">1. Video MVP (Dropbox)</span>
                                 </div>
                                 <p class="text-sm text-slate-600 justified-text">
-                                    <span class="lang-en">Drew Houston didn't build the complex file-sync software first. He made a simple 3-minute video pretending to use the software. The video went viral, and the waitlist went from 5,000 to 75,000 overnight. <strong>He validated demand without writing a line of complex code.</strong></span>
-                                    <span class="lang-id">Drew Houston tidak membangun software sinkronisasi file yang rumit dulu. Dia membuat video 3 menit pura-pura menggunakan software itu. Video itu viral, daftar tunggu naik dari 5.000 ke 75.000 dalam semalam. <strong>Dia memvalidasi permintaan tanpa menulis satu baris kode rumit pun.</strong></span>
+                                    <span class="lang-en">Drew Houston needed to prove people wanted file syncing. Building it was too hard (technical hurdles). So he made a 3-minute video <em>pretending</em> to use the software.</span>
+                                    <span class="lang-id">Drew Houston perlu membuktikan orang butuh sinkronisasi file. Membangunnya terlalu sulit (hambatan teknis). Jadi dia membuat video 3 menit <em>pura-pura</em> menggunakan software itu.</span>
                                 </p>
+                                <p class="text-sm text-blue-700 mt-2 font-semibold lang-en">Result: Waitlist went from 5k to 75k overnight. Proven demand without coding.</p>
+                                <p class="text-sm text-blue-700 mt-2 font-semibold lang-id">Hasil: Daftar tunggu naik dari 5rb ke 75rb semalam. Permintaan terbukti tanpa coding.</p>
                             </div>
 
-                            <div class="relative pl-4 border-l-4 border-cyan-500">
+                            <div class="relative pl-4 border-l-4 border-cyan-500 bg-slate-50 p-3 rounded-r-lg">
                                 <div class="font-bold text-lg text-slate-900 mb-1">
-                                    <span class="lang-en">Concierge MVP (Food on the Table)</span>
-                                    <span class="lang-id">Concierge MVP (Layanan Manual)</span>
+                                    <span class="lang-en">2. Concierge MVP (Food on the Table)</span>
+                                    <span class="lang-id">2. Concierge MVP (Layanan Manual)</span>
                                 </div>
                                 <p class="text-sm text-slate-600 justified-text">
-                                    <span class="lang-en">Instead of building an automated algorithm to create meal plans and grocery lists, the founder found <strong>one</strong> customer. He visited her house, interviewed her, manually planned her meals, and bought her groceries. It was inefficient, but he learned exactly what was needed before automating it.</span>
-                                    <span class="lang-id">Alih-alih membangun algoritma otomatis untuk rencana makan dan daftar belanja, pendiri menemukan <strong>satu</strong> pelanggan. Dia ke rumahnya, mewawancarainya, merencanakan makanannya secara manual, dan membelikan belanjaannya. Itu tidak efisien, tapi dia belajar persis apa yang dibutuhkan sebelum mengotomatiskannya.</span>
+                                    <span class="lang-en">The goal: automated meal planning based on grocery sales. The MVP: The CEO found <strong>one</strong> customer, went to her house, manually planned meals, and shopped for her.</span>
+                                    <span class="lang-id">Tujuan: perencanaan makan otomatis berdasarkan diskon toko. MVP: CEO menemukan <strong>satu</strong> pelanggan, ke rumahnya, merencanakan makan secara manual, dan berbelanja untuknya.</span>
                                 </p>
+                                <p class="text-sm text-cyan-700 mt-2 font-semibold lang-en">Lesson: Don't automate until you know the manual process creates value.</p>
+                                <p class="text-sm text-cyan-700 mt-2 font-semibold lang-id">Pelajaran: Jangan otomatisasi sampai Anda tahu proses manual itu menciptakan nilai.</p>
                             </div>
                             
-                            <div class="relative pl-4 border-l-4 border-slate-500">
+                            <div class="relative pl-4 border-l-4 border-slate-500 bg-slate-50 p-3 rounded-r-lg">
                                 <div class="font-bold text-lg text-slate-900 mb-1">
-                                    <span class="lang-en">Wizard of Oz MVP (Zappos)</span>
-                                    <span class="lang-id">Wizard of Oz MVP (Zappos)</span>
+                                    <span class="lang-en">3. Wizard of Oz MVP (Zappos)</span>
+                                    <span class="lang-id">3. Wizard of Oz MVP (Zappos)</span>
                                 </div>
                                 <p class="text-sm text-slate-600 justified-text">
-                                    <span class="lang-en">Nick Swinmurn wanted to sell shoes online. Instead of buying inventory, he went to a local shoe store, took photos, and put them on a website. If someone bought a shoe, he ran to the store, bought it at full price, and shipped it. <strong>He proved people would buy shoes online before investing in a warehouse.</strong></span>
-                                    <span class="lang-id">Nick Swinmurn ingin jual sepatu online. Alih-alih beli stok, dia pergi ke toko sepatu lokal, memotret sepatu, dan menaruhnya di web. Jika ada yang beli, dia lari ke toko, beli dengan harga penuh, dan mengirimnya. <strong>Dia membuktikan orang mau beli sepatu online sebelum investasi gudang.</strong></span>
+                                    <span class="lang-en">The customer thinks it's automated, but a human is doing the work behind the scenes. Nick Swinmurn took photos of shoes at local stores and put them online. When an order came, he bought the shoes at full price and shipped them.</span>
+                                    <span class="lang-id">Pelanggan mengira itu otomatis, tapi manusia yang mengerjakannya di belakang layar. Nick Swinmurn memotret sepatu di toko lokal dan menaruhnya online. Saat ada pesanan, dia beli sepatu itu dengan harga penuh dan mengirimnya.</span>
                                 </p>
+                                <p class="text-sm text-slate-700 mt-2 font-semibold lang-en">Lesson: Test the market transaction before building supply chain.</p>
+                                <p class="text-sm text-slate-700 mt-2 font-semibold lang-id">Pelajaran: Uji transaksi pasar sebelum membangun rantai pasokan.</p>
                             </div>
                         </div>
                     </div>
@@ -467,47 +495,57 @@
                     <div class="mb-6">
                         <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-sm font-medium rounded-full mb-4">Part 4</span>
                         <h2 class="text-3xl font-bold text-slate-900 mb-4">
-                            <span class="lang-en">Pivot or Persevere</span>
-                            <span class="lang-id">Pivot (Putar Arah) atau Persevere (Bertahan)</span>
+                            <span class="lang-en">Innovation Accounting & Pivot</span>
+                            <span class="lang-id">Akuntansi Inovasi & Pivot</span>
                         </h2>
                     </div>
                     
                     <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
-                        <div class="bg-gradient-to-r from-slate-50 to-blue-50 p-6 rounded-xl border border-slate-200">
-                            <div class="space-y-6">
-                                <div>
-                                    <strong class="text-lg text-slate-900 block mb-2 lang-en">Definition of Pivot</strong>
-                                    <strong class="text-lg text-slate-900 block mb-2 lang-id">Definisi Pivot</strong>
-                                    <p class="text-[15px] justified-text lang-en">
-                                        A structured course correction designed to test a new fundamental hypothesis about the product, strategy, and engine of growth. It is NOT giving up; it is keeping one foot rooted in what you've learned while changing the other foot to a new direction.
-                                    </p>
-                                    <p class="text-[15px] justified-text lang-id">
-                                        Koreksi arah terstruktur yang dirancang untuk menguji hipotesis fundamental baru tentang produk, strategi, dan mesin pertumbuhan. Ini BUKAN menyerah; ini menjaga satu kaki berakar pada apa yang sudah dipelajari sambil memindahkan kaki lainnya ke arah baru.
-                                    </p>
+                        
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-800 mb-3 lang-en text-lg">Metrics: Vanity vs. Actionable</h4>
+                            <h4 class="font-bold text-slate-800 mb-3 lang-id text-lg">Metrik: Kesombongan vs. Dapat Ditindaklanjuti</h4>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-red-50 p-3 rounded border border-red-100">
+                                    <strong class="text-red-700 block mb-1 lang-en">❌ Vanity Metrics</strong>
+                                    <strong class="text-red-700 block mb-1 lang-id">❌ Metrik Kesombongan</strong>
+                                    <p class="text-xs text-slate-600 lang-en">Total registered users, total pageviews, total downloads. These numbers always go up (gross numbers) and make you feel good but tell you nothing about business health.</p>
+                                    <p class="text-xs text-slate-600 lang-id">Total pengguna terdaftar, total tayangan, total unduhan. Angka ini selalu naik (angka kotor) dan membuat Anda merasa hebat tapi tidak memberitahu kesehatan bisnis.</p>
                                 </div>
+                                <div class="bg-green-50 p-3 rounded border border-green-100">
+                                    <strong class="text-green-700 block mb-1 lang-en">✅ Actionable Metrics</strong>
+                                    <strong class="text-green-700 block mb-1 lang-id">✅ Metrik Dapat Ditindaklanjuti</strong>
+                                    <p class="text-xs text-slate-600 lang-en">Cohort analysis, conversion rates, retention rates. E.g., "Of the 100 people who signed up in May, 20% came back in June." This proves if the product is improving.</p>
+                                    <p class="text-xs text-slate-600 lang-id">Analisis kohort, tingkat konversi, tingkat retensi. Misal: "Dari 100 orang yang daftar di Mei, 20% kembali di Juni." Ini membuktikan apakah produk membaik.</p>
+                                </div>
+                            </div>
+                        </div>
 
-                                <div class="border-t border-blue-200 pt-4">
-                                    <strong class="text-lg text-blue-900 block mb-3 lang-en">Common Types of Pivots</strong>
-                                    <strong class="text-lg text-blue-900 block mb-3 lang-id">Jenis Pivot Umum</strong>
+                        <div class="bg-gradient-to-r from-slate-50 to-blue-50 p-6 rounded-xl border border-slate-200">
+                            <div class="space-y-4">
+                                <div>
+                                    <strong class="text-lg text-blue-900 block mb-3 lang-en">Types of Pivots (Changing Strategy)</strong>
+                                    <strong class="text-lg text-blue-900 block mb-3 lang-id">Jenis Pivot (Mengubah Strategi)</strong>
                                     
                                     <ul class="space-y-3">
                                         <li class="bg-white p-3 rounded border border-blue-100 shadow-sm">
                                             <strong class="block text-blue-700 text-sm mb-1 lang-en">Zoom-In Pivot</strong>
                                             <strong class="block text-blue-700 text-sm mb-1 lang-id">Zoom-In Pivot</strong>
-                                            <span class="text-sm text-slate-600 lang-en">What previously was considered just a single feature becomes the whole product.</span>
-                                            <span class="text-sm text-slate-600 lang-id">Apa yang tadinya hanya dianggap satu fitur berubah menjadi keseluruhan produk utama.</span>
+                                            <span class="text-sm text-slate-600 lang-en">A single feature of the product becomes the whole product. (e.g., Votizen went from a full social network to just a simple lobbying tool).</span>
+                                            <span class="text-sm text-slate-600 lang-id">Satu fitur dari produk menjadi keseluruhan produk utama. (Contoh: Votizen berubah dari jejaring sosial penuh menjadi hanya alat lobi sederhana).</span>
                                         </li>
                                         <li class="bg-white p-3 rounded border border-blue-100 shadow-sm">
                                             <strong class="block text-blue-700 text-sm mb-1 lang-en">Zoom-Out Pivot</strong>
                                             <strong class="block text-blue-700 text-sm mb-1 lang-id">Zoom-Out Pivot</strong>
-                                            <span class="text-sm text-slate-600 lang-en">What was considered the whole product becomes just a single feature of a much larger product.</span>
-                                            <span class="text-sm text-slate-600 lang-id">Apa yang tadinya dianggap keseluruhan produk menjadi hanya satu fitur dari produk yang jauh lebih besar.</span>
+                                            <span class="text-sm text-slate-600 lang-en">The whole product becomes a single feature of a much larger product.</span>
+                                            <span class="text-sm text-slate-600 lang-id">Keseluruhan produk saat ini menjadi hanya satu fitur dari produk yang jauh lebih besar.</span>
                                         </li>
                                         <li class="bg-white p-3 rounded border border-blue-100 shadow-sm">
                                             <strong class="block text-blue-700 text-sm mb-1 lang-en">Customer Segment Pivot</strong>
                                             <strong class="block text-blue-700 text-sm mb-1 lang-id">Customer Segment Pivot</strong>
-                                            <span class="text-sm text-slate-600 lang-en">The product hypothesis is partially confirmed, solving the right problem, but for a different customer than originally anticipated.</span>
-                                            <span class="text-sm text-slate-600 lang-id">Hipotesis produk terkonfirmasi sebagian, memecahkan masalah yang benar, tapi untuk pelanggan yang berbeda dari yang diperkirakan semula.</span>
+                                            <span class="text-sm text-slate-600 lang-en">The product solves a real problem, but for a different type of customer than originally planned (e.g., B2C to B2B).</span>
+                                            <span class="text-sm text-slate-600 lang-id">Produk memecahkan masalah nyata, tapi untuk tipe pelanggan yang berbeda dari rencana awal (misal: B2C jadi B2B).</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -520,20 +558,20 @@
                     <div class="mb-6">
                         <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-sm font-medium rounded-full mb-4">Part 5</span>
                         <h2 class="text-3xl font-bold text-slate-900 mb-4">
-                            <span class="lang-en">The Engines of Growth</span>
-                            <span class="lang-id">Mesin Pertumbuhan</span>
+                            <span class="lang-en">Engines of Growth & Adaptability</span>
+                            <span class="lang-id">Mesin Pertumbuhan & Adaptabilitas</span>
                         </h2>
                     </div>
                     
                     <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
                         <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
-                            <h4 class="font-bold text-slate-800 mb-3 lang-en text-lg">Sustainable Growth</h4>
-                            <h4 class="font-bold text-slate-800 mb-3 lang-id text-lg">Pertumbuhan Berkelanjutan</h4>
+                            <h4 class="font-bold text-slate-800 mb-3 lang-en text-lg">The Three Engines of Growth</h4>
+                            <h4 class="font-bold text-slate-800 mb-3 lang-id text-lg">Tiga Mesin Pertumbuhan</h4>
                             <p class="text-sm text-slate-600 justified-text mb-4 lang-en">
-                                New customers come from the actions of past customers. Startups must focus on ONE engine at a time.
+                                Sustainable growth comes from past customers driving new customers. You must pick <strong>ONE</strong> engine to focus on.
                             </p>
                             <p class="text-sm text-slate-600 justified-text mb-4 lang-id">
-                                Pelanggan baru datang dari tindakan pelanggan lama. Startup harus fokus pada SATU mesin dalam satu waktu.
+                                Pertumbuhan berkelanjutan berasal dari pelanggan lama yang mendatangkan pelanggan baru. Anda harus memilih <strong>SATU</strong> mesin untuk difokuskan.
                             </p>
                         </div>
 
@@ -541,26 +579,48 @@
                             <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
                                 <div class="text-2xl mb-2">🧲</div>
                                 <strong class="block text-blue-900 text-sm mb-2 uppercase tracking-wide lang-en">1. Sticky Engine</strong>
-                                <strong class="block text-blue-900 text-sm mb-2 uppercase tracking-wide lang-id">1. Mesin Lengket</strong>
-                                <p class="text-xs text-slate-700 lang-en">Focus: <strong>Retention</strong>. If customers stay for the long term, the business grows. Key Metric: Churn Rate.</p>
-                                <p class="text-xs text-slate-700 lang-id">Fokus: <strong>Retensi</strong>. Jika pelanggan bertahan jangka panjang, bisnis tumbuh. Metrik Kunci: Churn Rate.</p>
+                                <strong class="block text-blue-900 text-sm mb-2 uppercase tracking-wide lang-id">1. Mesin Lengket (Retensi)</strong>
+                                <p class="text-xs text-slate-700 mb-2 lang-en">Relies on high customer retention.</p>
+                                <p class="text-xs text-slate-700 mb-2 lang-id">Bergantung pada retensi pelanggan tinggi.</p>
+                                <div class="bg-white p-2 rounded text-xs font-mono text-blue-600">
+                                    If New Users > Churn Rate = Growth
+                                </div>
                             </div>
 
                             <div class="bg-cyan-50 p-4 rounded-lg border border-cyan-200">
                                 <div class="text-2xl mb-2">🦠</div>
                                 <strong class="block text-cyan-900 text-sm mb-2 uppercase tracking-wide lang-en">2. Viral Engine</strong>
                                 <strong class="block text-cyan-900 text-sm mb-2 uppercase tracking-wide lang-id">2. Mesin Viral</strong>
-                                <p class="text-xs text-slate-700 lang-en">Focus: <strong>Referral</strong>. Growth happens automatically as a side effect of customers using the product (e.g., Hotmail signature). Key Metric: Viral Coefficient (K > 1).</p>
-                                <p class="text-xs text-slate-700 lang-id">Fokus: <strong>Referral</strong>. Pertumbuhan terjadi otomatis sebagai efek samping penggunaan produk (misal: tanda tangan Hotmail). Metrik Kunci: Koefisien Viral (K > 1).</p>
+                                <p class="text-xs text-slate-700 mb-2 lang-en">Relies on person-to-person referral.</p>
+                                <p class="text-xs text-slate-700 mb-2 lang-id">Bergantung pada rujukan orang-ke-orang.</p>
+                                <div class="bg-white p-2 rounded text-xs font-mono text-cyan-600">
+                                    Viral Coeff (K) > 1.0 = Exponential Growth
+                                </div>
                             </div>
 
                             <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
                                 <div class="text-2xl mb-2">💰</div>
                                 <strong class="block text-slate-900 text-sm mb-2 uppercase tracking-wide lang-en">3. Paid Engine</strong>
                                 <strong class="block text-slate-900 text-sm mb-2 uppercase tracking-wide lang-id">3. Mesin Berbayar</strong>
-                                <p class="text-xs text-slate-700 lang-en">Focus: <strong>Arbitrage</strong>. Buying customers through ads. Key Metric: Lifetime Value (LTV) > Cost of Acquisition (CPA).</p>
-                                <p class="text-xs text-slate-700 lang-id">Fokus: <strong>Arbitrase</strong>. Membeli pelanggan lewat iklan. Metrik Kunci: Nilai Seumur Hidup (LTV) > Biaya Akuisisi (CPA).</p>
+                                <p class="text-xs text-slate-700 mb-2 lang-en">Relies on buying customers (Ads).</p>
+                                <p class="text-xs text-slate-700 mb-2 lang-id">Bergantung pada pembelian pelanggan (Iklan).</p>
+                                <div class="bg-white p-2 rounded text-xs font-mono text-slate-600">
+                                    LTV (Lifetime Value) > CPA (Cost Per Acquisition)
+                                </div>
                             </div>
+                        </div>
+
+                         <div class="bg-red-50 p-4 rounded-lg border border-red-200 mt-4">
+                             <h4 class="font-bold text-red-900 mb-2 lang-en">🔧 The 5 Whys (Root Cause Analysis)</h4>
+                             <h4 class="font-bold text-red-900 mb-2 lang-id">🔧 5 Mengapa (Analisis Akar Masalah)</h4>
+                             <p class="text-sm text-red-800 justified-text lang-en">
+                                 When a problem occurs (e.g., "Server crashed"), ask "Why?" five times to find the human/process error, not just the technical error.
+                                 <br>Example: Server crashed -> Why? -> Overload -> Why? -> Bad Code -> Why? -> Engineer didn't know proper API -> Why? -> <strong>Lack of Training Program (Root Cause).</strong>
+                             </p>
+                             <p class="text-sm text-red-800 justified-text lang-id">
+                                 Saat masalah terjadi (misal: "Server crash"), tanya "Mengapa?" lima kali untuk menemukan kesalahan manusia/proses, bukan hanya kesalahan teknis.
+                                 <br>Contoh: Server crash -> Kenapa? -> Overload -> Kenapa? -> Kode Buruk -> Kenapa? -> Insinyur tidak tahu API yang benar -> Kenapa? -> <strong>Kurangnya Program Pelatihan (Akar Masalah).</strong>
+                             </p>
                         </div>
                     </div>
                 </section>
