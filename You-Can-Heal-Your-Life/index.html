@@ -3,22 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>You Can Heal Your Life — Louise Hay | Summary (3 Languages)</title>
+    <title>The 48 Laws of Power — Robert Greene | Summary</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
         .fade-in { animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .active-tab { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); }
         .content-section { display: none; }
         .content-section.active { display: block; }
+        
         .justified-text { text-align: justify; }
         .mobile-text { font-size: 16px; line-height: 1.6; }
-
+        
         @media (max-width: 640px) {
             .mobile-text { font-size: 14px; line-height: 1.5; }
             .mobile-title { font-size: 1.75rem !important; }
@@ -26,8 +24,7 @@
             .mobile-padding { padding: 1rem !important; }
             .mobile-margin { margin-bottom: 1rem !important; }
         }
-
-        /* Nav drawer */
+        
         .nav-drawer {
             position: fixed;
             top: 0;
@@ -39,7 +36,9 @@
             z-index: 1000;
             box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
         }
+        
         .nav-drawer.open { left: 0; }
+        
         .nav-overlay {
             position: fixed;
             top: 0;
@@ -52,10 +51,12 @@
             transition: all 0.3s ease-in-out;
             z-index: 999;
         }
+        
         .nav-overlay.active {
             opacity: 1;
             visibility: visible;
         }
+        
         .drawer-toggle {
             position: fixed;
             top: 20px;
@@ -69,19 +70,23 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
+        
         .drawer-toggle:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
         }
+        
         .drawer-toggle.open {
             background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
             box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
         }
+        
         .hamburger {
             width: 24px;
             height: 18px;
             position: relative;
         }
+        
         .hamburger span {
             display: block;
             position: absolute;
@@ -94,21 +99,26 @@
             transform: rotate(0deg);
             transition: .25s ease-in-out;
         }
+        
         .hamburger span:nth-child(1) { top: 0px; }
         .hamburger span:nth-child(2) { top: 7px; }
         .hamburger span:nth-child(3) { top: 14px; }
+        
         .drawer-toggle.open .hamburger span:nth-child(1) {
             top: 7px;
             transform: rotate(135deg);
         }
+        
         .drawer-toggle.open .hamburger span:nth-child(2) {
             opacity: 0;
             left: -60px;
         }
+        
         .drawer-toggle.open .hamburger span:nth-child(3) {
             top: 7px;
             transform: rotate(-135deg);
         }
+        
         .nav-item { position: relative; overflow: hidden; }
         .nav-item::before {
             content: '';
@@ -121,22 +131,16 @@
             transition: left 0.5s;
         }
         .nav-item:hover::before { left: 100%; }
-
+        
         @media (max-width: 768px) {
             .nav-drawer { width: 280px; left: -280px; }
             .drawer-toggle { top: 15px; left: 15px; padding: 10px; }
         }
+        
         @media (max-width: 480px) {
             .nav-drawer { width: 260px; left: -260px; }
             .drawer-toggle { top: 12px; left: 12px; padding: 8px; }
             .hamburger { width: 20px; height: 15px; }
-        }
-
-        /* Language toggle */
-        .lang-block { display: none; }
-        .lang-toggle-active {
-            background: #1d4ed8;
-            color: #ffffff;
         }
     </style>
 </head>
@@ -144,7 +148,9 @@
     <!-- Navigation Drawer Toggle -->
     <button class="drawer-toggle" onclick="toggleDrawer()">
         <div class="hamburger">
-            <span></span><span></span><span></span>
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
     </button>
     
@@ -159,8 +165,8 @@
                     <span class="text-white font-bold text-lg">1</span>
                 </div>
                 <div>
-                    <h2 class="text-white font-semibold text-lg">You Can Heal Your Life</h2>
-                    <p class="text-slate-300 text-sm">3-Language Summary</p>
+                    <h2 class="text-white font-semibold text-lg">The 48 Laws of Power</h2>
+                    <p class="text-slate-300 text-sm">Book Summary</p>
                 </div>
             </div>
         </div>
@@ -169,36 +175,54 @@
             <h3 class="text-slate-300 text-sm font-medium uppercase tracking-wider mb-4 px-2">Table of Contents</h3>
             <ul class="space-y-2">
                 <li class="nav-item">
-                    <button onclick="showSection('intro', event); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 active-tab text-white flex items-center space-x-3">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 active-tab text-white flex items-center space-x-3">
                         <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">📖</span>
                         <span>Introduction</span>
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button onclick="showSection('part1', event); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
                         <span class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
                         <div class="text-left">
                             <div class="font-medium">Part 1</div>
-                            <div class="text-xs text-slate-400">Author & Core Ideas</div>
+                            <div class="text-xs text-slate-400">The Book & 48-Law Framework</div>
                         </div>
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button onclick="showSection('part2', event); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
                         <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
                         <div class="text-left">
                             <div class="font-medium">Part 2</div>
-                            <div class="text-xs text-slate-400">Mind–Body & Tools</div>
+                            <div class="text-xs text-slate-400">Image & Perception Laws</div>
                         </div>
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button onclick="showSection('part3', event); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
-                        <span class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
                         <div class="text-left">
                             <div class="font-medium">Part 3</div>
-                            <div class="text-xs text-slate-400">Healing Life Areas & Conclusion</div>
+                            <div class="text-xs text-slate-400">Emotion & Psychology Laws</div>
                         </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                            <span class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                            <div class="text-left">
+                                <div class="font-medium">Part 4</div>
+                                <div class="text-xs text-slate-400">Timing & Strategic Laws</div>
+                            </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                            <span class="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                            <div class="text-left">
+                                <div class="font-medium">Part 5</div>
+                                <div class="text-xs text-slate-400">Dominance, Protection & Conclusion</div>
+                            </div>
                     </button>
                 </li>
             </ul>
@@ -206,7 +230,7 @@
         
         <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-600">
             <div class="text-center">
-                <p class="text-slate-400 text-xs">© 2024 You Can Heal Your Life Summary</p>
+                <p class="text-slate-400 text-xs">© 2024 The 48 Laws of Power Summary</p>
                 <p class="text-slate-500 text-xs mt-1">Minimalist Design</p>
             </div>
         </div>
@@ -215,711 +239,614 @@
     <!-- Header -->
     <header class="bg-white shadow-sm border-b border-slate-200">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-            <div class="flex items-center justify-between flex-wrap gap-3">
-                <div class="text-center flex-1">
-                    <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 mb-1 mobile-title">
-                        You Can Heal Your Life
-                    </h1>
-                    <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
-                        Multi-language book summary (EN · ID · HI)
-                    </p>
-                    <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-600 mx-auto mt-3 rounded-full"></div>
-                </div>
-
-                <!-- Language Toggle -->
-                <div class="flex items-center gap-2 mt-2 sm:mt-0">
-                    <button class="lang-toggle px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold border border-blue-500 text-blue-700 bg-blue-50"
-                            onclick="setLanguage('en')">
-                        EN
-                    </button>
-                    <button class="lang-toggle px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold border border-emerald-500 text-emerald-700 bg-emerald-50"
-                            onclick="setLanguage('id')">
-                        ID
-                    </button>
-                    <button class="lang-toggle px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold border border-purple-500 text-purple-700 bg-purple-50"
-                            onclick="setLanguage('hi')">
-                        HI
-                    </button>
-                </div>
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 mb-2 mobile-title">
+                    The 48 Laws of Power
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    Historical strategies for power, influence, and self-protection
+                </p>
+                <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-600 mx-auto mt-3 sm:mt-4 rounded-full"></div>
             </div>
         </div>
     </header>
 
-    <!-- Main -->
     <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
         <main>
             <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
-
-                <!-- INTRO -->
+                    
+                <!-- Introduction -->
                 <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
-                    <!-- EN -->
-                    <div class="lang-block" data-lang="en">
-                        <div class="mb-4 sm:mb-6 mobile-margin">
-                            <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
-                                Introduction
-                            </span>
-                            <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                                Welcome to “You Can Heal Your Life”
-                            </h2>
-                        </div>
-
-                        <div class="space-y-4 sm:space-y-6 text-slate-700">
-                            <p class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-blue-500 pl-4 sm:pl-6 italic mobile-text justified-text">
-                                Louise Hay’s message is simple and radical: if you are willing to change your thinking, 
-                                you can transform your relationship with your body, your past, and your future.
-                            </p>
-
-                            <p class="mobile-text justified-text">
-                                <em>You Can Heal Your Life</em> is a spiritual self-help classic. 
-                                It teaches that many emotional and even physical problems are connected to patterns of 
-                                self-criticism, guilt, fear, and resentment. By replacing those patterns with thoughts 
-                                of love, acceptance, and trust, we support healing from the inside out.
-                            </p>
-
-                            <p class="mobile-text justified-text">
-                                In this summary we compress the book into three main parts: 
-                                <strong>who Louise Hay is and what she believes</strong>, 
-                                <strong>how the mind–body connection and healing tools work</strong>, and 
-                                <strong>how to apply this work to different areas of life — without losing balance or realism.</strong>
-                            </p>
-
-                            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-xl border border-blue-100">
-                                <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">What you’ll get from this summary:</h4>
-                                <ul class="space-y-2 text-slate-700 mobile-text">
-                                    <li class="justified-text">• A clear overview of Louise Hay’s story and core philosophy.</li>
-                                    <li class="justified-text">• An understanding of how beliefs and self-talk shape how we feel and act.</li>
-                                    <li class="justified-text">• Practical examples of affirmations, mirror work, and forgiveness.</li>
-                                    <li class="justified-text">• A grounded view of how to use this book’s ideas without blaming yourself for everything.</li>
-                                </ul>
-                            </div>
-                        </div>
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Introduction</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            Welcome to “The 48 Laws of Power”
+                        </h2>
                     </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <p class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-blue-500 pl-4 sm:pl-6 italic mobile-text justified-text">
+                            Power is present wherever humans gather — in families, companies, politics, 
+                            and friendships. If you do not understand it, you are often controlled by those who do.
+                        </p>
+                        
+                        <p class="mobile-text justified-text">
+                            <em>The 48 Laws of Power</em> by Robert Greene is a provocative manual on power dynamics. 
+                            It analyzes how people gain, keep, and lose power across history — from royal courts and 
+                            battlefields to salons, corporations, and artistic circles. The tone is cold, strategic, 
+                            and often amoral: Greene describes what people <strong>do</strong>, not what they 
+                            <strong>should</strong> do.
+                        </p>
 
-                    <!-- ID -->
-                    <div class="lang-block" data-lang="id">
-                        <div class="mb-4 sm:mb-6 mobile-margin">
-                            <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
-                                Pendahuluan
-                            </span>
-                            <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                                Selamat Datang di “You Can Heal Your Life”
-                            </h2>
+                        <p class="mobile-text justified-text">
+                            This summary keeps the original structure (all 48 laws) but organizes them 
+                            into four big themes: <strong>image & perception</strong>, 
+                            <strong>emotion & psychology</strong>, <strong>timing & strategy</strong>, 
+                            and <strong>dominance & protection</strong>. You will see how each law fits into these 
+                            clusters while still retaining its original number and essence.
+                        </p>
+                        
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-100">
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">What you will find in this summary:</h4>
+                            <ul class="space-y-2 text-slate-700 mobile-text">
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">A quick overview of the book’s structure and mindset (Part 1).</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">All 48 laws explained, grouped by theme, in clear modern language (Parts 2–5).</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text">A closing reflection on how to apply this knowledge without losing your values (Part 5).</span>
+                                </li>
+                            </ul>
                         </div>
-
-                        <div class="space-y-4 sm:space-y-6 text-slate-700">
-                            <p class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-blue-500 pl-4 sm:pl-6 italic mobile-text justified-text">
-                                Pesan utama Louise Hay itu sederhana tapi berani: kalau kamu mau mengubah cara berpikir, 
-                                kamu bisa mengubah hubunganmu dengan tubuh, masa lalu, dan masa depanmu.
-                            </p>
-
-                            <p class="mobile-text justified-text">
-                                <em>You Can Heal Your Life</em> adalah buku klasik pengembangan diri bernuansa spiritual. 
-                                Louise mengajarkan bahwa banyak masalah emosional bahkan fisik berkaitan dengan pola 
-                                menyalahkan diri, rasa bersalah, takut, dan dendam. Ketika pola ini diganti dengan 
-                                pikiran penuh cinta, penerimaan, dan rasa percaya, proses pemulihan dari dalam diri 
-                                menjadi lebih mungkin terjadi.
-                            </p>
-
-                            <p class="mobile-text justified-text">
-                                Dalam ringkasan ini, buku dirangkum menjadi tiga bagian besar: 
-                                <strong>siapa Louise Hay dan apa filosofi utamanya</strong>, 
-                                <strong>bagaimana hubungan pikiran–tubuh dan alat-alat healing bekerja</strong>, 
-                                dan <strong>bagaimana menerapkannya di berbagai area hidup secara seimbang dan realistis.</strong>
-                            </p>
-
-                            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-xl border border-blue-100">
-                                <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Manfaat dari ringkasan ini:</h4>
-                                <ul class="space-y-2 text-slate-700 mobile-text">
-                                    <li class="justified-text">• Gambaran jelas tentang kisah hidup dan cara berpikir Louise Hay.</li>
-                                    <li class="justified-text">• Pemahaman bagaimana keyakinan dan dialog batin memengaruhi perasaan dan tindakan kita.</li>
-                                    <li class="justified-text">• Contoh praktis afirmasi, latihan di depan cermin, dan proses memaafkan.</li>
-                                    <li class="justified-text">• Cara memakai konsep buku ini tanpa menyalahkan diri atas semua hal buruk yang terjadi.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- HI -->
-                    <div class="lang-block" data-lang="hi">
-                        <div class="mb-4 sm:mb-6 mobile-margin">
-                            <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
-                                परिचय
-                            </span>
-                            <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                                “You Can Heal Your Life” में आपका स्वागत है
-                            </h2>
-                        </div>
-
-                        <div class="space-y-4 sm:space-y-6 text-slate-700">
-                            <p class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-blue-500 pl-4 sm:pl-6 italic mobile-text justified-text">
-                                लुईज़ हे का संदेश सीधा है: अगर आप अपना सोचना बदलने के लिए तैयार हैं, 
-                                तो आप अपने शरीर, अपने अतीत और अपने भविष्य के साथ अपना रिश्‍ता बदल सकते हैं।
-                            </p>
-
-                            <p class="mobile-text justified-text">
-                                <em>You Can Heal Your Life</em> एक आध्यात्मिक सेल्फ–हेल्प क्लासिक है। 
-                                यह सिखाती है कि बहुत-सी भावनात्मक और यहाँ तक कि शारीरिक समस्याएँ भी 
-                                आत्म–आलोचना, अपराधबोध, डर और रोष के पैटर्न से जुड़ी होती हैं। 
-                                जब हम इन्हें प्यार, स्वीकार्यता और भरोसे वाले विचारों से बदलते हैं, 
-                                तो भीतर से हीलिंग को समर्थन मिलता है।
-                            </p>
-
-                            <p class="mobile-text justified-text">
-                                इस सार में हम किताब को तीन हिस्सों में संक्षेप करते हैं: 
-                                <strong>लुईज़ हे कौन हैं और उनकी मूल सोच क्या है</strong>, 
-                                <strong>माइंड–बॉडी कनेक्शन और हीलिंग टूल्स कैसे काम करते हैं</strong>, 
-                                और <strong>इनको जीवन के अलग–अलग क्षेत्रों में व्यावहारिक और ज़मीन से जुड़े तरीके से कैसे लागू करें।</strong>
-                            </p>
-
-                            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-xl border border-blue-100">
-                                <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">इस सार से क्या मिलेगा:</h4>
-                                <ul class="space-y-2 text-slate-700 mobile-text">
-                                    <li class="justified-text">• लुईज़ हे की कहानी और दर्शन का स्पष्ट सार।</li>
-                                    <li class="justified-text">• यह समझ कि हमारा विश्वास और सेल्फ–टॉक हमारे महसूस करने और व्यवहार करने के तरीके को कैसे गढ़ते हैं।</li>
-                                    <li class="justified-text">• अफर्मेशन, मिरर वर्क और माफ़ी के व्यावहारिक उदाहरण।</li>
-                                    <li class="justified-text">• इन विचारों को इस तरह अपनाने की समझ कि आप हर चीज़ के लिए खुद को दोषी न ठहराएँ।</li>
-                                </ul>
-                            </div>
-                        </div>
+                        
+                        <p class="mobile-text justified-text">
+                            You can read straight through or jump directly to the parts that matter most to you — 
+                            for example, how to manage your image at work, protect yourself from manipulation, 
+                            or better understand the “games” being played in politics and business.
+                        </p>
                     </div>
                 </section>
 
-                <!-- PART 1 -->
+                <!-- Part 1 – The Book & 48-Law Framework -->
                 <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
-                    <!-- EN -->
-                    <div class="lang-block" data-lang="en">
-                        <div class="mb-4 sm:mb-6 mobile-margin">
-                            <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
-                                Part 1
-                            </span>
-                            <h3 class="text-lg sm:text-2xl font-semibold text-slate-800 mobile-subtitle">
-                                Louise Hay, Her Story & Core Philosophy
-                            </h3>
-                        </div>
-
-                        <div class="space-y-4 sm:space-y-6 text-slate-700">
-                            <p class="mobile-text justified-text">
-                                Louise Hay grew up in poverty and abuse, later faced cancer, and claimed that inner work 
-                                — especially forgiveness and affirmations — played a big role in her healing. 
-                                From her own life and working with thousands of clients, she arrived at a central idea:
-                                <strong>our thoughts and beliefs are powerful creative forces.</strong>
-                            </p>
-
-                            <div class="bg-slate-50 p-4 sm:p-6 rounded-xl">
-                                <h4 class="font-semibold text-slate-800 mb-2 text-sm sm:text-base mobile-subtitle">
-                                    Key Points of Her Philosophy
-                                </h4>
-                                <ul class="space-y-2 mobile-text">
-                                    <li class="justified-text"><strong>1. Life is on your side.</strong>  
-                                        She sees Life / the Universe as supportive, not hostile.</li>
-                                    <li class="justified-text"><strong>2. Beliefs are learned, not fixed.</strong>  
-                                        Most limiting beliefs come from childhood and can be unlearned.</li>
-                                    <li class="justified-text"><strong>3. Self-criticism blocks healing.</strong>  
-                                        “I’m not good enough” is one of the most damaging internal sentences.</li>
-                                    <li class="justified-text"><strong>4. Self-love is a practice.</strong>  
-                                        It grows from small choices: how you talk to yourself, how you set boundaries.</li>
-                                </ul>
-                            </div>
-
-                            <p class="mobile-text justified-text">
-                                She often summarizes her message like this: 
-                                <em>“Every thought we think is creating our future.”</em> 
-                                You don’t need to agree literally to see the practical question behind it:
-                                <strong>Are your daily thoughts building a future you actually want?</strong>
-                            </p>
-                        </div>
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
                     </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">
+                            Robert Greene, Historical Sources & the 48-Law Architecture
+                        </h3>
+                        <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
 
-                    <!-- ID -->
-                    <div class="lang-block" data-lang="id">
-                        <div class="mb-4 sm:mb-6 mobile-margin">
-                            <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
-                                Bagian 1
-                            </span>
-                            <h3 class="text-lg sm:text-2xl font-semibold text-slate-800 mobile-subtitle">
-                                Louise Hay, Kisah Hidup & Filosofi Inti
-                            </h3>
+<p>
+Robert Greene is an American author who worked many different jobs before writing. 
+He became obsessed with why some people quietly rise to power while others — sometimes more talented — 
+get stuck or destroyed by politics. <em>The 48 Laws of Power</em> (1998) was his attempt to map those patterns.
+</p>
+
+<p>
+To build the book, Greene studied:
+</p>
+
+<ul>
+  <li>European royal courts and the art of court politics,</li>
+  <li>Chinese and Japanese strategic texts,</li>
+  <li>Military campaigns and diplomatic negotiations,</li>
+  <li>Artists, con artists, revolutionaries, and rulers.</li>
+</ul>
+
+<p>
+From these stories, he extracted “laws” — recurring principles about power. 
+Each law has a similar structure: a bold statement, historical examples, interpretation, 
+and a “reversal” that shows when the law might backfire or shouldn’t be used.
+</p>
+
+<h3>The 48 Laws as a Toolkit</h3>
+
+<p>
+The book is not a narrative; it is a toolkit of 48 strategic rules. Some examples:
+</p>
+
+<ul>
+  <li>Laws about <strong>image and perception</strong> (how you appear in public).</li>
+  <li>Laws about <strong>emotion and psychology</strong> (how to read and influence people).</li>
+  <li>Laws about <strong>timing and strategy</strong> (when and how to act).</li>
+  <li>Laws about <strong>dominance and protection</strong> (how to win or avoid being crushed).</li>
+</ul>
+
+<p>
+Greene does not tell you to use all the laws all the time. 
+He expects readers to:
+</p>
+
+<ul>
+  <li>Recognize these patterns in others,</li>
+  <li>Protect themselves from manipulation,</li>
+  <li>Use some laws selectively, in line with their own goals and ethics.</li>
+</ul>
+
+<p>
+This summary keeps the original numbering (Law 1 to Law 48) but groups the laws into four main parts. 
+That way you can see how the rules fit into bigger themes instead of feeling like a random list.
+</p>
+
+</div>
+                        
+                        <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl">
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Key facts about the book:</h4>
+                            <ul class="space-y-2 mobile-text">
+                                <li class="justified-text"><strong>Publication year:</strong><br>1998.</li> 
+                                <li class="justified-text"><strong>Author:</strong><br>Robert Greene.</li>
+                                <li class="justified-text"><strong>Core claim:</strong><br>Power follows psychological and social patterns that repeat across time. Ignoring them makes you vulnerable.</li>
+                            </ul>
                         </div>
-
-                        <div class="space-y-4 sm:space-y-6 text-slate-700">
-                            <p class="mobile-text justified-text">
-                                Louise Hay dibesarkan dalam kemiskinan dan kekerasan, kemudian didiagnosis kanker, 
-                                dan ia mengklaim bahwa pekerjaan batin — terutama memaafkan dan afirmasi — 
-                                sangat berperan dalam proses penyembuhannya. 
-                                Dari pengalamannya sendiri dan klien-kliennya, ia menyimpulkan satu gagasan inti:
-                                <strong>pikiran dan keyakinan kita adalah kekuatan kreatif yang sangat besar.</strong>
-                            </p>
-
-                            <div class="bg-slate-50 p-4 sm:p-6 rounded-xl">
-                                <h4 class="font-semibold text-slate-800 mb-2 text-sm sm:text-base mobile-subtitle">
-                                    Poin Penting Filosofinya
-                                </h4>
-                                <ul class="space-y-2 mobile-text">
-                                    <li class="justified-text"><strong>1. Hidup berpihak pada kita.</strong>  
-                                        Hidup / Semesta dipandang mendukung, bukan memusuhi.</li>
-                                    <li class="justified-text"><strong>2. Keyakinan itu dipelajari.</strong>  
-                                        Keyakinan yang membatasi biasanya dari masa kecil, dan bisa dilepas.</li>
-                                    <li class="justified-text"><strong>3. Menghukum diri menghambat penyembuhan.</strong>  
-                                        “Aku nggak cukup baik” adalah kalimat batin yang sangat merusak.</li>
-                                    <li class="justified-text"><strong>4. Cinta diri adalah latihan.</strong>  
-                                        Tumbuh dari kebiasaan kecil: cara bicara ke diri sendiri, cara pasang batasan.</li>
-                                </ul>
+                        
+                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">How to Read the 48 Laws</h3>
+                        <p class="mobile-text justified-text">
+                            There are two main ways to approach this book:
+                        </p>
+                        
+                        <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-amber-200">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                                <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                                    <h5 class="font-medium text-blue-700 text-sm sm:text-base">As an Offensive Manual</h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        Learn how to gain advantage, impress superiors, outmaneuver rivals, 
+                                        and design long-term strategies in competitive environments.
+                                    </p>
+                                </div>
+                                <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                                    <h5 class="font-medium text-green-700 text-sm sm:text-base">As a Defensive Radar</h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        Learn to recognize manipulation, emotional games, and power traps so 
+                                        you can protect your dignity, boundaries, and long-term position.
+                                    </p>
+                                </div>
                             </div>
-
-                            <p class="mobile-text justified-text">
-                                Ia sering merangkum pesannya seperti ini: 
-                                <em>“Setiap pikiran yang kita pikirkan sedang menciptakan masa depan kita.”</em> 
-                                Kita tidak harus setuju 100% secara harfiah, 
-                                tapi pertanyaan praktisnya jelas: 
-                                <strong>apakah pikiran sehari-hari kita sedang membangun masa depan yang benar-benar kita inginkan?</strong>
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- HI -->
-                    <div class="lang-block" data-lang="hi">
-                        <div class="mb-4 sm:mb-6 mobile-margin">
-                            <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
-                                भाग 1
-                            </span>
-                            <h3 class="text-lg sm:text-2xl font-semibold text-slate-800 mobile-subtitle">
-                                लुईज़ हे, उनकी कहानी और मूल दर्शन
-                            </h3>
                         </div>
 
-                        <div class="space-y-4 sm:space-y-6 text-slate-700">
-                            <p class="mobile-text justified-text">
-                                लुईज़ हे ने गरीबी और हिंसा में बचपन बिताया, बाद में कैंसर का सामना किया, 
-                                और उनका कहना है कि भीतरी काम — खासकर माफ़ी और अफर्मेशन — 
-                                ने उनकी हीलिंग में बड़ी भूमिका निभाई। 
-                                अपने अनुभव और हजारों क्लाइंट्स के साथ काम से वे एक मुख्य विचार पर पहुँचीं:
-                                <strong>हमारे विचार और विश्वास शक्तिशाली रचनात्मक ऊर्जा हैं।</strong>
-                            </p>
-
-                            <div class="bg-slate-50 p-4 sm:p-6 rounded-xl">
-                                <h4 class="font-semibold text-slate-800 mb-2 text-sm sm:text-base mobile-subtitle">
-                                    उनके दर्शन के मुख्य बिंदु
-                                </h4>
-                                <ul class="space-y-2 mobile-text">
-                                    <li class="justified-text"><strong>1. जीवन हमारे पक्ष में है।</strong>  
-                                        वे जीवन / ब्रह्मांड को सहयोगी मानती हैं, शत्रु नहीं।</li>
-                                    <li class="justified-text"><strong>2. विश्वास सीखे जाते हैं।</strong>  
-                                        ज़्यादातर सीमित करने वाले विश्वास बचपन से आते हैं और बदले जा सकते हैं।</li>
-                                    <li class="justified-text"><strong>3. आत्म–आलोचना हीलिंग को रोकती है.</strong>  
-                                        “मैं पर्याप्त अच्छा नहीं हूँ” सबसे हानिकारक वाक्यों में से एक है।</li>
-                                    <li class="justified-text"><strong>4. सेल्फ–लव एक अभ्यास है।</strong>  
-                                        यह छोटे–छोटे चुनावों से बढ़ता है: अपने आप से कैसे बात करते हैं, कैसी सीमाएँ रखते हैं।</li>
-                                </ul>
-                            </div>
-
-                            <p class="mobile-text justified-text">
-                                वे अक्सर अपना संदेश यूँ संक्षेप करती हैं: 
-                                <em>“हम जो भी सोचते हैं, उससे हमारा भविष्य बन रहा है।”</em> 
-                                चाहे आप इसे शाब्दिक न भी लें, व्यावहारिक सवाल तो यही रहता है: 
-                                <strong>आपके रोज़ के विचार क्या सच में वह भविष्य बना रहे हैं जो आप चाहते हैं?</strong>
-                            </p>
-                        </div>
+                        <p class="mobile-text justified-text">
+                            In the next parts, we go through all 48 laws, but grouped by theme so that you can connect 
+                            them to real situations in work, politics, and personal life.
+                        </p>
                     </div>
                 </section>
 
-                <!-- PART 2 -->
+                <!-- Part 2 – Image & Perception Laws -->
                 <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
-                    <!-- EN -->
-                    <div class="lang-block" data-lang="en">
-                        <div class="mb-4 sm:mb-6 mobile-margin">
-                            <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
-                                Part 2
-                            </span>
-                            <h3 class="text-lg sm:text-2xl font-semibold text-slate-800 mobile-subtitle">
-                                Mind–Body Link, Beliefs & Healing Tools
-                            </h3>
-                        </div>
-
-                        <div class="space-y-4 sm:space-y-6 text-slate-700">
-                            <p class="mobile-text justified-text">
-                                Louise Hay suggests that the body and mind are deeply connected. 
-                                Physical symptoms can sometimes mirror emotional states — 
-                                for example, feeling unsupported might show up as back pain, 
-                                or fear of speaking up as throat issues. You can take this literally or symbolically; 
-                                either way, it invites reflection instead of pure war with the body.
-                            </p>
-
-                            <div class="bg-blue-50 p-4 sm:p-6 rounded-xl border border-blue-200">
-                                <h4 class="font-semibold text-blue-800 mb-2 text-sm sm:text-base mobile-subtitle">
-                                    Three Core Tools
-                                </h4>
-                                <ul class="space-y-2 mobile-text">
-                                    <li class="justified-text">
-                                        <strong>1. Affirmations.</strong>  
-                                        Positive statements you repeat to plant new beliefs.  
-                                        Examples: “I am willing to change.” “I am learning to love myself as I am.”
-                                    </li>
-                                    <li class="justified-text">
-                                        <strong>2. Mirror Work.</strong>  
-                                        Looking into your own eyes in a mirror while saying affirmations. 
-                                        The discomfort that appears shows where self-rejection lives; 
-                                        staying gentle with this exercise slowly builds self-acceptance.
-                                    </li>
-                                    <li class="justified-text">
-                                        <strong>3. Forgiveness.</strong>  
-                                        Letting go of ongoing resentment — especially toward parents and yourself. 
-                                        Forgiveness does not mean what happened was okay; 
-                                        it means you refuse to keep drinking the poison every day.
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <p class="mobile-text justified-text">
-                                For Louise Hay, healing is not about denying pain, but about refusing to repeat the same old 
-                                self-hating story. These tools are ways to practice a kinder inner voice, day after day.
-                            </p>
-                        </div>
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            Laws of Image & Perception
+                        </h2>
                     </div>
-
-                    <!-- ID -->
-                    <div class="lang-block" data-lang="id">
-                        <div class="mb-4 sm:mb-6 mobile-margin">
-                            <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
-                                Bagian 2
-                            </span>
-                            <h3 class="text-lg sm:text-2xl font-semibold text-slate-800 mobile-subtitle">
-                                Hubungan Pikiran–Tubuh, Keyakinan & Alat Healing
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <div class="bg-blue-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
+                            <h3 class="text-lg sm:text-xl font-semibold text-blue-800 mb-3 mobile-subtitle">
+                                Why Appearance and Reputation Matter
                             </h3>
-                        </div>
-
-                        <div class="space-y-4 sm:space-y-6 text-slate-700">
-                            <p class="mobile-text justified-text">
-                                Louise Hay berpendapat bahwa tubuh dan pikiran sangat terhubung. 
-                                Gejala fisik kadang mencerminkan keadaan emosional — misalnya rasa tidak didukung 
-                                muncul sebagai nyeri punggung, atau takut bicara muncul sebagai masalah di tenggorokan. 
-                                Bisa dipercaya secara harfiah ataupun simbolis; yang penting, kita diajak berhenti 
-                                sekadar “berperang” dengan tubuh dan mulai mendengarkannya.
-                            </p>
-
-                            <div class="bg-blue-50 p-4 sm:p-6 rounded-xl border border-blue-200">
-                                <h4 class="font-semibold text-blue-800 mb-2 text-sm sm:text-base mobile-subtitle">
-                                    Tiga Alat Utama
-                                </h4>
-                                <ul class="space-y-2 mobile-text">
-                                    <li class="justified-text">
-                                        <strong>1. Afirmasi.</strong>  
-                                        Kalimat positif yang diulang untuk menanam keyakinan baru.  
-                                        Contoh: “Aku bersedia berubah.” “Aku belajar mencintai diriku apa adanya.”
-                                    </li>
-                                    <li class="justified-text">
-                                        <strong>2. Latihan Cermin.</strong>  
-                                        Menatap mata sendiri di cermin sambil mengucap afirmasi. 
-                                        Rasa tidak nyaman yang muncul menunjukkan area penolakan diri; 
-                                        latihan lembut dan konsisten membantu membangun penerimaan diri.
-                                    </li>
-                                    <li class="justified-text">
-                                        <strong>3. Memaafkan.</strong>  
-                                        Melepaskan dendam berkepanjangan — terutama pada orang tua dan diri sendiri. 
-                                        Memaafkan bukan berarti “yang terjadi itu benar”, 
-                                        tapi kita berhenti menyakiti diri dengan mengulang lukanya terus-menerus.
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <p class="mobile-text justified-text">
-                                Bagi Louise Hay, healing bukan pura-pura tidak sakit, 
-                                tapi berhenti mengulang cerita lama yang penuh benci pada diri sendiri. 
-                                Afirmasi, latihan cermin, dan memaafkan adalah cara berlatih suara batin yang lebih lembut, 
-                                sedikit demi sedikit setiap hari.
+                            <p class="text-blue-700 mobile-text justified-text">
+                                People rarely see your intentions or inner reality. They see your <strong>signal</strong>: 
+                                how you speak, move, dress, and perform. These laws show how Greene thinks you should 
+                                manage that signal to increase power, or at least avoid unnecessary danger.
                             </p>
                         </div>
-                    </div>
 
-                    <!-- HI -->
-                    <div class="lang-block" data-lang="hi">
-                        <div class="mb-4 sm:mb-6 mobile-margin">
-                            <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
-                                भाग 2
-                            </span>
-                            <h3 class="text-lg sm:text-2xl font-semibold text-slate-800 mobile-subtitle">
-                                माइंड–बॉडी संबंध, विश्वास और हीलिंग टूल्स
-                            </h3>
+                        <div class="bg-gradient-to-r from-slate-50 to-slate-100 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-slate-200">
+                            <ol class="list-decimal ml-5 space-y-3 mobile-text text-slate-700">
+                                <li class="justified-text">
+                                    <strong>Law 1 – Never Outshine the Master.</strong><br>
+                                    Do not make your superior feel overshadowed. If you appear too brilliant or independent, 
+                                    you can trigger envy and fear. Instead, let them shine and subtly connect your success to theirs.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 3 – Conceal Your Intentions.</strong><br>
+                                    If people see your true goal too early, they can block or undermine it. 
+                                    Greene suggests appearing harmless, distracted, or interested in something else, 
+                                    while your real plan develops quietly in the background.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 4 – Always Say Less Than Necessary.</strong><br>
+                                    The more you talk, the more you reveal insecurities, contradictions, and plans. 
+                                    Powerful people tend to be economical with words. Silence, or short controlled statements, 
+                                    often create more respect and mystery.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 5 – So Much Depends on Reputation – Guard It with Your Life.</strong><br>
+                                    Reputation is like a power bank: people decide how to treat you based on what they have heard. 
+                                    Protect it fiercely, respond quickly to serious attacks, and build a track record that makes 
+                                    others hesitate before crossing you.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 6 – Court Attention at All Costs.</strong><br>
+                                    In crowded environments, being invisible is dangerous. Greene advises making yourself 
+                                    visible through bold actions, strong symbols, or memorable behavior — but without looking desperate. 
+                                    The key is standing out with purpose.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 26 – Keep Your Hands Clean.</strong><br>
+                                    When unpopular actions must be taken, the powerful often keep their own image “pure” while 
+                                    delegating the dirty work. This law warns that being too closely associated with scandals or 
+                                    cruelty will ruin your public standing.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 27 – Play on People’s Need to Believe to Create a Cultlike Following.</strong><br>
+                                    Many people crave meaning, direction, and something bigger than themselves. 
+                                    Leaders who provide a strong story, rituals, and symbols can build intense loyalty — 
+                                    though this can be used for good or manipulation.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 30 – Make Your Accomplishments Seem Effortless.</strong><br>
+                                    When you display too much visible struggle, people may doubt your competence. 
+                                    Greene suggests hiding the sweat and letting your results look smooth and natural, 
+                                    as if they were simply the product of your character and talent.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 34 – Be Royal in Your Own Fashion: Act Like a King to Be Treated Like One.</strong><br>
+                                    People take cues from how you treat yourself. If you act with dignity, set high standards, 
+                                    and refuse poor treatment, others are more likely to respect you. If you accept disrespect, 
+                                    they learn that it is allowed.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 37 – Create Compelling Spectacles.</strong><br>
+                                    Dramatic gestures, events, or visual symbols can shape perception more strongly than 
+                                    logical arguments. Spectacles fix your image in memory and can rally support or intimidate rivals.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 38 – Think as You Like but Behave Like Others.</strong><br>
+                                    You can keep unconventional ideas inside, but openly rejecting social norms in a rigid way 
+                                    often triggers resistance or isolation. Adapt on the surface while preserving your freedom of thought.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 46 – Never Appear Too Perfect.</strong><br>
+                                    Perfection provokes envy and hidden hostility. Showing small, harmless flaws can make you 
+                                    more human and less threatening, reducing the urge of others to attack you.
+                                </li>
+                            </ol>
                         </div>
 
-                        <div class="space-y-4 sm:space-y-6 text-slate-700">
-                            <p class="mobile-text justified-text">
-                                लुईज़ हे के अनुसार शरीर और मन गहराई से जुड़े हैं। 
-                                कई बार शारीरिक लक्षण भावनात्मक स्थिति को प्रतिबिंबित कर सकते हैं — 
-                                जैसे “कोई मेरा साथ नहीं देता” महसूस होना पीठ दर्द के रूप में, 
-                                या बोलने का डर गले की तकलीफ़ के रूप में। 
-                                आप इसे शाब्दिक या प्रतीकात्मक, जैसे चाहें लें, 
-                                पर यह नज़रिए को बदलकर शरीर से लड़ने के बजाय उसे सुनने की ओर ले जाता है।
-                            </p>
-
-                            <div class="bg-blue-50 p-4 sm:p-6 rounded-xl border border-blue-200">
-                                <h4 class="font-semibold text-blue-800 mb-2 text-sm sm:text-base mobile-subtitle">
-                                    तीन मुख्य उपकरण
-                                </h4>
-                                <ul class="space-y-2 mobile-text">
-                                    <li class="justified-text">
-                                        <strong>1. अफर्मेशन.</strong>  
-                                        सकारात्मक वाक्य जिन्हें बार–बार दोहरा कर नए विश्वास बोए जाते हैं।  
-                                        उदाहरण: “मैं बदलने के लिए तैयार हूँ।” “मैं खुद से प्यार करना सीख रहा/रही हूँ।”
-                                    </li>
-                                    <li class="justified-text">
-                                        <strong>2. मिरर वर्क.</strong>  
-                                        आईने में अपनी आँखों में देख कर अफर्मेशन बोलना। 
-                                        जो असहजता उठती है, वह दिखाती है कि आत्म–अस्वीकृति कहाँ बैठी है; 
-                                        कोमल अभ्यास के साथ धीरे–धीरे आत्म–स्वीकार बढ़ता है।
-                                    </li>
-                                    <li class="justified-text">
-                                        <strong>3. माफ़ करना.</strong>  
-                                        लगातार चले आ रहे रोष को छोड़ना — खासकर माता–पिता और खुद के प्रति। 
-                                        माफ़ करने का अर्थ यह नहीं कि जो हुआ वह सही था; 
-                                        इसका मतलब है कि आप हर दिन उसी ज़हर को पीते रहना बंद करते हैं।
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <p class="mobile-text justified-text">
-                                लुईज़ हे के लिए हीलिंग का मतलब दर्द से इनकार करना नहीं, 
-                                बल्कि पुराने, आत्म–घृणा वाले किस्से को बार–बार दोहराने से इनकार करना है। 
-                                ये टूल्स रोज़ थोड़ा–थोड़ा, अपने भीतर एक ज़्यादा दयालु आवाज़ का अभ्यास हैं।
-                            </p>
-                        </div>
+                        <p class="mobile-text justified-text">
+                            These laws remind you that in many arenas you are judged first by how you <em>appear</em>, 
+                            not by your inner intentions. Managing perception is not about lying to yourself; 
+                            it is about understanding how other people actually make decisions.
+                        </p>
                     </div>
                 </section>
 
-                <!-- PART 3 -->
+                <!-- Part 3 – Emotion & Psychology Laws -->
                 <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
-                    <!-- EN -->
-                    <div class="lang-block" data-lang="en">
-                        <div class="mb-4 sm:mb-6 mobile-margin">
-                            <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
-                                Part 3
-                            </span>
-                            <h3 class="text-lg sm:text-2xl font-semibold text-slate-800 mobile-subtitle">
-                                Applying Healing to Life Areas & Staying Grounded
-                            </h3>
-                        </div>
-
-                        <div class="space-y-4 sm:space-y-6 text-slate-700">
-                            <p class="mobile-text justified-text">
-                                In the book, Louise Hay applies her approach to the body, relationships, work, and money. 
-                                The pattern is similar everywhere: notice the belief, release blame, choose a kinder belief, 
-                                and support it with action.
-                            </p>
-
-                            <div class="bg-gradient-to-r from-purple-50 to-indigo-50 p-4 sm:p-6 rounded-xl border border-purple-200">
-                                <h4 class="font-semibold text-purple-800 mb-2 text-sm sm:text-base mobile-subtitle">
-                                    Examples of Application
-                                </h4>
-                                <ul class="space-y-2 mobile-text">
-                                    <li class="justified-text">
-                                        <strong>Body:</strong> From “My body is my enemy” to  
-                                        “My body and I are on the same team. I am learning to listen and support it.”
-                                    </li>
-                                    <li class="justified-text">
-                                        <strong>Relationships:</strong> From “I’m always abandoned” to  
-                                        “I am worthy of safe, loving relationships, and I am learning to choose them.”
-                                    </li>
-                                    <li class="justified-text">
-                                        <strong>Money:</strong> From “I’ll always struggle” to  
-                                        “I am open to new channels of income. I use prosperity in wise and loving ways.”
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-slate-50 p-4 sm:p-6 rounded-xl">
-                                <h4 class="font-semibold text-slate-800 mb-2 text-sm sm:text-base mobile-subtitle">
-                                    Limits & Healthy Balance
-                                </h4>
-                                <ul class="space-y-2 mobile-text">
-                                    <li class="justified-text">
-                                        It is not helpful to blame yourself for every illness or tragedy as “bad thinking”.
-                                    </li>
-                                    <li class="justified-text">
-                                        Therapy, medical care, and social support are often necessary; affirmations can support, not replace, them.
-                                    </li>
-                                    <li class="justified-text">
-                                        You can work on your beliefs <em>and</em> still say “no” to abuse, seek justice, and set firm boundaries.
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-4 sm:p-6 rounded-xl border border-emerald-200">
-                                <h4 class="font-semibold text-emerald-800 mb-2 text-sm sm:text-base mobile-subtitle">
-                                    Final Reflection
-                                </h4>
-                                <p class="mobile-text justified-text">
-                                    In the end, <em>You Can Heal Your Life</em> is an invitation to build a new relationship with yourself: 
-                                    less attack, more curiosity and care. You don’t need to be perfect or positive all the time.
-                                </p>
-                                <p class="mobile-text justified-text italic border-l-4 border-emerald-400 pl-4 sm:pl-6">
-                                    A simple daily question could be: “If I spoke to a friend the way I’m speaking to myself right now,
-                                    would it help them grow or make them shrink?”
-                                </p>
-                                <p class="mobile-text justified-text">
-                                    If the answer is “shrink”, Louise Hay would say: that is the moment you can start healing — 
-                                    by choosing one slightly kinder thought.
-                                </p>
-                            </div>
-                        </div>
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            Laws of Emotion & Psychology
+                        </h2>
                     </div>
-
-                    <!-- ID -->
-                    <div class="lang-block" data-lang="id">
-                        <div class="mb-4 sm:mb-6 mobile-margin">
-                            <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
-                                Bagian 3
-                            </span>
-                            <h3 class="text-lg sm:text-2xl font-semibold text-slate-800 mobile-subtitle">
-                                Menerapkan Healing & Tetap Membumi
-                            </h3>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <p class="text-base sm:text-lg text-slate-600 mobile-text justified-text">
+                            Power is not just about visible moves; it is deeply psychological. 
+                            These laws focus on trust, fear, envy, desire, and belief — and how Greene thinks 
+                            they can be used or defended against.
+                        </p>
+                        
+                        <div class="bg-green-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-green-200">
+                            <ol class="list-decimal ml-5 space-y-3 mobile-text text-slate-700">
+                                <li class="justified-text">
+                                    <strong>Law 2 – Never Put Too Much Trust in Friends, Learn How to Use Enemies.</strong><br>
+                                    Friends may turn envious, entitled, or careless with your interests. 
+                                    Former enemies, once reconciled, sometimes prove more loyal because they have something to prove. 
+                                    The deeper lesson: do not be blind about human motives.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 10 – Infection: Avoid the Unhappy and Unlucky.</strong><br>
+                                    Emotions spread. Constant exposure to negativity, chaos, or victim mentality 
+                                    can quietly sabotage your mindset. Greene recommends limiting your exposure 
+                                    to chronically miserable people if you want a clearer, stronger inner state.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 11 – Learn to Keep People Dependent on You.</strong><br>
+                                    If others truly need your skills, networks, or decisions, they are less likely to discard you. 
+                                    Greene argues that being too replaceable weakens your position; cultivating unique value 
+                                    stabilizes your influence.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 12 – Use Selective Honesty and Generosity to Disarm Your Victim.</strong><br>
+                                    A well-timed act of honesty or generosity can create trust that covers many later moves. 
+                                    Greene warns that people lower their guard when they feel you are “on their side,” 
+                                    making them easier to influence.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 13 – When Asking for Help, Appeal to People’s Self-Interest.</strong><br>
+                                    Rather than begging for pity, show others how helping you will benefit their goals, image, 
+                                    or security. People are more responsive to opportunities than to pure charity.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 17 – Keep Others in Suspended Terror: Cultivate an Air of Unpredictability.</strong><br>
+                                    If people cannot easily predict you, they hesitate to attack or oppose you. 
+                                    Occasional, controlled unpredictability can make others cautious — 
+                                    though overuse can make you seem unstable.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 32 – Play to People’s Fantasies.</strong><br>
+                                    People are often driven more by dreams and illusions than by rational analysis. 
+                                    Appealing to their fantasies — of freedom, status, romance, or security — 
+                                    can be far more persuasive than cold facts.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 33 – Discover Each Man’s Thumbscrew.</strong><br>
+                                    Everyone has a pressure point: a fear, desire, secret, or need for validation. 
+                                    Observing what excites or upsets them reveals how they can be motivated or manipulated. 
+                                    Ethically, this awareness can also help you avoid being exploited.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 39 – Stir Up Waters to Catch Fish.</strong><br>
+                                    When emotions are stirred, people show their true character. 
+                                    Greene recommends intentionally creating “waves” at times — not out of cruelty, 
+                                    but to reveal hidden agendas and weaknesses.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 40 – Despise the Free Lunch.</strong><br>
+                                    What appears free almost always has strings attached. 
+                                    Accepting too many favors can trap you in invisible debts. 
+                                    Maintaining independence — financial and emotional — keeps your mind clearer.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 43 – Work on the Hearts and Minds of Others.</strong><br>
+                                    Lasting power comes from internal buy-in, not just external obedience. 
+                                    Engage people’s feelings, values, and sense of meaning, so they follow you willingly, 
+                                    not just out of fear.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 44 – Disarm and Infuriate with the Mirror Effect.</strong><br>
+                                    By reflecting someone’s behavior — their tone, arguments, or even aggression — 
+                                    you can unsettle them and expose their tactics. They become frustrated when they see 
+                                    their own moves used against them.
+                                </li>
+                            </ol>
                         </div>
 
-                        <div class="space-y-4 sm:space-y-6 text-slate-700">
-                            <p class="mobile-text justified-text">
-                                Dalam bukunya, Louise Hay menerapkan pendekatan ini ke tubuh, hubungan, pekerjaan, dan uang. 
-                                Polanya mirip di semua area: sadari keyakinan yang lama, lepaskan menyalahkan, 
-                                pilih keyakinan baru yang lebih lembut, lalu dukung dengan tindakan.
-                            </p>
-
-                            <div class="bg-gradient-to-r from-purple-50 to-indigo-50 p-4 sm:p-6 rounded-xl border border-purple-200">
-                                <h4 class="font-semibold text-purple-800 mb-2 text-sm sm:text-base mobile-subtitle">
-                                    Contoh Penerapan
-                                </h4>
-                                <ul class="space-y-2 mobile-text">
-                                    <li class="justified-text">
-                                        <strong>Tubuh:</strong> dari “Tubuhku musuhku” menjadi  
-                                        “Aku dan tubuhku satu tim. Aku belajar mendengar dan mendukungnya.”
-                                    </li>
-                                    <li class="justified-text">
-                                        <strong>Hubungan:</strong> dari “Aku selalu ditinggalkan” menjadi  
-                                        “Aku layak mendapat hubungan yang aman dan penuh cinta, dan aku belajar memilih itu.”
-                                    </li>
-                                    <li class="justified-text">
-                                        <strong>Uang:</strong> dari “Hidupku pasti susah terus” menjadi  
-                                        “Aku terbuka pada saluran rezeki baru. Aku menggunakan kelimpahan dengan bijak dan penuh kasih.”
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-slate-50 p-4 sm:p-6 rounded-xl">
-                                <h4 class="font-semibold text-slate-800 mb-2 text-sm sm:text-base mobile-subtitle">
-                                    Batas Sehat & Keseimbangan
-                                </h4>
-                                <ul class="space-y-2 mobile-text">
-                                    <li class="justified-text">
-                                        Tidak sehat kalau setiap sakit atau musibah langsung disalahkan sebagai “pikiranku jelek”.
-                                    </li>
-                                    <li class="justified-text">
-                                        Terapi, bantuan medis, dan dukungan orang lain tetap penting; 
-                                        afirmasi hanya pendamping, bukan pengganti.
-                                    </li>
-                                    <li class="justified-text">
-                                        Kita bisa mengolah keyakinan batin <em>dan</em> tetap berkata “tidak” pada kekerasan, 
-                                        mencari keadilan, dan memasang batas yang tegas.
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-4 sm:p-6 rounded-xl border border-emerald-200">
-                                <h4 class="font-semibold text-emerald-800 mb-2 text-sm sm:text-base mobile-subtitle">
-                                    Refleksi Akhir
-                                </h4>
-                                <p class="mobile-text justified-text">
-                                    Pada akhirnya, <em>You Can Heal Your Life</em> adalah undangan untuk membangun hubungan baru dengan diri sendiri: 
-                                    lebih sedikit menyerang, lebih banyak penasaran dan peduli. 
-                                    Kita tidak dituntut selalu positif 100%.
-                                </p>
-                                <p class="mobile-text justified-text italic border-l-4 border-emerald-400 pl-4 sm:pl-6">
-                                    Pertanyaan harian yang sederhana: “Kalau aku bicara ke temanku seperti aku bicara ke diriku sekarang, 
-                                    apakah dia akan berkembang atau malah menciut?”
-                                </p>
-                                <p class="mobile-text justified-text">
-                                    Kalau jawabannya “menciut”, di situlah — kata Louise — titik mulai penyembuhan: 
-                                    memilih satu pikiran yang sedikit lebih lembut dari sebelumnya.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- HI -->
-                    <div class="lang-block" data-lang="hi">
-                        <div class="mb-4 sm:mb-6 mobile-margin">
-                            <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
-                                भाग 3
-                            </span>
-                            <h3 class="text-lg sm:text-2xl font-semibold text-slate-800 mobile-subtitle">
-                                जीवन में लागू करना और ज़मीन से जुड़े रहना
-                            </h3>
-                        </div>
-
-                        <div class="space-y-4 sm:space-y-6 text-slate-700">
-                            <p class="mobile-text justified-text">
-                                किताब में लुईज़ हे अपने तरीक़े को शरीर, रिश्तों, काम और पैसे पर लागू करती हैं। 
-                                हर जगह पैटर्न समान है: विश्वास को नोटिस करो, दोष छोड़ो, 
-                                एक दयालु विश्वास चुनो, और उसे कर्म से समर्थन दो।
-                            </p>
-
-                            <div class="bg-gradient-to-r from-purple-50 to-indigo-50 p-4 sm:p-6 rounded-xl border border-purple-200">
-                                <h4 class="font-semibold text-purple-800 mb-2 text-sm sm:text-base mobile-subtitle">
-                                    लागू करने के उदाहरण
-                                </h4>
-                                <ul class="space-y-2 mobile-text">
-                                    <li class="justified-text">
-                                        <strong>शरीर:</strong> “मेरा शरीर मेरा दुश्मन है” से  
-                                        “मैं और मेरा शरीर एक टीम हैं। मैं उसे सुनना और सहयोग देना सीख रहा/रही हूँ।” 
-                                    </li>
-                                    <li class="justified-text">
-                                        <strong>रिश्ते:</strong> “मुझे हमेशा छोड़ दिया जाता है” से  
-                                        “मैं सुरक्षित, प्यार भरे रिश्तों के योग्य हूँ और ऐसे रिश्तों को चुनना सीख रहा/रही हूँ।” 
-                                    </li>
-                                    <li class="justified-text">
-                                        <strong>पैसा:</strong> “मेरे लिए हमेशा कमी ही रहेगी” से  
-                                        “मैं आय के नए रास्तों के लिए खुला/खुली हूँ। मैं समृद्धि को समझदारी और प्यार से इस्तेमाल करता/करती हूँ।” 
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-slate-50 p-4 sm:p-6 rounded-xl">
-                                <h4 class="font-semibold text-slate-800 mb-2 text-sm sm:text-base mobile-subtitle">
-                                    सीमाएँ और संतुलन
-                                </h4>
-                                <ul class="space-y-2 mobile-text">
-                                    <li class="justified-text">
-                                        हर बीमारी या दुर्घटना को “मेरी गलत सोच” कहकर खुद को दोष देना सहायक नहीं है।
-                                    </li>
-                                    <li class="justified-text">
-                                        थेरेपी, मेडिकल केयर और सामाजिक समर्थन की ज़रूरत अक्सर रहती है; 
-                                        अफर्मेशन केवल सहायक हो सकते हैं, उनका स्थान नहीं ले सकते।
-                                    </li>
-                                    <li class="justified-text">
-                                        आप अपने विश्वासों पर काम करते हुए भी हिंसा को “ना” कह सकते हैं, 
-                                        न्याय माँग सकते हैं और मज़बूत सीमाएँ रख सकते हैं।
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-4 sm:p-6 rounded-xl border border-emerald-200">
-                                <h4 class="font-semibold text-emerald-800 mb-2 text-sm sm:text-base mobile-subtitle">
-                                    अंतिम विचार
-                                </h4>
-                                <p class="mobile-text justified-text">
-                                    अंततः <em>You Can Heal Your Life</em> खुद के साथ एक नए रिश्ते का निमंत्रण है — 
-                                    कम हमला, ज़्यादा जिज्ञासा और करुणा। 
-                                    आपको हर समय “परफेक्ट पॉज़िटिव” होने की ज़रूरत नहीं है।
-                                </p>
-                                <p class="mobile-text justified-text italic border-l-4 border-emerald-400 pl-4 sm:pl-6">
-                                    एक सरल रोज़ का सवाल हो सकता है: “अगर मैं किसी दोस्त से वैसे बात करूँ जैसे अभी खुद से कर रहा/रही हूँ, 
-                                    तो क्या वह बढ़ेगा या सिकुड़ जाएगा?”
-                                </p>
-                                <p class="mobile-text justified-text">
-                                    अगर जवाब “सिकुड़ जाएगा” है, 
-                                    तो लुईज़ हे कहेंगी: वही पल हीलिंग शुरू करने का है — 
-                                    एक थोड़ा–सा ज़्यादा दयालु विचार चुनकर।
-                                </p>
-                            </div>
-                        </div>
+                        <p class="mobile-text justified-text">
+                            These laws highlight that power is deeply emotional. 
+                            Whether you agree with Greene’s tone or not, understanding how fear, desire, pride, 
+                            and envy operate can help you navigate relationships more skillfully and protect your own mind.
+                        </p>
                     </div>
                 </section>
 
+                <!-- Part 4 – Timing & Strategic Laws -->
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            Laws of Timing & Strategy
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <p class="mobile-text justified-text">
+                            Here Greene focuses on planning, momentum, and the strategic use of actions. 
+                            The message: success is not just about what you do, but when and how you do it — 
+                            and how prepared you are beforehand.
+                        </p>
+                        
+                        <div class="bg-purple-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-purple-200">
+                            <ol class="list-decimal ml-5 space-y-3 mobile-text text-slate-700">
+                                <li class="justified-text">
+                                    <strong>Law 7 – Get Others to Do the Work for You, but Always Take the Credit.</strong><br>
+                                    Coordinate talent rather than doing everything yourself. 
+                                    By organizing others’ efforts into a coherent result, you appear as the architect of success — 
+                                    the person at the center of the web.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 8 – Make Other People Come to You – Use Bait if Necessary.</strong><br>
+                                    Constantly chasing others puts you in a weaker position. 
+                                    Greene suggests creating conditions or incentives that draw people into your sphere, 
+                                    where you control the ground and terms.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 9 – Win Through Your Actions, Never Through Argument.</strong><br>
+                                    Arguments rarely change deep beliefs and often create resentment. 
+                                    Demonstrating results, on the other hand, is hard to refute and silently persuades observers.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 14 – Pose as a Friend, Work as a Spy.</strong><br>
+                                    Information is strategic gold. 
+                                    Greene controversially suggests that appearing friendly while listening carefully 
+                                    can reveal what others really want, fear, or plan — knowledge you can then use.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 19 – Know Who You’re Dealing With – Do Not Offend the Wrong Person.</strong><br>
+                                    People differ in temperament. Some forgive; some never do. 
+                                    Misjudging someone’s capacity for revenge can be fatal. 
+                                    Study character before provoking anyone.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 20 – Do Not Commit to Anyone.</strong><br>
+                                    When you commit too early or too clearly, you lose bargaining power. 
+                                    By remaining slightly detached, others compete for your support and reveal more than they intend.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 21 – Play a Sucker to Catch a Sucker – Seem Dumber Than Your Mark.</strong><br>
+                                    If others think they are smarter than you, they relax and underestimate you. 
+                                    Pretending to be less capable can encourage them to expose their plans and weaknesses.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 22 – Use the Surrender Tactic: Transform Weakness into Power.</strong><br>
+                                    When you truly lack strength, fighting on can worsen your position. 
+                                    Strategic retreat — surrendering for now — can buy time, conserve resources, 
+                                    and let your opponent overextend.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 23 – Concentrate Your Forces.</strong><br>
+                                    Spreading your efforts too thin leads to mediocrity. 
+                                    Concentrating time, money, and attention on a few critical points creates breakthroughs.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 24 – Play the Perfect Courtier.</strong><br>
+                                    In any hierarchy, unrefined aggression usually fails. 
+                                    The “perfect courtier” masters indirectness, diplomacy, charm, and timing — 
+                                    knowing when to flatter, when to step back, and when to deliver value.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 28 – Enter Action with Boldness.</strong><br>
+                                    Hesitation invites attack. 
+                                    Once you decide on a move, execute it with confidence and full energy so that others 
+                                    have less time and courage to resist.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 29 – Plan All the Way to the End.</strong><br>
+                                    Many people think only about the next step. Greene insists on seeing the chain of consequences: 
+                                    best-case, worst-case, and possible reactions — to avoid being surprised later.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 31 – Control the Options: Get Others to Play with the Cards You Deal.</strong><br>
+                                    Rather than forcing people directly, structure situations so whatever they choose 
+                                    still benefits your goal. This is strategy at the level of systems, not just orders.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 35 – Master the Art of Timing.</strong><br>
+                                    The same action can succeed or fail depending on timing. 
+                                    Learn to sense when people are ready, when situations are ripe, 
+                                    and when waiting is more powerful than acting.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 36 – Disdain Things You Cannot Have: Ignoring Them Is the Best Revenge.</strong><br>
+                                    Obsessing over what you cannot get only amplifies its power over you. 
+                                    By appearing indifferent, you protect your pride and sometimes reduce the object’s status.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 45 – Preach the Need for Change, but Never Reform Too Much at Once.</strong><br>
+                                    People say they want change but easily panic when too much changes too fast. 
+                                    Introduce reforms gradually and symbolically, preserving enough of the old to calm fears.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 47 – Do Not Go Past the Mark You Aimed For; in Victory, Learn When to Stop.</strong><br>
+                                    After victory, greed and overconfidence tempt you to push further. 
+                                    Greene warns that many downfalls begin after success, when people don’t know when enough is enough.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 48 – Assume Formlessness.</strong><br>
+                                    If you are rigid in one identity, style, or strategy, opponents can study and counter you. 
+                                    Flexibility — the ability to change form, approach, and alliances — makes you harder to trap.
+                                </li>
+                            </ol>
+                        </div>
+
+                        <p class="mobile-text justified-text">
+                            These strategic laws encourage long-term thinking, patience, and control over when and how you move. 
+                            Even if you reject some of the tactics, the emphasis on planning and timing can sharpen your own decisions.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Part 5 – Dominance, Protection & Conclusion -->
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-red-100 text-red-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            Laws of Dominance, Self-Protection & Final Reflection
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="mobile-text justified-text">
+                            These laws touch the sharpest edges of power: total victory, destruction of threats, 
+                            and personal survival in hostile environments. They are the most controversial — and the most dangerous — 
+                            if misunderstood or abused.
+                        </p>
+
+                        <div class="bg-red-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-red-200">
+                            <ol class="list-decimal ml-5 space-y-3 mobile-text text-slate-700">
+                                <li class="justified-text">
+                                    <strong>Law 15 – Crush Your Enemy Totally.</strong><br>
+                                    Greene argues that leaving a rival half-defeated often invites future revenge. 
+                                    In contexts of serious, open conflict, he recommends removing their ability to strike back. 
+                                    Ethically, this law is disturbing — but historically, partial victories often did lead 
+                                    to long, destructive feuds.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 16 – Use Absence to Increase Respect and Honor.</strong><br>
+                                    Constant presence can make people take you for granted. 
+                                    Strategic absence — stepping back at the right moment — can reset value, 
+                                    make others miss you, and protect your energy from overuse.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 18 – Do Not Build Fortresses to Protect Yourself – Isolation Is Dangerous.</strong><br>
+                                    Total isolation cuts you off from information, allies, and early warning signals. 
+                                    Greene warns that you should build networks and remain socially present, 
+                                    even if you keep an inner circle small.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 25 – Re-Create Yourself.</strong><br>
+                                    Do not let other people define your role forever. 
+                                    Powerful individuals reinvent themselves as circumstances change, 
+                                    shedding old skins and identities to avoid being trapped by expectations.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 41 – Avoid Stepping into a Great Man’s Shoes.</strong><br>
+                                    Succeeding a legendary figure often leads to endless comparisons you cannot win. 
+                                    Greene advises creating your own path, style, or domain rather than living in someone else’s shadow.
+                                </li>
+                                <li class="justified-text">
+                                    <strong>Law 42 – Strike the Shepherd and the Sheep Will Scatter.</strong><br>
+                                    Groups are often held together by a central figure. 
+                                    Neutralizing or removing that person — through demotion, exposure, or isolation — 
+                                    can cause the group’s resistance to collapse. This law is blunt and ruthless, 
+                                    and must be handled with extreme caution.
+                                </li>
+                            </ol>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-amber-50 to-yellow-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-amber-200">
+                            <h3 class="text-lg sm:text-xl font-semibold text-amber-800 mb-3 mobile-subtitle">Ethical Risks & How to Use This Book Safely</h3>
+                            <p class="mobile-text justified-text">
+                                Used blindly, these laws can turn you into someone manipulative, paranoid, or cruel. 
+                                Used consciously, they can act as an <strong>early warning system</strong>, helping you:
+                            </p>
+                            <ul class="list-disc ml-5 space-y-1 mobile-text text-slate-700">
+                                <li class="justified-text">Recognize when others are playing power games with you.</li>
+                                <li class="justified-text">Set clearer boundaries and avoid exploitive relationships.</li>
+                                <li class="justified-text">Choose your battles and alliances with open eyes.</li>
+                            </ul>
+                            <p class="mobile-text justified-text mt-2">
+                                The book itself rarely talks about kindness or justice. 
+                                That part is your job. You bring your own values and decide:
+                            </p>
+                            <ul class="list-disc ml-5 space-y-1 mobile-text text-slate-700">
+                                <li class="justified-text">Which laws to apply in your life.</li>
+                                <li class="justified-text">Which tactics are unacceptable, even if they “work.”</li>
+                                <li class="justified-text">When walking away is better than winning.</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-emerald-200">
+                            <h3 class="text-lg sm:text-xl font-semibold text-emerald-800 mb-3 mobile-subtitle">Final Reflection: Clarity Without Naivety</h3>
+                            <p class="mobile-text justified-text">
+                                At its core, <em>The 48 Laws of Power</em> is a mirror held up to the darker side of human interaction. 
+                                You do not have to like everything you see in it. But refusing to look does not make the patterns disappear.
+                            </p>
+                            <p class="mobile-text justified-text">
+                                The most powerful stance is to combine <strong>awareness</strong> with <strong>choice</strong>:
+                            </p>
+                            <ul class="list-disc ml-5 space-y-1 mobile-text text-slate-700">
+                                <li class="justified-text">You understand the laws, so you are harder to deceive.</li>
+                                <li class="justified-text">You can protect yourself without becoming needlessly ruthless.</li>
+                                <li class="justified-text">You can guide teams, families, or communities with open eyes, seeing both light and shadow.</li>
+                            </ul>
+                            <p class="mobile-text justified-text mt-2">
+                                You do not have to play every game. But knowing the rules of power 
+                                gives you more freedom to decide which arenas to enter — and who you want to be inside them.
+                            </p>
+                        </div>
+                    </div>
+                </section>
             </div>
         </main>
     </div>
@@ -929,67 +856,54 @@
             const drawer = document.querySelector('.nav-drawer');
             const overlay = document.querySelector('.nav-overlay');
             const toggle = document.querySelector('.drawer-toggle');
+            
             drawer.classList.toggle('open');
             overlay.classList.toggle('active');
             toggle.classList.toggle('open');
         }
-
+        
         function closeDrawer() {
             const drawer = document.querySelector('.nav-drawer');
             const overlay = document.querySelector('.nav-overlay');
             const toggle = document.querySelector('.drawer-toggle');
+            
             drawer.classList.remove('open');
             overlay.classList.remove('active');
             toggle.classList.remove('open');
         }
-
-        function showSection(sectionId, evt) {
+        
+        function showSection(sectionId) {
             const sections = document.querySelectorAll('.content-section');
-            sections.forEach(section => section.classList.remove('active'));
-
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
             const navButtons = document.querySelectorAll('.nav-btn');
             navButtons.forEach(btn => {
                 btn.classList.remove('active-tab', 'text-white');
                 btn.classList.add('text-slate-300');
             });
-
+            
             const targetSection = document.getElementById(sectionId);
             if (targetSection) {
                 targetSection.classList.add('active', 'fade-in');
             }
-
-            if (evt && evt.currentTarget) {
-                evt.currentTarget.classList.add('active-tab', 'text-white');
-                evt.currentTarget.classList.remove('text-slate-300');
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
             }
-
+            
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-
-        function setLanguage(lang) {
-            const blocks = document.querySelectorAll('.lang-block');
-            blocks.forEach(block => {
-                block.style.display = (block.dataset.lang === lang) ? 'block' : 'none';
-            });
-
-            const toggles = document.querySelectorAll('.lang-toggle');
-            toggles.forEach(btn => btn.classList.remove('lang-toggle-active'));
-            if (lang === 'en') toggles[0].classList.add('lang-toggle-active');
-            if (lang === 'id') toggles[1].classList.add('lang-toggle-active');
-            if (lang === 'hi') toggles[2].classList.add('lang-toggle-active');
-        }
-
-        // Initial state
-        document.addEventListener('DOMContentLoaded', function () {
-            setLanguage('en'); // default English
-        });
-
+        
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeDrawer();
             }
         });
-
+        
         window.addEventListener('resize', function() {
             if (window.innerWidth > 1024) {
                 closeDrawer();
