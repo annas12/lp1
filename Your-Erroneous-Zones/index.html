@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Your Erroneous Zones — Wayne Dyer | Detailed Summary (English)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+  body { font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+  .fade-in { animation: fadeIn .45s ease-in; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px);} to { opacity:1; transform: translateY(0);} }
+  .content-section { display: none; }
+  .content-section.active { display: block; }
+  .justified { text-align: justify; }
+  .nav-drawer { position: fixed; left: -300px; top: 0; width: 300px; height: 100vh; background: linear-gradient(180deg,#0f172a,#111827); color: #e6eef8; transition: left .28s; z-index:1000; padding-bottom:64px; }
+  .nav-drawer.open { left: 0; }
+  .nav-overlay { position: fixed; inset:0; background: rgba(0,0,0,.45); opacity:0; visibility:hidden; transition: .28s; z-index:999; }
+  .nav-overlay.active { opacity:1; visibility:visible; }
+  .drawer-toggle { position: fixed; top:18px; left:18px; z-index:1001; background:linear-gradient(135deg,#2563eb,#1e40af); border-radius:10px; padding:10px; display:flex; align-items:center; justify-content:center; box-shadow: 0 6px 18px rgba(16,24,40,.12); }
+  .drawer-toggle.open { background:linear-gradient(135deg,#ef4444,#dc2626); }
+  .hamburger { width:20px; height:14px; position:relative; }
+  .hamburger span { position:absolute; left:0; right:0; height:2px; background:#fff; display:block; border-radius:2px; transition:.2s; }
+  .hamburger span:nth-child(1){ top:0 } .hamburger span:nth-child(2){ top:6px } .hamburger span:nth-child(3){ top:12px }
+  .drawer-toggle.open .hamburger span:nth-child(1){ transform:rotate(45deg); top:6px }
+  .drawer-toggle.open .hamburger span:nth-child(2){ opacity:0; transform:translateX(-12px) }
+  .drawer-toggle.open .hamburger span:nth-child(3){ transform:rotate(-45deg); top:6px }
+  .nav-item { padding:8px 10px; border-radius:10px; margin-bottom:8px; text-align:left; width:100%; color:#cbd5e1; }
+  .nav-item.active { background: rgba(255,255,255,0.06); color:#fff; }
+  .small-muted { color:#64748b; font-size:.92rem; }
+  @media (max-width:640px){ .drawer-toggle { top:12px; left:12px; padding:8px; } .nav-drawer{ width:260px } }
+</style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-sky-50 min-h-screen">
+
+<!-- drawer toggle -->
+<button aria-label="Open menu" class="drawer-toggle" onclick="toggleDrawer()">
+  <div class="hamburger" aria-hidden="true"><span></span><span></span><span></span></div>
+</button>
+<div class="nav-overlay" onclick="closeDrawer()"></div>
+
+<!-- nav drawer -->
+<aside class="nav-drawer" id="drawer" aria-label="Navigation">
+  <div class="p-6 border-b border-white/6">
+    <div class="flex items-center gap-3">
+      <div class="w-11 h-11 rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center text-white font-bold">YEZ</div>
+      <div>
+        <h4 class="text-white font-semibold">Your Erroneous Zones</h4>
+        <p class="small-muted">Wayne Dyer — Detailed English Summary</p>
+      </div>
+    </div>
+  </div>
+  <nav class="p-4">
+    <div class="text-xs text-slate-300 uppercase mb-3">Contents</div>
+    <button class="nav-item active" onclick="show('intro', event)">Introduction</button>
+    <button class="nav-item" onclick="show('part1', event)">Part 1 — Context & Core Concepts</button>
+    <button class="nav-item" onclick="show('part2', event)">Part 2 — Self-Esteem & Identity Zones</button>
+    <button class="nav-item" onclick="show('part3', event)">Part 3 — Emotions, Reactions & Dependency Zones</button>
+    <button class="nav-item" onclick="show('part4', event)">Part 4 — Behavior, Patterns & Roles</button>
+    <button class="nav-item" onclick="show('part5', event)">Part 5 — Freedom, Practice & Plan</button>
+    <button class="nav-item" onclick="show('conclusion', event)">Conclusion & Final Notes</button>
+  </nav>
+  <div class="absolute bottom-4 left-4 right-4 text-xs text-slate-300">© Wayne Dyer — Summarized for learning</div>
+</aside>
+
+<!-- header -->
+<header class="bg-white shadow-sm border-b border-slate-200">
+  <div class="max-w-4xl mx-auto px-4 py-6 flex items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl md:text-3xl font-bold text-slate-800">Your Erroneous Zones</h1>
+      <p class="small-muted">Wayne Dyer — Detailed summary & practical guide (English)</p>
+    </div>
+    <div class="text-sm text-slate-600">Structured: Introduction • 5 Parts • Conclusion</div>
+  </div>
+</header>
+
+<!-- main -->
+<main class="max-w-4xl mx-auto px-4 py-8">
+  <article class="bg-white rounded-xl shadow overflow-hidden">
+
+    <!-- INTRO -->
+    <section id="intro" class="content-section active p-6 fade-in">
+      <span class="inline-block px-3 py-1 bg-sky-100 text-sky-800 rounded-full text-xs mb-3">Introduction</span>
+      <h2 class="text-2xl font-bold mb-3">Welcome & Why This Book Matters</h2>
+      <p class="justified text-slate-700 leading-relaxed mb-4">
+        <em>Your Erroneous Zones</em> (1976) by Wayne Dyer is one of the earliest modern self-help classics focused on personal responsibility.
+        Dyer argues that much of human unhappiness arises from automatic, mistaken ways of thinking — "erroneous zones" — that make us dependent,
+        anxious, and reactive. The practical promise of the book is simple: identify these zones, accept responsibility for your internal life,
+        and practice small, deliberate choices to reclaim autonomy and reduce suffering.
+      </p>
+
+      <div class="bg-sky-50 p-4 rounded-lg border border-sky-100 mb-4">
+        <h4 class="font-semibold text-slate-800">What you'll find in this detailed summary</h4>
+        <ul class="list-disc ml-5 mt-2 text-slate-700">
+          <li>Comprehensive explanations of major erroneous zones organized by theme.</li>
+          <li>Concrete examples of how each zone appears in everyday life.</li>
+          <li>Why each zone harms personal freedom and relationships.</li>
+          <li>Practical, bite-sized steps to counter each zone and build new habits.</li>
+          <li>A 14-day starter plan to begin practicing these changes immediately.</li>
+        </ul>
+      </div>
+
+      <p class="justified text-slate-700">
+        This summary aims to preserve Dyer's practical spirit: it's not just theory — it is an applied manual for changing unhelpful internal scripts.
+        Read actively: underline or note which zones feel strongest for you, and use the practice suggestions to run short experiments in daily life.
+      </p>
+    </section>
+
+    <!-- PART 1 -->
+    <section id="part1" class="content-section p-6 fade-in">
+      <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs mb-3">Part 1</span>
+      <h3 class="text-xl font-semibold mb-3">Context, Tone & Core Concepts</h3>
+
+      <p class="justified text-slate-700 mb-3">
+        Wayne Dyer writes plainly and directly. His teachings emphasize <strong>self-responsibility, awareness, choice,</strong> and simple practice.
+        Key assumptions: people habitually transfer the power to feel and choose to external factors; freedom is recovered by reversing that habit.
+      </p>
+
+      <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 mb-4">
+        <h4 class="font-semibold">Core Concepts Explained</h4>
+        <ol class="list-decimal ml-5 mt-2 text-slate-700 space-y-2">
+          <li><strong>Erroneous Zone:</strong> A habitual, automatic thinking pattern that distorts reality and reduces personal agency.</li>
+          <li><strong>Externalization:</strong> Blaming, needing approval, or waiting to be saved — ways people hand over inner control.</li>
+          <li><strong>Choice language:</strong> Shifting from "She makes me feel..." to "I choose to feel..." is central to reclaiming power.</li>
+          <li><strong>Practice over passion:</strong> Small repeated acts (saying "no", setting a limit, choosing a response) change the brain's habit loops.</li>
+        </ol>
+      </div>
+
+      <p class="justified text-slate-700">
+        Dyer's approach is intentionally pragmatic: he offers short scripts and exercises you can try immediately. This summary keeps that orientation:
+        each zone below includes practical “first moves” so you have tools, not just insight.
+      </p>
+    </section>
+
+    <!-- PART 2 -->
+    <section id="part2" class="content-section p-6 fade-in">
+      <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs mb-3">Part 2</span>
+      <h3 class="text-xl font-semibold mb-3">Erroneous Zones — Self-Esteem & Identity</h3>
+      <p class="justified text-slate-700 mb-4">
+        These zones attack your sense of worth and identity. They make you seek external validation, hold onto guilt, and avoid being your true self.
+        Below each zone: definition, example, harm, and practical counter-step.
+      </p>
+
+      <!-- Zone 1: Approval-Seeking -->
+      <div class="mb-4 p-4 rounded-lg border border-slate-200 bg-white">
+        <h4 class="font-semibold">1. Approval-Seeking (Living to Please)</h4>
+        <p class="text-slate-700 justified">
+          <strong>Definition:</strong> Constantly seeking others' approval to feel acceptable or safe.
+        </p>
+        <p class="text-slate-700 justified"><strong>Example:</strong> Saying "yes" to extra work even when you're exhausted because you want the boss to like you.</p>
+        <p class="text-slate-700 justified"><strong>Why it's harmful:</strong> You outsource self-worth; decisions are reactive to others' expectations, leading to resentment, burnout, and loss of authenticity.</p>
+        <p class="text-slate-700 justified"><strong>Practical counter:</strong> Practice a boundary script: one week, say "no" to one request you would usually accept to please someone. Note your feelings without judging them.</p>
+      </div>
+
+      <!-- Zone 2: Guilt & Self-Punishment -->
+      <div class="mb-4 p-4 rounded-lg border border-slate-200 bg-white">
+        <h4 class="font-semibold">2. Guilt & Self-Punishment</h4>
+        <p class="text-slate-700 justified"><strong>Definition:</strong> Clinging to guilt as a defining identity — using penance or self-punishment to feel "worthy."</p>
+        <p class="text-slate-700 justified"><strong>Example:</strong> Insisting you must endure hardship to "make up" for past mistakes, avoiding joy until you have atoned.</p>
+        <p class="text-slate-700 justified"><strong>Why it's harmful:</strong> Guilt becomes a prison that blocks learning and growth. It prevents self-forgiveness and the ability to move forward constructively.</p>
+        <p class="text-slate-700 justified"><strong>Practical counter:</strong> Write a short forgiveness note to yourself (3–5 lines) and read it aloud daily for 7 days. Observe changes in behavior toward yourself.</p>
+      </div>
+
+      <!-- Zone 3: Self-Doubt & Identity Confusion -->
+      <div class="mb-4 p-4 rounded-lg border border-slate-200 bg-white">
+        <h4 class="font-semibold">3. Self-Doubt & Identity Confusion</h4>
+        <p class="text-slate-700 justified"><strong>Definition:</strong> Uncertainty about who you truly are; allowing roles (job, spouse, parent) to define you completely.</p>
+        <p class="text-slate-700 justified"><strong>Example:</strong> Feeling lost when a job ends because "I am my job." </p>
+        <p class="text-slate-700 justified"><strong>Why it's harmful:</strong> Over-identification makes change feel like annihilation. Loss of role becomes identity crisis rather than an opportunity.</p>
+        <p class="text-slate-700 justified"><strong>Practical counter:</strong> Do a "values inventory": list 5 values (e.g., curiosity, kindness). When a role shifts, anchor to values not titles.</p>
+      </div>
+
+      <!-- Zone 4: Fear of Being Yourself -->
+      <div class="mb-4 p-4 rounded-lg border border-slate-200 bg-white">
+        <h4 class="font-semibold">4. Fear of Being Yourself</h4>
+        <p class="text-slate-700 justified"><strong>Definition:</strong> Hiding preferences, opinions, or personality due to fear of rejection.</p>
+        <p class="text-slate-700 justified"><strong>Example:</strong> Agreeing with group consensus even when you disagree, to avoid conflict.</p>
+        <p class="text-slate-700 justified"><strong>Why it's harmful:</strong> Long-term suppression of self leads to low vitality, passive resentment, and shallow relationships.</p>
+        <p class="text-slate-700 justified"><strong>Practical counter:</strong> Share a small, authentic opinion in a low-stakes context (a friend, a group chat) and note reactions. You survive and learn calibrations.</p>
+      </div>
+
+      <!-- Zone 5: Comparison & Envy -->
+      <div class="mb-4 p-4 rounded-lg border border-slate-200 bg-white">
+        <h4 class="font-semibold">5. Comparison & Envy</h4>
+        <p class="text-slate-700 justified"><strong>Definition:</strong> Measuring your worth against others' highlight reels instead of personal growth.</p>
+        <p class="text-slate-700 justified"><strong>Example:</strong> Scrolling social media and feeling inadequate relative to curated lives.</p>
+        <p class="text-slate-700 justified"><strong>Why it's harmful:</strong> Comparison fuels endless dissatisfaction and distraction from one's actual path.</p>
+        <p class="text-slate-700 justified"><strong>Practical counter:</strong> Perform a "gratitude & progress" exercise: daily, list one thing you're grateful for and one small progress you made that day.</p>
+      </div>
+    </section>
+
+    <!-- PART 3 -->
+    <section id="part3" class="content-section p-6 fade-in">
+      <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-xs mb-3">Part 3</span>
+      <h3 class="text-xl font-semibold mb-3">Erroneous Zones — Emotions, Reactions & Dependency</h3>
+      <p class="justified text-slate-700 mb-4">
+        These zones involve emotional habits — anxiety, anger, excessive worrying — and patterns that make you dependent on others for emotional regulation.
+      </p>
+
+      <!-- Zone 6: Worry & Catastrophizing -->
+      <div class="mb-4 p-4 rounded-lg border border-slate-200 bg-white">
+        <h4 class="font-semibold">6. Worry & Catastrophizing</h4>
+        <p class="text-slate-700 justified"><strong>Definition:</strong> Habitual projection of worst-case scenarios into the future; chronic anxiety loop.</p>
+        <p class="text-slate-700 justified"><strong>Example:</strong> Before a meeting: imagining losing your job, relationships collapsing, etc.</p>
+        <p class="text-slate-700 justified"><strong>Why it's harmful:</strong> Worry drains energy, reduces present-moment problem solving, and often creates self-fulfilling stress responses.</p>
+        <p class="text-slate-700 justified"><strong>Practical counter:</strong> Time-box worry: give yourself 10 minutes to write down worries, then schedule a single 5-minute “solution” review. Use breathing to return to present.</p>
+      </div>
+
+      <!-- Zone 7: Anger as Habit -->
+      <div class="mb-4 p-4 rounded-lg border border-slate-200 bg-white">
+        <h4 class="font-semibold">7. Anger as Habit</h4>
+        <p class="text-slate-700 justified"><strong>Definition:</strong> Using anger as the default response to frustration or boundaries being crossed.</p>
+        <p class="text-slate-700 justified"><strong>Example:</strong> Immediately snapping at a partner for a small inconvenience because anger "feels right."</p>
+        <p class="text-slate-700 justified"><strong>Why it's harmful:</strong> Anger creates damaged relationships, escalates conflict, and masks vulnerability.</p>
+        <p class="text-slate-700 justified"><strong>Practical counter:</strong> Implement a "pause-and-label" technique: when you feel rising anger, pause, label the emotion ("I notice anger"), take three slow breaths, then choose an intentional response.</p>
+      </div>
+
+      <!-- Zone 8: Emotional Dependency (Neediness) -->
+      <div class="mb-4 p-4 rounded-lg border border-slate-200 bg-white">
+        <h4 class="font-semibold">8. Emotional Dependency (Neediness)</h4>
+        <p class="text-slate-700 justified"><strong>Definition:</strong> Relying on others to fix your mood or sense of worth; seeking constant reassurance.</p>
+        <p class="text-slate-700 justified"><strong>Example:</strong> Frequent texts to a partner asking "Do you still love me?" to feel secure.</p>
+        <p class="text-slate-700 justified"><strong>Why it's harmful:</strong> Dependency drains partners, creates clinginess, and prevents you from cultivating internal resources.</p>
+        <p class="text-slate-700 justified"><strong>Practical counter:</strong> Build a short self-soothing list (3 activities: walk, music, journaling). Before reaching out for reassurance, do one item from the list and note the result.</p>
+      </div>
+
+      <!-- Zone 9: Panic & Avoidance -->
+      <div class="mb-4 p-4 rounded-lg border border-slate-200 bg-white">
+        <h4 class="font-semibold">9. Panic & Avoidance</h4>
+        <p class="text-slate-700 justified"><strong>Definition:</strong> Responding to discomfort by immediate avoidance — escape rather than face.</p>
+        <p class="text-slate-700 justified"><strong>Example:</strong> Avoiding a difficult conversation and instead scrolling to calm down temporarily.</p>
+        <p class="text-slate-700 justified"><strong>Why it's harmful:</strong> Avoidance reinforces fear and causes problem accumulation; small issues become big problems.</p>
+        <p class="text-slate-700 justified"><strong>Practical counter:</strong> The 5-minute rule: commit to engage with the anxiety-provoking task for 5 minutes. Often starting reduces avoidance dramatically.</p>
+      </div>
+
+      <!-- Zone 10: Carrying Others' Emotions (Emotional Enmeshment) -->
+      <div class="mb-4 p-4 rounded-lg border border-slate-200 bg-white">
+        <h4 class="font-semibold">10. Carrying Others' Emotions (Enmeshment)</h4>
+        <p class="text-slate-700 justified"><strong>Definition:</strong> Taking on family or friends' emotional burdens as if they are your own.</p>
+        <p class="text-slate-700 justified"><strong>Example:</strong> Feeling responsible for a parent's sadness and changing your plans to "fix" them constantly.</p>
+        <p class="text-slate-700 justified"><strong>Why it's harmful:</strong> Drains energy, perpetuates dependency dynamics, and obscures where your responsibility ends.</p>
+        <p class="text-slate-700 justified"><strong>Practical counter:</strong> Practice compassionate boundaries: "I care about you and can support you, but I am not responsible for fixing your feelings." Offer presence but not solution-ownership.</p>
+      </div>
+    </section>
+
+    <!-- PART 4 -->
+    <section id="part4" class="content-section p-6 fade-in">
+      <span class="inline-block px-3 py-1 bg-violet-100 text-violet-800 rounded-full text-xs mb-3">Part 4</span>
+      <h3 class="text-xl font-semibold mb-3">Erroneous Zones — Behavior, Roles & Daily Patterns</h3>
+      <p class="justified text-slate-700 mb-4">
+        This group centers on behavioral patterns — procrastination, blaming, living by others' rules — that become automatic and limit agency.
+      </p>
+
+      <!-- Zone 11: Procrastination as Avoidance -->
+      <div class="mb-4 p-4 rounded-lg border border-slate-200 bg-white">
+        <h4 class="font-semibold">11. Procrastination as Avoidance</h4>
+        <p class="text-slate-700 justified"><strong>Definition:</strong> Delaying important tasks to avoid discomfort or possible failure.</p>
+        <p class="text-slate-700 justified"><strong>Example:</strong> Putting off a difficult email by reorganizing files for hours.</p>
+        <p class="text-slate-700 justified"><strong>Why it's harmful:</strong> Creates stress, reduces effectiveness, and trains the brain to prefer avoidance over action.</p>
+        <p class="text-slate-700 justified"><strong>Practical counter:</strong> Use the Pomodoro start technique: set a 25-minute focused block on one specific step and commit only to starting.</p>
+      </div>
+
+      <!-- Zone 12: Blaming Others -->
+      <div class="mb-4 p-4 rounded-lg border border-slate-200 bg-white">
+        <h4 class="font-semibold">12. Blaming Others</h4>
+        <p class="text-slate-700 justified"><strong>Definition:</strong> Attributing your feelings and outcomes exclusively to external people or circumstances.</p>
+        <p class="text-slate-700 justified"><strong>Example:</strong> "My partner ruins my happiness" instead of examining your own expectations or choices.</p>
+        <p class="text-slate-700 justified"><strong>Why it's harmful:</strong> Blame keeps you stuck because it redirects the energy you could use to change your responses.</p>
+        <p class="text-slate-700 justified"><strong>Practical counter:</strong> Convert blame to choice language: identify one thing you can do differently in the situation and commit to it for 3 days.</p>
+      </div>
+
+      <!-- Zone 13: Living by Others' Rules / External Standards -->
+      <div class="mb-4 p-4 rounded-lg border border-slate-200 bg-white">
+        <h4 class="font-semibold">13. Living by Others' Rules / External Standards</h4>
+        <p class="text-slate-700 justified"><strong>Definition:</strong> Measuring success and rightness by others' standards rather than your own values.</p>
+        <p class="text-slate-700 justified"><strong>Example:</strong> Pursuing a degree or career to satisfy family expectation rather than your own interest.</p>
+        <p class="text-slate-700 justified"><strong>Why it's harmful:</strong> Leads to chronic misalignment, regret, and erosion of intrinsic motivation.</p>
+        <p class="text-slate-700 justified"><strong>Practical counter:</strong> Create a "values filter": before major decisions, check whether the choice aligns with your top 3 personal values.</p>
+      </div>
+
+      <!-- Zone 14: Over-Compliance & People-Pleasing Habits -->
+      <div class="mb-4 p-4 rounded-lg border border-slate-200 bg-white">
+        <h4 class="font-semibold">14. Over-Compliance & People-Pleasing</h4>
+        <p class="text-slate-700 justified"><strong>Definition:</strong> Habitually prioritizing others' comfort at the expense of your own needs.</p>
+        <p class="text-slate-700 justified"><strong>Example:</strong> Accepting social invitations when you need rest, then resenting the evening.</p>
+        <p class="text-slate-700 justified"><strong>Why it's harmful:</strong> Creates depleted energy reserves and indirect resentment, harming relationships long-term.</p>
+        <p class="text-slate-700 justified"><strong>Practical counter:</strong> Practice a micro-boundary: for one day, decline the first extra request that would cost you personal restoration time.</p>
+      </div>
+
+      <!-- Zone 15: Perfectionism Masking Avoidance -->
+      <div class="mb-4 p-4 rounded-lg border border-slate-200 bg-white">
+        <h4 class="font-semibold">15. Perfectionism (as Avoidance)</h4>
+        <p class="text-slate-700 justified"><strong>Definition:</strong> Using "it must be perfect" to justify delay or to avoid exposure to criticism.</p>
+        <p class="text-slate-700 justified"><strong>Example:</strong> Never launching a project because it's "not ready" yet.</p>
+        <p class="text-slate-700 justified"><strong>Why it's harmful:</strong> Blocks progress, reduces learning opportunities, and raises stress.</p>
+        <p class="text-slate-700 justified"><strong>Practical counter:</strong> Use "good enough" rules: set a minimum viable version deadline; iterate rather than waiting for perfection.</p>
+      </div>
+    </section>
+
+    <!-- PART 5 -->
+    <section id="part5" class="content-section p-6 fade-in">
+      <span class="inline-block px-3 py-1 bg-rose-100 text-rose-800 rounded-full text-xs mb-3">Part 5</span>
+      <h3 class="text-xl font-semibold mb-3">Freedom, Growth & Implementation — How to Dismantle Zones</h3>
+      <p class="justified text-slate-700 mb-4">
+        Dyer's final sections focus on concrete practice: noticing, owning, choosing, and repeating. Freedom is cumulative and practical.
+        Below are frameworks and a 14-day plan that brings all earlier counters into a coherent practice.
+      </p>
+
+      <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 mb-4">
+        <h4 class="font-semibold">Four-step method (core practice)</h4>
+        <ol class="list-decimal ml-5 mt-2 text-slate-700 space-y-2">
+          <li><strong>Notice:</strong> Observe the zone and the automatic thought without self-judgment.</li>
+          <li><strong>Own:</strong> Use choice language: "I notice this thought; I choose differently."</li>
+          <li><strong>Choose:</strong> Pick a tiny, concrete alternative behavior (say "no", breathe, take 5 minutes of journaling).</li>
+          <li><strong>Repeat:</strong> Reinforce the new habit with short daily practice until it becomes the new default.</li>
+        </ol>
+      </div>
+
+      <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200 mb-4">
+        <h4 class="font-semibold">Practical techniques & scripts</h4>
+        <ul class="list-disc ml-5 mt-2 text-slate-700 space-y-2">
+          <li><strong>Choice script:</strong> Replace "They make me angry" with "I notice anger; I choose to breathe and respond."</li>
+          <li><strong>Boundary script:</strong> "I can't take that on right now; I can help next week" (soft but firm).</li>
+          <li><strong>Validation redirect:</strong> Before seeking external reassurance, ask: "What do I think about this?" and record an answer.</li>
+          <li><strong>Mini-experiment:</strong> 7-day responsibility test — pick one small domain (sleep routine, inbox) and own it fully for the week.</li>
+        </ul>
+      </div>
+
+      <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 mb-4">
+        <h4 class="font-semibold">14-Day Starter Plan (combined practice)</h4>
+        <p class="text-slate-700 mb-2">Follow this to begin shifting multiple zones at once. Each day is short — 10–20 minutes of focused practice.</p>
+        <ol class="list-decimal ml-5 mt-2 text-slate-700 space-y-2">
+          <li><strong>Day 1 — Awareness:</strong> Track one recurring zone (e.g., blame, worry) and write examples.</li>
+          <li><strong>Day 2 — Language Change:</strong> Reframe two phrases into "I choose..." statements.</li>
+          <li><strong>Day 3 — Boundary Practice:</strong> Say "no" once in a low-risk scenario.</li>
+          <li><strong>Day 4 — Micro-experiment:</strong> Own your morning routine fully for the day.</li>
+          <li><strong>Day 5 — Self-soothing toolkit:</strong> Create a 3-item list you use before seeking reassurance.</li>
+          <li><strong>Day 6 — Gratitude & Progress:</strong> List 3 small wins and 3 gratitudes.</li>
+          <li><strong>Day 7 — Reflect & Adjust:</strong> Journal what changed and what felt hard.</li>
+          <li><strong>Day 8 — Speak Up:</strong> Share an honest, small truth with someone you trust.</li>
+          <li><strong>Day 9 — Set a "good enough" deadline:</strong> Finish something you were delaying.</li>
+          <li><strong>Day 10 — Pause Practice:</strong> Use "pause-and-label" when anger or worry appears.</li>
+          <li><strong>Day 11 — Responsibility Challenge:</strong> Take full responsibility for one relationship interaction (your part only).</li>
+          <li><strong>Day 12 — Boundary Deepen:</strong> Enforce a needed boundary you previously avoided.</li>
+          <li><strong>Day 13 — Compassion Check:</strong> Practice a brief self-forgiveness meditation (5 minutes).</li>
+          <li><strong>Day 14 — Review & Plan:</strong> Document changes, set 3-week goals using the new language and habits.</li>
+        </ol>
+      </div>
+
+      <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+        <h4 class="font-semibold">Important caveats</h4>
+        <ul class="list-disc ml-5 mt-2 text-slate-700 space-y-2">
+          <li>Taking responsibility must not become victim-blaming — victims of abuse need safety and justice first.</li>
+          <li>Serious mental health issues may require therapeutic or medical support; these practices are complementary, not replacements.</li>
+          <li>Change is gradual; be patient and compassionate with setbacks.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CONCLUSION -->
+    <section id="conclusion" class="content-section p-6 fade-in">
+      <span class="inline-block px-3 py-1 bg-slate-100 text-slate-800 rounded-full text-xs mb-3">Conclusion</span>
+      <h3 class="text-xl font-semibold mb-3">Final Reflections & How to Continue</h3>
+      <p class="justified text-slate-700 mb-3">
+        Wayne Dyer's lasting value is his clarity and emphasis on practice. The work is not to feel guilty about zones you find in yourself,
+        but to apply choice language and small experiments every day. Each small "I choose" shifts neural patterns and increases your capacity
+        to live freely.
+      </p>
+
+      <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+        <h4 class="font-semibold">How to keep going</h4>
+        <ul class="list-disc ml-5 mt-2 text-slate-700">
+          <li>Pick 2 zones that feel most pressing and focus one week on each (rotate thereafter).</li>
+          <li>Keep a tiny practice journal (1–2 lines daily) to track choices made instead of reactions.</li>
+          <li>Share experiments with a trusted friend or coach — accountability dramatically increases follow-through.</li>
+        </ul>
+      </div>
+
+      <p class="justified text-slate-700 mt-4">
+        If you'd like, I can also:
+      </p>
+      <ul class="list-disc ml-5 mt-2 text-slate-700">
+        <li>Convert this summary into a printable PDF (one-click download).</li>
+        <li>Produce a condensed "cheat sheet" card with the 15 most common zones and one-line counters.</li>
+        <li>Generate scripts for common conversations (boundary scripts, "I choose" reframes, etc.).</li>
+      </ul>
+    </section>
+
+  </article>
+</main>
+
+<script>
+  // drawer
+  function toggleDrawer(){
+    document.getElementById('drawer').classList.toggle('open');
+    document.querySelector('.nav-overlay').classList.toggle('active');
+    document.querySelector('.drawer-toggle').classList.toggle('open');
+  }
+  function closeDrawer(){
+    document.getElementById('drawer').classList.remove('open');
+    document.querySelector('.nav-overlay').classList.remove('active');
+    document.querySelector('.drawer-toggle').classList.remove('open');
+  }
+
+  // show section
+  function show(id, evt){
+    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+    const el = document.getElementById(id);
+    if(el) el.classList.add('active','fade-in');
+    // nav highlight
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    if(evt && evt.currentTarget) evt.currentTarget.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    closeDrawer();
+  }
+
+  // initial
+  document.addEventListener('DOMContentLoaded', () => {
+    // ensure intro visible
+    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('intro').classList.add('active');
+  });
+
+  // keyboard
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape') closeDrawer();
+  });
+
+  // responsive drawer close
+  window.addEventListener('resize', () => { if(window.innerWidth > 1024) closeDrawer(); });
+</script>
+
+</body>
+</html>
