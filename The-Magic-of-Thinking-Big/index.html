@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Magic of Thinking Big — David J. Schwartz | Summary</title>
+    <title>The Magic of Thinking Big — David J. Schwartz | Bilingual Summary</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -16,6 +16,10 @@
         
         .justified-text { text-align: justify; }
         .mobile-text { font-size: 16px; line-height: 1.6; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } /* Default hidden */
+        .lang-en { display: block; }
         
         @media (max-width: 640px) {
             .mobile-text { font-size: 14px; line-height: 1.5; }
@@ -26,126 +30,72 @@
         }
         
         .nav-drawer {
-            position: fixed;
-            top: 0;
-            left: -320px;
-            width: 320px;
-            height: 100vh;
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
             background: linear-gradient(180deg, #1e293b 0%, #334155 100%);
-            transition: left 0.3s ease-in-out;
-            z-index: 1000;
+            transition: left 0.3s ease-in-out; z-index: 1000;
             box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
         }
-        
         .nav-drawer.open { left: 0; }
         
         .nav-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease-in-out;
-            z-index: 999;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
         }
-        
-        .nav-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
         
         .drawer-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1001;
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
             background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            border: none;
-            border-radius: 12px;
-            padding: 12px;
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            display: flex; align-items: center; gap: 6px;
         }
-        
-        .drawer-toggle:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-        }
-        
-        .drawer-toggle.open {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-        }
-        
-        .hamburger {
-            width: 24px;
-            height: 18px;
-            position: relative;
-        }
-        
-        .hamburger span {
-            display: block;
-            position: absolute;
-            height: 3px;
-            width: 100%;
-            background: white;
-            border-radius: 2px;
-            opacity: 1;
-            left: 0;
-            transform: rotate(0deg);
-            transition: .25s ease-in-out;
-        }
-        
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #3b82f6; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
         .hamburger span:nth-child(1) { top: 0px; }
         .hamburger span:nth-child(2) { top: 7px; }
         .hamburger span:nth-child(3) { top: 14px; }
-        
-        .drawer-toggle.open .hamburger span:nth-child(1) {
-            top: 7px;
-            transform: rotate(135deg);
-        }
-        
-        .drawer-toggle.open .hamburger span:nth-child(2) {
-            opacity: 0;
-            left: -60px;
-        }
-        
-        .drawer-toggle.open .hamburger span:nth-child(3) {
-            top: 7px;
-            transform: rotate(-135deg);
-        }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
         
         .nav-item { position: relative; overflow: hidden; }
-        .nav-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
         .nav-item:hover::before { left: 100%; }
         
-        @media (max-width: 768px) {
-            .nav-drawer { width: 280px; left: -280px; }
-            .drawer-toggle { top: 15px; left: 15px; padding: 10px; }
-        }
-        
-        @media (max-width: 480px) {
-            .nav-drawer { width: 260px; left: -260px; }
-            .drawer-toggle { top: 12px; left: 12px; padding: 8px; }
-            .hamburger { width: 20px; height: 15px; }
-        }
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
     </style>
 </head>
 <body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
-    <!-- Navigation Drawer Toggle -->
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
     <button class="drawer-toggle" onclick="toggleDrawer()">
         <div class="hamburger">
             <span></span>
@@ -154,10 +104,8 @@
         </div>
     </button>
     
-    <!-- Navigation Overlay -->
     <div class="nav-overlay" onclick="closeDrawer()"></div>
     
-    <!-- Navigation Drawer -->
     <nav class="nav-drawer">
         <div class="p-6 border-b border-slate-600">
             <div class="flex items-center space-x-3">
@@ -166,18 +114,25 @@
                 </div>
                 <div>
                     <h2 class="text-white font-semibold text-lg">The Magic of Thinking Big</h2>
-                    <p class="text-slate-300 text-sm">Book Summary</p>
+                    <p class="text-slate-300 text-sm">
+                        <span class="lang-en">Book Summary</span>
+                        <span class="lang-id">Ringkasan Buku</span>
+                    </p>
                 </div>
             </div>
         </div>
         
         <div class="p-4">
-            <h3 class="text-slate-300 text-sm font-medium uppercase tracking-wider mb-4 px-2">Table of Contents</h3>
+            <h3 class="text-slate-300 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">Table of Contents</span>
+                <span class="lang-id">Daftar Isi</span>
+            </h3>
             <ul class="space-y-2">
                 <li class="nav-item">
                     <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 active-tab text-white flex items-center space-x-3">
                         <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">📖</span>
-                        <span>Introduction</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
                     </button>
                 </li>
                 <li class="nav-item">
@@ -185,7 +140,10 @@
                         <span class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
                         <div class="text-left">
                             <div class="font-medium">Part 1</div>
-                            <div class="text-xs text-slate-400">Author, Context & Big Idea</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Author, Context & Big Idea</span>
+                                <span class="lang-id">Penulis, Konteks & Ide Besar</span>
+                            </div>
                         </div>
                     </button>
                 </li>
@@ -194,7 +152,10 @@
                         <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
                         <div class="text-left">
                             <div class="font-medium">Part 2</div>
-                            <div class="text-xs text-slate-400">Think Big vs. Think Small</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Think Big vs. Think Small</span>
+                                <span class="lang-id">Berpikir Besar vs. Berpikir Kecil</span>
+                            </div>
                         </div>
                     </button>
                 </li>
@@ -203,7 +164,10 @@
                         <span class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
                         <div class="text-left">
                             <div class="font-medium">Part 3</div>
-                            <div class="text-xs text-slate-400">Confidence, Fear & Action</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Confidence, Fear & Action</span>
+                                <span class="lang-id">Keyakinan, Ketakutan & Tindakan</span>
+                            </div>
                         </div>
                     </button>
                 </li>
@@ -212,7 +176,10 @@
                         <span class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
                         <div class="text-left">
                             <div class="font-medium">Part 4</div>
-                            <div class="text-xs text-slate-400">People, Environment & Habits</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">People, Environment & Habits</span>
+                                <span class="lang-id">Orang, Lingkungan & Kebiasaan</span>
+                            </div>
                         </div>
                     </button>
                 </li>
@@ -221,7 +188,10 @@
                         <span class="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
                         <div class="text-left">
                             <div class="font-medium">Part 5</div>
-                            <div class="text-xs text-slate-400">Implementation & Legacy</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Implementation & Legacy</span>
+                                <span class="lang-id">Implementasi & Warisan</span>
+                            </div>
                         </div>
                     </button>
                 </li>
@@ -230,13 +200,12 @@
         
         <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-600">
             <div class="text-center">
-                <p class="text-slate-400 text-xs">© 2024 The Magic of Thinking Big Summary</p>
-                <p class="text-slate-500 text-xs mt-1">Minimalist Design</p>
+                <p class="text-slate-400 text-xs">© 2024 The Magic of Thinking Big</p>
+                <p class="text-slate-500 text-xs mt-1">David J. Schwartz</p>
             </div>
         </div>
     </nav>
 
-    <!-- Header -->
     <header class="bg-white shadow-sm border-b border-slate-200">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
             <div class="text-center">
@@ -244,7 +213,8 @@
                     The Magic of Thinking Big
                 </h1>
                 <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
-                    A practical guide to building a bigger mindset for success in work and life
+                    <span class="lang-en">A practical guide to building a bigger mindset for success in work and life</span>
+                    <span class="lang-id">Panduan praktis membangun pola pikir besar untuk sukses dalam pekerjaan dan kehidupan</span>
                 </p>
                 <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-600 mx-auto mt-3 sm:mt-4 rounded-full"></div>
             </div>
@@ -255,58 +225,69 @@
         <main>
             <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
                     
-                <!-- Introduction -->
                 <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Introduction</span>
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">Introduction</span>
+                            <span class="lang-id">Pendahuluan</span>
+                        </span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            Welcome to “The Magic of Thinking Big”
+                            <span class="lang-en">Welcome to “The Magic of Thinking Big”</span>
+                            <span class="lang-id">Selamat Datang di “The Magic of Thinking Big”</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
-                        <p class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-blue-500 pl-4 sm:pl-6 italic mobile-text justified-text">
-                            “Believe it can be done. When you believe something can be done, really believe, your mind will find the ways to do it.”
-                        </p>
+                        <div class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-blue-500 pl-4 sm:pl-6 italic mobile-text justified-text">
+                            <span class="lang-en">“Believe it can be done. When you believe something can be done, really believe, your mind will find the ways to do it.”</span>
+                            <span class="lang-id">“Percayalah itu bisa dilakukan. Ketika Anda percaya sesuatu dapat dilakukan, benar-benar percaya, pikiran Anda akan mencari cara untuk melakukannya.”</span>
+                        </div>
                         
-                        <p class="mobile-text justified-text">
-                            <em>The Magic of Thinking Big</em> by David J. Schwartz is a classic personal development book 
-                            that argues that the size of your success is limited more by the size of your thinking than by 
-                            your intelligence, background, or current circumstances. It is a manual for building “big” thinking 
-                            in everyday situations – career, relationships, goals, and daily habits.
-                        </p>
+                        <div class="mobile-text justified-text">
+                            <span class="lang-en">
+                                <em>The Magic of Thinking Big</em> by David J. Schwartz is a classic personal development book that argues that the size of your success is limited more by the size of your thinking than by your intelligence, background, or current circumstances. It is a manual for building “big” thinking in everyday situations – career, relationships, goals, and daily habits.
+                            </span>
+                            <span class="lang-id">
+                                <em>The Magic of Thinking Big</em> (Keajaiban Berpikir Besar) karya David J. Schwartz adalah buku pengembangan diri klasik yang berpendapat bahwa besarnya kesuksesan Anda lebih dibatasi oleh besarnya cara berpikir Anda daripada oleh kecerdasan, latar belakang, atau keadaan Anda saat ini. Ini adalah panduan untuk membangun pemikiran “besar” dalam situasi sehari-hari – karier, hubungan, tujuan, dan kebiasaan harian.
+                            </span>
+                        </div>
                         
                         <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-100">
-                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">In this summary you will learn:</h4>
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">
+                                <span class="lang-en">In this summary you will learn:</span>
+                                <span class="lang-id">Dalam ringkasan ini Anda akan mempelajari:</span>
+                            </h4>
                             <ul class="space-y-2 text-slate-700 mobile-text">
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">Who David J. Schwartz was and the central promise of the book.</span>
+                                    <span class="justified-text lang-en">Who David J. Schwartz was and the central promise of the book.</span>
+                                    <span class="justified-text lang-id">Siapa David J. Schwartz dan janji utama buku ini.</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">The difference between “big” thinking and “small” thinking in daily life.</span>
+                                    <span class="justified-text lang-en">The difference between “big” thinking and “small” thinking in daily life.</span>
+                                    <span class="justified-text lang-id">Perbedaan antara berpikir “besar” dan berpikir “kecil” dalam kehidupan sehari-hari.</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">How confidence, action, and attitudes shape results.</span>
+                                    <span class="justified-text lang-en">How confidence, action, and attitudes shape results.</span>
+                                    <span class="justified-text lang-id">Bagaimana keyakinan, tindakan, dan sikap membentuk hasil.</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">Practical steps to apply “big thinking” at work and in your personal goals.</span>
+                                    <span class="justified-text lang-en">Practical steps to apply “big thinking” at work and in your personal goals.</span>
+                                    <span class="justified-text lang-id">Langkah praktis menerapkan “berpikir besar” di tempat kerja dan tujuan pribadi.</span>
                                 </li>
                             </ul>
                         </div>
                         
-                        <p class="mobile-text justified-text">
-                            Use the navigation menu on the left to move between sections. 
-                            Each part is designed to give you both a conceptual overview and specific, 
-                            actionable ideas drawn from Schwartz’s original work.
-                        </p>
+                        <div class="mobile-text justified-text">
+                            <span class="lang-en">Use the navigation menu on the left to move between sections. Each part is designed to give you both a conceptual overview and specific, actionable ideas drawn from Schwartz’s original work.</span>
+                            <span class="lang-id">Gunakan menu navigasi di sebelah kiri untuk berpindah antar bagian. Setiap bagian dirancang untuk memberi Anda gambaran konseptual serta ide-ide spesifik dan dapat ditindaklanjuti dari karya asli Schwartz.</span>
+                        </div>
                     </div>
                 </section>
 
-                <!-- Part 1 – Author, Context & Big Idea -->
                 <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
@@ -314,494 +295,636 @@
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">
-                            Author, Background & Core Promise
+                            <span class="lang-en">Author, Background & Core Promise</span>
+                            <span class="lang-id">Penulis, Latar Belakang & Janji Utama</span>
                         </h3>
-                        <p class="mobile-text justified-text">
+                        <div class="mobile-text justified-text">
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
 
-<p>
-David J. Schwartz (1927–1987) was an American motivational writer, professor, and consultant. 
-He taught at Georgia State University and later founded his own consulting firm, working with 
-business leaders and sales teams on performance and goal setting. His observations from years 
-of teaching and consulting form the basis of <em>The Magic of Thinking Big</em>, first published in 1959.
-</p>
+                                <p class="lang-en">
+                                    David J. Schwartz (1927–1987) was an American motivational writer, professor, and consultant. He taught at Georgia State University and later founded his own consulting firm, working with business leaders and sales teams on performance and goal setting. His observations from years of teaching and consulting form the basis of <em>The Magic of Thinking Big</em>, first published in 1959.
+                                </p>
+                                <p class="lang-id">
+                                    David J. Schwartz (1927–1987) adalah seorang penulis motivasi, profesor, dan konsultan Amerika. Ia mengajar di Georgia State University dan kemudian mendirikan firma konsultasinya sendiri, bekerja dengan para pemimpin bisnis dan tim penjualan mengenai kinerja dan penetapan tujuan. Pengamatannya selama bertahun-tahun mengajar dan berkonsultasi menjadi dasar dari <em>The Magic of Thinking Big</em>, yang pertama kali diterbitkan pada tahun 1959.
+                                </p>
+                                <br>
 
-<p>
-Schwartz noticed that success was not reserved for the most intelligent or technically skilled 
-people. Again and again, he saw that those who achieved more tended to think bigger about their 
-future, their abilities, and their possibilities. They set higher goals, took more initiative, 
-and refused to be limited by excuses.
-</p>
+                                <p class="lang-en">
+                                    Schwartz noticed that success was not reserved for the most intelligent or technically skilled people. Again and again, he saw that those who achieved more tended to think bigger about their future, their abilities, and their possibilities. They set higher goals, took more initiative, and refused to be limited by excuses.
+                                </p>
+                                <p class="lang-id">
+                                    Schwartz memperhatikan bahwa kesuksesan tidak hanya diperuntukkan bagi orang yang paling cerdas atau terampil secara teknis. Berulang kali, ia melihat bahwa mereka yang mencapai lebih banyak cenderung berpikir lebih besar tentang masa depan, kemampuan, dan kemungkinan mereka. Mereka menetapkan tujuan yang lebih tinggi, mengambil inisiatif lebih banyak, dan menolak dibatasi oleh alasan.
+                                </p>
+                                <br>
 
-<p>
-The central promise of the book is simple but powerful:
-<strong>you do not need to be a genius to achieve great things; you need to think bigger, 
-believe more, and act with more confidence and persistence.</strong>
-</p>
+                                <p class="lang-en">
+                                    The central promise of the book is simple but powerful: <strong>you do not need to be a genius to achieve great things; you need to think bigger, believe more, and act with more confidence and persistence.</strong>
+                                </p>
+                                <p class="lang-id">
+                                    Janji utama buku ini sederhana namun kuat: <strong>Anda tidak perlu menjadi jenius untuk mencapai hal-hal besar; Anda perlu berpikir lebih besar, percaya lebih kuat, dan bertindak dengan lebih percaya diri serta gigih.</strong>
+                                </p>
+                                <br>
 
-<p>
-Instead of focusing on theory, Schwartz offers practical “how-to” advice in areas such as:
-</p>
+                                <p class="lang-en">Instead of focusing on theory, Schwartz offers practical “how-to” advice in areas such as:</p>
+                                <p class="lang-id">Daripada berfokus pada teori, Schwartz menawarkan saran praktis “cara melakukan” dalam bidang-bidang seperti:</p>
 
-<ul>
-  <li>Building belief in yourself and your future,</li>
-  <li>Destroying “excuse thinking”,</li>
-  <li>Thinking positively about people and situations,</li>
-  <li>Turning defeat into learning,</li>
-  <li>Setting goals and creating action plans,</li>
-  <li>Developing leadership and initiative.</li>
-</ul>
+                                <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                    <li>Building belief in yourself and your future,</li>
+                                    <li>Destroying “excuse thinking”,</li>
+                                    <li>Thinking positively about people and situations,</li>
+                                    <li>Turning defeat into learning,</li>
+                                    <li>Setting goals and creating action plans,</li>
+                                    <li>Developing leadership and initiative.</li>
+                                </ul>
+                                <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                    <li>Membangun keyakinan pada diri sendiri dan masa depan Anda,</li>
+                                    <li>Menghancurkan “pemikiran penuh dalih”,</li>
+                                    <li>Berpikir positif tentang orang dan situasi,</li>
+                                    <li>Mengubah kekalahan menjadi pembelajaran,</li>
+                                    <li>Menetapkan tujuan dan membuat rencana tindakan,</li>
+                                    <li>Mengembangkan kepemimpinan dan inisiatif.</li>
+                                </ul>
+                                <br>
 
-<p>
-The tone of the book is direct and motivational. Schwartz uses examples from business, sales, 
-management, family life, and ordinary daily situations. He wants the reader to see that “thinking big” 
-is not just for famous entrepreneurs or celebrities, but for anyone willing to expand their mental 
-picture of what is possible.
-</p>
+                                <p class="lang-en">
+                                    The tone of the book is direct and motivational. Schwartz uses examples from business, sales, management, family life, and ordinary daily situations. He wants the reader to see that “thinking big” is not just for famous entrepreneurs or celebrities, but for anyone willing to expand their mental picture of what is possible.
+                                </p>
+                                <p class="lang-id">
+                                    Nada buku ini langsung dan memotivasi. Schwartz menggunakan contoh dari bisnis, penjualan, manajemen, kehidupan keluarga, dan situasi sehari-hari. Ia ingin pembaca melihat bahwa “berpikir besar” bukan hanya untuk pengusaha terkenal atau selebriti, tetapi untuk siapa saja yang bersedia memperluas gambaran mental mereka tentang apa yang mungkin.
+                                </p>
 
-<p>
-In this summary, we will group his key ideas into four practical themes: how you think about yourself, 
-how you handle fear and action, how you shape your environment and relationships, and how you turn 
-thinking big into consistent habits.
-</p>
-
-</div>
-                        </p>
+                            </div>
+                        </div>
                         
                         <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl">
-                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Key Facts:</h4>
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">
+                                <span class="lang-en">Key Facts:</span>
+                                <span class="lang-id">Fakta Kunci:</span>
+                            </h4>
                             <ul class="space-y-2 mobile-text">
-                                <li class="justified-text"><strong>Publication year:</strong><br>1959 – but the principles still feel modern and practical.</li> 
-                                <li class="justified-text"><strong>Genre:</strong><br>Personal development / motivation.</li>
-                                <li class="justified-text"><strong>Core theme:</strong><br>Your results are a reflection of the size of your thinking.</li>
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>Publication year:</strong> 1959 – but the principles still feel modern and practical.</span>
+                                    <span class="lang-id"><strong>Tahun terbit:</strong> 1959 – namun prinsip-prinsipnya masih terasa modern dan praktis.</span>
+                                </li> 
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>Genre:</strong> Personal development / motivation.</span>
+                                    <span class="lang-id"><strong>Genre:</strong> Pengembangan diri / motivasi.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>Core theme:</strong> Your results are a reflection of the size of your thinking.</span>
+                                    <span class="lang-id"><strong>Tema inti:</strong> Hasil Anda adalah cerminan dari besarnya pemikiran Anda.</span>
+                                </li>
                             </ul>
                         </div>
                         
-                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">The Idea of “Thinking Big”</h3>
+                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">
+                            <span class="lang-en">The Idea of “Thinking Big”</span>
+                            <span class="lang-id">Gagasan tentang “Berpikir Besar”</span>
+                        </h3>
                         <p class="mobile-text justified-text">
-                            Thinking big is not about fantasy or unrealistic dreaming. 
-                            For Schwartz, it means deliberately choosing expansive, optimistic, 
-                            possibility-focused thoughts instead of small, fearful, or excuse-based ones. 
-                            It is a discipline rather than a mood.
+                            <span class="lang-en">Thinking big is not about fantasy or unrealistic dreaming. For Schwartz, it means deliberately choosing expansive, optimistic, possibility-focused thoughts instead of small, fearful, or excuse-based ones. It is a discipline rather than a mood.</span>
+                            <span class="lang-id">Berpikir besar bukan tentang fantasi atau mimpi yang tidak realistis. Bagi Schwartz, ini berarti secara sengaja memilih pikiran yang luas, optimis, dan berfokus pada kemungkinan daripada pikiran yang kecil, penuh ketakutan, atau didasarkan pada alasan. Ini adalah disiplin, bukan sekadar suasana hati.</span>
                         </p>
                         
                         <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-amber-200">
-                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Three Pillars of the Book:</h4>
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">
+                                <span class="lang-en">Three Pillars of the Book:</span>
+                                <span class="lang-id">Tiga Pilar Buku Ini:</span>
+                            </h4>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                                 <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                                    <h5 class="font-medium text-blue-700 text-sm sm:text-base">Belief</h5>
-                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
-                                        Believing you can do more is the starting point of all growth.
-                                    </p>
+                                    <h5 class="font-medium text-blue-700 text-sm sm:text-base">
+                                        <span class="lang-en">Belief</span>
+                                        <span class="lang-id">Keyakinan</span>
+                                    </h5>
+                                    <div class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        <span class="lang-en">Believing you can do more is the starting point of all growth.</span>
+                                        <span class="lang-id">Meyakini bahwa Anda bisa melakukan lebih adalah titik awal dari semua pertumbuhan.</span>
+                                    </div>
                                 </div>
                                 <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                                    <h5 class="font-medium text-green-700 text-sm sm:text-base">Attitude</h5>
-                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
-                                        Your thoughts about people, problems, and yourself shape your behavior.
-                                    </p>
+                                    <h5 class="font-medium text-green-700 text-sm sm:text-base">
+                                        <span class="lang-en">Attitude</span>
+                                        <span class="lang-id">Sikap</span>
+                                    </h5>
+                                    <div class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        <span class="lang-en">Your thoughts about people, problems, and yourself shape your behavior.</span>
+                                        <span class="lang-id">Pikiran Anda tentang orang, masalah, dan diri sendiri membentuk perilaku Anda.</span>
+                                    </div>
                                 </div>
                                 <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                                    <h5 class="font-medium text-purple-700 text-sm sm:text-base">Action</h5>
-                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
-                                        Big thinking must be translated into consistent, focused action.
-                                    </p>
+                                    <h5 class="font-medium text-purple-700 text-sm sm:text-base">
+                                        <span class="lang-en">Action</span>
+                                        <span class="lang-id">Tindakan</span>
+                                    </h5>
+                                    <div class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        <span class="lang-en">Big thinking must be translated into consistent, focused action.</span>
+                                        <span class="lang-id">Berpikir besar harus diterjemahkan menjadi tindakan yang konsisten dan terfokus.</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Part 2 – Think Big vs Think Small -->
                 <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            Think Big vs. Think Small
+                            <span class="lang-en">Think Big vs. Think Small</span>
+                            <span class="lang-id">Berpikir Besar vs. Berpikir Kecil</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <div class="bg-blue-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
                             <h3 class="text-lg sm:text-xl font-semibold text-blue-800 mb-3 mobile-subtitle">
-                                Your Mind as a “Thought Factory”
+                                <span class="lang-en">Your Mind as a “Thought Factory”</span>
+                                <span class="lang-id">Pikiran Anda sebagai “Pabrik Pikiran”</span>
                             </h3>
                             <p class="text-blue-700 italic mobile-text justified-text">
-                                Schwartz suggests imagining your mind as a factory that produces thoughts. 
-                                One department manufactures reasons you can succeed; the other manufactures excuses.
+                                <span class="lang-en">Schwartz suggests imagining your mind as a factory that produces thoughts. One department manufactures reasons you can succeed; the other manufactures excuses.</span>
+                                <span class="lang-id">Schwartz menyarankan untuk membayangkan pikiran Anda sebagai pabrik yang memproduksi pikiran. Satu departemen memproduksi alasan mengapa Anda bisa sukses; departemen lain memproduksi alasan/dalih.</span>
                             </p>
                         </div>
 
                         <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-<p>
-One of the early chapters describes the “excuse disease” – the habit of explaining away lack of progress 
-with reasons like “I’m not smart enough,” “I don’t have the right education,” or “I’m too old / too young.” 
-Schwartz calls these “excusitis” and argues they are more dangerous than real limitations.
-</p>
+                            <p class="lang-en">
+                                One of the early chapters describes the “excuse disease” – the habit of explaining away lack of progress with reasons like “I’m not smart enough,” “I don’t have the right education,” or “I’m too old / too young.” Schwartz calls these “excusitis” and argues they are more dangerous than real limitations.
+                            </p>
+                            <p class="lang-id">
+                                Salah satu bab awal menggambarkan “penyakit alasan” – kebiasaan menjelaskan kurangnya kemajuan dengan alasan seperti “Saya tidak cukup pintar,” “Saya tidak punya pendidikan yang tepat,” atau “Saya terlalu tua/muda.” Schwartz menyebutnya “dalih-itis” (excusitis) dan berpendapat bahwa ini lebih berbahaya daripada keterbatasan nyata.
+                            </p>
+                            <br>
 
-<h3>Destroying “Excusitis”</h3>
+                            <h3 class="lang-en">Destroying “Excusitis”</h3>
+                            <h3 class="lang-id">Menghancurkan “Penyakit Dalih”</h3>
 
-<p>
-Schwartz focuses on four common types of excuses:
-</p>
+                            <p class="lang-en">Schwartz focuses on four common types of excuses:</p>
+                            <p class="lang-id">Schwartz berfokus pada empat jenis dalih umum:</p>
 
-<ul>
-  <li><strong>Health excusitis:</strong> “I would, but my health…”</li>
-  <li><strong>Intelligence excusitis:</strong> “I’m not clever enough…”</li>
-  <li><strong>Age excusitis:</strong> “I’m too old / too young…”</li>
-  <li><strong>Luck excusitis:</strong> “Others are just lucky…”</li>
-</ul>
+                            <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                <li><strong>Health excusitis:</strong> “I would, but my health…”</li>
+                                <li><strong>Intelligence excusitis:</strong> “I’m not clever enough…”</li>
+                                <li><strong>Age excusitis:</strong> “I’m too old / too young…”</li>
+                                <li><strong>Luck excusitis:</strong> “Others are just lucky…”</li>
+                            </ul>
+                            <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                <li><strong>Dalih kesehatan:</strong> “Saya mau, tapi kesehatan saya…”</li>
+                                <li><strong>Dalih kecerdasan:</strong> “Saya tidak cukup pintar…”</li>
+                                <li><strong>Dalih usia:</strong> “Saya terlalu tua / terlalu muda…”</li>
+                                <li><strong>Dalih nasib:</strong> “Orang lain cuma beruntung…”</li>
+                            </ul>
+                            <br>
 
-<p>
-His solution is not to deny real challenges but to refuse to let them become total explanations. 
-He suggests:
-</p>
+                            <p class="lang-en">His solution is not to deny real challenges but to refuse to let them become total explanations. He suggests:</p>
+                            <p class="lang-id">Solusinya bukan menyangkal tantangan nyata, tetapi menolak membiarkannya menjadi penjelasan mutlak. Ia menyarankan:</p>
 
-<ul>
-  <li>Focusing on what you <em>can</em> do with your current health and energy,</li>
-  <li>Recognizing that most successful people are not geniuses but consistent workers,</li>
-  <li>Seeing age as an asset (experience or energy), not a barrier,</li>
-  <li>Replacing “luck” with “preparation + opportunity + persistence.”</li>
-</ul>
+                            <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                <li>Focusing on what you <em>can</em> do with your current health and energy,</li>
+                                <li>Recognizing that most successful people are not geniuses but consistent workers,</li>
+                                <li>Seeing age as an asset (experience or energy), not a barrier,</li>
+                                <li>Replacing “luck” with “preparation + opportunity + persistence.”</li>
+                            </ul>
+                            <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                <li>Fokus pada apa yang <em>bisa</em> Anda lakukan dengan kesehatan dan energi saat ini,</li>
+                                <li>Menyadari bahwa orang sukses bukanlah jenius, melainkan pekerja yang konsisten,</li>
+                                <li>Melihat usia sebagai aset (pengalaman atau energi), bukan hambatan,</li>
+                                <li>Mengganti “keberuntungan” dengan “persiapan + kesempatan + kegigihan.”</li>
+                            </ul>
+                            <br>
 
-<h3>The Power of Belief</h3>
+                            <h3 class="lang-en">The Power of Belief</h3>
+                            <h3 class="lang-id">Kekuatan Keyakinan</h3>
 
-<p>
-A central principle of the book is: <strong>“Belief works this way: when you believe you can do something, your mind finds the ways to do it.”</strong> 
-Schwartz argues that belief is not magic in a mystical sense, but a psychological trigger:
-</p>
+                            <p class="lang-en">
+                                A central principle of the book is: <strong>“Belief works this way: when you believe you can do something, your mind finds the ways to do it.”</strong> Schwartz argues that belief is not magic in a mystical sense, but a psychological trigger:
+                            </p>
+                            <p class="lang-id">
+                                Prinsip utama buku ini adalah: <strong>“Keyakinan bekerja seperti ini: ketika Anda percaya Anda bisa melakukan sesuatu, pikiran Anda menemukan cara untuk melakukannya.”</strong> Schwartz berpendapat bahwa keyakinan bukanlah sihir dalam arti mistis, tetapi pemicu psikologis:
+                            </p>
 
-<ul>
-  <li>Belief activates creativity – you look for solutions instead of reasons to quit.</li>
-  <li>Belief increases effort – you are more willing to work and try again.</li>
-  <li>Belief changes how others see you – confidence attracts support.</li>
-</ul>
+                            <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                <li>Belief activates creativity – you look for solutions instead of reasons to quit.</li>
+                                <li>Belief increases effort – you are more willing to work and try again.</li>
+                                <li>Belief changes how others see you – confidence attracts support.</li>
+                            </ul>
+                            <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                <li>Keyakinan mengaktifkan kreativitas – Anda mencari solusi, bukan alasan berhenti.</li>
+                                <li>Keyakinan meningkatkan usaha – Anda lebih bersedia bekerja dan mencoba lagi.</li>
+                                <li>Keyakinan mengubah cara orang melihat Anda – kepercayaan diri menarik dukungan.</li>
+                            </ul>
+                            <br>
 
-<p>
-Small thinking, on the other hand, leads you to aim low, avoid challenges, and accept mediocre results. 
-Over time, this becomes a self-fulfilling prophecy.
-</p>
+                            <p class="lang-en">
+                                Small thinking, on the other hand, leads you to aim low, avoid challenges, and accept mediocre results. Over time, this becomes a self-fulfilling prophecy.
+                            </p>
+                            <p class="lang-id">
+                                Sebaliknya, berpikir kecil membuat Anda menetapkan target rendah, menghindari tantangan, dan menerima hasil rata-rata. Seiring waktu, ini menjadi ramalan yang terpenuhi dengan sendirinya.
+                            </p>
+                            <br>
 
-<h3>Thinking Big About Yourself and Your Future</h3>
+                            <h3 class="lang-en">Thinking Big About Yourself and Your Future</h3>
+                            <h3 class="lang-id">Berpikir Besar Tentang Diri Sendiri dan Masa Depan</h3>
 
-<p>
-Schwartz encourages readers to:
-</p>
+                            <p class="lang-en">Schwartz encourages readers to:</p>
+                            <p class="lang-id">Schwartz mendorong pembaca untuk:</p>
 
-<ul>
-  <li>Upgrade their self-image – see themselves as capable of more responsibility and contribution.</li>
-  <li>Set bigger goals – not just “keep my job”, but “become a top performer in my field.”</li>
-  <li>Use positive language – replace “I’ll try” with “I will find a way.”</li>
-</ul>
+                            <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                <li>Upgrade their self-image – see themselves as capable of more responsibility and contribution.</li>
+                                <li>Set bigger goals – not just “keep my job”, but “become a top performer in my field.”</li>
+                                <li>Use positive language – replace “I’ll try” with “I will find a way.”</li>
+                            </ul>
+                            <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                <li>Meningkatkan citra diri – melihat diri mampu memikul lebih banyak tanggung jawab dan kontribusi.</li>
+                                <li>Menetapkan tujuan lebih besar – bukan sekadar “mempertahankan pekerjaan”, tapi “menjadi yang terbaik di bidang saya.”</li>
+                                <li>Menggunakan bahasa positif – ganti “Saya akan coba” dengan “Saya akan temukan caranya.”</li>
+                            </ul>
+                            <br>
 
-<p>
-To him, thinking big does not mean ignoring reality. It means refusing to imprison yourself in a narrow, 
-fear-based view of your potential.
-</p>
+                            <p class="lang-en">
+                                To him, thinking big does not mean ignoring reality. It means refusing to imprison yourself in a narrow, fear-based view of your potential.
+                            </p>
+                            <p class="lang-id">
+                                Baginya, berpikir besar bukan berarti mengabaikan kenyataan. Itu berarti menolak memenjarakan diri dalam pandangan sempit dan berbasis rasa takut tentang potensi Anda.
+                            </p>
                         </div>
 
                         <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-green-200">
                             <h4 class="font-semibold text-green-800 mb-3 text-sm sm:text-base mobile-subtitle">
-                                Summary: Big Thinking in Practice
+                                <span class="lang-en">Summary: Big Thinking in Practice</span>
+                                <span class="lang-id">Ringkasan: Praktik Berpikir Besar</span>
                             </h4>
                             <ul class="space-y-2 text-green-700 mobile-text">
-                                <li class="justified-text">• Identify and challenge your most common excuses.</li>
-                                <li class="justified-text">• Consciously speak about your future in bigger, more confident terms.</li>
-                                <li class="justified-text">• Treat belief as a muscle that grows stronger with use.</li>
+                                <li class="justified-text">
+                                    <span class="lang-en">• Identify and challenge your most common excuses.</span>
+                                    <span class="lang-id">• Identifikasi dan tantang alasan/dalih yang paling sering Anda gunakan.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">• Consciously speak about your future in bigger, more confident terms.</span>
+                                    <span class="lang-id">• Secara sadar berbicaralah tentang masa depan Anda dengan istilah yang lebih besar dan percaya diri.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">• Treat belief as a muscle that grows stronger with use.</span>
+                                    <span class="lang-id">• Perlakukan keyakinan sebagai otot yang tumbuh lebih kuat dengan latihan.</span>
+                                </li>
                             </ul>
                         </div>
                     </div>
                 </section>
 
-                <!-- Part 3 – Confidence, Fear & Action -->
                 <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            Confidence, Fear & Action
+                            <span class="lang-en">Confidence, Fear & Action</span>
+                            <span class="lang-id">Keyakinan, Ketakutan & Tindakan</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <p class="text-base sm:text-lg text-slate-600 mobile-text justified-text">
-                            Big thinkers are not people who never feel fear or doubt – they are people who learn 
-                            to manage fear and move forward anyway.
+                            <span class="lang-en">Big thinkers are not people who never feel fear or doubt – they are people who learn to manage fear and move forward anyway.</span>
+                            <span class="lang-id">Pemikir besar bukanlah orang yang tidak pernah merasa takut atau ragu – mereka adalah orang yang belajar mengelola rasa takut dan tetap melangkah maju.</span>
                         </p>
                         
                         <div class="bg-green-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-green-200">
                             <h3 class="text-base sm:text-lg font-semibold text-green-800 mb-3 mobile-subtitle">
-                                Building Confidence and Destroying Fear
+                                <span class="lang-en">Building Confidence and Destroying Fear</span>
+                                <span class="lang-id">Membangun Kepercayaan Diri & Menghancurkan Ketakutan</span>
                             </h3>
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-
-<p>
-Schwartz insists that <strong>action cures fear</strong>. The longer you wait, the bigger a task 
-or conversation appears in your mind. When you start, even with small steps, fear usually drops.
-</p>
-
-<p>
-He suggests several confidence-building practices:
-</p>
-
-<ul>
-  <li><strong>Think confidently, act confidently.</strong><br>
-  Speak clearly, stand tall, look people in the eye. Your body language influences your inner state.</li>
-
-  <li><strong>Don’t build fear in your imagination.</strong><br>
-  Avoid replaying worst-case scenarios repeatedly. Prepare realistically, then act.</li>
-
-  <li><strong>Isolate your fear.</strong><br>
-  Name specifically what you are afraid of (“I’m afraid my idea will be rejected”) and ask, 
-  “What can I do about it?”</li>
-
-  <li><strong>Remember past wins.</strong><br>
-  Recall times you handled difficulty successfully. Use this as evidence that you can handle the next challenge.</li>
-</ul>
-
-</div>
+                                <p class="lang-en">
+                                    Schwartz insists that <strong>action cures fear</strong>. The longer you wait, the bigger a task or conversation appears in your mind. When you start, even with small steps, fear usually drops.
+                                </p>
+                                <p class="lang-id">
+                                    Schwartz menegaskan bahwa <strong>tindakan menyembuhkan ketakutan</strong>. Semakin lama Anda menunggu, semakin besar tugas atau percakapan itu tampak dalam pikiran Anda. Saat Anda memulai, bahkan dengan langkah kecil, rasa takut biasanya mereda.
+                                </p>
+                                <br>
+                                <p class="lang-en">He suggests several confidence-building practices:</p>
+                                <p class="lang-id">Ia menyarankan beberapa praktik membangun kepercayaan diri:</p>
+                                <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                    <li><strong>Think confidently, act confidently.</strong> Speak clearly, stand tall, look people in the eye. Your body language influences your inner state.</li>
+                                    <li><strong>Don’t build fear in your imagination.</strong> Avoid replaying worst-case scenarios repeatedly. Prepare realistically, then act.</li>
+                                    <li><strong>Isolate your fear.</strong> Name specifically what you are afraid of and ask, “What can I do about it?”</li>
+                                    <li><strong>Remember past wins.</strong> Recall times you handled difficulty successfully. Use this as evidence that you can handle the next challenge.</li>
+                                </ul>
+                                <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                    <li><strong>Berpikir percaya diri, bertindak percaya diri.</strong> Bicara jelas, berdiri tegak, tatap mata orang. Bahasa tubuh memengaruhi kondisi batin Anda.</li>
+                                    <li><strong>Jangan membangun ketakutan dalam imajinasi.</strong> Hindari memutar skenario terburuk berulang kali. Bersiaplah secara realistis, lalu bertindak.</li>
+                                    <li><strong>Isolasi ketakutan Anda.</strong> Sebutkan secara spesifik apa yang Anda takutkan dan tanyakan, “Apa yang bisa saya lakukan?”</li>
+                                    <li><strong>Ingat kemenangan masa lalu.</strong> Ingat saat Anda berhasil mengatasi kesulitan. Gunakan ini sebagai bukti bahwa Anda bisa menangani tantangan berikutnya.</li>
+                                </ul>
+                            </div>
                         </div>
                             
                         <div class="bg-blue-50 p-6 rounded-xl border border-blue-200">
-                            <h3 class="text-lg font-semibold text-blue-800 mb-3">Thinking Big About Goals and Action</h3>
+                            <h3 class="text-lg font-semibold text-blue-800 mb-3">
+                                <span class="lang-en">Thinking Big About Goals and Action</span>
+                                <span class="lang-id">Berpikir Besar Tentang Tujuan dan Tindakan</span>
+                            </h3>
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-
-<p>
-Schwartz emphasizes that big thinking must translate into specific goals and disciplined action. 
-He advises readers to:
-</p>
-
-<ul>
-  <li>Write down clear, specific goals for different areas of life.</li>
-  <li>Break large goals into smaller, manageable steps.</li>
-  <li>Review these goals often and adjust actions accordingly.</li>
-  <li>Act promptly on ideas instead of waiting for the “perfect” time.</li>
-</ul>
-
-<p>
-A key message is that <strong>people who achieve more are usually not working massively harder; 
-they are working with clearer goals and more decisive action.</strong>
-</p>
-
-<p>
-He also encourages developing the habit of initiative: volunteering for responsibility, 
-looking for ways to be helpful without waiting for orders, and being willing to start before 
-you feel 100% ready.
-</p>
-
-</div>
+                                <p class="lang-en">
+                                    Schwartz emphasizes that big thinking must translate into specific goals and disciplined action. He advises readers to:
+                                </p>
+                                <p class="lang-id">
+                                    Schwartz menekankan bahwa berpikir besar harus diterjemahkan menjadi tujuan spesifik dan tindakan disiplin. Ia menyarankan pembaca untuk:
+                                </p>
+                                <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                    <li>Write down clear, specific goals for different areas of life.</li>
+                                    <li>Break large goals into smaller, manageable steps.</li>
+                                    <li>Review these goals often and adjust actions accordingly.</li>
+                                    <li>Act promptly on ideas instead of waiting for the “perfect” time.</li>
+                                </ul>
+                                <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                    <li>Menuliskan tujuan yang jelas dan spesifik untuk berbagai bidang kehidupan.</li>
+                                    <li>Memecah tujuan besar menjadi langkah-langkah kecil yang dapat dikelola.</li>
+                                    <li>Sering meninjau tujuan ini dan menyesuaikan tindakan.</li>
+                                    <li>Segera bertindak atas ide daripada menunggu waktu yang “sempurna”.</li>
+                                </ul>
+                                <br>
+                                <p class="lang-en">
+                                    A key message is that <strong>people who achieve more are usually not working massively harder; they are working with clearer goals and more decisive action.</strong> He also encourages developing the habit of initiative: volunteering for responsibility, looking for ways to be helpful without waiting for orders, and being willing to start before you feel 100% ready.
+                                </p>
+                                <p class="lang-id">
+                                    Pesan kuncinya adalah bahwa <strong>orang yang mencapai lebih banyak biasanya tidak bekerja jauh lebih keras; mereka bekerja dengan tujuan yang lebih jelas dan tindakan yang lebih tegas.</strong> Ia juga mendorong pengembangan kebiasaan inisiatif: sukarela mengambil tanggung jawab, mencari cara untuk membantu tanpa menunggu perintah, dan bersedia memulai sebelum merasa 100% siap.
+                                </p>
+                            </div>
                         </div>
 
                         <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl">
-                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Practical Exercises:</h4>
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">
+                                <span class="lang-en">Practical Exercises:</span>
+                                <span class="lang-id">Latihan Praktis:</span>
+                            </h4>
                             <ol class="space-y-2 text-slate-700 mobile-text">
-                                <li class="justified-text">1. Identify one area where fear is holding you back. Break action into the smallest possible next step and do it today.</li>
-                                <li class="justified-text">2. List three past situations where you overcame difficulty. Use them as evidence that you can handle future challenges.</li>
-                                <li class="justified-text">3. Choose one “think big” goal and break it into weekly action steps.</li>
+                                <li class="justified-text">
+                                    <span class="lang-en">1. Identify one area where fear is holding you back. Break action into the smallest possible next step and do it today.</span>
+                                    <span class="lang-id">1. Identifikasi satu area di mana rasa takut menahan Anda. Pecah tindakan menjadi langkah terkecil dan lakukan hari ini.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">2. List three past situations where you overcame difficulty. Use them as evidence that you can handle future challenges.</span>
+                                    <span class="lang-id">2. Daftar tiga situasi masa lalu di mana Anda mengatasi kesulitan. Gunakan sebagai bukti bahwa Anda bisa menangani tantangan masa depan.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">3. Choose one “think big” goal and break it into weekly action steps.</span>
+                                    <span class="lang-id">3. Pilih satu tujuan “berpikir besar” dan pecah menjadi langkah tindakan mingguan.</span>
+                                </li>
                             </ol>
                         </div>
                     </div>
                 </section>
 
-                <!-- Part 4 – People, Environment & Habits -->
                 <section id="part4" class="content-section p-8">
                     <div class="mb-6">
                         <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-sm font-medium rounded-full mb-4">Part 4</span>
-                        <h2 class="text-3xl font-bold text-slate-800 mb-4">People, Environment & Daily Habits</h2>
+                        <h2 class="text-3xl font-bold text-slate-800 mb-4">
+                            <span class="lang-en">People, Environment & Daily Habits</span>
+                            <span class="lang-id">Orang, Lingkungan & Kebiasaan Harian</span>
+                        </h2>
                     </div>
                     
                     <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
                         <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-
-<p>
-Schwartz repeatedly highlights that your environment – the people you spend time with, the 
-conversations you have, the information you consume – strongly influences the size of your thinking.
-</p>
-
-</div>
+                            <p class="lang-en">
+                                Schwartz repeatedly highlights that your environment – the people you spend time with, the conversations you have, the information you consume – strongly influences the size of your thinking.
+                            </p>
+                            <p class="lang-id">
+                                Schwartz berulang kali menyoroti bahwa lingkungan Anda – orang-orang yang Anda temui, percakapan yang Anda lakukan, informasi yang Anda konsumsi – sangat memengaruhi besarnya pemikiran Anda.
+                            </p>
+                        </div>
 
                         <div class="bg-gradient-to-r from-purple-50 to-indigo-50 p-6 rounded-xl border border-purple-200">
-                            <h3 class="text-xl font-semibold text-purple-800 mb-4">Your Social Environment</h3>
+                            <h3 class="text-xl font-semibold text-purple-800 mb-4">
+                                <span class="lang-en">Your Social Environment</span>
+                                <span class="lang-id">Lingkungan Sosial Anda</span>
+                            </h3>
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+                                <p class="lang-en">He suggests that you:</p>
+                                <p class="lang-id">Ia menyarankan agar Anda:</p>
+                                <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                    <li><strong>Mix with people who think positively and aim high.</strong> Their attitudes are contagious. If you surround yourself with chronic complainers and cynics, your thinking shrinks.</li>
+                                    <li><strong>Avoid gossip and negative talk about others.</strong> Talking down about people creates a habit of small thinking and criticism.</li>
+                                    <li><strong>Think big about other people.</strong> See others’ potential, expect their best, and treat them with respect. This often causes them to rise to the expectation.</li>
+                                </ul>
+                                <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                    <li><strong>Bergaul dengan orang yang berpikir positif dan bertujuan tinggi.</strong> Sikap mereka menular. Jika Anda dikelilingi pengeluh, pikiran Anda menyusut.</li>
+                                    <li><strong>Hindari gosip dan pembicaraan negatif.</strong> Membicarakan keburukan orang lain menciptakan kebiasaan berpikir kecil dan kritis.</li>
+                                    <li><strong>Berpikir besar tentang orang lain.</strong> Lihat potensi orang lain, harapkan yang terbaik, dan perlakukan mereka dengan hormat.</li>
+                                </ul>
+                            </div>
 
-<p>
-He suggests that you:
-</p>
-
-<ul>
-  <li><strong>Mix with people who think positively and aim high.</strong><br>
-  Their attitudes are contagious. If you surround yourself with chronic complainers and cynics, your thinking shrinks.</li>
-
-  <li><strong>Avoid gossip and negative talk about others.</strong><br>
-  Talking down about people creates a habit of small thinking and criticism.</li>
-
-  <li><strong>Think big about other people.</strong><br>
-  See others’ potential, expect their best, and treat them with respect. 
-  This often causes them to rise to the expectation.</li>
-</ul>
-
-</div>
-
-                            <div class="bg-white p-4 rounded-lg mb-4">
-                                <h4 class="font-semibold text-slate-800 mb-2">“Big People” vs “Petty People”</h4>
+                            <div class="bg-white p-4 rounded-lg mb-4 mt-4">
+                                <h4 class="font-semibold text-slate-800 mb-2">
+                                    <span class="lang-en">“Big People” vs “Petty People”</span>
+                                    <span class="lang-id">“Orang Besar” vs “Orang Kerdil”</span>
+                                </h4>
                                 <p class="text-slate-700 text-sm">
-                                    Big people focus on ideas, growth, contribution, and solutions.  
-                                    Petty people focus on gossip, blame, and small jealousies.  
-                                    Schwartz encourages you to consciously choose which group you join.
+                                    <span class="lang-en">Big people focus on ideas, growth, contribution, and solutions. Petty people focus on gossip, blame, and small jealousies. Schwartz encourages you to consciously choose which group you join.</span>
+                                    <span class="lang-id">Orang besar fokus pada ide, pertumbuhan, kontribusi, dan solusi. Orang kerdil fokus pada gosip, menyalahkan, dan kecemburuan kecil. Schwartz mendorong Anda untuk secara sadar memilih kelompok mana yang Anda ikuti.</span>
                                 </p>
                             </div>
                         </div>
                         
                         <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200">
-                            <h3 class="text-xl font-semibold text-green-800 mb-4">Your Mental Environment</h3>
+                            <h3 class="text-xl font-semibold text-green-800 mb-4">
+                                <span class="lang-en">Your Mental Environment</span>
+                                <span class="lang-id">Lingkungan Mental Anda</span>
+                            </h3>
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-
-<p>
-Your input becomes your outlook. Schwartz advises:
-</p>
-
-<ul>
-  <li>Feeding your mind with inspiring books, talks, and ideas.</li>
-  <li>Limiting time spent on negative media that promotes fear and cynicism.</li>
-  <li>Regularly visualizing yourself handling bigger responsibilities successfully.</li>
-</ul>
-
-<p>
-He is not naïve about problems in the world, but he insists that constantly focusing on what’s 
-wrong shrinks your courage and ambition.
-</p>
-
-</div>
+                                <p class="lang-en">Your input becomes your outlook. Schwartz advises:</p>
+                                <p class="lang-id">Input Anda menjadi pandangan Anda. Schwartz menyarankan:</p>
+                                <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                    <li>Feeding your mind with inspiring books, talks, and ideas.</li>
+                                    <li>Limiting time spent on negative media that promotes fear and cynicism.</li>
+                                    <li>Regularly visualizing yourself handling bigger responsibilities successfully.</li>
+                                </ul>
+                                <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                    <li>Memberi makan pikiran Anda dengan buku, pembicaraan, dan ide yang menginspirasi.</li>
+                                    <li>Membatasi waktu pada media negatif yang mempromosikan ketakutan.</li>
+                                    <li>Secara rutin memvisualisasikan diri Anda menangani tanggung jawab yang lebih besar dengan sukses.</li>
+                                </ul>
+                                <br>
+                                <p class="lang-en">He is not naïve about problems in the world, but he insists that constantly focusing on what’s wrong shrinks your courage and ambition.</p>
+                                <p class="lang-id">Ia tidak naif tentang masalah dunia, tetapi ia bersikeras bahwa terus-menerus fokus pada apa yang salah akan menyusutkan keberanian dan ambisi Anda.</p>
+                            </div>
                         </div>
                         
                         <div class="bg-gradient-to-r from-blue-50 to-cyan-50 p-6 rounded-xl border border-blue-200">
-                            <h3 class="text-xl font-semibold text-blue-800 mb-4">Daily Habits of Big Thinkers</h3>
+                            <h3 class="text-xl font-semibold text-blue-800 mb-4">
+                                <span class="lang-en">Daily Habits of Big Thinkers</span>
+                                <span class="lang-id">Kebiasaan Harian Pemikir Besar</span>
+                            </h3>
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-
-<p>
-Throughout the book, Schwartz sprinkles practical habits, such as:
-</p>
-
-<ul>
-  <li><strong>Plan each day and prioritize important tasks.</strong></li>
-  <li><strong>Practice good manners and appearance.</strong> Not out of vanity, but because it affects how you feel and how others respond.</li>
-  <li><strong>Talk progress, not defeat.</strong> In conversations, emphasize possibilities and solutions.</li>
-  <li><strong>Think “I’m a professional”.</strong> See your work as important, no matter your role, and act accordingly.</li>
-</ul>
-
-<p>
-These habits reinforce a self-image of someone who is going somewhere, doing meaningful work, 
-and growing continually.
-</p>
-
-</div>
+                                <p class="lang-en">Throughout the book, Schwartz sprinkles practical habits, such as:</p>
+                                <p class="lang-id">Di sepanjang buku, Schwartz menaburkan kebiasaan praktis, seperti:</p>
+                                <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                    <li><strong>Plan each day and prioritize important tasks.</strong></li>
+                                    <li><strong>Practice good manners and appearance.</strong> Not out of vanity, but because it affects how you feel and how others respond.</li>
+                                    <li><strong>Talk progress, not defeat.</strong> In conversations, emphasize possibilities and solutions.</li>
+                                    <li><strong>Think “I’m a professional”.</strong> See your work as important, no matter your role, and act accordingly.</li>
+                                </ul>
+                                <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                    <li><strong>Rencanakan setiap hari dan prioritaskan tugas penting.</strong></li>
+                                    <li><strong>Latih sopan santun dan penampilan.</strong> Bukan karena kesombongan, tetapi karena itu memengaruhi perasaan Anda dan respons orang lain.</li>
+                                    <li><strong>Bicarakan kemajuan, bukan kekalahan.</strong> Dalam percakapan, tekankan kemungkinan dan solusi.</li>
+                                    <li><strong>Berpikir “Saya seorang profesional”.</strong> Lihat pekerjaan Anda sebagai hal penting, apa pun peran Anda, dan bertindaklah sesuai dengan itu.</li>
+                                </ul>
+                                <br>
+                                <p class="lang-en">These habits reinforce a self-image of someone who is going somewhere, doing meaningful work, and growing continually.</p>
+                                <p class="lang-id">Kebiasaan ini memperkuat citra diri sebagai seseorang yang punya tujuan, melakukan pekerjaan bermakna, dan terus bertumbuh.</p>
+                            </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Part 5 – Implementation & Legacy -->
                 <section id="part5" class="content-section p-8">
                     <div class="mb-6">
                         <span class="inline-block px-3 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-full mb-4">Part 5</span>
-                        <h2 class="text-3xl font-bold text-slate-800 mb-4">Implementation & Legacy</h2>
+                        <h2 class="text-3xl font-bold text-slate-800 mb-4">
+                            <span class="lang-en">Implementation & Legacy</span>
+                            <span class="lang-id">Implementasi & Warisan</span>
+                        </h2>
                     </div>
                     
                     <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
                         <div class="bg-gradient-to-r from-red-50 to-pink-50 p-6 rounded-xl border border-red-200">
-                            <h3 class="text-xl font-semibold text-red-800 mb-4">From Ideas to a New Lifestyle</h3>
+                            <h3 class="text-xl font-semibold text-red-800 mb-4">
+                                <span class="lang-en">From Ideas to a New Lifestyle</span>
+                                <span class="lang-id">Dari Ide Menjadi Gaya Hidup Baru</span>
+                            </h3>
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-
-<p>
-<em>The Magic of Thinking Big</em> is not meant to be read once and forgotten. 
-Schwartz repeatedly encourages the reader to review chapters, write notes, and treat the book as 
-a working manual for change.
-</p>
-
-<p>
-Key implementation themes:
-</p>
-
-<ul>
-  <li><strong>Change your thought patterns deliberately.</strong><br>
-  Replace excuse thinking with possibility thinking.</li>
-
-  <li><strong>Act before you feel ready.</strong><br>
-  Confidence grows from action, not the other way around.</li>
-
-  <li><strong>Surround yourself with people and environments that support big thinking.</strong></li>
-
-  <li><strong>Keep your goals visible and review them often.</strong></li>
-</ul>
-
-</div>
+                                <p class="lang-en">
+                                    <em>The Magic of Thinking Big</em> is not meant to be read once and forgotten. Schwartz repeatedly encourages the reader to review chapters, write notes, and treat the book as a working manual for change.
+                                </p>
+                                <p class="lang-id">
+                                    <em>The Magic of Thinking Big</em> tidak dimaksudkan untuk dibaca sekali lalu dilupakan. Schwartz berulang kali mendorong pembaca untuk meninjau bab, menulis catatan, dan memperlakukan buku ini sebagai panduan kerja untuk perubahan.
+                                </p>
+                                <br>
+                                <p class="lang-en">Key implementation themes:</p>
+                                <p class="lang-id">Tema implementasi utama:</p>
+                                <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                    <li><strong>Change your thought patterns deliberately.</strong> Replace excuse thinking with possibility thinking.</li>
+                                    <li><strong>Act before you feel ready.</strong> Confidence grows from action, not the other way around.</li>
+                                    <li><strong>Surround yourself with people and environments that support big thinking.</strong></li>
+                                    <li><strong>Keep your goals visible and review them often.</strong></li>
+                                </ul>
+                                <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                    <li><strong>Ubah pola pikir Anda secara sengaja.</strong> Ganti pemikiran penuh dalih dengan pemikiran penuh kemungkinan.</li>
+                                    <li><strong>Bertindak sebelum merasa siap.</strong> Keyakinan tumbuh dari tindakan, bukan sebaliknya.</li>
+                                    <li><strong>Kelilingi diri Anda dengan orang dan lingkungan yang mendukung pemikiran besar.</strong></li>
+                                    <li><strong>Jaga tujuan Anda tetap terlihat dan tinjau sering-sering.</strong></li>
+                                </ul>
+                            </div>
                         </div>
                         
                         <div class="bg-gradient-to-r from-amber-50 to-yellow-50 p-6 rounded-xl border border-amber-200">
-                            <h3 class="text-xl font-semibold text-amber-800 mb-4">Why the Book Still Matters</h3>
+                            <h3 class="text-xl font-semibold text-amber-800 mb-4">
+                                <span class="lang-en">Why the Book Still Matters</span>
+                                <span class="lang-id">Mengapa Buku Ini Masih Penting</span>
+                            </h3>
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-
-<p>
-Decades after its first publication, <em>The Magic of Thinking Big</em> remains influential 
-because it addresses timeless psychological barriers:
-</p>
-
-<ul>
-  <li>Fear of failure,</li>
-  <li>Over-attachment to excuses,</li>
-  <li>Low self-belief,</li>
-  <li>Small goals driven by habit, not vision.</li>
-</ul>
-
-<p>
-In a world full of distractions and comparisons, Schwartz’s message is refreshingly direct: 
-<strong>you can choose to think bigger about who you are and what you can do.</strong>
-</p>
-
-</div>
+                                <p class="lang-en">
+                                    Decades after its first publication, <em>The Magic of Thinking Big</em> remains influential because it addresses timeless psychological barriers:
+                                </p>
+                                <p class="lang-id">
+                                    Puluhan tahun setelah penerbitan pertamanya, <em>The Magic of Thinking Big</em> tetap berpengaruh karena membahas hambatan psikologis yang tak lekang oleh waktu:
+                                </p>
+                                <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                    <li>Fear of failure,</li>
+                                    <li>Over-attachment to excuses,</li>
+                                    <li>Low self-belief,</li>
+                                    <li>Small goals driven by habit, not vision.</li>
+                                </ul>
+                                <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                    <li>Ketakutan akan kegagalan,</li>
+                                    <li>Terlalu terikat pada alasan,</li>
+                                    <li>Keyakinan diri yang rendah,</li>
+                                    <li>Tujuan kecil yang didorong oleh kebiasaan, bukan visi.</li>
+                                </ul>
+                                <br>
+                                <p class="lang-en">
+                                    In a world full of distractions and comparisons, Schwartz’s message is refreshingly direct: <strong>you can choose to think bigger about who you are and what you can do.</strong>
+                                </p>
+                                <p class="lang-id">
+                                    Di dunia yang penuh gangguan dan perbandingan, pesan Schwartz sangat menyegarkan: <strong>Anda dapat memilih untuk berpikir lebih besar tentang siapa diri Anda dan apa yang bisa Anda lakukan.</strong>
+                                </p>
+                            </div>
                         </div>
                         
                         <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-xl border border-indigo-200">
-                            <h3 class="text-xl font-semibold text-indigo-800 mb-4">Applying It to Modern Life</h3>
+                            <h3 class="text-xl font-semibold text-indigo-800 mb-4">
+                                <span class="lang-en">Applying It to Modern Life</span>
+                                <span class="lang-id">Penerapan di Kehidupan Modern</span>
+                            </h3>
                             <p class="text-indigo-700 mb-4">
-                                Here is a simple framework you can use after reading this summary:
+                                <span class="lang-en">Here is a simple framework you can use after reading this summary:</span>
+                                <span class="lang-id">Berikut adalah kerangka kerja sederhana yang bisa Anda gunakan setelah membaca ringkasan ini:</span>
                             </p>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div class="bg-white p-4 rounded-lg">
-                                    <h5 class="font-medium text-indigo-700 mb-2">Step 1 – Audit Your Thinking</h5>
+                                    <h5 class="font-medium text-indigo-700 mb-2">
+                                        <span class="lang-en">Step 1 – Audit Your Thinking</span>
+                                        <span class="lang-id">Langkah 1 – Audit Pemikiran Anda</span>
+                                    </h5>
                                     <ul class="text-sm text-slate-600 space-y-1">
-                                        <li>• Notice your most frequent excuses.</li>
-                                        <li>• Observe how you talk about your future.</li>
-                                        <li>• Identify “small thinking” patterns around work, money, and relationships.</li>
+                                        <li>
+                                            <span class="lang-en">• Notice your most frequent excuses.</span>
+                                            <span class="lang-id">• Perhatikan alasan yang paling sering Anda gunakan.</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">• Observe how you talk about your future.</span>
+                                            <span class="lang-id">• Amati cara Anda bicara tentang masa depan.</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">• Identify “small thinking” patterns.</span>
+                                            <span class="lang-id">• Identifikasi pola “berpikir kecil”.</span>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div class="bg-white p-4 rounded-lg">
-                                    <h5 class="font-medium text-indigo-700 mb-2">Step 2 – Upgrade Your Patterns</h5>
+                                    <h5 class="font-medium text-indigo-700 mb-2">
+                                        <span class="lang-en">Step 2 – Upgrade Your Patterns</span>
+                                        <span class="lang-id">Langkah 2 – Tingkatkan Pola Anda</span>
+                                    </h5>
                                     <ul class="text-sm text-slate-600 space-y-1">
-                                        <li>• Set at least one “big” but realistic goal.</li>
-                                        <li>• Take one bold action per week toward it.</li>
-                                        <li>• Spend more time with positive, growth-oriented people.</li>
+                                        <li>
+                                            <span class="lang-en">• Set at least one “big” but realistic goal.</span>
+                                            <span class="lang-id">• Tetapkan setidaknya satu tujuan “besar” namun realistis.</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">• Take one bold action per week.</span>
+                                            <span class="lang-id">• Ambil satu tindakan berani per minggu.</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">• Spend time with growth-oriented people.</span>
+                                            <span class="lang-id">• Habiskan waktu dengan orang yang berorientasi tumbuh.</span>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200">
-                            <h3 class="text-xl font-semibold text-emerald-800 mb-4">Final Reflection</h3>
+                            <h3 class="text-xl font-semibold text-emerald-800 mb-4">
+                                <span class="lang-en">Final Reflection</span>
+                                <span class="lang-id">Refleksi Akhir</span>
+                            </h3>
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-
-<p>
-In essence, <em>The Magic of Thinking Big</em> teaches that:
-<strong>your thoughts are the blueprint for your future.</strong>  
-If you think small, you will design a small life. If you think big – backed by belief, 
-persistent action, and supportive environments – you dramatically expand what becomes possible.
-</p>
-
-<p>
-You do not have to apply every idea at once. Start with one or two: reducing excuses, 
-acting in spite of fear, or setting a bigger goal than you would normally choose. 
-Sustained over time, these small shifts in thinking and behavior can create the “magic” 
-Schwartz describes – not overnight, but step by step.
-</p>
-
+                                <p class="lang-en">
+                                    In essence, <em>The Magic of Thinking Big</em> teaches that: <strong>your thoughts are the blueprint for your future.</strong> If you think small, you will design a small life. If you think big – backed by belief, persistent action, and supportive environments – you dramatically expand what becomes possible.
+                                </p>
+                                <p class="lang-id">
+                                    Intinya, <em>The Magic of Thinking Big</em> mengajarkan bahwa: <strong>pikiran Anda adalah cetak biru masa depan Anda.</strong> Jika Anda berpikir kecil, Anda akan merancang kehidupan yang kecil. Jika Anda berpikir besar – didukung oleh keyakinan, tindakan gigih, dan lingkungan yang mendukung – Anda secara dramatis memperluas apa yang mungkin terjadi.
+                                </p>
+                                <br>
+                                <p class="lang-en">
+                                    You do not have to apply every idea at once. Start with one or two: reducing excuses, acting in spite of fear, or setting a bigger goal than you would normally choose. Sustained over time, these small shifts in thinking and behavior can create the “magic” Schwartz describes – not overnight, but step by step.
+                                </p>
+                                <p class="lang-id">
+                                    Anda tidak harus menerapkan semua ide sekaligus. Mulailah dengan satu atau dua: mengurangi alasan, bertindak meskipun takut, atau menetapkan tujuan yang lebih besar dari biasanya. Jika dipertahankan, pergeseran kecil dalam pemikiran dan perilaku ini dapat menciptakan “keajaiban” yang digambarkan Schwartz – bukan dalam semalam, tetapi selangkah demi selangkah.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -811,6 +934,30 @@ Schwartz describes – not overnight, but step by step.
     </div>
 
     <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const btnText = document.querySelector('.lang-text');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                btnText.textContent = 'English / Indonesia';
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                btnText.textContent = 'Indonesia / English';
+            }
+        }
+
         function toggleDrawer() {
             const drawer = document.querySelector('.nav-drawer');
             const overlay = document.querySelector('.nav-overlay');
