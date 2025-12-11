@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Good to Great — Extended Summary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Red/Grey Theme for Good to Great */
+        .active-tab { background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.7; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.6; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #b91c1c 0%, #ef4444 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(185, 28, 28, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(185, 28, 28, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #4b5563 0%, #374151 100%); box-shadow: 0 4px 12px rgba(75, 85, 99, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #dc2626; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-red-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-gray-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-red-600 to-red-800 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">G</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Good to Great</h2>
+                    <p class="text-gray-400 text-sm">
+                        <span class="lang-en">Executive Summary</span>
+                        <span class="lang-id">Ringkasan Eksekutif</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-gray-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">Core Concepts</span>
+                <span class="lang-id">Konsep Inti</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-gray-700 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center text-xs font-bold">🚀</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-gray-700 text-gray-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Level 5 Leadership</div>
+                            <div class="text-xs text-gray-400">
+                                <span class="lang-en">Humility & Will</span>
+                                <span class="lang-id">Kerendahan Hati & Tekad</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-gray-700 text-gray-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">First Who</div>
+                            <div class="text-xs text-gray-400">
+                                <span class="lang-en">Then What</span>
+                                <span class="lang-id">Baru Kemudian Apa</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-gray-700 text-gray-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Hedgehog Concept</div>
+                            <div class="text-xs text-gray-400">
+                                <span class="lang-en">The Three Circles</span>
+                                <span class="lang-id">Konsep Landak</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-gray-700 text-gray-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Flywheel</div>
+                            <div class="text-xs text-gray-400">
+                                <span class="lang-en">Momentum Effect</span>
+                                <span class="lang-id">Efek Roda Gila</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-gray-700 text-gray-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Discipline</div>
+                            <div class="text-xs text-gray-400">
+                                <span class="lang-en">Culture & Technology</span>
+                                <span class="lang-id">Budaya & Teknologi</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
+            <div class="text-center">
+                <p class="text-gray-400 text-xs">© Jim Collins</p>
+                <p class="text-gray-500 text-xs mt-1">Summary Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 mobile-title">
+                    Good to Great
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-gray-600 font-medium px-2">
+                    <span class="lang-en">Why Some Companies Make the Leap... and Others Don't</span>
+                    <span class="lang-id">Mengapa Beberapa Perusahaan Melakukan Lompatan... dan yang Lain Tidak</span>
+                </p>
+                <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-red-500 to-gray-800 mx-auto mt-3 sm:mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">Introduction</span>
+                            <span class="lang-id">Pendahuluan</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Good is the Enemy of Great</span>
+                            <span class="lang-id">Baik adalah Musuh dari Hebat</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-gray-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <div class="text-base sm:text-lg md:text-xl text-gray-600 font-medium border-l-4 border-red-600 pl-4 sm:pl-6 italic mobile-text justified-text">
+                            <span class="lang-en">“We don't have great schools, principally because we have good schools. We don't have great government, principally because we have good government. Few people attain great lives, in large part because it is just so easy to settle for a good life.”</span>
+                            <span class="lang-id">“Kita tidak memiliki sekolah hebat, terutama karena kita memiliki sekolah yang baik. Kita tidak memiliki pemerintahan hebat, terutama karena kita memiliki pemerintahan yang baik. Sedikit orang mencapai kehidupan yang hebat, sebagian besar karena begitu mudah untuk puas dengan kehidupan yang baik.”</span>
+                        </div>
+                        
+                        <div class="mobile-text justified-text">
+                            <span class="lang-en">
+                                Jim Collins and his research team spent five years analyzing 1,435 companies to find just 11 that made the transition from "Good" to "Great." These companies sustained those results for at least 15 years. The findings were surprising: greatness is not a function of circumstance, but a matter of conscious choice and discipline.
+                            </span>
+                            <span class="lang-id">
+                                Jim Collins dan tim penelitinya menghabiskan lima tahun menganalisis 1.435 perusahaan untuk menemukan hanya 11 perusahaan yang melakukan transisi dari "Baik" menjadi "Hebat". Perusahaan-perusahaan ini mempertahankan hasil tersebut setidaknya selama 15 tahun. Temuannya mengejutkan: kehebatan bukanlah fungsi dari keadaan, melainkan masalah pilihan sadar dan disiplin.
+                            </span>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-200">
+                            <h4 class="font-semibold text-gray-900 mb-3 text-sm sm:text-base mobile-subtitle">
+                                <span class="lang-en">The 3 Stages of Transformation:</span>
+                                <span class="lang-id">3 Tahap Transformasi:</span>
+                            </h4>
+                            <ul class="space-y-2 text-gray-700 mobile-text">
+                                <li class="flex items-start">
+                                    <span class="w-6 h-6 bg-red-100 text-red-700 rounded-full flex items-center justify-center text-xs font-bold mr-3 flex-shrink-0">1</span>
+                                    <span class="justified-text lang-en"><strong>Disciplined People:</strong> Level 5 Leadership & First Who, Then What.</span>
+                                    <span class="justified-text lang-id"><strong>Orang yang Disiplin:</strong> Kepemimpinan Level 5 & Siapa Dulu, Baru Apa.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="w-6 h-6 bg-red-100 text-red-700 rounded-full flex items-center justify-center text-xs font-bold mr-3 flex-shrink-0">2</span>
+                                    <span class="justified-text lang-en"><strong>Disciplined Thought:</strong> Confront the Brutal Facts & The Hedgehog Concept.</span>
+                                    <span class="justified-text lang-id"><strong>Pemikiran yang Disiplin:</strong> Hadapi Fakta Brutal & Konsep Landak.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="w-6 h-6 bg-red-100 text-red-700 rounded-full flex items-center justify-center text-xs font-bold mr-3 flex-shrink-0">3</span>
+                                    <span class="justified-text lang-en"><strong>Disciplined Action:</strong> Culture of Discipline & The Flywheel.</span>
+                                    <span class="justified-text lang-id"><strong>Tindakan yang Disiplin:</strong> Budaya Disiplin & Roda Gila.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Level 5 Leadership</span>
+                            <span class="lang-id">Kepemimpinan Level 5</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-gray-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <div class="mobile-text justified-text">
+                            <p class="lang-en">
+                                Surprisingly, the leaders of "Great" companies were not charismatic celebrities. They were quiet, humble, reserved, and even shy. Collins calls them <strong>Level 5 Leaders</strong>. They display a paradoxical blend of personal humility and professional will.
+                            </p>
+                            <p class="lang-id">
+                                Mengejutkannya, para pemimpin perusahaan "Hebat" bukanlah selebriti yang karismatik. Mereka pendiam, rendah hati, tertutup, dan bahkan pemalu. Collins menyebut mereka <strong>Pemimpin Level 5</strong>. Mereka menampilkan perpaduan paradoks antara kerendahan hati pribadi dan tekad profesional.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-red-50 p-4 rounded-lg border border-red-100">
+                                <h4 class="font-bold text-red-800 mb-2 lang-en">Level 5 Traits</h4>
+                                <h4 class="font-bold text-red-800 mb-2 lang-id">Ciri-Ciri Level 5</h4>
+                                <ul class="list-disc ml-4 text-sm text-gray-700 lang-en">
+                                    <li>Ambitious for the company, not themselves.</li>
+                                    <li>Looks in the <strong>mirror</strong> to apportion blame (when things go wrong).</li>
+                                    <li>Looks out the <strong>window</strong> to assign credit (when things go well).</li>
+                                </ul>
+                                <ul class="list-disc ml-4 text-sm text-gray-700 lang-id">
+                                    <li>Ambisius untuk perusahaan, bukan diri sendiri.</li>
+                                    <li>Melihat ke <strong>cermin</strong> untuk menyalahkan diri (saat ada masalah).</li>
+                                    <li>Melihat ke <strong>jendela</strong> untuk memberikan pujian kepada orang lain (saat sukses).</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-100 p-4 rounded-lg border border-gray-200">
+                                <h4 class="font-bold text-gray-800 mb-2 lang-en">Level 4 (Comparison)</h4>
+                                <h4 class="font-bold text-gray-800 mb-2 lang-id">Level 4 (Perbandingan)</h4>
+                                <ul class="list-disc ml-4 text-sm text-gray-700 lang-en">
+                                    <li>Often celebrity leaders ("I am the genius").</li>
+                                    <li>Looks in the <strong>window</strong> to blame factors (bad luck, market).</li>
+                                    <li>Looks in the <strong>mirror</strong> to take credit.</li>
+                                </ul>
+                                <ul class="list-disc ml-4 text-sm text-gray-700 lang-id">
+                                    <li>Seringkali pemimpin selebriti ("Sayalah jeniusnya").</li>
+                                    <li>Melihat ke <strong>jendela</strong> untuk menyalahkan faktor luar (nasib buruk, pasar).</li>
+                                    <li>Melihat ke <strong>cermin</strong> untuk mengambil pujian.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 sm:p-6 border-l-4 border-gray-800 shadow-sm mt-4">
+                            <h4 class="font-bold text-gray-900 mb-2 text-lg">
+                                <span class="lang-en">Case Study: Darwin Smith (Kimberly-Clark)</span>
+                                <span class="lang-id">Studi Kasus: Darwin Smith (Kimberly-Clark)</span>
+                            </h4>
+                            <div class="text-sm sm:text-base text-gray-600 justified-text">
+                                <p class="lang-en mb-2">
+                                    Darwin Smith was a mild-mannered in-house lawyer who became CEO. Critics thought he was too weak. Yet, he made a ferocious decision: he sold the company's core business (coated paper mills) because he realized they couldn't beat competitors like Procter & Gamble in that game.
+                                </p>
+                                <p class="lang-en">
+                                    He pivoted the entire company to consumer paper products (Kleenex, Huggies). Wall Street mocked him. But over the next 20 years, Kimberly-Clark generated cumulative stock returns 4.1 times greater than the general market, beating P&G and Coca-Cola. He never sought fame; at retirement, he said, "I never stopped trying to become qualified for the job."
+                                </p>
+                                <p class="lang-id mb-2">
+                                    Darwin Smith adalah pengacara internal yang santun yang menjadi CEO. Kritikus mengira dia terlalu lemah. Namun, dia membuat keputusan yang ganas: dia menjual bisnis inti perusahaan (pabrik kertas berlapis) karena dia sadar mereka tidak bisa mengalahkan pesaing seperti Procter & Gamble dalam permainan itu.
+                                </p>
+                                <p class="lang-id">
+                                    Dia memutar seluruh perusahaan ke produk kertas konsumen (Kleenex, Huggies). Wall Street mengejeknya. Namun selama 20 tahun berikutnya, Kimberly-Clark menghasilkan pengembalian saham kumulatif 4,1 kali lebih besar dari pasar umum, mengalahkan P&G dan Coca-Cola. Dia tidak pernah mencari ketenaran; saat pensiun, dia berkata, "Saya tidak pernah berhenti berusaha untuk menjadi layak bagi pekerjaan ini."
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">First Who, Then What</span>
+                            <span class="lang-id">Siapa Dulu, Baru Apa</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-gray-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <div class="bg-red-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-red-200">
+                            <h3 class="text-lg sm:text-xl font-semibold text-red-900 mb-3 mobile-subtitle">
+                                <span class="lang-en">The Bus Metaphor</span>
+                                <span class="lang-id">Metafora Bus</span>
+                            </h3>
+                            <p class="text-red-800 mobile-text justified-text">
+                                <span class="lang-en">Most companies start with a vision ("What") and then hire people to execute it. Great companies do the opposite. They get the <strong>right people on the bus</strong>, the wrong people off the bus, and the right people in the right seats—<em>before</em> they figure out where to drive the bus.</span>
+                                <span class="lang-id">Kebanyakan perusahaan memulai dengan visi ("Apa") lalu mempekerjakan orang untuk eksekusi. Perusahaan hebat melakukan sebaliknya. Mereka menaikkan <strong>orang yang tepat ke dalam bus</strong>, menurunkan orang yang salah dari bus, dan menempatkan orang yang tepat di kursi yang tepat—<em>sebelum</em> mereka memutuskan ke mana bus akan melaju.</span>
+                            </p>
+                        </div>
+
+                        <div class="space-y-4">
+                             <div class="p-4 border-l-4 border-gray-500 bg-white">
+                                <strong class="lang-en text-gray-900">Why?</strong>
+                                <strong class="lang-id text-gray-900">Mengapa?</strong>
+                                <p class="lang-en text-sm mt-1">If people join you only for the destination, what happens if you need to change direction? If they join for the <em>people</em> on the bus, they are adaptable.</p>
+                                <p class="lang-id text-sm mt-1">Jika orang bergabung hanya karena tujuannya, apa yang terjadi jika Anda perlu mengubah arah? Jika mereka bergabung karena <em>orang-orang</em> di dalam bus, mereka akan mudah beradaptasi.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 sm:p-6 border-l-4 border-gray-800 shadow-sm mt-4">
+                            <h4 class="font-bold text-gray-900 mb-2 text-lg">
+                                <span class="lang-en">Case Study: Wells Fargo</span>
+                                <span class="lang-id">Studi Kasus: Wells Fargo</span>
+                            </h4>
+                            <div class="text-sm sm:text-base text-gray-600 justified-text">
+                                <p class="lang-en">
+                                    In the 1970s, CEO Dick Cooley foresaw that banking deregulation was coming, but he didn't know exactly how it would impact the industry. Instead of creating a rigid strategy, he focused on hiring the absolute best talent he could find, often without a specific job description in mind. He famously said, "I just want to hire the best people."
+                                </p>
+                                <p class="lang-en mt-2">
+                                    When the deregulation storm hit, Bank of America (which had focused on strategy first) laid off people and struggled. Wells Fargo, packed with incredible talent, navigated the changes swiftly and dominated the sector. The strategy emerged <em>from</em> the people.
+                                </p>
+                                <p class="lang-id">
+                                    Pada tahun 1970-an, CEO Dick Cooley meramalkan bahwa deregulasi perbankan akan datang, tetapi dia tidak tahu persis dampaknya. Alih-alih membuat strategi kaku, dia fokus mempekerjakan bakat terbaik yang bisa dia temukan, seringkali tanpa deskripsi pekerjaan spesifik. Dia terkenal berkata, "Saya hanya ingin mempekerjakan orang terbaik."
+                                </p>
+                                <p class="lang-id mt-2">
+                                    Ketika badai deregulasi menghantam, Bank of America (yang fokus pada strategi dulu) mem-PHK orang dan berjuang keras. Wells Fargo, yang dipenuhi bakat luar biasa, menavigasi perubahan dengan cepat dan mendominasi sektor tersebut. Strategi muncul <em>dari</em> orang-orangnya.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center bg-gray-100 p-4 rounded-lg mt-4">
+                            <p class="font-bold text-gray-800 lang-en">"People are NOT your most important asset. The RIGHT people are."</p>
+                            <p class="font-bold text-gray-800 lang-id">"Orang BUKANLAH aset terpenting Anda. Orang yang TEPAT adalah aset terpenting."</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Hedgehog Concept</span>
+                            <span class="lang-id">Konsep Landak</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-gray-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <p class="text-base sm:text-lg text-gray-600 mobile-text justified-text">
+                            <span class="lang-en">The fox knows many things, but the hedgehog knows one big thing. Great companies are hedgehogs: they simplify a complex world into a single organizing idea. This idea sits at the intersection of three circles:</span>
+                            <span class="lang-id">Rubah tahu banyak hal, tapi landak tahu satu hal besar. Perusahaan hebat adalah landak: mereka menyederhanakan dunia yang kompleks menjadi satu ide pengorganisasian tunggal. Ide ini berada di persimpangan tiga lingkaran:</span>
+                        </p>
+                        
+                        <div class="flex flex-col space-y-4 my-6">
+                            <div class="flex items-center p-4 bg-red-50 border-l-4 border-red-500">
+                                <div class="mr-4 text-2xl">❤️</div>
+                                <div>
+                                    <strong class="block text-gray-900 lang-en">1. What you are deeply passionate about.</strong>
+                                    <strong class="block text-gray-900 lang-id">1. Apa yang sangat Anda sukai (Passion).</strong>
+                                </div>
+                            </div>
+                            <div class="flex items-center p-4 bg-gray-50 border-l-4 border-gray-500">
+                                <div class="mr-4 text-2xl">🏆</div>
+                                <div>
+                                    <strong class="block text-gray-900 lang-en">2. What you can be the best in the world at.</strong>
+                                    <strong class="block text-gray-900 lang-id">2. Apa yang Anda bisa menjadi yang terbaik di dunia.</strong>
+                                    <span class="text-sm text-gray-500 lang-en">(And equally important: what you CANNOT be best at).</span>
+                                    <span class="text-sm text-gray-500 lang-id">(Dan sama pentingnya: apa yang Anda TIDAK BISA menjadi yang terbaik).</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center p-4 bg-red-50 border-l-4 border-red-500">
+                                <div class="mr-4 text-2xl">💰</div>
+                                <div>
+                                    <strong class="block text-gray-900 lang-en">3. What drives your economic engine.</strong>
+                                    <strong class="block text-gray-900 lang-id">3. Apa yang menggerakkan mesin ekonomi Anda.</strong>
+                                    <span class="text-sm text-gray-500 lang-en">(Finding the single denominator, e.g., Profit per X).</span>
+                                    <span class="text-sm text-gray-500 lang-id">(Menemukan penyebut tunggal, misal: Laba per X).</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 sm:p-6 border-l-4 border-gray-800 shadow-sm">
+                            <h4 class="font-bold text-gray-900 mb-2 text-lg">
+                                <span class="lang-en">Case Study: Walgreens vs. Eckerd</span>
+                                <span class="lang-id">Studi Kasus: Walgreens vs. Eckerd</span>
+                            </h4>
+                            <div class="text-sm sm:text-base text-gray-600 justified-text">
+                                <p class="lang-en">
+                                    <strong>Walgreens</strong> found their Hedgehog Concept: <em>Convenient Drugstores</em>. They replaced the "Profit per Store" metric with "Profit per Customer Visit." This led them to cluster stores (even opening two across the street from each other) to maximize convenience, install drive-throughs, and focus purely on being the most convenient pharmacy.
+                                </p>
+                                <p class="lang-id mt-2">
+                                    <strong>Walgreens</strong> menemukan Konsep Landak mereka: <em>Apotek yang Nyaman</em>. Mereka mengganti metrik "Laba per Toko" dengan "Laba per Kunjungan Pelanggan". Ini memimpin mereka untuk mengelompokkan toko (bahkan membuka dua toko berseberangan di jalan yang sama) untuk memaksimalkan kenyamanan, memasang layanan drive-through, dan fokus murni menjadi apotek paling nyaman.
+                                </p>
+                                <hr class="my-3 border-gray-200">
+                                <p class="lang-en">
+                                    <strong>Eckerd</strong> (the comparison company) had no concept. They chased "growth for growth's sake," buying a video rental chain and snack food business. They wandered outside their circles and eventually ceased to exist as an independent company.
+                                </p>
+                                <p class="lang-id">
+                                    <strong>Eckerd</strong> (perusahaan pembanding) tidak memiliki konsep. Mereka mengejar "pertumbuhan demi pertumbuhan," membeli rantai penyewaan video dan bisnis makanan ringan. Mereka berkeliaran di luar lingkaran mereka dan akhirnya berhenti eksis sebagai perusahaan independen.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-8">
+                    <div class="mb-6">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 text-sm font-medium rounded-full mb-4">Part 4</span>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                            <span class="lang-en">The Flywheel Effect</span>
+                            <span class="lang-id">Efek Roda Gila (Flywheel)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed space-y-6">
+                        <div class="bg-gradient-to-r from-gray-50 to-red-50 p-6 rounded-xl border border-gray-200">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">
+                                <span class="lang-en">No Miracle Moment</span>
+                                <span class="lang-id">Tidak Ada Momen Ajaib</span>
+                            </h3>
+                            <div class="justified-text font-sans text-[15px] leading-relaxed">
+                                <p class="lang-en">
+                                    Great transformations never happen in one fell swoop. There is no single defining action, no grand program, no one killer innovation, no solitary lucky break, no miracle moment.
+                                </p>
+                                <p class="lang-en mt-2">
+                                    Instead, the process resembles relentlessly pushing a giant, heavy <strong>flywheel</strong>, turn upon turn, building momentum until a point of breakthrough, and beyond.
+                                </p>
+                                <p class="lang-id">
+                                    Transformasi hebat tidak pernah terjadi dalam satu gerakan sekaligus. Tidak ada satu tindakan penentu, tidak ada program besar, tidak ada satu inovasi pembunuh, tidak ada satu keberuntungan, tidak ada momen ajaib.
+                                </p>
+                                <p class="lang-id mt-2">
+                                    Sebaliknya, prosesnya menyerupai mendorong <strong>roda gila</strong> (flywheel) raksasa yang berat tanpa henti, putaran demi putaran, membangun momentum hingga mencapai titik terobosan, dan seterusnya.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                            <div class="p-4 border border-green-200 bg-green-50 rounded-lg">
+                                <h4 class="font-bold text-green-800 lang-en">The Flywheel (Great Companies)</h4>
+                                <h4 class="font-bold text-green-800 lang-id">Roda Gila (Perusahaan Hebat)</h4>
+                                <p class="text-sm mt-2 lang-en">Disciplined people → Disciplined thought → Disciplined action → Momentum builds → Results improve → People get energized → More momentum.</p>
+                                <p class="text-sm mt-2 lang-id">Orang disiplin → Pemikiran disiplin → Tindakan disiplin → Momentum terbangun → Hasil meningkat → Orang bersemangat → Lebih banyak momentum.</p>
+                            </div>
+                            <div class="p-4 border border-red-200 bg-red-50 rounded-lg">
+                                <h4 class="font-bold text-red-800 lang-en">The Doom Loop (Comparison)</h4>
+                                <h4 class="font-bold text-red-800 lang-id">Lingkaran Setan (Pembanding)</h4>
+                                <p class="text-sm mt-2 lang-en">New CEO → New Direction → Reaction without understanding → Disappointing results → Fire CEO → New CEO → Repeat.</p>
+                                <p class="text-sm mt-2 lang-id">CEO Baru → Arah Baru → Reaksi tanpa pemahaman → Hasil mengecewakan → Pecat CEO → CEO Baru → Ulangi.</p>
+                            </div>
+                        </div>
+
+                         <div class="bg-white p-4 sm:p-6 border-l-4 border-gray-800 shadow-sm mt-4">
+                            <h4 class="font-bold text-gray-900 mb-2 text-lg">
+                                <span class="lang-en">Case Study: Nucor Steel</span>
+                                <span class="lang-id">Studi Kasus: Baja Nucor</span>
+                            </h4>
+                            <div class="text-sm sm:text-base text-gray-600 justified-text">
+                                <p class="lang-en">
+                                    In 1965, Nucor started building mini-mills. It wasn't overnight. They pushed the flywheel for decades. By 1975, they were profitable. By 1990, they were beating traditional steel giants. When asked for their secret, they said, "We're just honest, hard-working people." No magic pill, just consistent accumulation of momentum over 20 years.
+                                </p>
+                                <p class="lang-id">
+                                    Pada tahun 1965, Nucor mulai membangun pabrik mini (mini-mills). Itu tidak terjadi dalam semalam. Mereka mendorong roda gila selama beberapa dekade. Pada tahun 1975, mereka mendapat untung. Pada tahun 1990, mereka mengalahkan raksasa baja tradisional. Ketika ditanya rahasianya, mereka berkata, "Kami hanyalah orang-orang jujur yang bekerja keras." Tidak ada pil ajaib, hanya akumulasi momentum yang konsisten selama 20 tahun.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-8">
+                    <div class="mb-6">
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 text-sm font-medium rounded-full mb-4">Part 5</span>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                            <span class="lang-en">Discipline & Technology Accelerators</span>
+                            <span class="lang-id">Disiplin & Akselerator Teknologi</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed space-y-6">
+                         <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+                            <h4 class="font-bold text-gray-800 mb-2 lang-en">The Role of Technology</h4>
+                            <h4 class="font-bold text-gray-800 mb-2 lang-id">Peran Teknologi</h4>
+                            <p class="lang-en">
+                                Great companies never use technology as the primary means to ignite a transformation. Technology is an <strong>accelerator</strong>, not a creator, of momentum.
+                            </p>
+                            <p class="lang-id">
+                                Perusahaan hebat tidak pernah menggunakan teknologi sebagai sarana utama untuk memicu transformasi. Teknologi adalah <strong>akselerator</strong> (pemercepat), bukan pencipta momentum.
+                            </p>
+                            <br>
+                            <ul class="lang-en list-disc ml-5 space-y-2">
+                                <li><strong>The Question:</strong> Does this technology fit directly into our Hedgehog Concept?</li>
+                                <li><strong>If Yes:</strong> Become a pioneer and apply it.</li>
+                                <li><strong>If No:</strong> Ignore it or settle for parity.</li>
+                            </ul>
+                            <ul class="lang-id list-disc ml-5 space-y-2">
+                                <li><strong>Pertanyaannya:</strong> Apakah teknologi ini sesuai langsung dengan Konsep Landak kami?</li>
+                                <li><strong>Jika Ya:</strong> Jadilah pelopor dan terapkan.</li>
+                                <li><strong>Jika Tidak:</strong> Abaikan atau cukup setara dengan standar.</li>
+                            </ul>
+                             <br>
+                             <p class="lang-en bg-gray-100 p-3 rounded italic">
+                                 "You cannot make good use of technology until you know which technologies are relevant. And those are the ones that link directly to the three circles."
+                             </p>
+                             <p class="lang-id bg-gray-100 p-3 rounded italic">
+                                 "Anda tidak dapat memanfaatkan teknologi dengan baik sampai Anda tahu teknologi mana yang relevan. Dan yang relevan adalah yang terhubung langsung dengan tiga lingkaran."
+                             </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#dc2626'; // Red
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#4b5563'; // Gray
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-gray-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-gray-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
