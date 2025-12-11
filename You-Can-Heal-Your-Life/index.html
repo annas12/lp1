@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>You Can Heal Your Life — Louise Hay | Summary</title>
+    <title>You Can Heal Your Life — Louise Hay | Bilingual Summary</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -16,6 +16,10 @@
         
         .justified-text { text-align: justify; }
         .mobile-text { font-size: 16px; line-height: 1.6; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } /* Default hidden */
+        .lang-en { display: block; }
         
         @media (max-width: 640px) {
             .mobile-text { font-size: 14px; line-height: 1.5; }
@@ -80,56 +84,42 @@
             background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
             box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
         }
-        
-        .hamburger {
-            width: 24px;
-            height: 18px;
-            position: relative;
-        }
-        
-        .hamburger span {
-            display: block;
-            position: absolute;
-            height: 3px;
-            width: 100%;
+
+        /* Floating Language Button */
+        .lang-switch-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1002;
             background: white;
-            border-radius: 2px;
-            opacity: 1;
-            left: 0;
-            transform: rotate(0deg);
-            transition: .25s ease-in-out;
+            border: 2px solid #3b82f6;
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #3b82f6;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .lang-switch-float:hover {
+            background: #3b82f6;
+            color: white;
+            transform: translateY(-3px);
         }
         
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
         .hamburger span:nth-child(1) { top: 0px; }
         .hamburger span:nth-child(2) { top: 7px; }
         .hamburger span:nth-child(3) { top: 14px; }
         
-        .drawer-toggle.open .hamburger span:nth-child(1) {
-            top: 7px;
-            transform: rotate(135deg);
-        }
-        
-        .drawer-toggle.open .hamburger span:nth-child(2) {
-            opacity: 0;
-            left: -60px;
-        }
-        
-        .drawer-toggle.open .hamburger span:nth-child(3) {
-            top: 7px;
-            transform: rotate(-135deg);
-        }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
         
         .nav-item { position: relative; overflow: hidden; }
-        .nav-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
         .nav-item:hover::before { left: 100%; }
         
         @media (max-width: 768px) {
@@ -145,7 +135,11 @@
     </style>
 </head>
 <body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
-    <!-- Navigation Drawer Toggle -->
+    
+    <button class="lang-switch-float" onclick="toggleLanguage()">
+        <span class="lang-text">🇮🇩 Switch to ID</span>
+    </button>
+
     <button class="drawer-toggle" onclick="toggleDrawer()">
         <div class="hamburger">
             <span></span>
@@ -154,10 +148,8 @@
         </div>
     </button>
     
-    <!-- Navigation Overlay -->
     <div class="nav-overlay" onclick="closeDrawer()"></div>
     
-    <!-- Navigation Drawer -->
     <nav class="nav-drawer">
         <div class="p-6 border-b border-slate-600">
             <div class="flex items-center space-x-3">
@@ -166,18 +158,25 @@
                 </div>
                 <div>
                     <h2 class="text-white font-semibold text-lg">You Can Heal Your Life</h2>
-                    <p class="text-slate-300 text-sm">Book Summary</p>
+                    <p class="text-slate-300 text-sm">
+                        <span class="lang-en">Book Summary</span>
+                        <span class="lang-id">Ringkasan Buku</span>
+                    </p>
                 </div>
             </div>
         </div>
         
         <div class="p-4">
-            <h3 class="text-slate-300 text-sm font-medium uppercase tracking-wider mb-4 px-2">Table of Contents</h3>
+            <h3 class="text-slate-300 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">Table of Contents</span>
+                <span class="lang-id">Daftar Isi</span>
+            </h3>
             <ul class="space-y-2">
                 <li class="nav-item">
                     <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 active-tab text-white flex items-center space-x-3">
                         <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">📖</span>
-                        <span>Introduction</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
                     </button>
                 </li>
                 <li class="nav-item">
@@ -185,7 +184,10 @@
                         <span class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
                         <div class="text-left">
                             <div class="font-medium">Part 1</div>
-                            <div class="text-xs text-slate-400">Author, Story & Core Idea</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Author, Story & Core Idea</span>
+                                <span class="lang-id">Penulis, Cerita & Ide Utama</span>
+                            </div>
                         </div>
                     </button>
                 </li>
@@ -194,7 +196,10 @@
                         <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
                         <div class="text-left">
                             <div class="font-medium">Part 2</div>
-                            <div class="text-xs text-slate-400">Mind–Body Connection & Beliefs</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Mind–Body Connection & Beliefs</span>
+                                <span class="lang-id">Koneksi Pikiran-Tubuh & Keyakinan</span>
+                            </div>
                         </div>
                     </button>
                 </li>
@@ -203,7 +208,10 @@
                         <span class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
                         <div class="text-left">
                             <div class="font-medium">Part 3</div>
-                            <div class="text-xs text-slate-400">Affirmations, Self-Love & Forgiveness</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Affirmations, Self-Love & Forgiveness</span>
+                                <span class="lang-id">Afirmasi, Cinta Diri & Pengampunan</span>
+                            </div>
                         </div>
                     </button>
                 </li>
@@ -212,7 +220,10 @@
                             <span class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
                             <div class="text-left">
                                 <div class="font-medium">Part 4</div>
-                                <div class="text-xs text-slate-400">Healing Life Areas</div>
+                                <div class="text-xs text-slate-400">
+                                    <span class="lang-en">Healing Life Areas</span>
+                                    <span class="lang-id">Menyembuhkan Area Kehidupan</span>
+                                </div>
                             </div>
                     </button>
                 </li>
@@ -221,7 +232,10 @@
                             <span class="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
                             <div class="text-left">
                                 <div class="font-medium">Part 5</div>
-                                <div class="text-xs text-slate-400">Practice, Limits & Conclusion</div>
+                                <div class="text-xs text-slate-400">
+                                    <span class="lang-en">Practice, Limits & Conclusion</span>
+                                    <span class="lang-id">Praktik, Batasan & Kesimpulan</span>
+                                </div>
                             </div>
                     </button>
                 </li>
@@ -236,7 +250,6 @@
         </div>
     </nav>
 
-    <!-- Header -->
     <header class="bg-white shadow-sm border-b border-slate-200">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
             <div class="text-center">
@@ -244,7 +257,8 @@
                     You Can Heal Your Life
                 </h1>
                 <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
-                    The power of thoughts, self-love, and inner healing
+                    <span class="lang-en">The power of thoughts, self-love, and inner healing</span>
+                    <span class="lang-id">Kekuatan pikiran, cinta diri, dan penyembuhan batin</span>
                 </p>
                 <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-600 mx-auto mt-3 sm:mt-4 rounded-full"></div>
             </div>
@@ -255,67 +269,82 @@
         <main>
             <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
                     
-                <!-- Introduction -->
                 <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Introduction</span>
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">Introduction</span>
+                            <span class="lang-id">Pendahuluan</span>
+                        </span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            Welcome to “You Can Heal Your Life”
+                            <span class="lang-en">Welcome to “You Can Heal Your Life”</span>
+                            <span class="lang-id">Selamat Datang di “You Can Heal Your Life”</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
-                        <p class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-blue-500 pl-4 sm:pl-6 italic mobile-text justified-text">
-                            If you are willing to change your thinking, says Louise Hay, you can change your life — 
-                            including your relationship with your body, your past, and your future.
-                        </p>
+                        <div class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-blue-500 pl-4 sm:pl-6 italic mobile-text justified-text">
+                            <span class="lang-en">If you are willing to change your thinking, says Louise Hay, you can change your life — including your relationship with your body, your past, and your future.</span>
+                            <span class="lang-id">Jika Anda bersedia mengubah cara berpikir Anda, kata Louise Hay, Anda dapat mengubah hidup Anda — termasuk hubungan Anda dengan tubuh, masa lalu, dan masa depan Anda.</span>
+                        </div>
                         
-                        <p class="mobile-text justified-text">
-                            <em>You Can Heal Your Life</em> is a classic self-help and spiritual healing book 
-                            that combines affirmations, metaphysical ideas, and emotional work. 
-                            Louise Hay teaches that many physical and emotional problems are linked to 
-                            patterns of self-criticism, guilt, resentment, and fear — and that by choosing 
-                            kinder, more loving thoughts, we can transform our experience.
-                        </p>
+                        <div class="mobile-text justified-text">
+                            <span class="lang-en">
+                                <em>You Can Heal Your Life</em> is a classic self-help and spiritual healing book that combines affirmations, metaphysical ideas, and emotional work. Louise Hay teaches that many physical and emotional problems are linked to patterns of self-criticism, guilt, resentment, and fear — and that by choosing kinder, more loving thoughts, we can transform our experience.
+                            </span>
+                            <span class="lang-id">
+                                <em>You Can Heal Your Life</em> adalah buku klasik tentang pengembangan diri dan penyembuhan spiritual yang menggabungkan afirmasi, ide-ide metafisik, dan kerja emosional. Louise Hay mengajarkan bahwa banyak masalah fisik dan emosional terkait dengan pola kritik diri, rasa bersalah, kebencian, dan ketakutan — dan dengan memilih pikiran yang lebih baik dan penuh kasih, kita dapat mengubah pengalaman kita.
+                            </span>
+                        </div>
 
-                        <p class="mobile-text justified-text">
-                            This summary presents the core ideas of the book in five parts: 
-                            the author’s story and main philosophy, the mind–body connection, 
-                            the tools of affirmations and forgiveness, how healing is applied to life areas, 
-                            and finally how to practice this work wisely and realistically.
-                        </p>
+                        <div class="mobile-text justified-text">
+                            <span class="lang-en">
+                                This summary presents the core ideas of the book in five parts: the author’s story and main philosophy, the mind–body connection, the tools of affirmations and forgiveness, how healing is applied to life areas, and finally how to practice this work wisely and realistically.
+                            </span>
+                            <span class="lang-id">
+                                Ringkasan ini menyajikan ide-ide inti buku dalam lima bagian: kisah penulis dan filosofi utama, koneksi pikiran-tubuh, alat afirmasi dan pengampunan, bagaimana penyembuhan diterapkan pada area kehidupan, dan akhirnya bagaimana mempraktikkan hal ini dengan bijak dan realistis.
+                            </span>
+                        </div>
                         
                         <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-100">
-                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">In this summary you will learn:</h4>
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">
+                                <span class="lang-en">In this summary you will learn:</span>
+                                <span class="lang-id">Dalam ringkasan ini Anda akan mempelajari:</span>
+                            </h4>
                             <ul class="space-y-2 text-slate-700 mobile-text">
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">Who Louise Hay is and how her personal story shaped her philosophy.</span>
+                                    <span class="justified-text lang-en">Who Louise Hay is and how her personal story shaped her philosophy.</span>
+                                    <span class="justified-text lang-id">Siapa Louise Hay dan bagaimana kisah pribadinya membentuk filosofinya.</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">How thoughts and beliefs are connected to emotions, behavior, and (in her view) physical health.</span>
+                                    <span class="justified-text lang-en">How thoughts and beliefs are connected to emotions, behavior, and (in her view) physical health.</span>
+                                    <span class="justified-text lang-id">Bagaimana pikiran dan keyakinan terhubung dengan emosi, perilaku, dan (menurut pandangannya) kesehatan fisik.</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">How to use affirmations, mirror work, and self-love practices as healing tools.</span>
+                                    <span class="justified-text lang-en">How to use affirmations, mirror work, and self-love practices as healing tools.</span>
+                                    <span class="justified-text lang-id">Cara menggunakan afirmasi, teknik cermin, dan praktik mencintai diri sendiri sebagai alat penyembuhan.</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">How the book approaches healing around the body, relationships, work, and prosperity — and what its limits are.</span>
+                                    <span class="justified-text lang-en">How the book approaches healing around the body, relationships, work, and prosperity — and what its limits are.</span>
+                                    <span class="justified-text lang-id">Bagaimana buku ini mendekati penyembuhan seputar tubuh, hubungan, pekerjaan, dan kemakmuran — serta apa batasannya.</span>
                                 </li>
                             </ul>
                         </div>
                         
-                        <p class="mobile-text justified-text">
-                            You do not have to agree with every metaphysical claim to benefit from this book. 
-                            You can treat it as a gentle invitation to examine how you talk to yourself, 
-                            how you hold on to pain, and how a more loving inner dialogue might change your life.
-                        </p>
+                        <div class="mobile-text justified-text">
+                            <span class="lang-en">
+                                You do not have to agree with every metaphysical claim to benefit from this book. You can treat it as a gentle invitation to examine how you talk to yourself, how you hold on to pain, and how a more loving inner dialogue might change your life.
+                            </span>
+                            <span class="lang-id">
+                                Anda tidak harus setuju dengan setiap klaim metafisik untuk mendapatkan manfaat dari buku ini. Anda dapat menganggapnya sebagai undangan lembut untuk memeriksa cara Anda berbicara kepada diri sendiri, cara Anda memegang rasa sakit, dan bagaimana dialog batin yang lebih penuh kasih dapat mengubah hidup Anda.
+                            </span>
+                        </div>
                     </div>
                 </section>
 
-                <!-- Part 1 – Author, Story & Core Idea -->
                 <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
@@ -323,415 +352,579 @@
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">
-                            Louise Hay, Her Story & the Central Philosophy
+                            <span class="lang-en">Louise Hay, Her Story & the Central Philosophy</span>
+                            <span class="lang-id">Louise Hay, Kisahnya & Filosofi Utama</span>
                         </h3>
                         <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
 
-<p>
-Louise Hay (1926–2017) was a motivational author and founder of Hay House, a publishing company 
-focused on personal growth and spirituality. Her life story included childhood abuse, poverty, 
-and later a cancer diagnosis. She claimed to have contributed to her own healing through inner work, 
-forgiveness, and affirmations.
-</p>
+                            <p class="lang-en">
+                                Louise Hay (1926–2017) was a motivational author and founder of Hay House, a publishing company focused on personal growth and spirituality. Her life story included childhood abuse, poverty, and later a cancer diagnosis. She claimed to have contributed to her own healing through inner work, forgiveness, and affirmations.
+                            </p>
+                            <p class="lang-id">
+                                Louise Hay (1926–2017) adalah seorang penulis motivasi dan pendiri Hay House, sebuah perusahaan penerbitan yang berfokus pada pertumbuhan pribadi dan spiritualitas. Kisah hidupnya meliputi kekerasan masa kecil, kemiskinan, dan kemudian diagnosis kanker. Dia mengklaim telah berkontribusi pada penyembuhannya sendiri melalui kerja batin, pengampunan, dan afirmasi.
+                            </p>
+                            <br>
 
-<p>
-From her experiences and work with clients, she developed a simple but radical idea:
-<strong>our thoughts and beliefs are powerful creative forces in our lives.</strong>
-We may not control everything that happens to us, but we have enormous influence over how we respond, 
-what we expect, and how we treat ourselves.
-</p>
+                            <p class="lang-en">
+                                From her experiences and work with clients, she developed a simple but radical idea: <strong>our thoughts and beliefs are powerful creative forces in our lives.</strong> We may not control everything that happens to us, but we have enormous influence over how we respond, what we expect, and how we treat ourselves.
+                            </p>
+                            <p class="lang-id">
+                                Dari pengalaman dan pekerjaannya dengan klien, ia mengembangkan ide yang sederhana namun radikal: <strong>pikiran dan keyakinan kita adalah kekuatan kreatif yang kuat dalam hidup kita.</strong> Kita mungkin tidak mengendalikan semua yang terjadi pada kita, tetapi kita memiliki pengaruh besar atas cara kita merespons, apa yang kita harapkan, dan bagaimana kita memperlakukan diri sendiri.
+                            </p>
+                            <br>
 
-<h3>The Core Idea: “Every Thought Is Creating Our Future”</h3>
+                            <h3 class="lang-en">The Core Idea: “Every Thought Is Creating Our Future”</h3>
+                            <h3 class="lang-id">Ide Inti: “Setiap Pikiran Sedang Menciptakan Masa Depan Kita”</h3>
+                            <br>
 
-<p>
-The book’s central philosophy can be summarized in a few key statements:
-</p>
+                            <p class="lang-en">The book’s central philosophy can be summarized in a few key statements:</p>
+                            <p class="lang-id">Filosofi utama buku ini dapat diringkas dalam beberapa pernyataan kunci:</p>
 
-<ul>
-  <li>Our outer life reflects our inner beliefs.</li>
-  <li>Self-hatred, guilt, and resentment are at the root of much suffering.</li>
-  <li>Love, acceptance, and forgiveness are the most powerful healing energies.</li>
-  <li>When we change our thinking, we often see changes in how we feel, act, and even how our body responds.</li>
-</ul>
+                            <ul class="lang-en" style="list-style-type: disc; margin-left: 20px;">
+                                <li>Our outer life reflects our inner beliefs.</li>
+                                <li>Self-hatred, guilt, and resentment are at the root of much suffering.</li>
+                                <li>Love, acceptance, and forgiveness are the most powerful healing energies.</li>
+                                <li>When we change our thinking, we often see changes in how we feel, act, and even how our body responds.</li>
+                            </ul>
+                            <ul class="lang-id" style="list-style-type: disc; margin-left: 20px;">
+                                <li>Kehidupan luar kita mencerminkan keyakinan batin kita.</li>
+                                <li>Kebencian pada diri sendiri, rasa bersalah, dan dendam adalah akar dari banyak penderitaan.</li>
+                                <li>Cinta, penerimaan, dan pengampunan adalah energi penyembuhan yang paling kuat.</li>
+                                <li>Ketika kita mengubah pemikiran kita, kita sering melihat perubahan dalam cara kita merasa, bertindak, dan bahkan bagaimana tubuh kita merespons.</li>
+                            </ul>
+                            <br>
 
-<p>
-Louise Hay does not separate psychological and spiritual language. 
-She talks about the <em>Universe</em>, <em>Life</em>, or <em>God</em> as a loving intelligence that always says “yes” 
-to the thoughts we repeatedly hold. If we repeatedly think “I am not good enough,” 
-Life mirrors that belief back in our experiences. 
-If we practice thinking “I am worthy and lovable,” 
-we begin to notice and attract situations that match that new belief.
-</p>
+                            <p class="lang-en">
+                                Louise Hay does not separate psychological and spiritual language. She talks about the <em>Universe</em>, <em>Life</em>, or <em>God</em> as a loving intelligence that always says “yes” to the thoughts we repeatedly hold. If we repeatedly think “I am not good enough,” Life mirrors that belief back in our experiences. If we practice thinking “I am worthy and lovable,” we begin to notice and attract situations that match that new belief.
+                            </p>
+                            <p class="lang-id">
+                                Louise Hay tidak memisahkan bahasa psikologis dan spiritual. Dia berbicara tentang <em>Semesta</em>, <em>Kehidupan</em>, atau <em>Tuhan</em> sebagai kecerdasan penuh kasih yang selalu berkata "ya" pada pikiran yang kita pegang berulang kali. Jika kita terus berpikir "Saya tidak cukup baik," Kehidupan mencerminkan keyakinan itu kembali dalam pengalaman kita. Jika kita berlatih berpikir "Saya berharga dan layak dicintai," kita mulai memperhatikan dan menarik situasi yang sesuai dengan keyakinan baru itu.
+                            </p>
+                            <br>
 
-<p>
-Whether you take this literally or symbolically, the practical question she asks is:
-<strong>“What do you keep telling yourself — and is it helping you or hurting you?”</strong>
-</p>
+                            <p class="lang-en">
+                                Whether you take this literally or symbolically, the practical question she asks is: <strong>“What do you keep telling yourself — and is it helping you or hurting you?”</strong>
+                            </p>
+                            <p class="lang-id">
+                                Apakah Anda menganggap ini secara harfiah atau simbolis, pertanyaan praktis yang dia ajukan adalah: <strong>“Apa yang terus Anda katakan pada diri sendiri — dan apakah itu membantu Anda atau menyakiti Anda?”</strong>
+                            </p>
 
-</div>
+                        </div>
                         
                         <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl">
-                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Key facts about the book:</h4>
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">
+                                <span class="lang-en">Key facts about the book:</span>
+                                <span class="lang-id">Fakta kunci tentang buku ini:</span>
+                            </h4>
                             <ul class="space-y-2 mobile-text">
-                                <li class="justified-text"><strong>Publication:</strong><br>Originally published in the 1980s and has remained a long-selling self-help classic.</li> 
-                                <li class="justified-text"><strong>Author:</strong><br>Louise L. Hay.</li>
-                                <li class="justified-text"><strong>Core claim:</strong><br>By changing your thoughts, beliefs, and self-talk — especially around self-worth — you can transform your life and support healing.</li>
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>Publication:</strong> Originally published in the 1980s and has remained a long-selling self-help classic.</span>
+                                    <span class="lang-id"><strong>Publikasi:</strong> Awalnya diterbitkan pada tahun 1980-an dan tetap menjadi buku klasik pengembangan diri yang laris.</span>
+                                </li> 
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>Author:</strong> Louise L. Hay.</span>
+                                    <span class="lang-id"><strong>Penulis:</strong> Louise L. Hay.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>Core claim:</strong> By changing your thoughts, beliefs, and self-talk — especially around self-worth — you can transform your life and support healing.</span>
+                                    <span class="lang-id"><strong>Klaim utama:</strong> Dengan mengubah pikiran, keyakinan, dan cara bicara pada diri sendiri — terutama seputar harga diri — Anda dapat mengubah hidup Anda dan mendukung penyembuhan.</span>
+                                </li>
                             </ul>
                         </div>
                         
-                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">The Structure of the Book</h3>
+                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">
+                            <span class="lang-en">The Structure of the Book</span>
+                            <span class="lang-id">Struktur Buku</span>
+                        </h3>
                         <p class="mobile-text justified-text">
-                            The book roughly follows this flow:
+                            <span class="lang-en">The book roughly follows this flow:</span>
+                            <span class="lang-id">Buku ini secara garis besar mengikuti alur ini:</span>
                         </p>
                         
                         <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-amber-200">
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                                 <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                                    <h5 class="font-medium text-blue-700 text-sm sm:text-base">Awareness</h5>
-                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
-                                        Seeing current beliefs, patterns, and self-talk clearly.
-                                    </p>
+                                    <h5 class="font-medium text-blue-700 text-sm sm:text-base">
+                                        <span class="lang-en">Awareness</span>
+                                        <span class="lang-id">Kesadaran</span>
+                                    </h5>
+                                    <div class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        <span class="lang-en">Seeing current beliefs, patterns, and self-talk clearly.</span>
+                                        <span class="lang-id">Melihat keyakinan, pola, dan pembicaraan diri saat ini dengan jelas.</span>
+                                    </div>
                                 </div>
                                 <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                                    <h5 class="font-medium text-green-700 text-sm sm:text-base">Release</h5>
-                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
-                                        Letting go of guilt, blame, and resentment — especially toward self and parents.
-                                    </p>
+                                    <h5 class="font-medium text-green-700 text-sm sm:text-base">
+                                        <span class="lang-en">Release</span>
+                                        <span class="lang-id">Pelepasan</span>
+                                    </h5>
+                                    <div class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        <span class="lang-en">Letting go of guilt, blame, and resentment — especially toward self and parents.</span>
+                                        <span class="lang-id">Melepaskan rasa bersalah, menyalahkan, dan dendam — terutama terhadap diri sendiri dan orang tua.</span>
+                                    </div>
                                 </div>
                                 <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                                    <h5 class="font-medium text-purple-700 text-sm sm:text-base">Reprogramming</h5>
-                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
-                                        Practicing new thoughts and affirmations based on love, trust, and acceptance.
-                                    </p>
+                                    <h5 class="font-medium text-purple-700 text-sm sm:text-base">
+                                        <span class="lang-en">Reprogramming</span>
+                                        <span class="lang-id">Pemrograman Ulang</span>
+                                    </h5>
+                                    <div class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        <span class="lang-en">Practicing new thoughts and affirmations based on love, trust, and acceptance.</span>
+                                        <span class="lang-id">Mempraktikkan pikiran dan afirmasi baru berdasarkan cinta, kepercayaan, dan penerimaan.</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <p class="mobile-text justified-text">
-                            The next parts dive deeper into how she connects thoughts to the body, 
-                            and how she uses affirmations and self-love as daily tools.
+                            <span class="lang-en">The next parts dive deeper into how she connects thoughts to the body, and how she uses affirmations and self-love as daily tools.</span>
+                            <span class="lang-id">Bagian selanjutnya membahas lebih dalam bagaimana dia menghubungkan pikiran dengan tubuh, dan bagaimana dia menggunakan afirmasi dan cinta diri sebagai alat sehari-hari.</span>
                         </p>
                     </div>
                 </section>
 
-                <!-- Part 2 – Mind–Body Connection & Beliefs -->
                 <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            Mind–Body Connection & Foundational Beliefs
+                            <span class="lang-en">Mind–Body Connection & Foundational Beliefs</span>
+                            <span class="lang-id">Koneksi Pikiran–Tubuh & Keyakinan Dasar</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <div class="bg-blue-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
                             <h3 class="text-lg sm:text-xl font-semibold text-blue-800 mb-3 mobile-subtitle">
-                                How Thoughts and Beliefs Affect Our Lives
+                                <span class="lang-en">How Thoughts and Beliefs Affect Our Lives</span>
+                                <span class="lang-id">Bagaimana Pikiran dan Keyakinan Mempengaruhi Hidup Kita</span>
                             </h3>
                             <p class="text-blue-700 mobile-text justified-text">
-                                Louise Hay suggests that every experience in our life reflects a pattern of thought. 
-                                She does not mean we consciously “choose” every event, but that our inner beliefs 
-                                shape how we interpret events, what we tolerate, and what we attract or reject.
+                                <span class="lang-en">Louise Hay suggests that every experience in our life reflects a pattern of thought. She does not mean we consciously “choose” every event, but that our inner beliefs shape how we interpret events, what we tolerate, and what we attract or reject.</span>
+                                <span class="lang-id">Louise Hay menyarankan bahwa setiap pengalaman dalam hidup kita mencerminkan pola pikir. Dia tidak bermaksud bahwa kita secara sadar "memilih" setiap peristiwa, tetapi keyakinan batin kita membentuk cara kita menafsirkan peristiwa, apa yang kita toleransi, dan apa yang kita tarik atau tolak.</span>
                             </p>
                         </div>
 
                         <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
 
-<h3>Key Foundational Beliefs in the Book</h3>
+                            <h3 class="lang-en">Key Foundational Beliefs in the Book</h3>
+                            <h3 class="lang-id">Keyakinan Dasar Utama dalam Buku Ini</h3>
+                            <br>
 
-<ul>
-  <li><strong>“I am not good enough” is one of the most destructive core beliefs.</strong><br>
-  It leads to self-sabotage, staying in harmful situations, and rejecting love and success.</li>
+                            <ul class="lang-en" style="list-style-type: disc; margin-left: 20px;">
+                                <li><strong>“I am not good enough” is one of the most destructive core beliefs.</strong><br>
+                                It leads to self-sabotage, staying in harmful situations, and rejecting love and success.</li>
 
-  <li><strong>Most of our negative beliefs come from childhood.</strong><br>
-  As children we absorb messages from parents, family, culture, and trauma. 
-  We often continue living by these scripts long after they stop being relevant.</li>
+                                <li><strong>Most of our negative beliefs come from childhood.</strong><br>
+                                As children we absorb messages from parents, family, culture, and trauma. We often continue living by these scripts long after they stop being relevant.</li>
 
-  <li><strong>What we believe, we tend to recreate.</strong><br>
-  If we deeply believe “people always abandon me,” we may unconsciously choose partners and 
-  dynamics that confirm that story.</li>
+                                <li><strong>What we believe, we tend to recreate.</strong><br>
+                                If we deeply believe “people always abandon me,” we may unconsciously choose partners and dynamics that confirm that story.</li>
 
-  <li><strong>We can choose new beliefs.</strong><br>
-  Beliefs are not fixed truths; they are learned. This means they can be questioned, softened, 
-  and eventually replaced with kinder, more empowering alternatives.</li>
-</ul>
+                                <li><strong>We can choose new beliefs.</strong><br>
+                                Beliefs are not fixed truths; they are learned. This means they can be questioned, softened, and eventually replaced with kinder, more empowering alternatives.</li>
+                            </ul>
 
-<h3>The Mind–Body Link (Louise Hay’s View)</h3>
+                            <ul class="lang-id" style="list-style-type: disc; margin-left: 20px;">
+                                <li><strong>“Saya tidak cukup baik” adalah salah satu keyakinan inti yang paling merusak.</strong><br>
+                                Hal ini mengarah pada sabotase diri, bertahan dalam situasi berbahaya, dan menolak cinta serta kesuksesan.</li>
 
-<p>
-One of the most controversial parts of the book is her claim that physical conditions often reflect 
-emotional and mental patterns. For example, she might connect:
-</p>
+                                <li><strong>Sebagian besar keyakinan negatif kita berasal dari masa kanak-kanak.</strong><br>
+                                Sebagai anak-anak, kita menyerap pesan dari orang tua, keluarga, budaya, dan trauma. Kita sering terus hidup berdasarkan naskah ini lama setelah tidak lagi relevan.</li>
 
-<ul>
-  <li>Back pain → feeling unsupported.</li>
-  <li>Throat issues → fear of expressing oneself.</li>
-  <li>Stomach problems → difficulty “digesting” life or new experiences.</li>
-</ul>
+                                <li><strong>Apa yang kita yakini, cenderung kita ciptakan kembali.</strong><br>
+                                Jika kita sangat yakin "orang selalu meninggalkan saya," kita mungkin secara tidak sadar memilih pasangan dan dinamika yang mengonfirmasi cerita itu.</li>
 
-<p>
-Louise Hay offers a large chart linking symptoms to possible emotional causes and corresponding affirmations. 
-She does not say this replaces medical care; rather, she invites readers to explore what emotional message 
-a symptom might carry.
-</p>
+                                <li><strong>Kita bisa memilih keyakinan baru.</strong><br>
+                                Keyakinan bukanlah kebenaran yang tetap; itu dipelajari. Ini berarti mereka dapat dipertanyakan, dilunakkan, dan akhirnya diganti dengan alternatif yang lebih baik dan memberdayakan.</li>
+                            </ul>
+                            <br>
 
-<p>
-You can choose how literally to take this. Even if you do not believe that thoughts cause illness, 
-it can still be helpful to ask: 
-<strong>“If this part of my body had a message for me, what would it say?”</strong>
-This perspective can open gentle reflection on stress, boundaries, and unspoken feelings.
-</p>
+                            <h3 class="lang-en">The Mind–Body Link (Louise Hay’s View)</h3>
+                            <h3 class="lang-id">Tautan Pikiran–Tubuh (Pandangan Louise Hay)</h3>
+                            <br>
 
-</div>
+                            <p class="lang-en">One of the most controversial parts of the book is her claim that physical conditions often reflect emotional and mental patterns. For example, she might connect:</p>
+                            <p class="lang-id">Salah satu bagian paling kontroversial dari buku ini adalah klaimnya bahwa kondisi fisik sering mencerminkan pola emosional dan mental. Misalnya, dia mungkin menghubungkan:</p>
+
+                            <ul class="lang-en" style="list-style-type: disc; margin-left: 20px;">
+                                <li>Back pain → feeling unsupported.</li>
+                                <li>Throat issues → fear of expressing oneself.</li>
+                                <li>Stomach problems → difficulty “digesting” life or new experiences.</li>
+                            </ul>
+                            <ul class="lang-id" style="list-style-type: disc; margin-left: 20px;">
+                                <li>Sakit punggung → merasa tidak didukung.</li>
+                                <li>Masalah tenggorokan → takut mengekspresikan diri.</li>
+                                <li>Masalah perut → kesulitan “mencerna” hidup atau pengalaman baru.</li>
+                            </ul>
+                            <br>
+
+                            <p class="lang-en">
+                                Louise Hay offers a large chart linking symptoms to possible emotional causes and corresponding affirmations. She does not say this replaces medical care; rather, she invites readers to explore what emotional message a symptom might carry.
+                            </p>
+                            <p class="lang-id">
+                                Louise Hay menawarkan tabel besar yang menghubungkan gejala dengan kemungkinan penyebab emosional dan afirmasi yang sesuai. Dia tidak mengatakan ini menggantikan perawatan medis; melainkan, dia mengundang pembaca untuk mengeksplorasi pesan emosional apa yang mungkin dibawa oleh suatu gejala.
+                            </p>
+                            <br>
+
+                            <p class="lang-en">
+                                You can choose how literally to take this. Even if you do not believe that thoughts cause illness, it can still be helpful to ask: <strong>“If this part of my body had a message for me, what would it say?”</strong> This perspective can open gentle reflection on stress, boundaries, and unspoken feelings.
+                            </p>
+                            <p class="lang-id">
+                                Anda dapat memilih seberapa harfiah Anda menerima ini. Bahkan jika Anda tidak percaya bahwa pikiran menyebabkan penyakit, masih bisa membantu untuk bertanya: <strong>“Jika bagian tubuh saya ini memiliki pesan untuk saya, apa yang akan dikatakannya?”</strong> Perspektif ini dapat membuka refleksi lembut tentang stres, batasan, dan perasaan yang tidak terungkap.
+                            </p>
+
+                        </div>
 
                         <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-green-200">
                             <h4 class="font-semibold text-green-800 mb-3 text-sm sm:text-base mobile-subtitle">
-                                Practical Reflection Exercise
+                                <span class="lang-en">Practical Reflection Exercise</span>
+                                <span class="lang-id">Latihan Refleksi Praktis</span>
                             </h4>
                             <ul class="space-y-2 text-green-700 mobile-text">
-                                <li class="justified-text">• Notice one repeating problem in your life (physical, emotional, or situational).</li>
-                                <li class="justified-text">• Ask: “What belief about myself or life might be feeding this pattern?”</li>
-                                <li class="justified-text">• Write that belief down. Then ask: “Is this absolutely true? Who taught me this?”</li>
-                                <li class="justified-text">• Begin imagining an opposite, kinder belief that might also be possible.</li>
+                                <li class="justified-text">
+                                    <span class="lang-en">• Notice one repeating problem in your life (physical, emotional, or situational).</span>
+                                    <span class="lang-id">• Perhatikan satu masalah yang berulang dalam hidup Anda (fisik, emosional, atau situasional).</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">• Ask: “What belief about myself or life might be feeding this pattern?”</span>
+                                    <span class="lang-id">• Tanyakan: “Keyakinan apa tentang diri saya atau hidup yang mungkin memberi makan pola ini?”</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">• Write that belief down. Then ask: “Is this absolutely true? Who taught me this?”</span>
+                                    <span class="lang-id">• Tulis keyakinan itu. Lalu tanyakan: “Apakah ini benar-benar mutlak? Siapa yang mengajari saya ini?”</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">• Begin imagining an opposite, kinder belief that might also be possible.</span>
+                                    <span class="lang-id">• Mulailah membayangkan keyakinan yang berlawanan dan lebih baik yang mungkin juga terjadi.</span>
+                                </li>
                             </ul>
                         </div>
 
                         <p class="mobile-text justified-text">
-                            This part of the book is less about proving a theory and more about inviting you to use curiosity. 
-                            Instead of seeing yourself as a passive victim of life, you start seeing areas where inner change is possible.
+                            <span class="lang-en">This part of the book is less about proving a theory and more about inviting you to use curiosity. Instead of seeing yourself as a passive victim of life, you start seeing areas where inner change is possible.</span>
+                            <span class="lang-id">Bagian buku ini kurang tentang membuktikan teori dan lebih tentang mengundang Anda untuk menggunakan rasa ingin tahu. Daripada melihat diri Anda sebagai korban pasif kehidupan, Anda mulai melihat area di mana perubahan batin dimungkinkan.</span>
                         </p>
                     </div>
                 </section>
 
-                <!-- Part 3 – Affirmations, Self-Love & Forgiveness -->
                 <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            Affirmations, Self-Love & Forgiveness Work
+                            <span class="lang-en">Affirmations, Self-Love & Forgiveness Work</span>
+                            <span class="lang-id">Afirmasi, Cinta Diri & Kerja Pengampunan</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <p class="mobile-text justified-text">
-                            For Louise Hay, healing is not just understanding where beliefs come from; 
-                            it is about practicing new inner language. Her primary tools are 
-                            <strong>affirmations</strong>, <strong>mirror work</strong>, and <strong>forgiveness</strong>.
+                            <span class="lang-en">For Louise Hay, healing is not just understanding where beliefs come from; it is about practicing new inner language. Her primary tools are <strong>affirmations</strong>, <strong>mirror work</strong>, and <strong>forgiveness</strong>.</span>
+                            <span class="lang-id">Bagi Louise Hay, penyembuhan bukan hanya memahami dari mana keyakinan berasal; ini tentang mempraktikkan bahasa batin baru. Alat utamanya adalah <strong>afirmasi</strong>, <strong>teknik cermin</strong>, dan <strong>pengampunan</strong>.</span>
                         </p>
                         
                         <div class="bg-green-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-green-200">
                             <h3 class="text-lg sm:text-xl font-semibold text-green-800 mb-3 mobile-subtitle">
-                                What Are Affirmations?
+                                <span class="lang-en">What Are Affirmations?</span>
+                                <span class="lang-id">Apa Itu Afirmasi?</span>
                             </h3>
                             <p class="mobile-text justified-text">
-                                Affirmations are positive statements about yourself or your life that you repeat 
-                                regularly to help create new mental patterns. 
-                                For example:
+                                <span class="lang-en">Affirmations are positive statements about yourself or your life that you repeat regularly to help create new mental patterns. For example:</span>
+                                <span class="lang-id">Afirmasi adalah pernyataan positif tentang diri Anda atau hidup Anda yang Anda ulangi secara teratur untuk membantu menciptakan pola mental baru. Contohnya:</span>
                             </p>
                             <ul class="list-disc ml-5 space-y-1 mobile-text text-slate-700">
-                                <li class="justified-text">“I am willing to change.”</li>
-                                <li class="justified-text">“I am learning to love and accept myself exactly as I am.”</li>
-                                <li class="justified-text">“I deserve good in all areas of my life.”</li>
+                                <li class="justified-text">
+                                    <span class="lang-en">“I am willing to change.”</span>
+                                    <span class="lang-id">“Saya bersedia untuk berubah.”</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">“I am learning to love and accept myself exactly as I am.”</span>
+                                    <span class="lang-id">“Saya belajar mencintai dan menerima diri saya apa adanya.”</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">“I deserve good in all areas of my life.”</span>
+                                    <span class="lang-id">“Saya berhak mendapatkan kebaikan di semua area kehidupan saya.”</span>
+                                </li>
                             </ul>
                             <p class="mobile-text justified-text mt-2">
-                                At first these may feel fake. Louise Hay says this is normal; 
-                                affirmations are not a description of the present, but seeds for the future.
+                                <span class="lang-en">At first these may feel fake. Louise Hay says this is normal; affirmations are not a description of the present, but seeds for the future.</span>
+                                <span class="lang-id">Awalnya ini mungkin terasa palsu. Louise Hay mengatakan ini normal; afirmasi bukanlah deskripsi masa kini, tetapi benih untuk masa depan.</span>
                             </p>
                         </div>
 
                         <div class="bg-blue-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
                             <h3 class="text-lg sm:text-xl font-semibold text-blue-800 mb-3 mobile-subtitle">
-                                Mirror Work: Looking Yourself in the Eyes
+                                <span class="lang-en">Mirror Work: Looking Yourself in the Eyes</span>
+                                <span class="lang-id">Teknik Cermin: Menatap Mata Sendiri</span>
                             </h3>
                             <p class="mobile-text justified-text">
-                                One of her signature practices is <strong>mirror work</strong>: 
-                                standing in front of a mirror, looking into your own eyes, and saying loving affirmations.
+                                <span class="lang-en">One of her signature practices is <strong>mirror work</strong>: standing in front of a mirror, looking into your own eyes, and saying loving affirmations.</span>
+                                <span class="lang-id">Salah satu praktik khasnya adalah <strong>teknik cermin</strong>: berdiri di depan cermin, menatap mata Anda sendiri, dan mengucapkan afirmasi penuh kasih.</span>
                             </p>
                             <p class="mobile-text justified-text">
-                                Many people find this extremely uncomfortable at first. 
-                                That discomfort reveals how much self-judgment is present. 
-                                Persisting gently — even starting with “I am willing to learn to love you” — 
-                                can slowly soften inner resistance and build a kinder relationship with yourself.
+                                <span class="lang-en">Many people find this extremely uncomfortable at first. That discomfort reveals how much self-judgment is present. Persisting gently — even starting with “I am willing to learn to love you” — can slowly soften inner resistance and build a kinder relationship with yourself.</span>
+                                <span class="lang-id">Banyak orang merasa ini sangat tidak nyaman pada awalnya. Ketidaknyamanan itu mengungkapkan seberapa besar penilaian diri yang ada. Bertahan dengan lembut — bahkan mulai dengan “Saya bersedia belajar mencintaimu” — perlahan dapat melunakkan resistensi batin dan membangun hubungan yang lebih baik dengan diri sendiri.</span>
                             </p>
                         </div>
 
                         <div class="bg-purple-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-purple-200">
                             <h3 class="text-lg sm:text-xl font-semibold text-purple-800 mb-3 mobile-subtitle">
-                                Forgiveness as a Healing Force
+                                <span class="lang-en">Forgiveness as a Healing Force</span>
+                                <span class="lang-id">Pengampunan sebagai Kekuatan Penyembuhan</span>
                             </h3>
                             <p class="mobile-text justified-text">
-                                Forgiveness is central in the book, especially forgiveness of parents and oneself. 
-                                Louise Hay is clear that forgiving does <em>not</em> mean saying harmful behavior was okay. 
-                                Instead, it means releasing the ongoing emotional poison that keeps you tied to the past.
+                                <span class="lang-en">Forgiveness is central in the book, especially forgiveness of parents and oneself. Louise Hay is clear that forgiving does <em>not</em> mean saying harmful behavior was okay. Instead, it means releasing the ongoing emotional poison that keeps you tied to the past.</span>
+                                <span class="lang-id">Pengampunan adalah hal sentral dalam buku ini, terutama memaafkan orang tua dan diri sendiri. Louise Hay menjelaskan bahwa memaafkan <em>bukan</em> berarti mengatakan perilaku berbahaya itu baik-baik saja. Sebaliknya, itu berarti melepaskan racun emosional berkelanjutan yang membuat Anda terikat pada masa lalu.</span>
                             </p>
                             <p class="mobile-text justified-text">
-                                She invites readers to see parents as wounded children themselves — 
-                                people who could only teach what they knew, however limited. 
-                                This perspective is not about erasing responsibility, 
-                                but about letting go of the belief “They ruined my life and I am powerless.”
+                                <span class="lang-en">She invites readers to see parents as wounded children themselves — people who could only teach what they knew, however limited. This perspective is not about erasing responsibility, but about letting go of the belief “They ruined my life and I am powerless.”</span>
+                                <span class="lang-id">Dia mengundang pembaca untuk melihat orang tua sebagai anak-anak yang terluka juga — orang-orang yang hanya bisa mengajarkan apa yang mereka tahu, betapapun terbatasnya. Perspektif ini bukan tentang menghapus tanggung jawab, tetapi tentang melepaskan keyakinan “Mereka menghancurkan hidup saya dan saya tidak berdaya.”</span>
                             </p>
                         </div>
 
                         <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-emerald-200">
                             <h4 class="font-semibold text-emerald-800 mb-3 text-sm sm:text-base mobile-subtitle">
-                                A Simple Daily Practice (Based on the Book)
+                                <span class="lang-en">A Simple Daily Practice (Based on the Book)</span>
+                                <span class="lang-id">Praktik Harian Sederhana (Berdasarkan Buku)</span>
                             </h4>
                             <ol class="list-decimal ml-5 space-y-2 mobile-text text-slate-700">
-                                <li class="justified-text">Spend a few minutes each morning noticing your first thoughts. Gently question any harsh self-talk.</li>
-                                <li class="justified-text">Stand in front of a mirror and say: “I am willing to love and accept myself, just as I am right now.”</li>
-                                <li class="justified-text">Choose 1–3 affirmations that feel meaningful to you and repeat them throughout the day.</li>
-                                <li class="justified-text">In the evening, write down anything you are ready to forgive (yourself or others), even if you are not fully ready. Start with willingness.</li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Spend a few minutes each morning noticing your first thoughts. Gently question any harsh self-talk.</span>
+                                    <span class="lang-id">Luangkan beberapa menit setiap pagi memperhatikan pikiran pertama Anda. Pertanyakan dengan lembut setiap pembicaraan diri yang kasar.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Stand in front of a mirror and say: “I am willing to love and accept myself, just as I am right now.”</span>
+                                    <span class="lang-id">Berdiri di depan cermin dan katakan: “Saya bersedia mencintai dan menerima diri saya, persis seperti saya saat ini.”</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Choose 1–3 affirmations that feel meaningful to you and repeat them throughout the day.</span>
+                                    <span class="lang-id">Pilih 1–3 afirmasi yang bermakna bagi Anda dan ulangi sepanjang hari.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">In the evening, write down anything you are ready to forgive (yourself or others), even if you are not fully ready. Start with willingness.</span>
+                                    <span class="lang-id">Di malam hari, tuliskan apa pun yang siap Anda maafkan (diri sendiri atau orang lain), bahkan jika Anda belum sepenuhnya siap. Mulailah dengan kemauan.</span>
+                                </li>
                             </ol>
                         </div>
                     </div>
                 </section>
 
-                <!-- Part 4 – Healing Life Areas -->
                 <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            Applying Healing to Body, Relationships, Work & Prosperity
+                            <span class="lang-en">Applying Healing to Body, Relationships, Work & Prosperity</span>
+                            <span class="lang-id">Menerapkan Penyembuhan pada Tubuh, Hubungan, Pekerjaan & Kemakmuran</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
                         <p class="mobile-text justified-text">
-                            In the second half of the book, Louise Hay applies her philosophy to different areas of life. 
-                            The process is similar in each area: notice beliefs, release blame, and install new affirmations.
+                            <span class="lang-en">In the second half of the book, Louise Hay applies her philosophy to different areas of life. The process is similar in each area: notice beliefs, release blame, and install new affirmations.</span>
+                            <span class="lang-id">Di paruh kedua buku, Louise Hay menerapkan filosofinya ke berbagai area kehidupan. Prosesnya serupa di setiap area: perhatikan keyakinan, lepaskan kesalahan, dan tanamkan afirmasi baru.</span>
                         </p>
 
                         <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
-                            <h3 class="text-lg sm:text-xl font-semibold text-indigo-800 mb-3 mobile-subtitle">1. The Body & Health</h3>
+                            <h3 class="text-lg sm:text-xl font-semibold text-indigo-800 mb-3 mobile-subtitle">
+                                <span class="lang-en">1. The Body & Health</span>
+                                <span class="lang-id">1. Tubuh & Kesehatan</span>
+                            </h3>
                             <p class="mobile-text justified-text">
-                                She encourages readers to stop fighting their bodies with hatred or constant criticism. 
-                                Instead, learn to listen, thank, and lovingly support the body.
+                                <span class="lang-en">She encourages readers to stop fighting their bodies with hatred or constant criticism. Instead, learn to listen, thank, and lovingly support the body.</span>
+                                <span class="lang-id">Dia mendorong pembaca untuk berhenti memerangi tubuh mereka dengan kebencian atau kritik terus-menerus. Sebaliknya, belajarlah untuk mendengarkan, berterima kasih, dan mendukung tubuh dengan penuh kasih.</span>
                             </p>
                             <ul class="list-disc ml-5 space-y-1 mobile-text text-slate-700">
-                                <li class="justified-text">Notice how you talk about your body (“I hate my legs”, “My body always betrays me”).</li>
-                                <li class="justified-text">Consider how much stress and shame this language adds on top of physical symptoms.</li>
-                                <li class="justified-text">Practice affirmations like: “I am willing to feel safe in my body,” or “My body and I are on the same team.”</li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Notice how you talk about your body (“I hate my legs”, “My body always betrays me”).</span>
+                                    <span class="lang-id">Perhatikan bagaimana Anda bicara tentang tubuh Anda (“Saya benci kaki saya”, “Tubuh saya selalu mengkhianati saya”).</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Consider how much stress and shame this language adds on top of physical symptoms.</span>
+                                    <span class="lang-id">Pertimbangkan berapa banyak stres dan rasa malu yang ditambahkan bahasa ini di atas gejala fisik.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Practice affirmations like: “I am willing to feel safe in my body,” or “My body and I are on the same team.”</span>
+                                    <span class="lang-id">Latih afirmasi seperti: “Saya bersedia merasa aman di tubuh saya,” atau “Tubuh saya dan saya berada di tim yang sama.”</span>
+                                </li>
                             </ul>
                             <p class="mobile-text justified-text mt-2">
-                                She suggests combining affirmations with healthy practical choices (nutrition, rest, medical support), 
-                                not using them as a magical replacement.
+                                <span class="lang-en">She suggests combining affirmations with healthy practical choices (nutrition, rest, medical support), not using them as a magical replacement.</span>
+                                <span class="lang-id">Dia menyarankan menggabungkan afirmasi dengan pilihan praktis yang sehat (nutrisi, istirahat, dukungan medis), bukan menggunakannya sebagai pengganti ajaib.</span>
                             </p>
                         </div>
 
                         <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-emerald-200">
-                            <h3 class="text-lg sm:text-xl font-semibold text-emerald-800 mb-3 mobile-subtitle">2. Relationships & Love</h3>
+                            <h3 class="text-lg sm:text-xl font-semibold text-emerald-800 mb-3 mobile-subtitle">
+                                <span class="lang-en">2. Relationships & Love</span>
+                                <span class="lang-id">2. Hubungan & Cinta</span>
+                            </h3>
                             <p class="mobile-text justified-text">
-                                Relationships, she says, mirror our relationship with ourselves. 
-                                If we believe we are unlovable, we may attract partners who confirm that story.
+                                <span class="lang-en">Relationships, she says, mirror our relationship with ourselves. If we believe we are unlovable, we may attract partners who confirm that story.</span>
+                                <span class="lang-id">Hubungan, katanya, mencerminkan hubungan kita dengan diri sendiri. Jika kita percaya kita tidak layak dicintai, kita mungkin menarik pasangan yang mengonfirmasi cerita itu.</span>
                             </p>
                             <ul class="list-disc ml-5 space-y-1 mobile-text text-slate-700">
-                                <li class="justified-text">Ask: “What do I really believe I deserve in love?”</li>
-                                <li class="justified-text">Notice patterns of choosing unavailable, critical, or distant people.</li>
-                                <li class="justified-text">Practice affirmations such as: “I am worthy of a loving, respectful relationship,” and “I attract people who support my growth.”</li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Ask: “What do I really believe I deserve in love?”</span>
+                                    <span class="lang-id">Tanya: “Apa yang sebenarnya saya yakini pantas saya dapatkan dalam cinta?”</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Notice patterns of choosing unavailable, critical, or distant people.</span>
+                                    <span class="lang-id">Perhatikan pola memilih orang yang tidak tersedia, kritis, atau jauh.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Practice affirmations such as: “I am worthy of a loving, respectful relationship,” and “I attract people who support my growth.”</span>
+                                    <span class="lang-id">Latih afirmasi seperti: “Saya layak mendapatkan hubungan yang penuh kasih dan hormat,” dan “Saya menarik orang-orang yang mendukung pertumbuhan saya.”</span>
+                                </li>
                             </ul>
                             <p class="mobile-text justified-text mt-2">
-                                She also stresses boundaries: loving yourself includes leaving situations that are consistently abusive or degrading.
+                                <span class="lang-en">She also stresses boundaries: loving yourself includes leaving situations that are consistently abusive or degrading.</span>
+                                <span class="lang-id">Dia juga menekankan batasan: mencintai diri sendiri termasuk meninggalkan situasi yang secara konsisten kasar atau merendahkan.</span>
                             </p>
                         </div>
 
                         <div class="bg-gradient-to-r from-amber-50 to-yellow-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-amber-200">
-                            <h3 class="text-lg sm:text-xl font-semibold text-amber-800 mb-3 mobile-subtitle">3. Work, Success & Money</h3>
+                            <h3 class="text-lg sm:text-xl font-semibold text-amber-800 mb-3 mobile-subtitle">
+                                <span class="lang-en">3. Work, Success & Money</span>
+                                <span class="lang-id">3. Pekerjaan, Kesuksesan & Uang</span>
+                            </h3>
                             <p class="mobile-text justified-text">
-                                Around work and money, many people carry beliefs like “I’ll always struggle,” 
-                                “I don’t deserve abundance,” or “Rich people are bad.” These beliefs create inner conflict 
-                                that can block opportunities or make it hard to receive.
+                                <span class="lang-en">Around work and money, many people carry beliefs like “I’ll always struggle,” “I don’t deserve abundance,” or “Rich people are bad.” These beliefs create inner conflict that can block opportunities or make it hard to receive.</span>
+                                <span class="lang-id">Seputar pekerjaan dan uang, banyak orang membawa keyakinan seperti “Saya akan selalu berjuang,” “Saya tidak pantas berkelimpahan,” atau “Orang kaya itu jahat.” Keyakinan ini menciptakan konflik batin yang dapat menghalangi peluang atau membuatnya sulit menerima.</span>
                             </p>
                             <ul class="list-disc ml-5 space-y-1 mobile-text text-slate-700">
-                                <li class="justified-text">Identify family or cultural messages you absorbed about money and success.</li>
-                                <li class="justified-text">Question whether you still want to keep those beliefs.</li>
-                                <li class="justified-text">Experiment with affirmations such as: “There is more than enough to go around,” 
-                                    “I am open to new channels of income,” or “I use prosperity in wise and loving ways.”</li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Identify family or cultural messages you absorbed about money and success.</span>
+                                    <span class="lang-id">Identifikasi pesan keluarga atau budaya yang Anda serap tentang uang dan kesuksesan.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Question whether you still want to keep those beliefs.</span>
+                                    <span class="lang-id">Pertanyakan apakah Anda masih ingin menyimpan keyakinan itu.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Experiment with affirmations such as: “There is more than enough to go around,” “I am open to new channels of income,” or “I use prosperity in wise and loving ways.”</span>
+                                    <span class="lang-id">Bereksperimenlah dengan afirmasi seperti: “Ada lebih dari cukup untuk semua orang,” “Saya terbuka untuk saluran pendapatan baru,” atau “Saya menggunakan kemakmuran dengan cara yang bijak dan penuh kasih.”</span>
+                                </li>
                             </ul>
                             <p class="mobile-text justified-text mt-2">
-                                Again, the focus is not on magical thinking but on shifting from fear and scarcity 
-                                to a sense of worthiness and possibility, which often changes how you act.
+                                <span class="lang-en">Again, the focus is not on magical thinking but on shifting from fear and scarcity to a sense of worthiness and possibility, which often changes how you act.</span>
+                                <span class="lang-id">Sekali lagi, fokusnya bukan pada pemikiran magis tetapi pada pergeseran dari ketakutan dan kekurangan ke rasa kelayakan dan kemungkinan, yang sering mengubah cara Anda bertindak.</span>
                             </p>
                         </div>
 
                         <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl">
-                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">A Repeating Pattern Across Areas</h4>
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">
+                                <span class="lang-en">A Repeating Pattern Across Areas</span>
+                                <span class="lang-id">Pola Berulang di Seluruh Area</span>
+                            </h4>
                             <ol class="list-decimal ml-5 space-y-2 mobile-text text-slate-700">
-                                <li class="justified-text">Become aware of your current belief (“Life is hard,” “No one ever helps me”).</li>
-                                <li class="justified-text">See how that belief has played out in your choices and reactions.</li>
-                                <li class="justified-text">Release blame where possible (including self-blame).</li>
-                                <li class="justified-text">Choose and practice a new belief that supports your well-being.</li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Become aware of your current belief (“Life is hard,” “No one ever helps me”).</span>
+                                    <span class="lang-id">Sadarilah keyakinan Anda saat ini (“Hidup itu keras,” “Tidak ada yang pernah membantu saya”).</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">See how that belief has played out in your choices and reactions.</span>
+                                    <span class="lang-id">Lihat bagaimana keyakinan itu berperan dalam pilihan dan reaksi Anda.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Release blame where possible (including self-blame).</span>
+                                    <span class="lang-id">Lepaskan kesalahan jika memungkinkan (termasuk menyalahkan diri sendiri).</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Choose and practice a new belief that supports your well-being.</span>
+                                    <span class="lang-id">Pilih dan praktikkan keyakinan baru yang mendukung kesejahteraan Anda.</span>
+                                </li>
                             </ol>
                         </div>
                     </div>
                 </section>
 
-                <!-- Part 5 – Practice, Limits & Conclusion -->
                 <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-red-100 text-red-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            Bringing the Work into Daily Life & Staying Grounded
+                            <span class="lang-en">Bringing the Work into Daily Life & Staying Grounded</span>
+                            <span class="lang-id">Membawa Praktik ini ke Kehidupan Sehari-hari & Tetap Membumi</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
                         <div class="bg-red-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-red-200">
-                            <h3 class="text-lg sm:text-xl font-semibold text-red-800 mb-3 mobile-subtitle">From Inspiration to Daily Practice</h3>
+                            <h3 class="text-lg sm:text-xl font-semibold text-red-800 mb-3 mobile-subtitle">
+                                <span class="lang-en">From Inspiration to Daily Practice</span>
+                                <span class="lang-id">Dari Inspirasi ke Praktik Harian</span>
+                            </h3>
                             <p class="mobile-text justified-text">
-                                Many readers feel uplifted after reading <em>You Can Heal Your Life</em> — but the real change 
-                                happens in small, consistent steps. Louise Hay suggests:
+                                <span class="lang-en">Many readers feel uplifted after reading <em>You Can Heal Your Life</em> — but the real change happens in small, consistent steps. Louise Hay suggests:</span>
+                                <span class="lang-id">Banyak pembaca merasa terangkat setelah membaca <em>You Can Heal Your Life</em> — tetapi perubahan nyata terjadi dalam langkah-langkah kecil dan konsisten. Louise Hay menyarankan:</span>
                             </p>
                             <ul class="list-disc ml-5 space-y-1 mobile-text text-slate-700">
-                                <li class="justified-text">Starting with willingness: “I am willing to change.”</li>
-                                <li class="justified-text">Choosing a few affirmations and using them regularly, not perfectly.</li>
-                                <li class="justified-text">Creating small self-love rituals: a kind word in the mirror, a gentle hand on the heart, a break when you are tired.</li>
-                                <li class="justified-text">Being patient; old patterns took years to form and take time to soften.</li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Starting with willingness: “I am willing to change.”</span>
+                                    <span class="lang-id">Mulai dengan kemauan: “Saya bersedia untuk berubah.”</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Choosing a few affirmations and using them regularly, not perfectly.</span>
+                                    <span class="lang-id">Memilih beberapa afirmasi dan menggunakannya secara teratur, tidak harus sempurna.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Creating small self-love rituals: a kind word in the mirror, a gentle hand on the heart, a break when you are tired.</span>
+                                    <span class="lang-id">Menciptakan ritual cinta diri kecil: kata-kata baik di cermin, tangan lembut di hati, istirahat saat lelah.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">Being patient; old patterns took years to form and take time to soften.</span>
+                                    <span class="lang-id">Bersabar; pola lama butuh bertahun-tahun untuk terbentuk dan butuh waktu untuk melunak.</span>
+                                </li>
                             </ul>
                         </div>
 
                         <div class="bg-gradient-to-r from-slate-50 to-slate-100 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-slate-200">
-                            <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mb-3 mobile-subtitle">Important Limits & Cautions</h3>
+                            <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mb-3 mobile-subtitle">
+                                <span class="lang-en">Important Limits & Cautions</span>
+                                <span class="lang-id">Batasan Penting & Peringatan</span>
+                            </h3>
                             <p class="mobile-text justified-text">
-                                While the book is loving and hopeful, it can be misunderstood in ways that increase guilt 
-                                if taken too literally:
+                                <span class="lang-en">While the book is loving and hopeful, it can be misunderstood in ways that increase guilt if taken too literally:</span>
+                                <span class="lang-id">Meskipun buku ini penuh kasih dan harapan, buku ini bisa disalahpahami dengan cara yang meningkatkan rasa bersalah jika ditanggapi terlalu harfiah:</span>
                             </p>
                             <ul class="list-disc ml-5 space-y-1 mobile-text text-slate-700">
                                 <li class="justified-text">
-                                    It is not helpful to tell yourself that every illness or tragedy is your “fault” for thinking wrong thoughts.
+                                    <span class="lang-en">It is not helpful to tell yourself that every illness or tragedy is your “fault” for thinking wrong thoughts.</span>
+                                    <span class="lang-id">Tidak membantu untuk mengatakan pada diri sendiri bahwa setiap penyakit atau tragedi adalah “kesalahan” Anda karena berpikiran salah.</span>
                                 </li>
                                 <li class="justified-text">
-                                    Deep trauma, depression, or serious mental health issues often require professional support; 
-                                    affirmations can support, but not replace, therapy or medical care.
+                                    <span class="lang-en">Deep trauma, depression, or serious mental health issues often require professional support; affirmations can support, but not replace, therapy or medical care.</span>
+                                    <span class="lang-id">Trauma mendalam, depresi, atau masalah kesehatan mental serius seringkali memerlukan dukungan profesional; afirmasi dapat mendukung, tetapi tidak menggantikan, terapi atau perawatan medis.</span>
                                 </li>
                                 <li class="justified-text">
-                                    Some beliefs came from real experiences of harm. It is okay to seek justice and boundaries 
-                                    while also working on inner healing.
+                                    <span class="lang-en">Some beliefs came from real experiences of harm. It is okay to seek justice and boundaries while also working on inner healing.</span>
+                                    <span class="lang-id">Beberapa keyakinan berasal dari pengalaman nyata yang menyakitkan. Tidak apa-apa mencari keadilan dan batasan sambil juga melakukan penyembuhan batin.</span>
                                 </li>
                             </ul>
                             <p class="mobile-text justified-text mt-2">
-                                A balanced way to use the book is to see it as an invitation to increase your inner kindness, 
-                                not as a strict rulebook that blames you for every difficulty.
+                                <span class="lang-en">A balanced way to use the book is to see it as an invitation to increase your inner kindness, not as a strict rulebook that blames you for every difficulty.</span>
+                                <span class="lang-id">Cara seimbang untuk menggunakan buku ini adalah melihatnya sebagai undangan untuk meningkatkan kebaikan batin Anda, bukan sebagai buku aturan ketat yang menyalahkan Anda atas setiap kesulitan.</span>
                             </p>
                         </div>
 
                         <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-emerald-200">
-                            <h3 class="text-lg sm:text-xl font-semibold text-emerald-800 mb-3 mobile-subtitle">Final Reflection: Healing as a Relationship with Yourself</h3>
+                            <h3 class="text-lg sm:text-xl font-semibold text-emerald-800 mb-3 mobile-subtitle">
+                                <span class="lang-en">Final Reflection: Healing as a Relationship with Yourself</span>
+                                <span class="lang-id">Refleksi Akhir: Penyembuhan sebagai Hubungan dengan Diri Sendiri</span>
+                            </h3>
                             <p class="mobile-text justified-text">
-                                At its heart, <em>You Can Heal Your Life</em> is not about pretending everything is fine. 
-                                It is about slowly building a new relationship with yourself — one based on respect, listening, 
-                                and love instead of constant judgment.
+                                <span class="lang-en">At its heart, <em>You Can Heal Your Life</em> is not about pretending everything is fine. It is about slowly building a new relationship with yourself — one based on respect, listening, and love instead of constant judgment.</span>
+                                <span class="lang-id">Pada intinya, <em>You Can Heal Your Life</em> bukan tentang berpura-pura semuanya baik-baik saja. Ini tentang perlahan membangun hubungan baru dengan diri sendiri — yang didasarkan pada rasa hormat, mendengarkan, dan cinta, bukan penilaian terus-menerus.</span>
                             </p>
                             <p class="mobile-text justified-text">
-                                You may take some of Louise Hay’s ideas literally, others symbolically, and disagree with a few. 
-                                That is okay. The essential question she leaves you with is:
+                                <span class="lang-en">You may take some of Louise Hay’s ideas literally, others symbolically, and disagree with a few. That is okay. The essential question she leaves you with is:</span>
+                                <span class="lang-id">Anda mungkin menganggap beberapa ide Louise Hay secara harfiah, yang lain secara simbolis, dan tidak setuju dengan beberapa. Itu tidak apa-apa. Pertanyaan penting yang dia tinggalkan untuk Anda adalah:</span>
                             </p>
                             <p class="mobile-text justified-text font-medium italic border-l-4 border-emerald-400 pl-4 sm:pl-6">
-                                “If I spoke to a child the way I speak to myself, would that child grow or shrink?”  
-                                And if the answer is “shrink,” am I willing — even just a little — to learn a new way?
+                                <span class="lang-en">“If I spoke to a child the way I speak to myself, would that child grow or shrink?” And if the answer is “shrink,” am I willing — even just a little — to learn a new way?</span>
+                                <span class="lang-id">“Jika saya berbicara kepada seorang anak seperti saya berbicara kepada diri saya sendiri, apakah anak itu akan tumbuh atau menyusut?” Dan jika jawabannya adalah “menyusut,” apakah saya bersedia — walau hanya sedikit — untuk belajar cara baru?</span>
                             </p>
                             <p class="mobile-text justified-text">
-                                If you start from that willingness, then in Louise Hay’s language, 
-                                you have already begun to heal your life.
+                                <span class="lang-en">If you start from that willingness, then in Louise Hay’s language, you have already begun to heal your life.</span>
+                                <span class="lang-id">Jika Anda mulai dari kemauan itu, maka dalam bahasa Louise Hay, Anda sudah mulai menyembuhkan hidup Anda.</span>
                             </p>
                         </div>
                     </div>
@@ -741,6 +934,30 @@ This perspective can open gentle reflection on stress, boundaries, and unspoken 
     </div>
 
     <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const btnText = document.querySelector('.lang-text');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                btnText.textContent = '🇮🇩 Switch to ID';
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                btnText.textContent = '🇺🇸 Switch to EN';
+            }
+        }
+
         function toggleDrawer() {
             const drawer = document.querySelector('.nav-drawer');
             const overlay = document.querySelector('.nav-overlay');
