@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rich Dad Poor Dad — Extended Summary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* Purple/Gold Theme */
+        .active-tab { background: linear-gradient(135deg, #581c87 0%, #7e22ce 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.7; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.6; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #1e293b 0%, #334155 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #6b21a8 0%, #7e22ce 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(107, 33, 168, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(107, 33, 168, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #7e22ce; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-purple-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-600">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-700 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">$</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Rich Dad Poor Dad</h2>
+                    <p class="text-slate-300 text-sm">
+                        <span class="lang-en">Detailed Summary</span>
+                        <span class="lang-id">Ringkasan Terperinci</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-300 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">Table of Contents</span>
+                <span class="lang-id">Daftar Isi</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center text-xs font-bold">📖</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 1</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">The Two Dads & Philosophy</span>
+                                <span class="lang-id">Dua Ayah & Filosofi</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 2</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Assets, Liabilities & Cashflow</span>
+                                <span class="lang-id">Aset, Liabilitas & Arus Kas</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-yellow-500 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 3</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Taxes & Corporate Secrets</span>
+                                <span class="lang-id">Pajak & Rahasia Korporasi</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 4</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Work to Learn</span>
+                                <span class="lang-id">Bekerja untuk Belajar</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 5</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Obstacles & Getting Started</span>
+                                <span class="lang-id">Hambatan & Memulai</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-600">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© 2024 Rich Dad Poor Dad</p>
+                <p class="text-slate-500 text-xs mt-1">Detailed Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 mb-2 mobile-title">
+                    Rich Dad Poor Dad
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    <span class="lang-en">Detailed summary of financial independence and wealth building</span>
+                    <span class="lang-id">Ringkasan terperinci tentang kemandirian finansial dan membangun kekayaan</span>
+                </p>
+                <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-purple-500 to-yellow-500 mx-auto mt-3 sm:mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">Introduction</span>
+                            <span class="lang-id">Pendahuluan</span>
+                        </span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Gap in Financial Education</span>
+                            <span class="lang-id">Kesenjangan dalam Pendidikan Keuangan</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <div class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-purple-500 pl-4 sm:pl-6 italic mobile-text justified-text">
+                            <span class="lang-en">“The poor and the middle class work for money. The rich have money work for them.”</span>
+                            <span class="lang-id">“Orang miskin dan kelas menengah bekerja untuk uang. Orang kaya membuat uang bekerja untuk mereka.”</span>
+                        </div>
+                        
+                        <div class="mobile-text justified-text">
+                            <span class="lang-en">
+                                <em>Rich Dad Poor Dad</em> is not just a memoir; it is a plea for financial literacy. Robert Kiyosaki argues that schools train people to be good employees but fail to teach them how money works. This lack of education leads to millions of people working hard all their lives, yet struggling financially because they do not understand how to make money grow.
+                            </span>
+                            <span class="lang-id">
+                                <em>Rich Dad Poor Dad</em> bukan sekadar memoar; ini adalah seruan untuk literasi keuangan. Robert Kiyosaki berargumen bahwa sekolah melatih orang untuk menjadi karyawan yang baik tetapi gagal mengajarkan cara kerja uang. Kurangnya pendidikan ini menyebabkan jutaan orang bekerja keras seumur hidup, namun tetap berjuang secara finansial karena mereka tidak mengerti cara membuat uang berkembang.
+                            </span>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-purple-50 to-indigo-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-purple-100">
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">
+                                <span class="lang-en">Core Themes of This Summary:</span>
+                                <span class="lang-id">Tema Inti Ringkasan Ini:</span>
+                            </h4>
+                            <ul class="space-y-2 text-slate-700 mobile-text">
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-purple-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text lang-en"><strong>Mindset Shift:</strong> Moving from an employee mentality to an investor/business owner mentality.</span>
+                                    <span class="justified-text lang-id"><strong>Pergeseran Pola Pikir:</strong> Beralih dari mentalitas karyawan ke mentalitas investor/pemilik bisnis.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-purple-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text lang-en"><strong>Financial IQ:</strong> Understanding accounting, investing, markets, and law.</span>
+                                    <span class="justified-text lang-id"><strong>IQ Finansial:</strong> Memahami akuntansi, investasi, pasar, dan hukum.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="w-2 h-2 bg-purple-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                    <span class="justified-text lang-en"><strong>The Cash Flow Pattern:</strong> Visualizing how money flows differently for the rich vs. the poor.</span>
+                                    <span class="justified-text lang-id"><strong>Pola Arus Kas:</strong> Memvisualisasikan bagaimana uang mengalir secara berbeda bagi orang kaya vs orang miskin.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">
+                            <span class="lang-en">The Two Dads & Conflicting Philosophies</span>
+                            <span class="lang-id">Dua Ayah & Filosofi yang Bertentangan</span>
+                        </h3>
+                        <div class="mobile-text justified-text">
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+                                <p class="lang-en">
+                                    The book is built on the contrast between two father figures who shaped Robert’s life. Their advice was often diametrically opposite.
+                                </p>
+                                <p class="lang-id">
+                                    Buku ini dibangun di atas kontras antara dua sosok ayah yang membentuk hidup Robert. Nasihat mereka seringkali bertolak belakang.
+                                </p>
+                                <br>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                        <h4 class="font-bold text-slate-800 mb-2 lang-en">Poor Dad (Biological Father)</h4>
+                                        <h4 class="font-bold text-slate-800 mb-2 lang-id">Ayah Miskin (Ayah Kandung)</h4>
+                                        <ul class="list-disc ml-4 text-sm text-slate-600 lang-en">
+                                            <li>Highly educated (Ph.D.), government official.</li>
+                                            <li>"The love of money is the root of all evil."</li>
+                                            <li>"I can't afford it." (Statements close the mind)</li>
+                                            <li>"Study hard so you can find a good company to work for."</li>
+                                            <li>Relied on job security and benefits.</li>
+                                        </ul>
+                                        <ul class="list-disc ml-4 text-sm text-slate-600 lang-id">
+                                            <li>Berpendidikan tinggi (Ph.D.), pejabat pemerintah.</li>
+                                            <li>"Cinta uang adalah akar segala kejahatan."</li>
+                                            <li>"Saya tidak mampu membelinya." (Pernyataan menutup pikiran)</li>
+                                            <li>"Belajar giat agar dapat perusahaan bagus untuk bekerja."</li>
+                                            <li>Mengandalkan keamanan kerja dan tunjangan.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                        <h4 class="font-bold text-slate-800 mb-2 lang-en">Rich Dad (Mike's Father)</h4>
+                                        <h4 class="font-bold text-slate-800 mb-2 lang-id">Ayah Kaya (Ayah Mike)</h4>
+                                        <ul class="list-disc ml-4 text-sm text-slate-600 lang-en">
+                                            <li>Did not finish 8th grade, wealthy entrepreneur.</li>
+                                            <li>"The lack of money is the root of all evil."</li>
+                                            <li>"How can I afford it?" (Questions open the mind)</li>
+                                            <li>"Study hard so you can find a good company to buy."</li>
+                                            <li>Believed in total financial self-reliance.</li>
+                                        </ul>
+                                        <ul class="list-disc ml-4 text-sm text-slate-600 lang-id">
+                                            <li>Tidak tamat SMP, pengusaha kaya.</li>
+                                            <li>"Kekurangan uang adalah akar segala kejahatan."</li>
+                                            <li>"Bagaimana saya bisa membelinya?" (Pertanyaan membuka pikiran)</li>
+                                            <li>"Belajar giat agar dapat perusahaan bagus untuk dibeli."</li>
+                                            <li>Percaya pada kemandirian finansial total.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <br>
+                                <h4 class="font-bold lang-en">The Trap of the Rat Race</h4>
+                                <h4 class="font-bold lang-id">Perangkap Perlombaan Tikus (Rat Race)</h4>
+                                <p class="lang-en">
+                                    Rich Dad taught Robert that most people are ruled by <strong>Fear</strong> and <strong>Greed</strong>. Fear of having no money forces them to work hard. Once they get paid, greed (or desire) leads them to buy lifestyle upgrades (cars, houses, clothes). This cycle repeats endlessly: work, get paid, pay bills, run out of money, work again. Even when they get a raise, they simply increase their spending ("lifestyle inflation"), keeping them trapped in the Rat Race forever.
+                                </p>
+                                <p class="lang-id">
+                                    Ayah Kaya mengajarkan bahwa kebanyakan orang dikuasai oleh <strong>Ketakutan</strong> dan <strong>Keserakahan</strong>. Ketakutan tidak punya uang memaksa mereka bekerja keras. Begitu dibayar, keserakahan (atau hasrat) menuntun mereka membeli peningkatan gaya hidup (mobil, rumah, baju). Siklus ini berulang tanpa henti: kerja, terima gaji, bayar tagihan, kehabisan uang, kerja lagi. Bahkan saat gaji naik, mereka hanya menaikkan pengeluaran ("inflasi gaya hidup"), membuat mereka terjebak selamanya dalam Perlombaan Tikus.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Most Important Rule: Assets vs. Liabilities</span>
+                            <span class="lang-id">Aturan Terpenting: Aset vs. Liabilitas</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <div class="bg-blue-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
+                            <h3 class="text-lg sm:text-xl font-semibold text-blue-800 mb-3 mobile-subtitle">
+                                <span class="lang-en">"You must know the difference between an asset and a liability, and buy assets."</span>
+                                <span class="lang-id">"Anda harus tahu perbedaan antara aset dan liabilitas, dan belilah aset."</span>
+                            </h3>
+                            <p class="text-blue-700 mobile-text justified-text">
+                                <span class="lang-en">This is Rule #1. It sounds simple, but Kiyosaki argues that most adults do not understand this distinction. Traditional accounting definitions can be confusing; Kiyosaki simplifies them based on <strong>cash flow</strong> direction.</span>
+                                <span class="lang-id">Ini adalah Aturan #1. Terdengar sederhana, tetapi Kiyosaki berpendapat bahwa kebanyakan orang dewasa tidak memahami perbedaan ini. Definisi akuntansi tradisional bisa membingungkan; Kiyosaki menyederhanakannya berdasarkan arah <strong>arus kas</strong>.</span>
+                            </p>
+                        </div>
+
+                        <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+                            <h4 class="font-bold lang-en text-lg mb-2">Kiyosaki’s Definitions:</h4>
+                            <h4 class="font-bold lang-id text-lg mb-2">Definisi Kiyosaki:</h4>
+                            
+                            <div class="space-y-4">
+                                <div class="p-4 border-l-4 border-green-500 bg-green-50">
+                                    <strong class="lang-en text-green-800">ASSET</strong>
+                                    <strong class="lang-id text-green-800">ASET</strong>
+                                    <p class="lang-en">Put money <strong>IN</strong> your pocket.</p>
+                                    <p class="lang-id">Menaruh uang <strong>KE DALAM</strong> saku Anda.</p>
+                                    <p class="text-sm mt-2 text-slate-600 lang-en">Examples: Rental properties, stocks paying dividends, businesses that don't require your presence, royalties from books/patents.</p>
+                                    <p class="text-sm mt-2 text-slate-600 lang-id">Contoh: Properti sewaan, saham yang membayar dividen, bisnis yang tidak memerlukan kehadiran Anda, royalti dari buku/paten.</p>
+                                </div>
+                                
+                                <div class="p-4 border-l-4 border-red-500 bg-red-50">
+                                    <strong class="lang-en text-red-800">LIABILITY</strong>
+                                    <strong class="lang-id text-red-800">LIABILITAS</strong>
+                                    <p class="lang-en">Take money <strong>OUT</strong> of your pocket.</p>
+                                    <p class="lang-id">Mengambil uang <strong>KELUAR</strong> dari saku Anda.</p>
+                                    <p class="text-sm mt-2 text-slate-600 lang-en">Examples: Your personal house (mortgage, tax, insurance, maintenance), car loan, credit card debt, expensive toys.</p>
+                                    <p class="text-sm mt-2 text-slate-600 lang-id">Contoh: Rumah pribadi Anda (hipotek, pajak, asuransi, perawatan), kredit mobil, hutang kartu kredit, mainan mahal.</p>
+                                </div>
+                            </div>
+
+                            <br>
+                            <h4 class="font-bold lang-en text-lg">Cash Flow Patterns:</h4>
+                            <h4 class="font-bold lang-id text-lg">Pola Arus Kas:</h4>
+                            <ul class="lang-en list-disc ml-5 space-y-2">
+                                <li><strong>The Poor:</strong> Income (Job) → Expenses (Rent, Food, Transport). All money goes out immediately. No assets, no liabilities (usually).</li>
+                                <li><strong>The Middle Class:</strong> Income (Job) → Liabilities (Mortgage, Car Loan, Credit Cards) → Expenses. They buy liabilities thinking they are assets (e.g., "My house is my biggest investment").</li>
+                                <li><strong>The Rich:</strong> Assets (Real Estate, Stocks, IP) → Income (Dividends, Rent, Royalties). They use this income to buy <em>more</em> assets. They minimize liabilities.</li>
+                            </ul>
+                            <ul class="lang-id list-disc ml-5 space-y-2">
+                                <li><strong>Orang Miskin:</strong> Penghasilan (Pekerjaan) → Pengeluaran (Sewa, Makanan, Transport). Semua uang langsung habis. Tidak ada aset, biasanya tidak ada liabilitas besar.</li>
+                                <li><strong>Kelas Menengah:</strong> Penghasilan (Pekerjaan) → Liabilitas (Hipotek, Kredit Mobil, Kartu Kredit) → Pengeluaran. Mereka membeli liabilitas yang mereka kira aset (misal: "Rumahku adalah investasi terbesarku").</li>
+                                <li><strong>Orang Kaya:</strong> Aset (Real Estat, Saham, IP) → Penghasilan (Dividen, Sewa, Royalti). Mereka menggunakan penghasilan ini untuk membeli <em>lebih banyak</em> aset. Mereka meminimalkan liabilitas.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Mind Your Own Business & The Power of Corporations</span>
+                            <span class="lang-id">Urus Bisnis Sendiri & Kekuatan Korporasi</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <p class="text-base sm:text-lg text-slate-600 mobile-text justified-text">
+                            <span class="lang-en">Kiyosaki distinguishes between your "Profession" (what you do for 8 hours a day) and your "Business" (what your assets do). The rich focus on their Business (Asset Column), while the poor focus on their Profession (Income Statement).</span>
+                            <span class="lang-id">Kiyosaki membedakan antara "Profesi" Anda (apa yang Anda lakukan 8 jam sehari) dan "Bisnis" Anda (apa yang dilakukan aset Anda). Orang kaya fokus pada Bisnis mereka (Kolom Aset), sementara orang miskin fokus pada Profesi mereka (Laporan Laba Rugi).</span>
+                        </p>
+                        
+                        <div class="bg-yellow-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-yellow-200">
+                            <h3 class="text-base sm:text-lg font-semibold text-yellow-800 mb-3 mobile-subtitle">
+                                <span class="lang-en">The Biggest Secret of the Rich: Corporations</span>
+                                <span class="lang-id">Rahasia Terbesar Orang Kaya: Korporasi</span>
+                            </h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+                                <p class="lang-en">
+                                    The rich use corporations to protect their wealth and pay less tax. A corporation is not a building; it is a legal document that creates a separate legal body.
+                                </p>
+                                <p class="lang-id">
+                                    Orang kaya menggunakan korporasi untuk melindungi kekayaan mereka dan membayar pajak lebih sedikit. Korporasi bukanlah gedung; itu adalah dokumen hukum yang menciptakan badan hukum terpisah.
+                                </p>
+                                <br>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="bg-white p-4 rounded-lg border border-yellow-100">
+                                        <h5 class="font-bold text-slate-800 mb-2 lang-en">The Rich (With Corporations)</h5>
+                                        <h5 class="font-bold text-slate-800 mb-2 lang-id">Orang Kaya (Dengan Korporasi)</h5>
+                                        <ol class="lang-en list-decimal ml-5 text-sm space-y-1">
+                                            <li><strong>Earn</strong> money through the business.</li>
+                                            <li><strong>Spend</strong> money on expenses (cars, travel, meals) using pre-tax dollars.</li>
+                                            <li><strong>Pay Tax</strong> only on what is left.</li>
+                                        </ol>
+                                        <ol class="lang-id list-decimal ml-5 text-sm space-y-1">
+                                            <li><strong>Dapatkan</strong> uang melalui bisnis.</li>
+                                            <li><strong>Belanjakan</strong> uang untuk pengeluaran (mobil, perjalanan, makan) menggunakan uang sebelum pajak.</li>
+                                            <li><strong>Bayar Pajak</strong> hanya dari apa yang tersisa.</li>
+                                        </ol>
+                                    </div>
+                                    <div class="bg-white p-4 rounded-lg border border-yellow-100">
+                                        <h5 class="font-bold text-slate-800 mb-2 lang-en">Employees (No Corporation)</h5>
+                                        <h5 class="font-bold text-slate-800 mb-2 lang-id">Karyawan (Tanpa Korporasi)</h5>
+                                        <ol class="lang-en list-decimal ml-5 text-sm space-y-1">
+                                            <li><strong>Earn</strong> money (Salary).</li>
+                                            <li><strong>Pay Tax</strong> immediately (withheld by government).</li>
+                                            <li><strong>Spend</strong> whatever little is left.</li>
+                                        </ol>
+                                        <ol class="lang-id list-decimal ml-5 text-sm space-y-1">
+                                            <li><strong>Dapatkan</strong> uang (Gaji).</li>
+                                            <li><strong>Bayar Pajak</strong> segera (dipotong langsung oleh pemerintah).</li>
+                                            <li><strong>Belanjakan</strong> sedikit yang tersisa.</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-8">
+                    <div class="mb-6">
+                        <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-700 text-sm font-medium rounded-full mb-4">Part 4</span>
+                        <h2 class="text-3xl font-bold text-slate-800 mb-4">
+                            <span class="lang-en">The Rich Invent Money & Work to Learn</span>
+                            <span class="lang-id">Orang Kaya Menciptakan Uang & Bekerja untuk Belajar</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+                            <h4 class="font-bold text-indigo-800 mb-2 lang-en">Work to Learn, Don't Work for Money</h4>
+                            <h4 class="font-bold text-indigo-800 mb-2 lang-id">Bekerja untuk Belajar, Jangan Bekerja untuk Uang</h4>
+                            <p class="lang-en">
+                                Kiyosaki advises young people to seek work based on what they will learn, not how much they will earn. He calls this the "JOB" (Just Over Broke). He recommends mastering one specific skill above all others: <strong>Sales and Marketing</strong>.
+                            </p>
+                            <p class="lang-id">
+                                Kiyosaki menyarankan anak muda untuk mencari pekerjaan berdasarkan apa yang akan mereka pelajari, bukan berapa banyak yang akan mereka hasilkan. Ia menyebut pekerjaan (JOB) sebagai "Just Over Broke" (Sedikit di Atas Bangkrut). Ia merekomendasikan untuk menguasai satu keterampilan khusus di atas segalanya: <strong>Penjualan dan Pemasaran</strong>.
+                            </p>
+                            <br>
+                            <p class="lang-en">
+                                <em>Story of the Author:</em> A journalist interviewed Robert and showed him her excellent writing. However, her books weren't selling. Robert suggested she take a sales course. She was offended because she was a "writer," not a "salesman." Robert pointed out that he was a "Best-Selling Author," not a "Best-Writing Author." The lesson: technical skill is not enough; you need to know how to sell it.
+                            </p>
+                            <p class="lang-id">
+                                <em>Kisah Penulis:</em> Seorang jurnalis mewawancarai Robert dan menunjukkan tulisan hebatnya. Namun, bukunya tidak laku. Robert menyarankan dia mengambil kursus penjualan. Dia tersinggung karena dia adalah "penulis," bukan "penjual." Robert menunjukkan bahwa dia adalah "Penulis Terlaris" (Best-Selling), bukan "Penulis Terbaik" (Best-Writing). Pelajarannya: keterampilan teknis saja tidak cukup; Anda harus tahu cara menjualnya.
+                            </p>
+                            <br>
+                            <h4 class="font-bold text-indigo-800 mb-2 lang-en">Financial IQ</h4>
+                            <h4 class="font-bold text-indigo-800 mb-2 lang-id">Kecerdasan Finansial (Financial IQ)</h4>
+                            <p class="lang-en">The rich create opportunities because they develop Financial IQ, which is composed of four skills:</p>
+                            <p class="lang-id">Orang kaya menciptakan peluang karena mereka mengembangkan Financial IQ, yang terdiri dari empat keterampilan:</p>
+                            <ul class="lang-en list-disc ml-5">
+                                <li><strong>Accounting:</strong> The ability to read numbers.</li>
+                                <li><strong>Investing:</strong> The science of money making money.</li>
+                                <li><strong>Understanding Markets:</strong> The science of supply and demand.</li>
+                                <li><strong>The Law:</strong> Understanding tax advantages and protection.</li>
+                            </ul>
+                            <ul class="lang-id list-disc ml-5">
+                                <li><strong>Akuntansi:</strong> Kemampuan membaca angka.</li>
+                                <li><strong>Investasi:</strong> Ilmu uang menghasilkan uang.</li>
+                                <li><strong>Memahami Pasar:</strong> Ilmu penawaran dan permintaan.</li>
+                                <li><strong>Hukum:</strong> Memahami keuntungan pajak dan perlindungan hukum.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-8">
+                    <div class="mb-6">
+                        <span class="inline-block px-3 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-full mb-4">Part 5</span>
+                        <h2 class="text-3xl font-bold text-slate-800 mb-4">
+                            <span class="lang-en">Overcoming Obstacles & Getting Started</span>
+                            <span class="lang-id">Mengatasi Hambatan & Memulai</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-gradient-to-r from-red-50 to-pink-50 p-6 rounded-xl border border-red-200">
+                            <h3 class="text-xl font-semibold text-red-800 mb-4">
+                                <span class="lang-en">The 5 Main Obstacles</span>
+                                <span class="lang-id">5 Hambatan Utama</span>
+                            </h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+                                <p class="lang-en">Even people with financial literacy can fail due to these five personality barriers:</p>
+                                <p class="lang-id">Bahkan orang yang melek finansial bisa gagal karena lima hambatan kepribadian ini:</p>
+                                <ol class="lang-en list-decimal ml-5 space-y-2">
+                                    <li><strong>Fear:</strong> Everyone has fear of losing money. The difference is how you handle it. Rich people play to win; poor people play not to lose.</li>
+                                    <li><strong>Cynicism:</strong> Doubters and critics keep you poor. They are the "Chicken Littles" claiming the sky is falling. Block out the noise.</li>
+                                    <li><strong>Laziness:</strong> Busy people are often the laziest. They stay busy to avoid facing important problems (wealth, health, relationships). The cure is a little greed: asking "What's in it for me?" to spark motivation.</li>
+                                    <li><strong>Bad Habits:</strong> Most people pay everyone else first (bills) and themselves last. You must develop the habit of paying yourself first (investing) to create pressure to earn more.</li>
+                                    <li><strong>Arrogance:</strong> Ego plus ignorance. People use arrogance to hide what they don't know. When you don't know something, admit it and find an expert or a book.</li>
+                                </ol>
+                                <ol class="lang-id list-decimal ml-5 space-y-2">
+                                    <li><strong>Ketakutan:</strong> Semua orang takut kehilangan uang. Bedanya adalah cara menanganinya. Orang kaya main untuk menang; orang miskin main agar tidak kalah.</li>
+                                    <li><strong>Sinisme:</strong> Peragu dan kritikus membuat Anda tetap miskin. Mereka adalah "Chicken Little" yang berteriak langit akan runtuh. Abaikan kebisingan itu.</li>
+                                    <li><strong>Kemalasan:</strong> Orang sibuk seringkali adalah yang paling malas. Mereka sibuk untuk menghindari masalah penting (kekayaan, kesehatan, hubungan). Obatnya adalah sedikit keserakahan: tanya "Apa untungnya buat saya?" untuk memicu motivasi.</li>
+                                    <li><strong>Kebiasaan Buruk:</strong> Kebanyakan orang membayar orang lain dulu (tagihan) dan diri sendiri terakhir. Anda harus membangun kebiasaan membayar diri sendiri dulu (investasi) untuk menciptakan tekanan agar menghasilkan lebih banyak.</li>
+                                    <li><strong>Arogansi:</strong> Ego ditambah ketidaktahuan. Orang menggunakan arogansi untuk menyembunyikan apa yang tidak mereka ketahui. Saat Anda tidak tahu sesuatu, akuilah dan cari ahli atau buku.</li>
+                                </ol>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-purple-50 to-indigo-50 p-6 rounded-xl border border-purple-200">
+                            <h3 class="text-xl font-semibold text-purple-800 mb-4">
+                                <span class="lang-en">Getting Started: The 10 Steps</span>
+                                <span class="lang-id">Memulai: 10 Langkah</span>
+                            </h3>
+                            <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+                                <ul class="lang-en list-disc ml-5 space-y-1">
+                                    <li><strong>Find a reason greater than reality:</strong> You need a deep emotional "Why" (e.g., freedom, supporting parents) to keep going.</li>
+                                    <li><strong>Make daily choices:</strong> Every dollar is a choice to be rich or poor. Invest in your education first.</li>
+                                    <li><strong>Choose friends carefully:</strong> Don't listen to poor friends about money. Learn from those who have what you want.</li>
+                                    <li><strong>Master a formula and then learn a new one:</strong> Don't get stuck. Learn real estate, then stocks, then business.</li>
+                                    <li><strong>Pay yourself first:</strong> Even if you are short on cash, invest first. Let the pressure force you to generate more income to pay bills.</li>
+                                    <li><strong>Pay your brokers well:</strong> Good advice is worth money. If they make you money, pay them well.</li>
+                                    <li><strong>Be an Indian Giver:</strong> Seek ROI (Return on Investment) plus getting your initial capital back quickly.</li>
+                                    <li><strong>Use assets to buy luxuries:</strong> Don't buy a Porsche on credit. Buy a rental property, and let the cash flow buy the Porsche.</li>
+                                    <li><strong>Choose heroes:</strong> Emulate people like Warren Buffett or Donald Trump (in real estate). It makes things seem possible.</li>
+                                    <li><strong>Teach and you shall receive:</strong> To get money, give money. To get knowledge, teach knowledge.</li>
+                                </ul>
+                                <ul class="lang-id list-disc ml-5 space-y-1">
+                                    <li><strong>Temukan alasan yang lebih besar dari kenyataan:</strong> Anda butuh "Mengapa" emosional yang kuat (misal: kebebasan, bantu orang tua) untuk terus maju.</li>
+                                    <li><strong>Buat pilihan setiap hari:</strong> Setiap dolar adalah pilihan untuk jadi kaya atau miskin. Investasikan pada pendidikan Anda dulu.</li>
+                                    <li><strong>Pilih teman dengan hati-hati:</strong> Jangan dengarkan teman miskin soal uang. Belajarlah dari mereka yang memiliki apa yang Anda inginkan.</li>
+                                    <li><strong>Kuasai satu formula lalu pelajari yang baru:</strong> Jangan mandek. Pelajari real estat, lalu saham, lalu bisnis.</li>
+                                    <li><strong>Bayar diri sendiri dulu:</strong> Meski uang pas-pasan, investasi dulu. Biarkan tekanan itu memaksa Anda mencari penghasilan tambahan untuk bayar tagihan.</li>
+                                    <li><strong>Bayar broker Anda dengan baik:</strong> Nasihat bagus itu berharga. Jika mereka menghasilkan uang untuk Anda, bayar mereka dengan layak.</li>
+                                    <li><strong>Jadilah Pemberi Indian:</strong> Cari ROI (Pengembalian Investasi) plus dapatkan modal awal Anda kembali dengan cepat.</li>
+                                    <li><strong>Gunakan aset untuk membeli kemewahan:</strong> Jangan beli Porsche dengan kredit. Beli properti sewaan, dan biarkan arus kasnya yang membayar Porsche itu.</li>
+                                    <li><strong>Pilih pahlawan:</strong> Tiru orang seperti Warren Buffett. Itu membuat segalanya tampak mungkin.</li>
+                                    <li><strong>Mengajar dan Anda akan menerima:</strong> Untuk dapat uang, beri uang. Untuk dapat ilmu, ajarkan ilmu.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#7e22ce'; // Purple
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#eab308'; // Gold/Yellow
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
