@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Lean Startup — Detailed Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Blue/Cyan Theme for Lean Startup */
+        .active-tab { background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.7; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.6; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(2, 132, 199, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #0284c7; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">L</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">The Lean Startup</h2>
+                    <p class="text-slate-400 text-sm">
+                        <span class="lang-en">Deep Dive Summary</span>
+                        <span class="lang-id">Ringkasan Mendalam</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">Core Methodology</span>
+                <span class="lang-id">Metodologi Inti</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-xs font-bold">🚀</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Vision</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Validated Learning</span>
+                                <span class="lang-id">Pembelajaran Tervalidasi</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Steer</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Build-Measure-Learn</span>
+                                <span class="lang-id">Bangun-Ukur-Pelajari</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">The MVP</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Testing Assumptions</span>
+                                <span class="lang-id">Menguji Asumsi</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Pivot or Persevere</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Strategic Shifts</span>
+                                <span class="lang-id">Pergeseran Strategis</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Accelerate</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Engines of Growth</span>
+                                <span class="lang-id">Mesin Pertumbuhan</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© Eric Ries</p>
+                <p class="text-slate-500 text-xs mt-1">Detailed Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    The Lean Startup
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    <span class="lang-en">How Constant Innovation Creates Radically Successful Businesses</span>
+                    <span class="lang-id">Bagaimana Inovasi Berkelanjutan Menciptakan Bisnis yang Sukses Secara Radikal</span>
+                </p>
+                <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto mt-3 sm:mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">Introduction</span>
+                            <span class="lang-id">Pendahuluan</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Stop Wasting People's Time</span>
+                            <span class="lang-id">Berhenti Membuang Waktu Orang</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <div class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-blue-600 pl-4 sm:pl-6 italic mobile-text justified-text">
+                            <span class="lang-en">“The goal of a startup is to figure out the right thing to build—the thing customers want and will pay for—as quickly as possible.”</span>
+                            <span class="lang-id">“Tujuan startup adalah mencari tahu hal yang tepat untuk dibangun—hal yang diinginkan pelanggan dan mau mereka bayar—secepat mungkin.”</span>
+                        </div>
+                        
+                        <div class="mobile-text justified-text">
+                            <span class="lang-en">
+                                Traditional management fails in startups because startups face <strong>extreme uncertainty</strong>. You cannot "plan" when you don't know who your customer is or what the product should be. The Lean Startup is a scientific approach to creating and managing startups to get a desired product to customers' hands faster.
+                            </span>
+                            <span class="lang-id">
+                                Manajemen tradisional gagal di startup karena startup menghadapi <strong>ketidakpastian ekstrem</strong>. Anda tidak bisa "merencanakan" ketika Anda tidak tahu siapa pelanggan Anda atau seperti apa produknya seharusnya. The Lean Startup adalah pendekatan ilmiah untuk membuat dan mengelola startup agar produk yang diinginkan sampai ke tangan pelanggan lebih cepat.
+                            </span>
+                        </div>
+                        
+                        <div class="bg-blue-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
+                            <h4 class="font-semibold text-slate-900 mb-3 text-sm sm:text-base mobile-subtitle">
+                                <span class="lang-en">The 5 Principles:</span>
+                                <span class="lang-id">5 Prinsip Utama:</span>
+                            </h4>
+                            <ul class="space-y-4 text-slate-700 mobile-text">
+                                <li class="flex flex-col">
+                                    <div class="flex items-center font-bold text-slate-800">
+                                        <span class="w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold mr-3 flex-shrink-0">1</span>
+                                        <span class="lang-en">Entrepreneurs are Everywhere</span>
+                                        <span class="lang-id">Wirausahawan Ada di Mana-mana</span>
+                                    </div>
+                                    <div class="pl-9 mt-1 text-sm text-slate-600 justified-text">
+                                        <span class="lang-en">You don't need a garage. Anyone creating new products under uncertainty is an entrepreneur.</span>
+                                        <span class="lang-id">Anda tidak butuh garasi. Siapapun yang menciptakan produk baru di bawah ketidakpastian adalah wirausahawan.</span>
+                                    </div>
+                                </li>
+                                <li class="flex flex-col">
+                                    <div class="flex items-center font-bold text-slate-800">
+                                        <span class="w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold mr-3 flex-shrink-0">2</span>
+                                        <span class="lang-en">Entrepreneurship is Management</span>
+                                        <span class="lang-id">Kewirausahaan adalah Manajemen</span>
+                                    </div>
+                                    <div class="pl-9 mt-1 text-sm text-slate-600 justified-text">
+                                        <span class="lang-en">It's not just about the product; it's about the institution and context.</span>
+                                        <span class="lang-id">Ini bukan hanya tentang produk; ini tentang institusi dan konteksnya.</span>
+                                    </div>
+                                </li>
+                                <li class="flex flex-col">
+                                    <div class="flex items-center font-bold text-slate-800">
+                                        <span class="w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold mr-3 flex-shrink-0">3</span>
+                                        <span class="lang-en">Validated Learning</span>
+                                        <span class="lang-id">Pembelajaran Tervalidasi</span>
+                                    </div>
+                                    <div class="pl-9 mt-1 text-sm text-slate-600 justified-text">
+                                        <span class="lang-en">Startups exist to <em>learn</em> how to build a sustainable business.</span>
+                                        <span class="lang-id">Startup ada untuk <em>belajar</em> cara membangun bisnis yang berkelanjutan.</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Vision: Validated Learning</span>
+                            <span class="lang-id">Visi: Pembelajaran Tervalidasi</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <div class="mobile-text justified-text">
+                            <p class="lang-en">
+                                Most startups fail because they confuse "activity" with "progress." They build a product for months, launch it, and realize no one wants it. The goal is not to produce "stuff", but to produce "validated learning."
+                            </p>
+                            <p class="lang-id">
+                                Kebanyakan startup gagal karena mereka menyamakan "aktivitas" dengan "kemajuan." Mereka membangun produk berbulan-bulan, meluncurkannya, dan sadar tidak ada yang menginginkannya. Tujuannya bukan memproduksi "barang", tapi memproduksi "pembelajaran tervalidasi."
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-blue-50 p-5 rounded-lg border border-blue-200 shadow-sm">
+                                <h4 class="font-bold text-blue-800 mb-3 lang-en text-lg">Validated Learning</h4>
+                                <h4 class="font-bold text-blue-800 mb-3 lang-id text-lg">Pembelajaran Tervalidasi</h4>
+                                
+                                <div class="space-y-4">
+                                    <p class="text-sm text-slate-700 mt-1 justified-text lang-en">
+                                        Learning that is demonstrated by positive improvements in the startup's core metrics. It is backed by empirical data collected from real customers.
+                                    </p>
+                                    <p class="text-sm text-slate-700 mt-1 justified-text lang-id">
+                                        Pembelajaran yang ditunjukkan oleh peningkatan positif dalam metrik inti startup. Ini didukung oleh data empiris yang dikumpulkan dari pelanggan nyata.
+                                    </p>
+                                    <div class="bg-white p-3 rounded border border-blue-100">
+                                        <strong class="text-xs text-blue-600 block mb-1">EXAMPLE:</strong>
+                                        <span class="text-xs text-slate-600 lang-en">"We thought customers wanted Feature X, but data showed they only used Feature Y. We removed X and usage went up."</span>
+                                        <span class="text-xs text-slate-600 lang-id">"Kami kira pelanggan mau Fitur X, tapi data menunjukkan mereka hanya pakai Fitur Y. Kami hapus X dan penggunaan naik."</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-100 p-5 rounded-lg border border-slate-200 shadow-sm">
+                                <h4 class="font-bold text-slate-800 mb-3 lang-en text-lg">Value vs. Waste</h4>
+                                <h4 class="font-bold text-slate-800 mb-3 lang-id text-lg">Nilai vs. Pemborosan</h4>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <strong class="text-sm uppercase tracking-wide text-green-700 lang-en">Value:</strong>
+                                        <strong class="text-sm uppercase tracking-wide text-green-700 lang-id">Nilai:</strong>
+                                        <p class="text-sm text-slate-700 mt-1 lang-en">Anything that provides benefit to the customer.</p>
+                                        <p class="text-sm text-slate-700 mt-1 lang-id">Apapun yang memberikan manfaat bagi pelanggan.</p>
+                                    </div>
+                                    <div class="border-t border-slate-300 pt-3">
+                                        <strong class="text-sm uppercase tracking-wide text-red-700 lang-en">Waste (Muda):</strong>
+                                        <strong class="text-sm uppercase tracking-wide text-red-700 lang-id">Pemborosan (Muda):</strong>
+                                        <p class="text-sm text-slate-700 mt-1 lang-en">Anything that does not contribute to learning what customers want. Even if you build a beautiful feature efficiently, it is 100% waste if nobody uses it.</p>
+                                        <p class="text-sm text-slate-700 mt-1 lang-id">Apapun yang tidak berkontribusi untuk mempelajari apa yang pelanggan inginkan. Meskipun Anda membangun fitur indah dengan efisien, itu 100% sampah jika tidak ada yang pakai.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Steer: Build-Measure-Learn</span>
+                            <span class="lang-id">Mengemudi: Bangun-Ukur-Pelajari</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <div class="bg-cyan-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-cyan-200">
+                            <h3 class="text-lg sm:text-xl font-semibold text-cyan-900 mb-3 mobile-subtitle">
+                                <span class="lang-en">The Feedback Loop</span>
+                                <span class="lang-id">Lingkaran Umpan Balik</span>
+                            </h3>
+                            <p class="text-cyan-800 mobile-text justified-text mb-4">
+                                <span class="lang-en">The fundamental activity of a startup is to turn ideas into products, measure how customers respond, and then learn whether to pivot or persevere. You want to minimize the TOTAL time through this loop.</span>
+                                <span class="lang-id">Aktivitas mendasar startup adalah mengubah ide menjadi produk, mengukur respon pelanggan, lalu belajar apakah harus pivot atau bertahan. Anda ingin meminimalkan TOTAL waktu yang dihabiskan dalam lingkaran ini.</span>
+                            </p>
+                            
+                            <ul class="space-y-3 bg-white p-4 rounded-lg border border-cyan-100">
+                                <li class="flex items-start">
+                                    <span class="text-cyan-600 mr-2 font-bold text-lg">1.</span>
+                                    <div>
+                                        <strong class="text-slate-900 lang-en">BUILD (Bangun)</strong>
+                                        <p class="text-sm text-slate-600 mt-1 lang-en">Turn the idea into a Minimum Viable Product (MVP). Don't wait for perfection.</p>
+                                        <p class="text-sm text-slate-600 mt-1 lang-id">Ubah ide menjadi Minimum Viable Product (MVP). Jangan tunggu sempurna.</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-cyan-600 mr-2 font-bold text-lg">2.</span>
+                                    <div>
+                                        <strong class="text-slate-900 lang-en">MEASURE (Ukur)</strong>
+                                        <p class="text-sm text-slate-600 mt-1 lang-en">Collect data from real users. Avoid "Vanity Metrics" (likes, page views) and focus on "Actionable Metrics" (conversion rate, retention).</p>
+                                        <p class="text-sm text-slate-600 mt-1 lang-id">Kumpulkan data dari pengguna nyata. Hindari "Metrik Kesombongan" (likes, views) dan fokus ke "Metrik yang Dapat Ditindaklanjuti" (konversi, retensi).</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-cyan-600 mr-2 font-bold text-lg">3.</span>
+                                    <div>
+                                        <strong class="text-slate-900 lang-en">LEARN (Pelajari)</strong>
+                                        <p class="text-sm text-slate-600 mt-1 lang-en">Analyze the data. Is the hypothesis correct? Should we Pivot (change strategy) or Persevere (keep going)?</p>
+                                        <p class="text-sm text-slate-600 mt-1 lang-id">Analisis data. Apakah hipotesis benar? Haruskah kita Pivot (ganti strategi) atau Persevere (lanjutkan)?</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The MVP (Minimum Viable Product)</span>
+                            <span class="lang-id">MVP (Produk Layak Minimum)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <p class="text-base sm:text-lg text-slate-600 mobile-text justified-text">
+                            <span class="lang-en">An MVP is not a "beta" or a "cheap product." It is the version of a new product which allows a team to collect the maximum amount of validated learning about customers with the least effort.</span>
+                            <span class="lang-id">MVP bukan "beta" atau "produk murahan." Ini adalah versi produk baru yang memungkinkan tim mengumpulkan jumlah pembelajaran tervalidasi maksimum tentang pelanggan dengan upaya paling sedikit.</span>
+                        </p>
+                        
+                        <div class="flex flex-col space-y-6 my-6">
+                            <div class="relative pl-4 border-l-4 border-blue-500">
+                                <div class="font-bold text-lg text-slate-900 mb-1">
+                                    <span class="lang-en">Video MVP (Dropbox Case Study)</span>
+                                    <span class="lang-id">Video MVP (Studi Kasus Dropbox)</span>
+                                </div>
+                                <p class="text-sm text-slate-600 justified-text">
+                                    <span class="lang-en">Drew Houston didn't build the complex file-sync software first. He made a simple 3-minute video pretending to use the software. The video went viral, and the waitlist went from 5,000 to 75,000 overnight. <strong>He validated demand without writing a line of complex code.</strong></span>
+                                    <span class="lang-id">Drew Houston tidak membangun software sinkronisasi file yang rumit dulu. Dia membuat video 3 menit pura-pura menggunakan software itu. Video itu viral, daftar tunggu naik dari 5.000 ke 75.000 dalam semalam. <strong>Dia memvalidasi permintaan tanpa menulis satu baris kode rumit pun.</strong></span>
+                                </p>
+                            </div>
+
+                            <div class="relative pl-4 border-l-4 border-cyan-500">
+                                <div class="font-bold text-lg text-slate-900 mb-1">
+                                    <span class="lang-en">Concierge MVP (Food on the Table)</span>
+                                    <span class="lang-id">Concierge MVP (Layanan Manual)</span>
+                                </div>
+                                <p class="text-sm text-slate-600 justified-text">
+                                    <span class="lang-en">Instead of building an automated algorithm to create meal plans and grocery lists, the founder found <strong>one</strong> customer. He visited her house, interviewed her, manually planned her meals, and bought her groceries. It was inefficient, but he learned exactly what was needed before automating it.</span>
+                                    <span class="lang-id">Alih-alih membangun algoritma otomatis untuk rencana makan dan daftar belanja, pendiri menemukan <strong>satu</strong> pelanggan. Dia ke rumahnya, mewawancarainya, merencanakan makanannya secara manual, dan membelikan belanjaannya. Itu tidak efisien, tapi dia belajar persis apa yang dibutuhkan sebelum mengotomatiskannya.</span>
+                                </p>
+                            </div>
+                            
+                            <div class="relative pl-4 border-l-4 border-slate-500">
+                                <div class="font-bold text-lg text-slate-900 mb-1">
+                                    <span class="lang-en">Wizard of Oz MVP (Zappos)</span>
+                                    <span class="lang-id">Wizard of Oz MVP (Zappos)</span>
+                                </div>
+                                <p class="text-sm text-slate-600 justified-text">
+                                    <span class="lang-en">Nick Swinmurn wanted to sell shoes online. Instead of buying inventory, he went to a local shoe store, took photos, and put them on a website. If someone bought a shoe, he ran to the store, bought it at full price, and shipped it. <strong>He proved people would buy shoes online before investing in a warehouse.</strong></span>
+                                    <span class="lang-id">Nick Swinmurn ingin jual sepatu online. Alih-alih beli stok, dia pergi ke toko sepatu lokal, memotret sepatu, dan menaruhnya di web. Jika ada yang beli, dia lari ke toko, beli dengan harga penuh, dan mengirimnya. <strong>Dia membuktikan orang mau beli sepatu online sebelum investasi gudang.</strong></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-8">
+                    <div class="mb-6">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-sm font-medium rounded-full mb-4">Part 4</span>
+                        <h2 class="text-3xl font-bold text-slate-900 mb-4">
+                            <span class="lang-en">Pivot or Persevere</span>
+                            <span class="lang-id">Pivot (Putar Arah) atau Persevere (Bertahan)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-gradient-to-r from-slate-50 to-blue-50 p-6 rounded-xl border border-slate-200">
+                            <div class="space-y-6">
+                                <div>
+                                    <strong class="text-lg text-slate-900 block mb-2 lang-en">Definition of Pivot</strong>
+                                    <strong class="text-lg text-slate-900 block mb-2 lang-id">Definisi Pivot</strong>
+                                    <p class="text-[15px] justified-text lang-en">
+                                        A structured course correction designed to test a new fundamental hypothesis about the product, strategy, and engine of growth. It is NOT giving up; it is keeping one foot rooted in what you've learned while changing the other foot to a new direction.
+                                    </p>
+                                    <p class="text-[15px] justified-text lang-id">
+                                        Koreksi arah terstruktur yang dirancang untuk menguji hipotesis fundamental baru tentang produk, strategi, dan mesin pertumbuhan. Ini BUKAN menyerah; ini menjaga satu kaki berakar pada apa yang sudah dipelajari sambil memindahkan kaki lainnya ke arah baru.
+                                    </p>
+                                </div>
+
+                                <div class="border-t border-blue-200 pt-4">
+                                    <strong class="text-lg text-blue-900 block mb-3 lang-en">Common Types of Pivots</strong>
+                                    <strong class="text-lg text-blue-900 block mb-3 lang-id">Jenis Pivot Umum</strong>
+                                    
+                                    <ul class="space-y-3">
+                                        <li class="bg-white p-3 rounded border border-blue-100 shadow-sm">
+                                            <strong class="block text-blue-700 text-sm mb-1 lang-en">Zoom-In Pivot</strong>
+                                            <strong class="block text-blue-700 text-sm mb-1 lang-id">Zoom-In Pivot</strong>
+                                            <span class="text-sm text-slate-600 lang-en">What previously was considered just a single feature becomes the whole product.</span>
+                                            <span class="text-sm text-slate-600 lang-id">Apa yang tadinya hanya dianggap satu fitur berubah menjadi keseluruhan produk utama.</span>
+                                        </li>
+                                        <li class="bg-white p-3 rounded border border-blue-100 shadow-sm">
+                                            <strong class="block text-blue-700 text-sm mb-1 lang-en">Zoom-Out Pivot</strong>
+                                            <strong class="block text-blue-700 text-sm mb-1 lang-id">Zoom-Out Pivot</strong>
+                                            <span class="text-sm text-slate-600 lang-en">What was considered the whole product becomes just a single feature of a much larger product.</span>
+                                            <span class="text-sm text-slate-600 lang-id">Apa yang tadinya dianggap keseluruhan produk menjadi hanya satu fitur dari produk yang jauh lebih besar.</span>
+                                        </li>
+                                        <li class="bg-white p-3 rounded border border-blue-100 shadow-sm">
+                                            <strong class="block text-blue-700 text-sm mb-1 lang-en">Customer Segment Pivot</strong>
+                                            <strong class="block text-blue-700 text-sm mb-1 lang-id">Customer Segment Pivot</strong>
+                                            <span class="text-sm text-slate-600 lang-en">The product hypothesis is partially confirmed, solving the right problem, but for a different customer than originally anticipated.</span>
+                                            <span class="text-sm text-slate-600 lang-id">Hipotesis produk terkonfirmasi sebagian, memecahkan masalah yang benar, tapi untuk pelanggan yang berbeda dari yang diperkirakan semula.</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-8">
+                    <div class="mb-6">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-sm font-medium rounded-full mb-4">Part 5</span>
+                        <h2 class="text-3xl font-bold text-slate-900 mb-4">
+                            <span class="lang-en">The Engines of Growth</span>
+                            <span class="lang-id">Mesin Pertumbuhan</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-800 mb-3 lang-en text-lg">Sustainable Growth</h4>
+                            <h4 class="font-bold text-slate-800 mb-3 lang-id text-lg">Pertumbuhan Berkelanjutan</h4>
+                            <p class="text-sm text-slate-600 justified-text mb-4 lang-en">
+                                New customers come from the actions of past customers. Startups must focus on ONE engine at a time.
+                            </p>
+                            <p class="text-sm text-slate-600 justified-text mb-4 lang-id">
+                                Pelanggan baru datang dari tindakan pelanggan lama. Startup harus fokus pada SATU mesin dalam satu waktu.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                <div class="text-2xl mb-2">🧲</div>
+                                <strong class="block text-blue-900 text-sm mb-2 uppercase tracking-wide lang-en">1. Sticky Engine</strong>
+                                <strong class="block text-blue-900 text-sm mb-2 uppercase tracking-wide lang-id">1. Mesin Lengket</strong>
+                                <p class="text-xs text-slate-700 lang-en">Focus: <strong>Retention</strong>. If customers stay for the long term, the business grows. Key Metric: Churn Rate.</p>
+                                <p class="text-xs text-slate-700 lang-id">Fokus: <strong>Retensi</strong>. Jika pelanggan bertahan jangka panjang, bisnis tumbuh. Metrik Kunci: Churn Rate.</p>
+                            </div>
+
+                            <div class="bg-cyan-50 p-4 rounded-lg border border-cyan-200">
+                                <div class="text-2xl mb-2">🦠</div>
+                                <strong class="block text-cyan-900 text-sm mb-2 uppercase tracking-wide lang-en">2. Viral Engine</strong>
+                                <strong class="block text-cyan-900 text-sm mb-2 uppercase tracking-wide lang-id">2. Mesin Viral</strong>
+                                <p class="text-xs text-slate-700 lang-en">Focus: <strong>Referral</strong>. Growth happens automatically as a side effect of customers using the product (e.g., Hotmail signature). Key Metric: Viral Coefficient (K > 1).</p>
+                                <p class="text-xs text-slate-700 lang-id">Fokus: <strong>Referral</strong>. Pertumbuhan terjadi otomatis sebagai efek samping penggunaan produk (misal: tanda tangan Hotmail). Metrik Kunci: Koefisien Viral (K > 1).</p>
+                            </div>
+
+                            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                                <div class="text-2xl mb-2">💰</div>
+                                <strong class="block text-slate-900 text-sm mb-2 uppercase tracking-wide lang-en">3. Paid Engine</strong>
+                                <strong class="block text-slate-900 text-sm mb-2 uppercase tracking-wide lang-id">3. Mesin Berbayar</strong>
+                                <p class="text-xs text-slate-700 lang-en">Focus: <strong>Arbitrage</strong>. Buying customers through ads. Key Metric: Lifetime Value (LTV) > Cost of Acquisition (CPA).</p>
+                                <p class="text-xs text-slate-700 lang-id">Fokus: <strong>Arbitrase</strong>. Membeli pelanggan lewat iklan. Metrik Kunci: Nilai Seumur Hidup (LTV) > Biaya Akuisisi (CPA).</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#0284c7'; // Blue
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#475569'; // Slate
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
