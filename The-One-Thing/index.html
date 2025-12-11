@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The One Thing — Gary Keller & Jay Papasan | Summary</title>
+    <title>The One Thing — Gary Keller & Jay Papasan | Bilingual Summary</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -16,6 +16,10 @@
         
         .justified-text { text-align: justify; }
         .mobile-text { font-size: 16px; line-height: 1.6; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } /* Default hidden */
+        .lang-en { display: block; }
         
         @media (max-width: 640px) {
             .mobile-text { font-size: 14px; line-height: 1.5; }
@@ -26,126 +30,62 @@
         }
         
         .nav-drawer {
-            position: fixed;
-            top: 0;
-            left: -320px;
-            width: 320px;
-            height: 100vh;
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
             background: linear-gradient(180deg, #1e293b 0%, #334155 100%);
-            transition: left 0.3s ease-in-out;
-            z-index: 1000;
+            transition: left 0.3s ease-in-out; z-index: 1000;
             box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
         }
-        
         .nav-drawer.open { left: 0; }
         
         .nav-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease-in-out;
-            z-index: 999;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
         }
-        
-        .nav-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
         
         .drawer-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1001;
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
             background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            border: none;
-            border-radius: 12px;
-            padding: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
         
-        .drawer-toggle:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-        }
-        
-        .drawer-toggle.open {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-        }
-        
-        .hamburger {
-            width: 24px;
-            height: 18px;
-            position: relative;
-        }
-        
-        .hamburger span {
-            display: block;
-            position: absolute;
-            height: 3px;
-            width: 100%;
-            background: white;
-            border-radius: 2px;
-            opacity: 1;
-            left: 0;
-            transform: rotate(0deg);
-            transition: .25s ease-in-out;
-        }
-        
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
         .hamburger span:nth-child(1) { top: 0px; }
         .hamburger span:nth-child(2) { top: 7px; }
         .hamburger span:nth-child(3) { top: 14px; }
         
-        .drawer-toggle.open .hamburger span:nth-child(1) {
-            top: 7px;
-            transform: rotate(135deg);
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+
+        /* Floating Language Button */
+        .lang-switch-float {
+            position: fixed; bottom: 30px; right: 30px; z-index: 1002;
+            background: white; border: 2px solid #3b82f6; border-radius: 50px;
+            padding: 10px 20px; cursor: pointer; font-weight: bold; color: #3b82f6;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease;
         }
-        
-        .drawer-toggle.open .hamburger span:nth-child(2) {
-            opacity: 0;
-            left: -60px;
-        }
-        
-        .drawer-toggle.open .hamburger span:nth-child(3) {
-            top: 7px;
-            transform: rotate(-135deg);
-        }
+        .lang-switch-float:hover { background: #3b82f6; color: white; transform: translateY(-3px); }
         
         .nav-item { position: relative; overflow: hidden; }
-        .nav-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
         .nav-item:hover::before { left: 100%; }
         
-        @media (max-width: 768px) {
-            .nav-drawer { width: 280px; left: -280px; }
-            .drawer-toggle { top: 15px; left: 15px; padding: 10px; }
-        }
-        
-        @media (max-width: 480px) {
-            .nav-drawer { width: 260px; left: -260px; }
-            .drawer-toggle { top: 12px; left: 12px; padding: 8px; }
-            .hamburger { width: 20px; height: 15px; }
-        }
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
     </style>
 </head>
 <body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
-    <!-- Navigation Drawer Toggle -->
+
+    <button class="lang-switch-float" onclick="toggleLanguage()">
+        <span class="lang-text">🇮🇩 Switch to ID</span>
+    </button>
+
     <button class="drawer-toggle" onclick="toggleDrawer()">
         <div class="hamburger">
             <span></span>
@@ -154,10 +94,8 @@
         </div>
     </button>
     
-    <!-- Navigation Overlay -->
     <div class="nav-overlay" onclick="closeDrawer()"></div>
     
-    <!-- Navigation Drawer -->
     <nav class="nav-drawer">
         <div class="p-6 border-b border-slate-600">
             <div class="flex items-center space-x-3">
@@ -166,18 +104,25 @@
                 </div>
                 <div>
                     <h2 class="text-white font-semibold text-lg">The One Thing</h2>
-                    <p class="text-slate-300 text-sm">Book Summary</p>
+                    <p class="text-slate-300 text-sm">
+                        <span class="lang-en">Book Summary</span>
+                        <span class="lang-id">Ringkasan Buku</span>
+                    </p>
                 </div>
             </div>
         </div>
         
         <div class="p-4">
-            <h3 class="text-slate-300 text-sm font-medium uppercase tracking-wider mb-4 px-2">Table of Contents</h3>
+            <h3 class="text-slate-300 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">Table of Contents</span>
+                <span class="lang-id">Daftar Isi</span>
+            </h3>
             <ul class="space-y-2">
                 <li class="nav-item">
                     <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 active-tab text-white flex items-center space-x-3">
                         <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">📖</span>
-                        <span>Introduction</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
                     </button>
                 </li>
                 <li class="nav-item">
@@ -185,7 +130,10 @@
                         <span class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
                         <div class="text-left">
                             <div class="font-medium">Part 1</div>
-                            <div class="text-xs text-slate-400">Author, Context & Core Question</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Author, Context & Core Question</span>
+                                <span class="lang-id">Penulis, Konteks & Pertanyaan Inti</span>
+                            </div>
                         </div>
                     </button>
                 </li>
@@ -194,7 +142,10 @@
                         <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
                         <div class="text-left">
                             <div class="font-medium">Part 2</div>
-                            <div class="text-xs text-slate-400">Domino Effect & Focusing Question</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Domino Effect & Focusing Question</span>
+                                <span class="lang-id">Efek Domino & Pertanyaan Fokus</span>
+                            </div>
                         </div>
                     </button>
                 </li>
@@ -203,7 +154,10 @@
                         <span class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
                         <div class="text-left">
                             <div class="font-medium">Part 3</div>
-                            <div class="text-xs text-slate-400">Time Blocking & Priority in Action</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Time Blocking & Priority in Action</span>
+                                <span class="lang-id">Blok Waktu & Prioritas dalam Aksi</span>
+                            </div>
                         </div>
                     </button>
                 </li>
@@ -212,17 +166,23 @@
                         <span class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
                         <div class="text-left">
                             <div class="font-medium">Part 4</div>
-                            <div class="text-xs text-slate-400">The Lies of Productivity & Your Environment</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">The Lies of Productivity & Environment</span>
+                                <span class="lang-id">Kebohongan Produktivitas & Lingkungan</span>
+                            </div>
                         </div>
                     </button>
                 </li>
                 <li class="nav-item">
                     <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-600 text-slate-300 flex items-center space-x-3">
-                            <span class="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
-                            <div class="text-left">
-                                <div class="font-medium">Part 5</div>
-                                <div class="text-xs text-slate-400">Implementation & Long-Term Impact</div>
+                        <span class="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Part 5</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Implementation & Long-Term Impact</span>
+                                <span class="lang-id">Implementasi & Dampak Jangka Panjang</span>
                             </div>
+                        </div>
                     </button>
                 </li>
             </ul>
@@ -236,7 +196,6 @@
         </div>
     </nav>
 
-    <!-- Header -->
     <header class="bg-white shadow-sm border-b border-slate-200">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
             <div class="text-center">
@@ -244,7 +203,8 @@
                     The One Thing
                 </h1>
                 <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
-                    The surprisingly simple truth behind extraordinary results
+                    <span class="lang-en">The surprisingly simple truth behind extraordinary results</span>
+                    <span class="lang-id">Kebenaran sederhana di balik hasil yang luar biasa</span>
                 </p>
                 <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-600 mx-auto mt-3 sm:mt-4 rounded-full"></div>
             </div>
@@ -255,59 +215,69 @@
         <main>
             <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
                     
-                <!-- Introduction -->
                 <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Introduction</span>
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">Introduction</span>
+                            <span class="lang-id">Pendahuluan</span>
+                        </span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            Welcome to “The One Thing”
+                            <span class="lang-en">Welcome to “The One Thing”</span>
+                            <span class="lang-id">Selamat Datang di “The One Thing”</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
-                        <p class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-blue-500 pl-4 sm:pl-6 italic mobile-text justified-text">
-                            When you focus on the most important thing and protect it with your time and energy, 
-                            everything else becomes easier, less urgent — or simply unnecessary.
-                        </p>
+                        <div class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-blue-500 pl-4 sm:pl-6 italic mobile-text justified-text">
+                            <span class="lang-en">When you focus on the most important thing and protect it with your time and energy, everything else becomes easier, less urgent — or simply unnecessary.</span>
+                            <span class="lang-id">Ketika Anda fokus pada hal yang paling penting dan melindunginya dengan waktu dan energi Anda, segalanya menjadi lebih mudah, kurang mendesak — atau bahkan tidak perlu.</span>
+                        </div>
                         
-                        <p class="mobile-text justified-text">
-                            <em>The One Thing</em> by Gary W. Keller and Jay Papasan is a productivity and focus book 
-                            that argues that extraordinary results come from a very small number of truly decisive actions. 
-                            Modern life pushes us towards juggling many priorities at once. This book says the opposite: 
-                            success is about <strong>doing fewer things, with greater intensity, in the right order.</strong>
-                        </p>
+                        <div class="mobile-text justified-text">
+                            <span class="lang-en">
+                                <em>The One Thing</em> by Gary W. Keller and Jay Papasan is a productivity and focus book that argues that extraordinary results come from a very small number of truly decisive actions. Modern life pushes us towards juggling many priorities at once. This book says the opposite: success is about <strong>doing fewer things, with greater intensity, in the right order.</strong>
+                            </span>
+                            <span class="lang-id">
+                                <em>The One Thing</em> karya Gary W. Keller dan Jay Papasan adalah buku produktivitas dan fokus yang berpendapat bahwa hasil luar biasa datang dari sejumlah kecil tindakan yang benar-benar menentukan. Kehidupan modern mendorong kita untuk menangani banyak prioritas sekaligus. Buku ini mengatakan sebaliknya: kesuksesan adalah tentang <strong>melakukan lebih sedikit hal, dengan intensitas lebih besar, dalam urutan yang benar.</strong>
+                            </span>
+                        </div>
                         
                         <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-100">
-                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">In this summary you will learn:</h4>
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">
+                                <span class="lang-en">In this summary you will learn:</span>
+                                <span class="lang-id">Dalam ringkasan ini Anda akan mempelajari:</span>
+                            </h4>
                             <ul class="space-y-2 text-slate-700 mobile-text">
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">Who the authors are and why they wrote this book.</span>
+                                    <span class="justified-text lang-en">Who the authors are and why they wrote this book.</span>
+                                    <span class="justified-text lang-id">Siapa penulisnya dan mengapa mereka menulis buku ini.</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">How the “domino effect” explains long-term achievement.</span>
+                                    <span class="justified-text lang-en">How the “domino effect” explains long-term achievement.</span>
+                                    <span class="justified-text lang-id">Bagaimana “efek domino” menjelaskan pencapaian jangka panjang.</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">How to use the focusing question to find your most important work.</span>
+                                    <span class="justified-text lang-en">How to use the focusing question to find your most important work.</span>
+                                    <span class="justified-text lang-id">Cara menggunakan pertanyaan fokus untuk menemukan pekerjaan terpenting Anda.</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                    <span class="justified-text">Practical tools like time blocking, priority, and environment design.</span>
+                                    <span class="justified-text lang-en">Practical tools like time blocking, priority, and environment design.</span>
+                                    <span class="justified-text lang-id">Alat praktis seperti blok waktu, prioritas, dan desain lingkungan.</span>
                                 </li>
                             </ul>
                         </div>
                         
-                        <p class="mobile-text justified-text">
-                            Use the navigation menu on the left to move between sections. 
-                            Each part combines high-level concepts with clear, practical steps 
-                            so you can apply the core ideas of <em>The One Thing</em> in your work and life.
-                        </p>
+                        <div class="mobile-text justified-text">
+                            <span class="lang-en">Use the navigation menu on the left to move between sections. Each part combines high-level concepts with clear, practical steps so you can apply the core ideas of <em>The One Thing</em> in your work and life.</span>
+                            <span class="lang-id">Gunakan menu navigasi di sebelah kiri untuk berpindah antar bagian. Setiap bagian menggabungkan konsep tingkat tinggi dengan langkah-langkah praktis yang jelas sehingga Anda dapat menerapkan ide-ide inti dari <em>The One Thing</em> dalam pekerjaan dan kehidupan Anda.</span>
+                        </div>
                     </div>
                 </section>
 
-                <!-- Part 1 – Author, Context & Core Question -->
                 <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
@@ -315,548 +285,537 @@
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">
-                            Authors, Background & the Core Problem
+                            <span class="lang-en">Authors, Background & the Core Problem</span>
+                            <span class="lang-id">Penulis, Latar Belakang & Masalah Utama</span>
                         </h3>
-                        <p class="mobile-text justified-text">
+                        <div class="mobile-text justified-text">
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
 
-<p>
-Gary Keller is the co-founder of Keller Williams Realty, one of the largest real estate companies in the world. 
-He built his company from a small office into a global organization by learning how to focus his time and his team 
-on what mattered most. Jay Papasan is a writer, editor and business partner who helped structure and communicate 
-these ideas clearly.
-</p>
+                                <p class="lang-en">
+                                    Gary Keller is the co-founder of Keller Williams Realty, one of the largest real estate companies in the world. He built his company from a small office into a global organization by learning how to focus his time and his team on what mattered most. Jay Papasan is a writer, editor and business partner who helped structure and communicate these ideas clearly.
+                                </p>
+                                <p class="lang-id">
+                                    Gary Keller adalah salah satu pendiri Keller Williams Realty, salah satu perusahaan real estat terbesar di dunia. Dia membangun perusahaannya dari kantor kecil menjadi organisasi global dengan belajar bagaimana memfokuskan waktu dan timnya pada hal yang paling penting. Jay Papasan adalah penulis, editor, dan mitra bisnis yang membantu menyusun dan mengomunikasikan ide-ide ini dengan jelas.
+                                </p>
+                                <br>
 
-<p>
-The authors observed the same pattern everywhere: people are overwhelmed.  
-They try to:
-</p>
+                                <p class="lang-en">
+                                    The authors observed the same pattern everywhere: people are overwhelmed. They try to:
+                                </p>
+                                <p class="lang-id">
+                                    Para penulis mengamati pola yang sama di mana-mana: orang merasa kewalahan. Mereka mencoba untuk:
+                                </p>
 
-<ul>
-  <li>Do too many projects at the same time,</li>
-  <li>Say yes to too many requests,</li>
-  <li>Respond to every email and message immediately,</li>
-  <li>Feel guilty when they focus deeply on one thing.</li>
-</ul>
+                                <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                    <li>Do too many projects at the same time,</li>
+                                    <li>Say yes to too many requests,</li>
+                                    <li>Respond to every email and message immediately,</li>
+                                    <li>Feel guilty when they focus deeply on one thing.</li>
+                                </ul>
+                                <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                    <li>Mengerjakan terlalu banyak proyek sekaligus,</li>
+                                    <li>Mengatakan ya pada terlalu banyak permintaan,</li>
+                                    <li>Merespons setiap email dan pesan dengan segera,</li>
+                                    <li>Merasa bersalah ketika mereka fokus secara mendalam pada satu hal.</li>
+                                </ul>
+                                <br>
 
-<p>
-The result is busyness without meaningful progress. People are active but not effective. 
-They move in many directions but not very far in any of them.
-</p>
+                                <p class="lang-en">
+                                    The result is busyness without meaningful progress. People are active but not effective. They move in many directions but not very far in any of them.
+                                </p>
+                                <p class="lang-id">
+                                    Hasilnya adalah kesibukan tanpa kemajuan yang berarti. Orang aktif tetapi tidak efektif. Mereka bergerak ke banyak arah tetapi tidak terlalu jauh di salah satunya.
+                                </p>
+                                <br>
 
-<p>
-Keller asked a different question in his own life and business:
-<strong>What if real success is not about doing more, but about doing less — better and more consistently?</strong>
-</p>
+                                <p class="lang-en">
+                                    Gary Keller asked a different question in his own life and business: <strong>What if real success is not about doing more, but about doing less — better and more consistently?</strong>
+                                </p>
+                                <p class="lang-id">
+                                    Gary Keller mengajukan pertanyaan berbeda dalam kehidupan dan bisnisnya sendiri: <strong>Bagaimana jika kesuksesan sejati bukan tentang melakukan lebih banyak, tetapi tentang melakukan lebih sedikit — dengan lebih baik dan lebih konsisten?</strong>
+                                </p>
+                                <br>
 
-<p>
-This led to the core idea of the book: <strong>you achieve more when you narrow your focus.</strong> 
-Instead of fighting on many fronts, you concentrate your energy like a laser on the few actions that truly matter. 
-To help readers do this, the book presents one simple but powerful tool: the <strong>focusing question</strong>, 
-which we explore in Part 2.
-</p>
+                                <p class="lang-en">
+                                    This led to the core idea of the book: <strong>you achieve more when you narrow your focus.</strong> Instead of fighting on many fronts, you concentrate your energy like a laser on the few actions that truly matter.
+                                </p>
+                                <p class="lang-id">
+                                    Hal ini mengarah pada ide inti buku: <strong>Anda mencapai lebih banyak ketika Anda mempersempit fokus Anda.</strong> Alih-alih bertarung di banyak bidang, Anda memusatkan energi Anda seperti laser pada beberapa tindakan yang benar-benar penting.
+                                </p>
 
-<p>
-The book is divided into three broad sections:
-</p>
-
-<ul>
-  <li><strong>The Lies:</strong> myths about productivity and success that most people believe (like multitasking or a balanced life).</li>
-  <li><strong>The Truth:</strong> the power of focus, priority, and the domino effect.</li>
-  <li><strong>Extraordinary Results:</strong> how to apply “the one thing” in your daily schedule, goals, and environment.</li>
-</ul>
-
-<p>
-In this summary, we reorganize the content into five parts but keep these core themes. 
-The goal is to give you a clear mental map of the book and concrete practices you can implement.
-</p>
-
-</div>
-                        </p>
+                            </div>
+                        </div>
                         
                         <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl">
-                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Key Facts:</h4>
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">
+                                <span class="lang-en">Key Facts:</span>
+                                <span class="lang-id">Fakta Kunci:</span>
+                            </h4>
                             <ul class="space-y-2 mobile-text">
-                                <li class="justified-text"><strong>Publication year:</strong><br>2013.</li> 
-                                <li class="justified-text"><strong>Authors:</strong><br>Gary W. Keller with Jay Papasan.</li>
-                                <li class="justified-text"><strong>Central claim:</strong><br>Extraordinary success is sequential, not simultaneous. You get there one thing at a time.</li>
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>Publication year:</strong> 2013.</span>
+                                    <span class="lang-id"><strong>Tahun terbit:</strong> 2013.</span>
+                                </li> 
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>Authors:</strong> Gary W. Keller with Jay Papasan.</span>
+                                    <span class="lang-id"><strong>Penulis:</strong> Gary W. Keller bersama Jay Papasan.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en"><strong>Central claim:</strong> Extraordinary success is sequential, not simultaneous. You get there one thing at a time.</span>
+                                    <span class="lang-id"><strong>Klaim utama:</strong> Kesuksesan luar biasa bersifat sekuensial (berurutan), bukan simultan (bersamaan). Anda mencapainya satu hal pada satu waktu.</span>
+                                </li>
                             </ul>
                         </div>
                         
-                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">From To-Do List to Success List</h3>
+                        <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mobile-subtitle">
+                            <span class="lang-en">From To-Do List to Success List</span>
+                            <span class="lang-id">Dari Daftar Tugas ke Daftar Sukses</span>
+                        </h3>
                         <p class="mobile-text justified-text">
-                            One of the early shifts the book proposes is moving from a long, unfiltered 
-                            to-do list toward a short, carefully prioritized “success list”.  
-                            Not all tasks are equal. A few have massive impact; most are trivial.
+                            <span class="lang-en">One of the early shifts the book proposes is moving from a long, unfiltered to-do list toward a short, carefully prioritized “success list”. Not all tasks are equal. A few have massive impact; most are trivial.</span>
+                            <span class="lang-id">Salah satu perubahan awal yang diusulkan buku ini adalah beralih dari daftar tugas yang panjang dan tidak disaring menuju "daftar sukses" yang pendek dan diprioritaskan dengan cermat. Tidak semua tugas setara. Beberapa memiliki dampak besar; sebagian besar sepele.</span>
                         </p>
                         
                         <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-amber-200">
-                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Three Foundational Ideas:</h4>
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">
+                                <span class="lang-en">Three Foundational Ideas:</span>
+                                <span class="lang-id">Tiga Ide Dasar:</span>
+                            </h4>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                                 <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                                    <h5 class="font-medium text-blue-700 text-sm sm:text-base">Focus</h5>
-                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
-                                        You do your best work when your attention is undivided.
-                                    </p>
+                                    <h5 class="font-medium text-blue-700 text-sm sm:text-base">
+                                        <span class="lang-en">Focus</span>
+                                        <span class="lang-id">Fokus</span>
+                                    </h5>
+                                    <div class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        <span class="lang-en">You do your best work when your attention is undivided.</span>
+                                        <span class="lang-id">Anda melakukan pekerjaan terbaik saat perhatian Anda tidak terbagi.</span>
+                                    </div>
                                 </div>
                                 <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                                    <h5 class="font-medium text-green-700 text-sm sm:text-base">Priority</h5>
-                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
-                                        There is always a “most important” task. Treat it as non-negotiable.
-                                    </p>
+                                    <h5 class="font-medium text-green-700 text-sm sm:text-base">
+                                        <span class="lang-en">Priority</span>
+                                        <span class="lang-id">Prioritas</span>
+                                    </h5>
+                                    <div class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        <span class="lang-en">There is always a “most important” task. Treat it as non-negotiable.</span>
+                                        <span class="lang-id">Selalu ada tugas "paling penting". Perlakukan itu sebagai hal yang tidak bisa ditawar.</span>
+                                    </div>
                                 </div>
                                 <div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                                    <h5 class="font-medium text-purple-700 text-sm sm:text-base">Sequence</h5>
-                                    <p class="text-xs sm:text-sm text-slate-600 justified-text">
-                                        Big results come from a logical chain of small wins done in the right order.
-                                    </p>
+                                    <h5 class="font-medium text-purple-700 text-sm sm:text-base">
+                                        <span class="lang-en">Sequence</span>
+                                        <span class="lang-id">Urutan</span>
+                                    </h5>
+                                    <div class="text-xs sm:text-sm text-slate-600 justified-text">
+                                        <span class="lang-en">Big results come from a logical chain of small wins done in the right order.</span>
+                                        <span class="lang-id">Hasil besar datang dari rantai logis kemenangan kecil yang dilakukan dalam urutan yang benar.</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Part 2 – Domino Effect & Focusing Question -->
                 <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            The Domino Effect & The Focusing Question
+                            <span class="lang-en">The Domino Effect & The Focusing Question</span>
+                            <span class="lang-id">Efek Domino & Pertanyaan Fokus</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <div class="bg-blue-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-blue-200">
                             <h3 class="text-lg sm:text-xl font-semibold text-blue-800 mb-3 mobile-subtitle">
-                                The Domino Effect: Small Actions, Huge Results
+                                <span class="lang-en">The Domino Effect: Small Actions, Huge Results</span>
+                                <span class="lang-id">Efek Domino: Tindakan Kecil, Hasil Besar</span>
                             </h3>
                             <p class="text-blue-700 italic mobile-text justified-text">
-                                A single domino can knock over another domino slightly larger than itself. 
-                                Repeated over time, this creates an exponential chain of impact.
+                                <span class="lang-en">A single domino can knock over another domino slightly larger than itself. Repeated over time, this creates an exponential chain of impact.</span>
+                                <span class="lang-id">Satu domino dapat menjatuhkan domino lain yang sedikit lebih besar dari dirinya sendiri. Jika diulang terus-menerus, ini menciptakan rantai dampak yang eksponensial.</span>
                             </p>
                         </div>
 
                         <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-<p>
-The authors open the book with the metaphor of a line of dominos. If each domino is slightly 
-taller than the previous one, a small starting action can eventually knock over something 
-massive. This is how big achievements work in real life: they are the end result of a long 
-sequence of relatively small, well-chosen actions.
-</p>
+                            <p class="lang-en">
+                                The authors open the book with the metaphor of a line of dominos. If each domino is slightly taller than the previous one, a small starting action can eventually knock over something massive. This is how big achievements work in real life: they are the end result of a long sequence of relatively small, well-chosen actions.
+                            </p>
+                            <p class="lang-id">
+                                Penulis membuka buku dengan metafora barisan domino. Jika setiap domino sedikit lebih tinggi dari sebelumnya, tindakan awal yang kecil pada akhirnya dapat merobohkan sesuatu yang sangat besar. Begitulah pencapaian besar bekerja dalam kehidupan nyata: itu adalah hasil akhir dari rangkaian panjang tindakan yang relatif kecil dan dipilih dengan baik.
+                            </p>
+                            <br>
 
-<p>
-The lesson: <strong>you do not need to start big; you need to start with the right first domino.</strong>  
-You choose the action that, if done consistently, sets up the next level of progress. 
-Over months and years, this sequence compounds into what looks from the outside like a giant leap.
-</p>
+                            <p class="lang-en">
+                                The lesson: <strong>you do not need to start big; you need to start with the right first domino.</strong> You choose the action that, if done consistently, sets up the next level of progress. Over months and years, this sequence compounds into what looks from the outside like a giant leap.
+                            </p>
+                            <p class="lang-id">
+                                Pelajarannya: <strong>Anda tidak perlu memulai dengan hal besar; Anda perlu memulai dengan domino pertama yang tepat.</strong> Anda memilih tindakan yang, jika dilakukan secara konsisten, menyiapkan tingkat kemajuan berikutnya. Selama berbulan-bulan dan bertahun-tahun, urutan ini bertambah menjadi apa yang tampak dari luar sebagai lompatan raksasa.
+                            </p>
+                            <br>
 
-<h3>The Focusing Question</h3>
+                            <h3 class="lang-en">The Focusing Question</h3>
+                            <h3 class="lang-id">Pertanyaan Fokus</h3>
 
-<p>
-To help you find the right “first domino”, Keller introduces the <strong>focusing question</strong>:
-</p>
+                            <p class="lang-en">To help you find the right “first domino”, Keller introduces the <strong>focusing question</strong>:</p>
+                            <p class="lang-id">Untuk membantu Anda menemukan "domino pertama" yang tepat, Keller memperkenalkan <strong>pertanyaan fokus</strong>:</p>
 
-<p style="margin-left:16px; font-style:italic;">
-“What is the one thing I can do, such that by doing it, everything else will be easier or unnecessary?”
-</p>
+                            <p style="margin-left:16px; font-style:italic;" class="lang-en">
+                                “What is the one thing I can do, such that by doing it, everything else will be easier or unnecessary?”
+                            </p>
+                            <p style="margin-left:16px; font-style:italic;" class="lang-id">
+                                “Apa SATU hal yang bisa saya lakukan, sehingga dengan melakukannya, segala hal lain menjadi lebih mudah atau tidak perlu?”
+                            </p>
+                            <br>
 
-<p>
-This question has several important elements:
-</p>
+                            <p class="lang-en">This question has several important elements:</p>
+                            <p class="lang-id">Pertanyaan ini memiliki beberapa elemen penting:</p>
 
-<ul>
-  <li><strong>“What is the one thing…”</strong><br>
-  Forces you to make a choice. Not two things, not five — one.</li>
+                            <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                <li><strong>“What is the one thing…”</strong> Forces you to make a choice. Not two things, not five — one.</li>
+                                <li><strong>“…I can do…”</strong> Points to an action that is within your control, not a vague wish.</li>
+                                <li><strong>“…such that by doing it…”</strong> Suggests a cause–effect relationship. This action should move other pieces.</li>
+                                <li><strong>“…everything else will be easier or unnecessary.”</strong> The best next action simplifies or eliminates future work. It has a multiplying effect.</li>
+                            </ul>
+                            <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                <li><strong>“Apa satu hal…”</strong> Memaksa Anda untuk membuat pilihan. Bukan dua hal, bukan lima — satu.</li>
+                                <li><strong>“…yang bisa saya lakukan…”</strong> Menunjuk pada tindakan yang berada dalam kendali Anda, bukan keinginan yang samar.</li>
+                                <li><strong>“…sehingga dengan melakukannya…”</strong> Menunjukkan hubungan sebab-akibat. Tindakan ini harus menggerakkan bagian lain.</li>
+                                <li><strong>“…segala hal lain menjadi lebih mudah atau tidak perlu.”</strong> Tindakan terbaik menyederhanakan atau menghilangkan pekerjaan masa depan. Ini memiliki efek pengganda.</li>
+                            </ul>
+                            <br>
 
-  <li><strong>“…I can do…”</strong><br>
-  Points to an action that is within your control, not a vague wish.</li>
+                            <h3 class="lang-en">Big Picture & Small Focus</h3>
+                            <h3 class="lang-id">Gambaran Besar & Fokus Kecil</h3>
 
-  <li><strong>“…such that by doing it…”</strong><br>
-  Suggests a cause–effect relationship. This action should move other pieces.</li>
+                            <p class="lang-en">Keller recommends pairing two types of thinking:</p>
+                            <p class="lang-id">Keller menyarankan untuk memasangkan dua jenis pemikiran:</p>
 
-  <li><strong>“…everything else will be easier or unnecessary.”</strong><br>
-  The best next action simplifies or eliminates future work. It has a multiplying effect.</li>
-</ul>
-
-<p>
-You can apply this focusing question at different levels:
-</p>
-
-<ul>
-  <li>For your life overall (long-term direction),</li>
-  <li>For your current year (one main yearly goal),</li>
-  <li>For this month, this week, and even for today.</li>
-</ul>
-
-<h3>Big Picture & Small Focus</h3>
-
-<p>
-Keller recommends pairing two types of thinking:
-</p>
-
-<ul>
-  <li><strong>Big-picture thinking:</strong> What is the one thing I want most in this area of life?</li>
-  <li><strong>Small-focus thinking:</strong> What is the one thing I can do <em>right now</em> to move towards it?</li>
-</ul>
-
-<p>
-For example:
-</p>
-
-<ul>
-  <li><strong>Big picture (career):</strong> “What’s the one thing I can do to become a top performer in my field?”</li>
-  <li><strong>Right now (today):</strong> “What’s the one thing I can do today that will most improve my skills or results?”</li>
-</ul>
-
-<p>
-This combination keeps your long-term direction clear while ensuring that your daily actions are 
-practical and grounded.
-</p>
+                            <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                <li><strong>Big-picture thinking:</strong> What is the one thing I want most in this area of life?</li>
+                                <li><strong>Small-focus thinking:</strong> What is the one thing I can do <em>right now</em> to move towards it?</li>
+                            </ul>
+                            <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                <li><strong>Pemikiran gambaran besar:</strong> Apa satu hal yang paling saya inginkan dalam area kehidupan ini?</li>
+                                <li><strong>Pemikiran fokus kecil:</strong> Apa satu hal yang bisa saya lakukan <em>sekarang</em> untuk bergerak ke arah itu?</li>
+                            </ul>
                         </div>
 
                         <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-green-200">
                             <h4 class="font-semibold text-green-800 mb-3 text-sm sm:text-base mobile-subtitle">
-                                Summary: Using the Focusing Question
+                                <span class="lang-en">Summary: Using the Focusing Question</span>
+                                <span class="lang-id">Ringkasan: Menggunakan Pertanyaan Fokus</span>
                             </h4>
                             <ul class="space-y-2 text-green-700 mobile-text">
-                                <li class="justified-text">• Ask the focusing question for your life, work, relationships, health, and finances.</li>
-                                <li class="justified-text">• Write down your answer and narrow it until it is clear and specific.</li>
-                                <li class="justified-text">• Let this answer guide how you plan your days and weeks.</li>
+                                <li class="justified-text">
+                                    <span class="lang-en">• Ask the focusing question for your life, work, relationships, health, and finances.</span>
+                                    <span class="lang-id">• Ajukan pertanyaan fokus untuk hidup, pekerjaan, hubungan, kesehatan, dan keuangan Anda.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">• Write down your answer and narrow it until it is clear and specific.</span>
+                                    <span class="lang-id">• Tulis jawaban Anda dan persempit sampai jelas dan spesifik.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">• Let this answer guide how you plan your days and weeks.</span>
+                                    <span class="lang-id">• Biarkan jawaban ini memandu bagaimana Anda merencanakan hari dan minggu Anda.</span>
+                                </li>
                             </ul>
                         </div>
                     </div>
                 </section>
 
-                <!-- Part 3 – Time Blocking & Priority -->
                 <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 mobile-title">
-                            Time Blocking & Priority in Action
+                            <span class="lang-en">Time Blocking & Priority in Action</span>
+                            <span class="lang-id">Blok Waktu & Prioritas dalam Aksi</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
                         <p class="text-base sm:text-lg text-slate-600 mobile-text justified-text">
-                            Knowing your one thing is not enough. The real challenge is <strong>protecting time</strong> 
-                            for it in a world full of distractions and demands.
+                            <span class="lang-en">Knowing your one thing is not enough. The real challenge is <strong>protecting time</strong> for it in a world full of distractions and demands.</span>
+                            <span class="lang-id">Mengetahui satu hal Anda saja tidak cukup. Tantangan sebenarnya adalah <strong>melindungi waktu</strong> untuk itu di dunia yang penuh gangguan dan tuntutan.</span>
                         </p>
                         
                         <div class="bg-green-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-green-200">
                             <h3 class="text-base sm:text-lg font-semibold text-green-800 mb-3 mobile-subtitle">
-                                Time Blocking: Making Space for What Matters
+                                <span class="lang-en">Time Blocking: Making Space for What Matters</span>
+                                <span class="lang-id">Blok Waktu: Memberi Ruang untuk yang Penting</span>
                             </h3>
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-
-<p>
-Time blocking is the practice of reserving specific, uninterrupted blocks of time in your calendar 
-to work on your one thing. Instead of “hoping” to get to it, you schedule it like a critical meeting.
-</p>
-
-<p>
-Keller suggests:
-</p>
-
-<ul>
-  <li>Blocking your most important work in the <strong>morning</strong>, when your willpower and energy are highest.</li>
-  <li>Protecting a substantial block (for example, 3–4 hours) dedicated to your one thing.</li>
-  <li>Treating this block as non-negotiable — as if it were a meeting with your most important client.</li>
-</ul>
-
-<p>
-During this block, you:
-</p>
-
-<ul>
-  <li>Silence or remove notifications,</li>
-  <li>Close unrelated tabs and apps,</li>
-  <li>Communicate to others that you are not available except for emergencies.</li>
-</ul>
-
-<p>
-This may seem extreme at first, but the book argues that <strong>your calendar is a mirror of your true priorities</strong>. 
-If your one thing is not on your calendar, it is not truly your one thing.
-</p>
-
-</div>
+                                <p class="lang-en">
+                                    Time blocking is the practice of reserving specific, uninterrupted blocks of time in your calendar to work on your one thing. Instead of “hoping” to get to it, you schedule it like a critical meeting.
+                                </p>
+                                <p class="lang-id">
+                                    Blok waktu adalah praktik memesan blok waktu tertentu tanpa gangguan di kalender Anda untuk mengerjakan satu hal Anda. Alih-alih "berharap" sempat melakukannya, Anda menjadwalkannya seperti pertemuan penting.
+                                </p>
+                                <br>
+                                <p class="lang-en">Keller suggests:</p>
+                                <p class="lang-id">Keller menyarankan:</p>
+                                <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                    <li>Blocking your most important work in the <strong>morning</strong>, when your willpower and energy are highest.</li>
+                                    <li>Protecting a substantial block (for example, 3–4 hours) dedicated to your one thing.</li>
+                                    <li>Treating this block as non-negotiable — as if it were a meeting with your most important client.</li>
+                                </ul>
+                                <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                    <li>Memblokir pekerjaan terpenting Anda di <strong>pagi hari</strong>, saat kemauan dan energi Anda paling tinggi.</li>
+                                    <li>Melindungi blok waktu yang substansial (misalnya, 3–4 jam) khusus untuk satu hal Anda.</li>
+                                    <li>Memperlakukan blok ini sebagai hal yang tidak bisa ditawar — seolah-olah itu adalah pertemuan dengan klien terpenting Anda.</li>
+                                </ul>
+                            </div>
                         </div>
                             
                         <div class="bg-blue-50 p-6 rounded-xl border border-blue-200">
-                            <h3 class="text-lg font-semibold text-blue-800 mb-3">Priority, Not Priorities</h3>
+                            <h3 class="text-lg font-semibold text-blue-800 mb-3">
+                                <span class="lang-en">Priority, Not Priorities</span>
+                                <span class="lang-id">Prioritas, Bukan Prioritas-Prioritas</span>
+                            </h3>
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-
-<p>
-Historically, “priority” was a singular word: it meant the first thing.  
-Only in recent decades did we start talking about “priorities” in the plural.  
-The authors argue that this linguistic shift reflects a deeper confusion: trying to make many things 
-most important at the same time.
-</p>
-
-<p>
-Keller recommends returning to the original idea:
-</p>
-
-<ul>
-  <li>At any given time, there is only <strong>one</strong> top priority.</li>
-  <li>Everything else is either support work or a distraction.</li>
-</ul>
-
-<p>
-A practical way to apply this is to:
-</p>
-
-<ul>
-  <li>Start the day by asking: “What is my one thing today?”</li>
-  <li>Align your first major time block with this answer.</li>
-  <li>Only after this block is complete, deal with secondary tasks.</li>
-</ul>
-
-<p>
-Over weeks and months, this simple habit creates a powerful compounding effect.
-</p>
-
-</div>
+                                <p class="lang-en">
+                                    Historically, “priority” was a singular word: it meant the first thing. Only in recent decades did we start talking about “priorities” in the plural. The authors argue that this linguistic shift reflects a deeper confusion: trying to make many things most important at the same time.
+                                </p>
+                                <p class="lang-id">
+                                    Secara historis, "prioritas" adalah kata tunggal: artinya hal pertama. Baru dalam beberapa dekade terakhir kita mulai berbicara tentang "prioritas" dalam bentuk jamak. Penulis berpendapat bahwa pergeseran bahasa ini mencerminkan kebingungan yang lebih dalam: mencoba membuat banyak hal menjadi paling penting pada saat yang bersamaan.
+                                </p>
+                                <br>
+                                <p class="lang-en">
+                                    Keller recommends returning to the original idea: At any given time, there is only <strong>one</strong> top priority. Everything else is either support work or a distraction.
+                                </p>
+                                <p class="lang-id">
+                                    Keller menyarankan kembali ke ide awal: Pada waktu tertentu, hanya ada <strong>satu</strong> prioritas utama. Segala hal lainnya adalah pekerjaan pendukung atau gangguan.
+                                </p>
+                            </div>
                         </div>
 
                         <div class="bg-slate-50 p-4 sm:p-6 rounded-lg sm:rounded-xl">
-                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">Practical Implementation Steps:</h4>
+                            <h4 class="font-semibold text-slate-800 mb-3 text-sm sm:text-base mobile-subtitle">
+                                <span class="lang-en">Practical Implementation Steps:</span>
+                                <span class="lang-id">Langkah Implementasi Praktis:</span>
+                            </h4>
                             <ol class="space-y-2 text-slate-700 mobile-text">
-                                <li class="justified-text">1. Decide what your one thing is for this quarter or year in your main area of focus.</li>
-                                <li class="justified-text">2. Block at least 2–4 hours each workday in your calendar dedicated to that one thing.</li>
-                                <li class="justified-text">3. Treat this time as sacred: decline meetings and protect it from interruptions.</li>
-                                <li class="justified-text">4. After your one thing block, handle email, messages, and reactive work.</li>
+                                <li class="justified-text">
+                                    <span class="lang-en">1. Decide what your one thing is for this quarter or year in your main area of focus.</span>
+                                    <span class="lang-id">1. Putuskan apa satu hal Anda untuk kuartal atau tahun ini di area fokus utama Anda.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">2. Block at least 2–4 hours each workday in your calendar dedicated to that one thing.</span>
+                                    <span class="lang-id">2. Blok setidaknya 2–4 jam setiap hari kerja di kalender Anda khusus untuk satu hal itu.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">3. Treat this time as sacred: decline meetings and protect it from interruptions.</span>
+                                    <span class="lang-id">3. Perlakukan waktu ini sebagai sakral: tolak pertemuan dan lindungi dari gangguan.</span>
+                                </li>
+                                <li class="justified-text">
+                                    <span class="lang-en">4. After your one thing block, handle email, messages, and reactive work.</span>
+                                    <span class="lang-id">4. Setelah blok satu hal Anda, tangani email, pesan, dan pekerjaan reaktif.</span>
+                                </li>
                             </ol>
                         </div>
                     </div>
                 </section>
 
-                <!-- Part 4 – Lies of Productivity & Environment -->
                 <section id="part4" class="content-section p-8">
                     <div class="mb-6">
                         <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-sm font-medium rounded-full mb-4">Part 4</span>
-                        <h2 class="text-3xl font-bold text-slate-800 mb-4">The Lies of Productivity & Your Environment</h2>
+                        <h2 class="text-3xl font-bold text-slate-800 mb-4">
+                            <span class="lang-en">The Lies of Productivity & Your Environment</span>
+                            <span class="lang-id">Kebohongan Produktivitas & Lingkungan Anda</span>
+                        </h2>
                     </div>
                     
                     <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
                         <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-
-<p>
-Before building a life around your one thing, Keller warns you about several popular “lies” of productivity. 
-Believing these myths makes it almost impossible to enjoy the benefits of focus.
-</p>
-
-</div>
+                            <p class="lang-en">
+                                Before building a life around your one thing, Keller warns you about several popular “lies” of productivity. Believing these myths makes it almost impossible to enjoy the benefits of focus.
+                            </p>
+                            <p class="lang-id">
+                                Sebelum membangun kehidupan di sekitar satu hal Anda, Keller memperingatkan Anda tentang beberapa "kebohongan" populer tentang produktivitas. Mempercayai mitos-mitos ini membuat hampir tidak mungkin untuk menikmati manfaat dari fokus.
+                            </p>
+                        </div>
 
                         <div class="bg-gradient-to-r from-purple-50 to-indigo-50 p-6 rounded-xl border border-purple-200">
-                            <h3 class="text-xl font-semibold text-purple-800 mb-4">The Lies: What Gets in the Way</h3>
+                            <h3 class="text-xl font-semibold text-purple-800 mb-4">
+                                <span class="lang-en">The Lies: What Gets in the Way</span>
+                                <span class="lang-id">Kebohongan: Apa yang Menghalangi</span>
+                            </h3>
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
+                                <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                    <li><strong>Lie 1: Everything matters equally.</strong> In reality, a small fraction of your actions produces most of your results (80/20 rule).</li>
+                                    <li><strong>Lie 2: Multitasking works.</strong> Research shows that switching between tasks has a cost: you lose time and make more mistakes.</li>
+                                    <li><strong>Lie 3: A disciplined life is about constant willpower.</strong> Willpower is a limited resource. Build habits instead so you need less willpower.</li>
+                                    <li><strong>Lie 4: You should always aim for a balanced life.</strong> Instead of perfect balance, aim for a <em>counterbalanced</em> life: lean heavily into your one thing while protecting health and relationships.</li>
+                                    <li><strong>Lie 5: You can say “yes” to everything.</strong> Every yes is also a no to something else. If you do not say no often, your one thing will be the first victim.</li>
+                                </ul>
+                                <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                    <li><strong>Kebohongan 1: Segalanya sama pentingnya.</strong> Kenyataannya, sebagian kecil tindakan Anda menghasilkan sebagian besar hasil (aturan 80/20).</li>
+                                    <li><strong>Kebohongan 2: Multitasking itu efektif.</strong> Riset menunjukkan bahwa beralih antar tugas ada harganya: Anda kehilangan waktu dan membuat lebih banyak kesalahan.</li>
+                                    <li><strong>Kebohongan 3: Hidup disiplin adalah tentang kemauan keras yang konstan.</strong> Kemauan (willpower) adalah sumber daya terbatas. Bangun kebiasaan agar Anda butuh lebih sedikit kemauan.</li>
+                                    <li><strong>Kebohongan 4: Anda harus selalu mengincar hidup seimbang.</strong> Alih-alih keseimbangan sempurna, tujulah hidup yang <em>penuh penyeimbang</em>: fokus berat pada satu hal sambil melindungi kesehatan dan hubungan.</li>
+                                    <li><strong>Kebohongan 5: Anda bisa berkata “ya” pada segalanya.</strong> Setiap ya juga berarti tidak untuk hal lain. Jika Anda tidak sering berkata tidak, satu hal Anda akan jadi korban pertama.</li>
+                                </ul>
+                            </div>
 
-<p>
-Some of the main lies discussed in the book are:
-</p>
-
-<ul>
-  <li><strong>Lie 1: Everything matters equally.</strong><br>
-  In reality, a small fraction of your actions produces most of your results. 
-  This reflects the 80/20 principle: a minority of causes generates the majority of impact.</li>
-
-  <li><strong>Lie 2: Multitasking works.</strong><br>
-  Research shows that switching between tasks has a cost: you lose time and make more mistakes. 
-  What feels like multitasking is usually rapid task-switching and shallow focus.</li>
-
-  <li><strong>Lie 3: A disciplined life is about constant willpower.</strong><br>
-  The authors argue that willpower is a limited resource. The key is to design routines and environments 
-  so you need less willpower, not more.</li>
-
-  <li><strong>Lie 4: You should always aim for a balanced life.</strong><br>
-  Instead of perfect balance, Keller suggests seeking an intentional, <em>counterbalanced</em> life: 
-  you lean heavily into your one thing while still protecting your most important relationships and health.</li>
-
-  <li><strong>Lie 5: You can say “yes” to everything.</strong><br>
-  Every yes is also a no to something else. If you do not say no often, your one thing will be the first victim.</li>
-</ul>
-
-<p>
-Seeing these lies clearly helps you feel less guilty about focusing.  
-You realize that saying no and avoiding multitasking is not laziness — it is strategy.
-</p>
-
-</div>
-
-                            <div class="bg-white p-4 rounded-lg mb-4">
-                                <h4 class="font-semibold text-slate-800 mb-2">Willpower & Environment</h4>
+                            <div class="bg-white p-4 rounded-lg mb-4 mt-4">
+                                <h4 class="font-semibold text-slate-800 mb-2">
+                                    <span class="lang-en">Willpower & Environment</span>
+                                    <span class="lang-id">Kemauan & Lingkungan</span>
+                                </h4>
                                 <p class="text-slate-700 text-sm">
-                                    The book emphasizes that your environment must support your one thing.  
-                                    Relying solely on willpower is fragile. You need systems, routines, and surroundings 
-                                    that make the right behavior easier and the wrong behavior harder.
+                                    <span class="lang-en">The book emphasizes that your environment must support your one thing. Relying solely on willpower is fragile. You need systems, routines, and surroundings that make the right behavior easier and the wrong behavior harder.</span>
+                                    <span class="lang-id">Buku ini menekankan bahwa lingkungan Anda harus mendukung satu hal Anda. Mengandalkan kemauan saja itu rapuh. Anda butuh sistem, rutinitas, dan lingkungan yang membuat perilaku benar lebih mudah dan perilaku salah lebih sulit.</span>
                                 </p>
                             </div>
                         </div>
                         
                         <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200">
-                            <h3 class="text-xl font-semibold text-green-800 mb-4">Designing an Environment for Focus</h3>
+                            <h3 class="text-xl font-semibold text-green-800 mb-4">
+                                <span class="lang-en">Designing an Environment for Focus</span>
+                                <span class="lang-id">Mendesain Lingkungan untuk Fokus</span>
+                            </h3>
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-
-<p>
-Keller encourages you to think about three environmental elements:
-</p>
-
-<ul>
-  <li><strong>Your physical space.</strong><br>
-  Is it full of distractions? Can you create a quiet, clean, dedicated area for your one thing?</li>
-
-  <li><strong>Your tools.</strong><br>
-  Do your devices constantly interrupt you with notifications? Can you turn off alerts, 
-  use website blockers, or put your phone in another room during your focus block?</li>
-
-  <li><strong>Your people.</strong><br>
-  Do the people around you understand and respect your one thing time? 
-  Have you communicated your priorities clearly and kindly?</li>
-</ul>
-
-<p>
-He also talks about the importance of surrounding yourself with people who:
-</p>
-
-<ul>
-  <li>Support your goals,</li>
-  <li>Challenge you to stay focused,</li>
-  <li>Model deep work and clear priorities.</li>
-</ul>
-
-<p>
-If your environment is constantly pulling you away from your one thing, no amount of motivation 
-will be enough. But if your environment is set up well, focus becomes your default.
-</p>
-
-</div>
+                                <p class="lang-en">Keller encourages you to think about three environmental elements:</p>
+                                <p class="lang-id">Keller mendorong Anda memikirkan tiga elemen lingkungan:</p>
+                                <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                    <li><strong>Your physical space.</strong> Is it full of distractions? Can you create a quiet, clean, dedicated area?</li>
+                                    <li><strong>Your tools.</strong> Do your devices constantly interrupt you? Can you turn off alerts or use website blockers?</li>
+                                    <li><strong>Your people.</strong> Do the people around you respect your focus time? Have you communicated your priorities clearly?</li>
+                                </ul>
+                                <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                    <li><strong>Ruang fisik Anda.</strong> Apakah penuh gangguan? Bisakah Anda membuat area yang tenang dan bersih?</li>
+                                    <li><strong>Alat Anda.</strong> Apakah perangkat Anda terus mengganggu? Bisakah Anda mematikan notifikasi?</li>
+                                    <li><strong>Orang-orang Anda.</strong> Apakah orang di sekitar Anda menghormati waktu fokus Anda? Sudahkah Anda mengomunikasikan prioritas dengan jelas?</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Part 5 – Implementation & Long-Term Impact -->
                 <section id="part5" class="content-section p-8">
                     <div class="mb-6">
                         <span class="inline-block px-3 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-full mb-4">Part 5</span>
-                        <h2 class="text-3xl font-bold text-slate-800 mb-4">Implementation & Long-Term Impact</h2>
+                        <h2 class="text-3xl font-bold text-slate-800 mb-4">
+                            <span class="lang-en">Implementation & Long-Term Impact</span>
+                            <span class="lang-id">Implementasi & Dampak Jangka Panjang</span>
+                        </h2>
                     </div>
                     
                     <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
                         <div class="bg-gradient-to-r from-red-50 to-pink-50 p-6 rounded-xl border border-red-200">
-                            <h3 class="text-xl font-semibold text-red-800 mb-4">From Idea to Lifestyle</h3>
+                            <h3 class="text-xl font-semibold text-red-800 mb-4">
+                                <span class="lang-en">From Idea to Lifestyle</span>
+                                <span class="lang-id">Dari Ide menjadi Gaya Hidup</span>
+                            </h3>
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-
-<p>
-<em>The One Thing</em> is ultimately a call to redesign your life around a few essential priorities instead of many trivial ones. 
-It is not a quick tip; it is a new operating system.
-</p>
-
-<p>
-A simple implementation roadmap:
-</p>
-
-<ul>
-  <li><strong>Step 1 – Clarify your one thing.</strong><br>
-  For each major area of life (work, health, relationships, finances, personal growth), 
-  ask the focusing question and write down your answers.</li>
-
-  <li><strong>Step 2 – Create a success list.</strong><br>
-  Take your long to-do list and reduce it until only the few most impactful actions remain.</li>
-
-  <li><strong>Step 3 – Time block your one thing.</strong><br>
-  Reserve daily calendar blocks for your most important work and protect them fiercely.</li>
-
-  <li><strong>Step 4 – Shape your environment.</strong><br>
-  Remove distractions, communicate your priorities, and build supportive routines.</li>
-
-  <li><strong>Step 5 – Review and adjust.</strong><br>
-  Regularly review whether your actions are still aligned with your one thing and adjust as life changes.</li>
-</ul>
-
-</div>
+                                <p class="lang-en">
+                                    <em>The One Thing</em> is ultimately a call to redesign your life around a few essential priorities instead of many trivial ones. It is not a quick tip; it is a new operating system.
+                                </p>
+                                <p class="lang-id">
+                                    <em>The One Thing</em> pada akhirnya adalah panggilan untuk mendesain ulang hidup Anda di sekitar beberapa prioritas penting daripada banyak hal sepele. Ini bukan tips cepat; ini adalah sistem operasi baru.
+                                </p>
+                                <br>
+                                <p class="lang-en"><strong>A simple implementation roadmap:</strong></p>
+                                <p class="lang-id"><strong>Peta jalan implementasi sederhana:</strong></p>
+                                <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                    <li><strong>Step 1 – Clarify your one thing.</strong> Ask the focusing question for each major life area.</li>
+                                    <li><strong>Step 2 – Create a success list.</strong> Reduce your to-do list until only the impactful actions remain.</li>
+                                    <li><strong>Step 3 – Time block your one thing.</strong> Reserve daily calendar blocks.</li>
+                                    <li><strong>Step 4 – Shape your environment.</strong> Remove distractions and build supportive routines.</li>
+                                    <li><strong>Step 5 – Review and adjust.</strong> Regularly review alignment as life changes.</li>
+                                </ul>
+                                <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                    <li><strong>Langkah 1 – Perjelas satu hal Anda.</strong> Ajukan pertanyaan fokus untuk setiap area utama kehidupan.</li>
+                                    <li><strong>Langkah 2 – Buat daftar sukses.</strong> Kurangi daftar tugas Anda hingga hanya tindakan berdampak yang tersisa.</li>
+                                    <li><strong>Langkah 3 – Blok waktu satu hal Anda.</strong> Pesan blok kalender harian.</li>
+                                    <li><strong>Langkah 4 – Bentuk lingkungan Anda.</strong> Hapus gangguan dan bangun rutinitas pendukung.</li>
+                                    <li><strong>Langkah 5 – Tinjau dan sesuaikan.</strong> Tinjau keselarasan secara teratur seiring perubahan hidup.</li>
+                                </ul>
+                            </div>
                         </div>
                         
                         <div class="bg-gradient-to-r from-amber-50 to-yellow-50 p-6 rounded-xl border border-amber-200">
-                            <h3 class="text-xl font-semibold text-amber-800 mb-4">The Four Thieves of Productivity</h3>
+                            <h3 class="text-xl font-semibold text-amber-800 mb-4">
+                                <span class="lang-en">The Four Thieves of Productivity</span>
+                                <span class="lang-id">Empat Pencuri Produktivitas</span>
+                            </h3>
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-
-<p>
-The book also identifies “thieves” that steal your progress if you are not careful:
-</p>
-
-<ul>
-  <li><strong>1. Inability to say no.</strong><br>
-  If you say yes to everything, your one thing is slowly squeezed out.</li>
-
-  <li><strong>2. Fear of chaos.</strong><br>
-  When you focus on your one thing, other areas may temporarily feel less organized. 
-  You must accept some controlled chaos.</li>
-
-  <li><strong>3. Poor health habits.</strong><br>
-  Lack of sleep, poor diet, and no movement reduce your energy to focus.</li>
-
-  <li><strong>4. Environment that does not support your goals.</strong><br>
-  People and places that constantly interrupt you or pull you away from your one thing.</li>
-</ul>
-
-<p>
-Managing these thieves is part of the long-term practice of living a focused life.
-</p>
-
-</div>
+                                <p class="lang-en">The book also identifies “thieves” that steal your progress if you are not careful:</p>
+                                <p class="lang-id">Buku ini juga mengidentifikasi "pencuri" yang mencuri kemajuan Anda jika Anda tidak hati-hati:</p>
+                                <ul class="lang-en" style="list-style: disc; margin-left: 20px;">
+                                    <li><strong>1. Inability to say no.</strong> Saying yes to everything squeezes out your one thing.</li>
+                                    <li><strong>2. Fear of chaos.</strong> When focusing, other areas may get messy temporarily. You must accept this.</li>
+                                    <li><strong>3. Poor health habits.</strong> Lack of energy kills focus.</li>
+                                    <li><strong>4. Environment that does not support your goals.</strong> People and places that interrupt you.</li>
+                                </ul>
+                                <ul class="lang-id" style="list-style: disc; margin-left: 20px;">
+                                    <li><strong>1. Ketidakmampuan berkata tidak.</strong> Mengatakan ya pada segalanya mendesak keluar satu hal Anda.</li>
+                                    <li><strong>2. Takut akan kekacauan.</strong> Saat fokus, area lain mungkin berantakan sementara. Anda harus menerimanya.</li>
+                                    <li><strong>3. Kebiasaan kesehatan yang buruk.</strong> Kurang energi membunuh fokus.</li>
+                                    <li><strong>4. Lingkungan yang tidak mendukung.</strong> Orang dan tempat yang menginterupsi Anda.</li>
+                                </ul>
+                            </div>
                         </div>
                         
                         <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-xl border border-indigo-200">
-                            <h3 class="text-xl font-semibold text-indigo-800 mb-4">Why “The One Thing” Matters Today</h3>
+                            <h3 class="text-xl font-semibold text-indigo-800 mb-4">
+                                <span class="lang-en">Why “The One Thing” Matters Today</span>
+                                <span class="lang-id">Mengapa “The One Thing” Penting Hari Ini</span>
+                            </h3>
                             <p class="text-indigo-700 mb-4">
-                                In a world of constant notifications, endless options, and digital noise, 
-                                the ability to choose and protect your one thing becomes a superpower.
+                                <span class="lang-en">In a world of constant notifications, endless options, and digital noise, the ability to choose and protect your one thing becomes a superpower.</span>
+                                <span class="lang-id">Di dunia dengan notifikasi konstan, pilihan tanpa akhir, dan kebisingan digital, kemampuan untuk memilih dan melindungi satu hal Anda menjadi kekuatan super.</span>
                             </p>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div class="bg-white p-4 rounded-lg">
-                                    <h5 class="font-medium text-indigo-700 mb-2">For Work & Business</h5>
+                                    <h5 class="font-medium text-indigo-700 mb-2">
+                                        <span class="lang-en">For Work & Business</span>
+                                        <span class="lang-id">Untuk Pekerjaan & Bisnis</span>
+                                    </h5>
                                     <ul class="text-sm text-slate-600 space-y-1">
-                                        <li>• Align team goals around a small number of truly critical outcomes.</li>
-                                        <li>• Protect deep work time instead of living in your inbox.</li>
-                                        <li>• Use the focusing question for strategic decisions.</li>
+                                        <li>
+                                            <span class="lang-en">• Align team goals around critical outcomes.</span>
+                                            <span class="lang-id">• Selaraskan tujuan tim di sekitar hasil kritis.</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">• Protect deep work time.</span>
+                                            <span class="lang-id">• Lindungi waktu kerja mendalam (deep work).</span>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div class="bg-white p-4 rounded-lg">
-                                    <h5 class="font-medium text-indigo-700 mb-2">For Personal Life</h5>
+                                    <h5 class="font-medium text-indigo-700 mb-2">
+                                        <span class="lang-en">For Personal Life</span>
+                                        <span class="lang-id">Untuk Kehidupan Pribadi</span>
+                                    </h5>
                                     <ul class="text-sm text-slate-600 space-y-1">
-                                        <li>• Identify the one habit that would most improve your health.</li>
-                                        <li>• Focus on the one activity that most strengthens your key relationships.</li>
-                                        <li>• Reduce commitments that do not serve your main priorities.</li>
+                                        <li>
+                                            <span class="lang-en">• Identify the habit that improves health most.</span>
+                                            <span class="lang-id">• Identifikasi kebiasaan yang paling meningkatkan kesehatan.</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">• Reduce commitments that do not serve priorities.</span>
+                                            <span class="lang-id">• Kurangi komitmen yang tidak melayani prioritas.</span>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200">
-                            <h3 class="text-xl font-semibold text-emerald-800 mb-4">Final Reflection</h3>
+                            <h3 class="text-xl font-semibold text-emerald-800 mb-4">
+                                <span class="lang-en">Final Reflection</span>
+                                <span class="lang-id">Refleksi Akhir</span>
+                            </h3>
                             <div style="text-align:justify; font-family: Arial, sans-serif; line-height:1.7; font-size:15px;">
-
-<p>
-At its heart, <em>The One Thing</em> teaches a simple but demanding discipline:
-<strong>ask the right question, choose the right task, and give it your best, undivided effort.</strong>
-</p>
-
-<p>
-You do not need to become a different person overnight. You can start with small applications:
-</p>
-
-<ul>
-  <li>Ask the focusing question at the start of each day.</li>
-  <li>Block one focused hour if four feels impossible right now.</li>
-  <li>Say no to one low-impact request this week.</li>
-</ul>
-
-<p>
-Over time, these small commitments stack like dominos and create an entirely different trajectory 
-for your work and your life. That is the “surprisingly simple truth” behind extraordinary results.
-</p>
-
+                                <p class="lang-en">
+                                    At its heart, <em>The One Thing</em> teaches a simple but demanding discipline: <strong>ask the right question, choose the right task, and give it your best, undivided effort.</strong> You do not need to become a different person overnight. Start small. Over time, these small commitments stack like dominos and create an entirely different trajectory for your work and your life.
+                                </p>
+                                <p class="lang-id">
+                                    Pada intinya, <em>The One Thing</em> mengajarkan disiplin yang sederhana namun menuntut: <strong>ajukan pertanyaan yang tepat, pilih tugas yang tepat, dan berikan upaya terbaik Anda yang tidak terbagi.</strong> Anda tidak perlu menjadi orang yang berbeda dalam semalam. Mulailah dari yang kecil. Seiring waktu, komitmen kecil ini menumpuk seperti domino dan menciptakan lintasan yang sama sekali berbeda untuk pekerjaan dan hidup Anda.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -866,6 +825,31 @@ for your work and your life. That is the “surprisingly simple truth” behind 
     </div>
 
     <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const btnText = document.querySelector('.lang-text');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                btnText.textContent = '🇮🇩 Switch to ID';
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                btnText.textContent = '🇺🇸 Switch to EN';
+            }
+        }
+
+        // Drawer Logic
         function toggleDrawer() {
             const drawer = document.querySelector('.nav-drawer');
             const overlay = document.querySelector('.nav-overlay');
