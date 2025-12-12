@@ -8,8 +8,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Inter', sans-serif; }
-    .book-card:hover img {
-        transform: scale(1.05);
+    /* Supaya gambar tidak gepeng */
+    .book-cover {
+        object-fit: cover;
+        object-position: center;
     }
   </style>
 </head>
@@ -34,8 +36,6 @@
       <ul class="space-y-6 text-lg font-medium text-gray-600">
         <li><a href="#" onclick="showPage('home');toggleDrawer()" class="block hover:text-blue-600 transition">Home</a></li>
         <li><a href="#" onclick="showPage('about');toggleDrawer()" class="block hover:text-blue-600 transition">About App</a></li>
-        <li><a href="#" onclick="showPage('terms');toggleDrawer()" class="block hover:text-blue-600 transition">Terms & Conditions</a></li>
-        <li><a href="#" onclick="showPage('privacy');toggleDrawer()" class="block hover:text-blue-600 transition">Privacy Policy</a></li>
       </ul>
     </div>
   </div>
@@ -43,8 +43,9 @@
   <main id="content" class="pb-10 max-w-md mx-auto min-h-screen"></main>
 
   <script>
-    /* UPDATE: Nama file gambar disesuaikan dengan screenshot.
-      Pastikan folder gambar bernama 'image'.
+    /* DATA BUKU
+      Disalin persis sesuai nama file di Screenshot Folder 'image' Anda.
+      Format path: "image/NAMA_FILE_PERSIS"
     */
     const books = [
       { 
@@ -63,6 +64,7 @@
         dir: "Eat-That-Frog", 
         title: "Eat That Frog!", 
         author: "Brian Tracy", 
+        // Perhatikan ada "_2" di nama file
         img: "image/EatThatFrog_2NEW_1100x.webp" 
       },
       { 
@@ -81,12 +83,14 @@
         dir: "Influence:-Science-and-Practice", 
         title: "Influence: Science and Practice", 
         author: "Robert Cialdini", 
+        // File ini memiliki spasi di screenshot
         img: "image/Influence Science and Practice Robert Cialdini.webp" 
       },
       { 
         dir: "Outliers", 
         title: "Outliers", 
         author: "Malcolm Gladwell", 
+        // Perhatikan ada "_2_"
         img: "image/Outliers_2_NEW_1100x.webp" 
       },
       { 
@@ -99,6 +103,7 @@
         dir: "The-Magic-of-Thinking-Big", 
         title: "The Magic of Thinking Big", 
         author: "David J. Schwartz", 
+        // Perhatikan underscore "_"
         img: "image/The_Magic_of_Thinking_Big_PRH_NEW_1100x.webp" 
       },
       { 
@@ -135,17 +140,21 @@
         dir: "You-Can-Heal-Your-Life", 
         title: "You Can Heal Your Life", 
         author: "Louise Hay", 
-        // PENTING: Di screenshot file ini formatnya .html (salah). 
-        // Anda perlu upload gambar .webp dengan nama di bawah ini agar muncul.
+        /* PERINGATAN: Di screenshot Anda file ini formatnya .html
+           Saya ubah kode ini jadi .webp. ANDA HARUS UPLOAD file .webp 
+           dengan nama persis di bawah ini agar muncul.
+        */
         img: "image/You Can Heal Your Life — Louise Hay cover.webp" 
       },
       { 
         dir: "Your-Erroneous-Zones", 
         title: "Your Erroneous Zones", 
         author: "Wayne Dyer", 
+        // File ini pakai tanda pisah panjang "—"
         img: "image/Your Erroneous Zones — Wayne Dyer.webp" 
       },
-      // Buku di bawah ini tidak terlihat di screenshot list file, saya beri placeholder
+      // Dua buku ini ada folder tapi tidak ada file gambar di screenshot 'image'
+      // Saya pakai placeholder sementara
       { 
         dir: "Don-Quixote", 
         title: "Don Quixote", 
@@ -165,8 +174,8 @@
     }
 
     function openBook(directory) {
-        // Link redirect sesuai request
-        const baseUrl = "https://lp1.affiliateid.my.id/";
+        // Redirect ke link affiliate
+        const baseUrl = "https://lp1.affiliate.my.id/";
         window.location.href = baseUrl + directory;
     }
 
@@ -179,11 +188,8 @@
             <h1 class="text-2xl font-bold text-center mb-6 text-gray-800">Recommended Books</h1>
             
             <div class="relative max-w-md mx-auto mb-8">
-                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                </div>
                 <input id="search-input" type="text" placeholder="Search title..." 
-                       class="w-full pl-10 pr-4 py-3 rounded-xl border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition text-sm bg-white"
+                       class="w-full px-4 py-3 rounded-xl border border-gray-200 shadow-sm focus:border-blue-500 focus:outline-none transition text-sm bg-white"
                        oninput="searchBooks()">
             </div>
 
@@ -193,9 +199,7 @@
           </div>`;
       }
       
-      if (page === 'about') content.innerHTML = `<div class="p-6 pt-10"><div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center"><h1 class="text-2xl font-bold mb-4 text-gray-800">About</h1><p class="text-gray-600">Curated best-sellers.</p></div></div>`;
-      if (page === 'terms') content.innerHTML = `<div class="p-6 pt-10"><div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center"><h1 class="text-2xl font-bold mb-4 text-gray-800">Terms</h1><p class="text-gray-600">Educational use.</p></div></div>`;
-      if (page === 'privacy') content.innerHTML = `<div class="p-6 pt-10"><div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center"><h1 class="text-2xl font-bold mb-4 text-gray-800">Privacy</h1><p class="text-gray-600">No data collected.</p></div></div>`;
+      if (page === 'about') content.innerHTML = `<div class="p-6 pt-10 text-center text-gray-600">Simple Book Gallery</div>`;
     }
 
     function renderBooks(bookList) {
@@ -203,13 +207,13 @@
           return `<div class="col-span-2 text-center text-gray-400 py-10">No books found</div>`;
       }
       return bookList.map(b => `
-        <div onclick="openBook('${b.dir}')" class="book-card cursor-pointer group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
-          <div class="overflow-hidden h-56 relative bg-gray-200">
-            <img src="${b.img}" alt="${b.title}" loading="lazy" class="w-full h-full object-cover transition-transform duration-500">
-            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
+        <div onclick="openBook('${b.dir}')" class="cursor-pointer group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
+          <div class="overflow-hidden h-64 relative bg-gray-100">
+            <img src="${b.img}" alt="${b.title}" loading="lazy" class="book-cover w-full h-full transition-transform duration-500 group-hover:scale-105" 
+                 onerror="this.src='https://placehold.co/600x900?text=No+Image';this.onerror=null;">
           </div>
           <div class="p-4">
-            <h3 class="font-bold text-gray-800 text-sm line-clamp-2 leading-tight mb-1 group-hover:text-blue-600 transition-colors">${b.title}</h3>
+            <h3 class="font-bold text-gray-800 text-sm line-clamp-2 leading-tight mb-1">${b.title}</h3>
             <p class="text-xs text-gray-500 font-medium">${b.author}</p>
           </div>
         </div>`).join('');
