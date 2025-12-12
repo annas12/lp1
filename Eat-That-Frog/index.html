@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eat That Frog! — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Green/Slate Theme for The Frog */
+        .active-tab { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #16a34a; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-green-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-green-700 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">🐸</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Eat That Frog!</h2>
+                    <p class="text-slate-400 text-sm">
+                        <span class="lang-en">Ultimate Guide</span>
+                        <span class="lang-id">Panduan Utama</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">21 Great Ways</span>
+                <span class="lang-id">21 Cara Hebat</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-xs font-bold">🚀</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Set the Table</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Clarity & Planning</span>
+                                <span class="lang-id">Kejelasan & Perencanaan</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">The ABCDE Method</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Extreme Prioritization</span>
+                                <span class="lang-id">Prioritas Ekstrem</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Law of Three</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">80/20 & Key Results</span>
+                                <span class="lang-id">80/20 & Hasil Kunci</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Salami Slice</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Overcoming Procrastination</span>
+                                <span class="lang-id">Mengatasi Penundaan</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Single Handling</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Focus & Flow</span>
+                                <span class="lang-id">Fokus & Aliran (Flow)</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© Brian Tracy</p>
+                <p class="text-slate-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    Eat That Frog!
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    <span class="lang-en">Stop Procrastinating and Get More Done in Less Time</span>
+                    <span class="lang-id">Berhenti Menunda dan Selesaikan Lebih Banyak dalam Waktu Singkat</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-green-500 to-slate-800 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Core Philosophy</span>
+                            <span class="lang-id">Filosofi Inti</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Why a Frog?</span>
+                            <span class="lang-id">Mengapa Katak?</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-green-500 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"If it's your job to eat a frog, it's best to do it first thing in the morning. And If it's your job to eat two frogs, it's best to eat the biggest one first." — Mark Twain</span>
+                            <span class="lang-id">"Jika tugas Anda adalah memakan seekor katak, yang terbaik adalah melakukannya pagi-pagi sekali. Dan jika tugas Anda adalah memakan dua ekor katak, yang terbaik adalah memakan yang paling besar terlebih dahulu." — Mark Twain</span>
+                        </div>
+                        
+                        <p class="mobile-text justified-text lang-en">
+                            Your "Frog" is your biggest, most important task, the one you are most likely to procrastinate on if you don't do something about it. It is also the one task that can have the greatest positive impact on your life and results at the moment.
+                        </p>
+                        <p class="mobile-text justified-text lang-id">
+                            "Katak" Anda adalah tugas terbesar dan terpenting, yang paling mungkin Anda tunda jika Anda tidak segera menanganinya. Ini juga merupakan satu tugas yang dapat memberikan dampak positif terbesar pada hidup dan hasil Anda saat ini.
+                        </p>
+
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">The 3 Rules of Frog Eating</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">3 Aturan Memakan Katak</h4>
+                            
+                            <ul class="list-none space-y-4 text-sm text-slate-700">
+                                <li class="flex items-start">
+                                    <span class="flex-shrink-0 w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-xs mr-3">1</span>
+                                    <div>
+                                        <strong class="block text-slate-900 lang-en">If you have to eat two frogs, eat the ugliest one first.</strong>
+                                        <strong class="block text-slate-900 lang-id">Jika harus makan dua katak, makan yang paling jelek dulu.</strong>
+                                        <span class="lang-en text-slate-600">Discipline yourself to start immediately on the hardest, most important task. Do not look at the smaller frog.</span>
+                                        <span class="lang-id text-slate-600">Disiplinkan diri untuk memulai segera tugas tersulit dan terpenting. Jangan melihat katak yang lebih kecil.</span>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="flex-shrink-0 w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-xs mr-3">2</span>
+                                    <div>
+                                        <strong class="block text-slate-900 lang-en">If you have to eat a live frog at all, it doesn't pay to sit and look at it for very long.</strong>
+                                        <strong class="block text-slate-900 lang-id">Jika harus makan katak hidup, tidak ada gunanya duduk dan memandanginya terlalu lama.</strong>
+                                        <span class="lang-en text-slate-600">Action implies success. Hesitation increases fear and procrastination.</span>
+                                        <span class="lang-id text-slate-600">Tindakan mengimplikasikan kesuksesan. Keraguan meningkatkan ketakutan dan penundaan.</span>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="flex-shrink-0 w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-xs mr-3">3</span>
+                                    <div>
+                                        <strong class="block text-slate-900 lang-en">Develop a positive addiction.</strong>
+                                        <strong class="block text-slate-900 lang-id">Kembangkan kecanduan positif.</strong>
+                                        <span class="lang-en text-slate-600">Completing tasks releases endorphins. You can become addicted to the feeling of clarity, confidence, and competence.</span>
+                                        <span class="lang-id text-slate-600">Menyelesaikan tugas melepaskan endorfin. Anda bisa kecanduan pada perasaan kejelasan, kepercayaan diri, dan kompetensi.</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Set the Table</span>
+                            <span class="lang-id">Siapkan Meja (Perencanaan)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Clarity is the most important concept in personal productivity. The number one reason some people get more work done faster is that they are absolutely clear about their goals and objectives.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Kejelasan adalah konsep terpenting dalam produktivitas pribadi. Alasan nomor satu mengapa beberapa orang menyelesaikan lebih banyak pekerjaan dengan lebih cepat adalah karena mereka benar-benar jelas tentang tujuan dan sasaran mereka.
+                        </p>
+
+                        <div class="bg-green-50 p-5 rounded-lg border border-green-200">
+                            <h4 class="font-bold text-green-900 text-lg mb-2 lang-en">The 7 Steps of Goal Setting</h4>
+                            <h4 class="font-bold text-green-900 text-lg mb-2 lang-id">7 Langkah Penetapan Tujuan</h4>
+                            <ol class="list-decimal ml-5 space-y-2 text-sm text-green-800">
+                                <li>
+                                    <strong class="lang-en">Decide exactly what you want.</strong>
+                                    <strong class="lang-id">Putuskan dengan tepat apa yang Anda inginkan.</strong>
+                                </li>
+                                <li>
+                                    <strong class="lang-en">Write it down.</strong> (Think on paper).
+                                    <strong class="lang-id">Tuliskan.</strong> (Berpikir di atas kertas).
+                                </li>
+                                <li>
+                                    <strong class="lang-en">Set a deadline.</strong>
+                                    <strong class="lang-id">Tetapkan tenggat waktu.</strong>
+                                </li>
+                                <li>
+                                    <strong class="lang-en">Make a list of everything to do.</strong>
+                                    <strong class="lang-id">Buat daftar semua hal yang harus dilakukan.</strong>
+                                </li>
+                                <li>
+                                    <strong class="lang-en">Organize the list into a plan.</strong> (Priority & Sequence).
+                                    <strong class="lang-id">Atur daftar menjadi sebuah rencana.</strong> (Prioritas & Urutan).
+                                </li>
+                                <li>
+                                    <strong class="lang-en">Take action on your plan immediately.</strong>
+                                    <strong class="lang-id">Ambil tindakan atas rencana Anda segera.</strong>
+                                </li>
+                                <li>
+                                    <strong class="lang-en">Do something every single day that moves you toward your major goal.</strong>
+                                    <strong class="lang-id">Lakukan sesuatu setiap hari yang menggerakkan Anda menuju tujuan utama.</strong>
+                                </li>
+                            </ol>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm mt-6">
+                            <div class="flex items-center mb-3">
+                                <span class="text-2xl mr-2">💼</span>
+                                <h4 class="font-bold text-slate-900 text-lg lang-en">Real World Case Study: The 6-P Formula</h4>
+                                <h4 class="font-bold text-slate-900 text-lg lang-id">Studi Kasus Nyata: Rumus 6-P</h4>
+                            </div>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                <strong>Context:</strong> A sales executive named "John" was constantly overwhelmed, missing quotas, and working until 8 PM.
+                                <br><br>
+                                <strong>The Change:</strong> He applied the "Proper Prior Planning Prevents Poor Performance" (6-P) rule. Every night before leaving the office, he spent 10 minutes writing out his list for the next day.
+                                <br><br>
+                                <strong>The Result:</strong> When he arrived in the morning, he didn't waste time thinking "What should I do?". He started immediately on Item #1. This saved him roughly 2 hours a day. Within 6 months, he was the top salesperson in his region.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                <strong>Konteks:</strong> Seorang eksekutif penjualan bernama "John" terus-menerus kewalahan, gagal mencapai kuota, dan bekerja sampai jam 8 malam.
+                                <br><br>
+                                <strong>Perubahan:</strong> Dia menerapkan aturan "Perencanaan Prioritas yang Pantas Mencegah Performa Payah" (6-P). Setiap malam sebelum pulang, dia menghabiskan 10 menit menulis daftarnya untuk hari esok.
+                                <br><br>
+                                <strong>Hasil:</strong> Saat tiba di pagi hari, dia tidak buang waktu berpikir "Apa yang harus saya lakukan?". Dia langsung mulai dengan Item #1. Ini menghemat sekitar 2 jam sehari. Dalam 6 bulan, dia menjadi penjual terbaik di wilayahnya.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The ABCDE Method</span>
+                            <span class="lang-id">Metode ABCDE</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            This is the most powerful priority-setting technique in the book. It takes no time to learn but can change your life immediately. You start with a list of everything you have to do for the coming day. Then, you place an A, B, C, D, or E before each item.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Ini adalah teknik penetapan prioritas paling ampuh dalam buku ini. Tidak butuh waktu lama untuk dipelajari tapi bisa mengubah hidup Anda seketika. Mulailah dengan daftar semua yang harus Anda lakukan hari ini. Lalu, tempatkan A, B, C, D, atau E sebelum setiap item.
+                        </p>
+
+                        <div class="space-y-4">
+                            <div class="flex items-start bg-red-50 p-3 rounded border border-red-200">
+                                <div class="w-8 font-bold text-red-700 text-lg">A</div>
+                                <div>
+                                    <strong class="block text-red-900 lang-en">"Must Do" (The Frog)</strong>
+                                    <strong class="block text-red-900 lang-id">"Harus Dilakukan" (Si Katak)</strong>
+                                    <span class="text-sm text-slate-600 lang-en">Serious consequences if you don't do it. (e.g., A report for the CEO). If you have A1 and A2, do A1 first.</span>
+                                    <span class="text-sm text-slate-600 lang-id">Konsekuensi serius jika tidak dilakukan. (misal: Laporan untuk CEO). Jika ada A1 dan A2, kerjakan A1 dulu.</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start bg-orange-50 p-3 rounded border border-orange-200">
+                                <div class="w-8 font-bold text-orange-700 text-lg">B</div>
+                                <div>
+                                    <strong class="block text-orange-900 lang-en">"Should Do" (Tadpoles)</strong>
+                                    <strong class="block text-orange-900 lang-id">"Sebaiknya Dilakukan" (Kecebong)</strong>
+                                    <span class="text-sm text-slate-600 lang-en">Mild consequences. (e.g., Replying to an unimportant email). <strong>Rule: Never do a B task when an A task is left undone.</strong></span>
+                                    <span class="text-sm text-slate-600 lang-id">Konsekuensi ringan. (misal: Membalas email tidak penting). <strong>Aturan: Jangan pernah mengerjakan tugas B saat tugas A belum selesai.</strong></span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start bg-blue-50 p-3 rounded border border-blue-200">
+                                <div class="w-8 font-bold text-blue-700 text-lg">C</div>
+                                <div>
+                                    <strong class="block text-blue-900 lang-en">"Nice to Do"</strong>
+                                    <strong class="block text-blue-900 lang-id">"Senang Dilakukan"</strong>
+                                    <span class="text-sm text-slate-600 lang-en">No consequences whether you do it or not. (e.g., Having coffee with a coworker).</span>
+                                    <span class="text-sm text-slate-600 lang-id">Tidak ada konsekuensi baik dikerjakan atau tidak. (misal: Ngopi dengan rekan kerja).</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start bg-slate-50 p-3 rounded border border-slate-200">
+                                <div class="w-8 font-bold text-slate-700 text-lg">D</div>
+                                <div>
+                                    <strong class="block text-slate-900 lang-en">"Delegate"</strong>
+                                    <strong class="block text-slate-900 lang-id">"Delegasikan"</strong>
+                                    <span class="text-sm text-slate-600 lang-en">Delegate everything you can so you are free to do A tasks.</span>
+                                    <span class="text-sm text-slate-600 lang-id">Delegasikan segala yang Anda bisa agar Anda bebas mengerjakan tugas A.</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start bg-slate-50 p-3 rounded border border-slate-200">
+                                <div class="w-8 font-bold text-slate-700 text-lg">E</div>
+                                <div>
+                                    <strong class="block text-slate-900 lang-en">"Eliminate"</strong>
+                                    <strong class="block text-slate-900 lang-id">"Eliminasi"</strong>
+                                    <span class="text-sm text-slate-600 lang-en">Tasks that serve no purpose anymore. Just stop doing them.</span>
+                                    <span class="text-sm text-slate-600 lang-id">Tugas yang tidak lagi berguna. Berhenti saja melakukannya.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Law of Three</span>
+                            <span class="lang-id">Hukum Tiga</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">The 90% Value Rule</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Aturan Nilai 90%</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                If you list everything you do in a week or month, there are only <strong>three core tasks</strong> that account for 90% of the value you contribute to your company. Everything else is support work or trivial.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Jika Anda mendata semua yang Anda lakukan dalam seminggu atau sebulan, hanya ada <strong>tiga tugas inti</strong> yang menyumbang 90% dari nilai yang Anda berikan pada perusahaan. Sisanya adalah pekerjaan pendukung atau sepele.
+                            </p>
+                        </div>
+
+                        <div class="border-l-4 border-green-500 pl-4 bg-green-50 p-4 rounded-r-lg">
+                            <strong class="block text-green-900 text-lg mb-2 lang-en">Identifying Your Key Result Areas (KRAs)</strong>
+                            <strong class="block text-green-900 text-lg mb-2 lang-id">Mengidentifikasi Area Hasil Kunci (KRA)</strong>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                Ask yourself: "Why am I on the payroll?"
+                                <br>A key result area is something you must do to succeed in your job. It is an output, not an input.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Tanyakan diri sendiri: "Mengapa saya digaji?"
+                                <br>Area hasil kunci adalah sesuatu yang harus Anda lakukan untuk sukses dalam pekerjaan. Ini adalah output (luaran), bukan input (masukan).
+                            </p>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                                <div class="bg-white p-3 rounded shadow-sm">
+                                    <strong class="block text-xs uppercase text-slate-500 mb-1 lang-en">Example: Sales Manager</strong>
+                                    <strong class="block text-xs uppercase text-slate-500 mb-1 lang-id">Contoh: Manajer Penjualan</strong>
+                                    <ul class="text-xs text-slate-800 list-disc ml-4">
+                                        <li>Recruiting salespeople</li>
+                                        <li>Training salespeople</li>
+                                        <li>Closing big deals</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-3 rounded shadow-sm">
+                                    <strong class="block text-xs uppercase text-slate-500 mb-1 lang-en">NOT KRAs (Distractions)</strong>
+                                    <strong class="block text-xs uppercase text-slate-500 mb-1 lang-id">BUKAN KRA (Gangguan)</strong>
+                                    <ul class="text-xs text-slate-800 list-disc ml-4">
+                                        <li>Checking email</li>
+                                        <li>Attending general meetings</li>
+                                        <li>Ordering office supplies</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Overcoming Procrastination</span>
+                            <span class="lang-id">Mengatasi Penundaan</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            One of the main reasons we procrastinate on big tasks is that they appear so huge and formidable when we approach them. The solution is to slice them up.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Salah satu alasan utama kita menunda tugas besar adalah karena tugas itu tampak begitu besar dan menakutkan saat kita mendekatinya. Solusinya adalah mengirisnya.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                                <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">🥩 The Salami Slice Method</h4>
+                                <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">🥩 Metode Irisan Salami</h4>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    You never eat a whole salami at once. You eat it one thin slice at a time.
+                                    <br><br>
+                                    <strong>Application:</strong> Don't try to "Write the Book." Instead, make it your goal to "Write one paragraph describing the main character." Once you finish one slice, you often feel like doing another.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Anda tidak pernah makan satu salami utuh sekaligus. Anda memakannya satu irisan tipis setiap kali.
+                                    <br><br>
+                                    <strong>Penerapan:</strong> Jangan mencoba "Menulis Buku." Sebaliknya, jadikan tujuan Anda "Menulis satu paragraf yang mendeskripsikan tokoh utama." Setelah satu irisan selesai, Anda sering ingin melakukan irisan lain.
+                                </p>
+                            </div>
+
+                            <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                                <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">🧀 The Swiss Cheese Method</h4>
+                                <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">🧀 Metode Keju Swiss</h4>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Punch a hole in the task. Do something specific for just 5 or 10 minutes.
+                                    <br><br>
+                                    <strong>Application:</strong> If you have a massive research project, just tell yourself, "I will spend 5 minutes gathering 3 links." That's a hole in the cheese. The task is no longer "solid" and intimidating.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Lubangi tugas tersebut. Lakukan sesuatu yang spesifik hanya untuk 5 atau 10 menit.
+                                    <br><br>
+                                    <strong>Penerapan:</strong> Jika Anda punya proyek riset besar, katakan pada diri sendiri, "Saya akan habiskan 5 menit mengumpulkan 3 link." Itu satu lubang di keju. Tugas itu tidak lagi "padat" dan menakutkan.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Single Handling Every Task</span>
+                            <span class="lang-id">Penanganan Tunggal Setiap Tugas</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-slate-800 p-6 rounded-xl text-white">
+                            <h3 class="text-xl font-bold mb-3 lang-en">The Concept of "Flow"</h3>
+                            <h3 class="text-xl font-bold mb-3 lang-id">Konsep "Aliran" (Flow)</h3>
+                            <p class="text-sm opacity-90 justified-text mb-4 lang-en">
+                                Single Handling means that once you start a task, you stick with it until it is 100% complete. You do not stop, you do not put it aside, you do not check your phone.
+                            </p>
+                            <p class="text-sm opacity-90 justified-text mb-4 lang-id">
+                                Penanganan Tunggal berarti begitu Anda memulai tugas, Anda bertahan dengannya sampai 100% selesai. Anda tidak berhenti, tidak menyisihkannya, tidak mengecek ponsel.
+                            </p>
+                            <div class="bg-slate-700 p-4 rounded border-l-4 border-green-500">
+                                <strong class="block mb-1 text-green-400 lang-en">The Cost of Multitasking</strong>
+                                <strong class="block mb-1 text-green-400 lang-id">Biaya Multitasking</strong>
+                                <p class="text-xs lang-en">
+                                    Every time you stop a task and return to it, you have to break inertia. It takes up to 500% more time to complete a task if you start and stop it repeatedly compared to doing it in one go.
+                                </p>
+                                <p class="text-xs lang-id">
+                                    Setiap kali Anda menghentikan tugas dan kembali lagi, Anda harus memecah inersia. Dibutuhkan waktu hingga 500% lebih lama untuk menyelesaikan tugas jika Anda mulai dan berhenti berulang kali dibandingkan menyelesaikannya sekali jalan.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm mt-6">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">Creating Large Chunks of Time</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Menciptakan Potongan Waktu Besar</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                You cannot eat a giant frog in 10-minute intervals. You need solid blocks of time (60, 90 minutes).
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Anda tidak bisa memakan katak raksasa dalam interval 10 menit. Anda butuh blok waktu yang solid (60, 90 menit).
+                            </p>
+                            <ul class="list-disc ml-5 text-sm text-slate-700 mt-2 space-y-2">
+                                <li>
+                                    <span class="lang-en"><strong>Time Planner:</strong> Block out the first 2 hours of every day for your #1 task.</span>
+                                    <span class="lang-id"><strong>Perencana Waktu:</strong> Blokir 2 jam pertama setiap hari untuk tugas #1 Anda.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Turn off Technology:</strong> "Technology is a terrible master." Disconnect to connect with your work.</span>
+                                    <span class="lang-id"><strong>Matikan Teknologi:</strong> "Teknologi adalah tuan yang buruk." Putuskan koneksi untuk terhubung dengan pekerjaan Anda.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#16a34a'; // Green
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#475569'; // Slate
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
