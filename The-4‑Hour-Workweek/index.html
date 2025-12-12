@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 4-Hour Workweek — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Orange/Cyan Theme for Tropical Freedom */
+        .active-tab { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #f97316 0%, #c2410c 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #f97316; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-cyan-50 to-orange-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">4</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">4-Hour Workweek</h2>
+                    <p class="text-slate-400 text-sm">
+                        <span class="lang-en">Escape the 9-5</span>
+                        <span class="lang-id">Keluar dari 9-5</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The DEAL Framework</span>
+                <span class="lang-id">Kerangka DEAL</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center text-xs font-bold">🌴</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">D</span>
+                        <div class="text-left">
+                            <div class="font-medium">Definition</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">New Rich vs. Old Rich</span>
+                                <span class="lang-id">Kaya Baru vs. Lama</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">E</span>
+                        <div class="text-left">
+                            <div class="font-medium">Elimination</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Time Management</span>
+                                <span class="lang-id">Manajemen Waktu</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">A</span>
+                        <div class="text-left">
+                            <div class="font-medium">Automation</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Outsourcing & Muses</span>
+                                <span class="lang-id">Outsourcing & Muse</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">L</span>
+                        <div class="text-left">
+                            <div class="font-medium">Liberation</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Mobility & Remote</span>
+                                <span class="lang-id">Mobilitas & Remote</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© Tim Ferriss</p>
+                <p class="text-slate-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    The 4-Hour Workweek
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    <span class="lang-en">Escape 9-5, Live Anywhere, and Join the New Rich</span>
+                    <span class="lang-id">Keluar dari 9-5, Tinggal di Mana Saja, dan Bergabung dengan Orang Kaya Baru</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-orange-500 to-cyan-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-orange-100 text-orange-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Concept</span>
+                            <span class="lang-id">Konsep Dasar</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Don't Defer Your Life</span>
+                            <span class="lang-id">Jangan Menunda Hidup Anda</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-orange-500 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"The goal is not to be a millionaire. The goal is to live like one."</span>
+                            <span class="lang-id">"Tujuannya bukan menjadi jutawan. Tujuannya adalah hidup seperti jutawan."</span>
+                        </div>
+                        
+                        <p class="mobile-text justified-text lang-en">
+                            Tim Ferriss challenges the "Deferred Life Plan"—the idea that you should work hard for 40 years to retire comfortably. Instead, he introduces the <strong>New Rich (NR)</strong>. The NR do not trade time for money; they create systems that generate money and time simultaneously.
+                        </p>
+                        <p class="mobile-text justified-text lang-id">
+                            Tim Ferriss menantang "Rencana Hidup yang Ditunda"—gagasan bahwa Anda harus bekerja keras selama 40 tahun untuk pensiun dengan nyaman. Sebaliknya, ia memperkenalkan <strong>Orang Kaya Baru (New Rich/NR)</strong>. NR tidak menukar waktu dengan uang; mereka menciptakan sistem yang menghasilkan uang dan waktu secara bersamaan.
+                        </p>
+
+                        <div class="bg-cyan-50 p-6 rounded-xl border border-cyan-200 shadow-sm">
+                            <h4 class="font-bold text-cyan-900 text-lg mb-3 lang-en">The Currency of the New Rich</h4>
+                            <h4 class="font-bold text-cyan-900 text-lg mb-3 lang-id">Mata Uang Orang Kaya Baru</h4>
+                            <p class="text-sm text-cyan-800 justified-text lang-en">
+                                It is not just Money ($). It is <strong>Time + Mobility</strong>.
+                                <br><br>
+                                $1,000,000 in the bank isn't freedom if you work 80 hours a week and can't leave your city. $50,000 a year is freedom if you work 4 hours a week and can live in Thailand (where cost of living is low).
+                            </p>
+                            <p class="text-sm text-cyan-800 justified-text lang-id">
+                                Bukan hanya Uang (Rp). Tapi <strong>Waktu + Mobilitas</strong>.
+                                <br><br>
+                                Rp 1 Miliar di bank bukanlah kebebasan jika Anda kerja 80 jam seminggu dan tidak bisa meninggalkan kota. Rp 50 Juta setahun adalah kebebasan jika Anda kerja 4 jam seminggu dan bisa tinggal di Thailand (di mana biaya hidup rendah).
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Step 1: D</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Definition</span>
+                            <span class="lang-id">Definisi</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">Absolute vs. Relative Income</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Penghasilan Absolut vs. Relatif</h4>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                <div class="bg-slate-50 p-3 rounded">
+                                    <strong class="block text-slate-800 mb-1">Person A (Absolute)</strong>
+                                    <ul class="text-sm text-slate-600 list-disc ml-4">
+                                        <li>Earns $100,000/year</li>
+                                        <li>Works 80 hours/week</li>
+                                        <li><strong>Hourly Rate: ~$25</strong></li>
+                                    </ul>
+                                </div>
+                                <div class="bg-orange-50 p-3 rounded border border-orange-200">
+                                    <strong class="block text-orange-800 mb-1">Person B (Relative)</strong>
+                                    <ul class="text-sm text-orange-700 list-disc ml-4">
+                                        <li>Earns $50,000/year</li>
+                                        <li>Works 10 hours/week</li>
+                                        <li><strong>Hourly Rate: ~$100</strong></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-700 mt-3 justified-text lang-en">
+                                Person B is richer in <strong>Relative Income</strong>. They have more control and time per dollar earned.
+                            </p>
+                            <p class="text-sm text-slate-700 mt-3 justified-text lang-id">
+                                Orang B lebih kaya dalam <strong>Penghasilan Relatif</strong>. Mereka punya kontrol dan waktu lebih banyak per dolar yang dihasilkan.
+                            </p>
+                        </div>
+
+                        <div class="border-l-4 border-slate-800 pl-4 bg-slate-50 p-4 rounded-r-lg">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">Fear Setting (Stoicism)</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Fear Setting (Stoikisme)</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Instead of goal setting, try "Fear Setting."
+                                <br>1. Define the nightmare: What is the absolute worst that happens if you quit your job?
+                                <br>2. Repair: How would you fix it? (e.g., take a temporary job, live with parents).
+                                <br>3. Conclusion: The worst case is usually temporary and survivable. The risk of <em>inaction</em> (wasting your life) is greater.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Alih-alih menetapkan tujuan, cobalah "Fear Setting" (Menetapkan Ketakutan).
+                                <br>1. Definisi mimpi buruk: Apa hal terburuk yang terjadi jika Anda berhenti kerja?
+                                <br>2. Perbaikan: Bagaimana cara memperbaikinya? (misal: kerja serabutan, tinggal dengan ortu).
+                                <br>3. Kesimpulan: Skenario terburuk biasanya sementara dan bisa diatasi. Risiko <em>tidak bertindak</em> (membuang hidup) lebih besar.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Step 2: E</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Elimination</span>
+                            <span class="lang-id">Eliminasi (Penghapusan)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            To work less, you must ignore the trivial. Being busy is a form of laziness—lazy thinking and indiscriminate action.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Untuk bekerja lebih sedikit, Anda harus mengabaikan yang sepele. Sibuk adalah bentuk kemalasan—kemalasan berpikir dan tindakan tanpa pandang bulu.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                                <strong class="block text-orange-900 text-lg mb-2 lang-en">Pareto Law (80/20)</strong>
+                                <strong class="block text-orange-900 text-lg mb-2 lang-id">Hukum Pareto (80/20)</strong>
+                                <p class="text-sm text-orange-800 justified-text lang-en">
+                                    80% of results come from 20% of efforts.
+                                    <br><strong>Action:</strong> Fire your high-maintenance, low-profit clients. Focus only on the top 20% who bring money without stress.
+                                </p>
+                                <p class="text-sm text-orange-800 justified-text lang-id">
+                                    80% hasil berasal dari 20% upaya.
+                                    <br><strong>Tindakan:</strong> Pecat klien yang rewel tapi untungnya sedikit. Fokus hanya pada 20% teratas yang bawa uang tanpa stres.
+                                </p>
+                            </div>
+
+                            <div class="bg-cyan-50 p-4 rounded-lg border border-cyan-200">
+                                <strong class="block text-cyan-900 text-lg mb-2 lang-en">Parkinson's Law</strong>
+                                <strong class="block text-cyan-900 text-lg mb-2 lang-id">Hukum Parkinson</strong>
+                                <p class="text-sm text-cyan-800 justified-text lang-en">
+                                    "Work expands to fill the time available for its completion."
+                                    <br><strong>Action:</strong> Shorten deadlines artificially. If you give yourself 8 hours, it takes 8 hours. If you give yourself 2 hours, you focus instantly.
+                                </p>
+                                <p class="text-sm text-cyan-800 justified-text lang-id">
+                                    "Pekerjaan meluas mengisi waktu yang tersedia untuk penyelesaiannya."
+                                    <br><strong>Tindakan:</strong> Pendekkan tenggat waktu secara buatan. Jika Anda beri waktu 8 jam, selesai 8 jam. Jika 2 jam, Anda fokus seketika.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">The Low-Information Diet</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Diet Rendah Informasi</h4>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                Most information is time-consuming, negative, and irrelevant to your goals.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Kebanyakan informasi itu memakan waktu, negatif, dan tidak relevan dengan tujuan Anda.
+                            </p>
+                            <ul class="list-disc ml-5 text-sm text-slate-600 space-y-2">
+                                <li>
+                                    <span class="lang-en"><strong>Stop reading news:</strong> If it's important, someone will tell you.</span>
+                                    <span class="lang-id"><strong>Berhenti baca berita:</strong> Jika penting, orang akan memberitahu Anda.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Email Batching:</strong> Check email only twice a day (12:00 PM and 4:00 PM). Use an autoresponder to train people not to expect instant replies.</span>
+                                    <span class="lang-id"><strong>Batching Email:</strong> Cek email hanya dua kali sehari (12.00 dan 16.00). Gunakan penjawab otomatis untuk melatih orang agar tidak berharap balasan instan.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Step 3: A</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Automation</span>
+                            <span class="lang-id">Otomatisasi</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            This is where you remove yourself from the equation. The goal is to build an <strong>Automated Income Generator</strong> (Muse).
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Di sinilah Anda menghapus diri Anda dari persamaan. Tujuannya adalah membangun <strong>Pembangkit Penghasilan Otomatis</strong> (Muse).
+                        </p>
+
+                        <div class="bg-slate-50 p-5 rounded-lg border border-slate-200">
+                            <strong class="block text-slate-900 text-lg mb-2 lang-en">1. Outsourcing Life (Geo-Arbitrage)</strong>
+                            <strong class="block text-slate-900 text-lg mb-2 lang-id">1. Outsourcing Hidup (Geo-Arbitrase)</strong>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                Hire a Virtual Assistant (VA) from a country with a lower cost of living (e.g., India or Philippines). Even if you can do a task, if your hourly rate is $50 and a VA costs $10, you are losing money by doing it yourself.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Sewa Asisten Virtual (VA) dari negara dengan biaya hidup lebih rendah (misal: India atau Filipina). Meski Anda bisa mengerjakannya, jika tarif per jam Anda $50 dan VA $10, Anda rugi jika mengerjakannya sendiri.
+                            </p>
+                            <div class="bg-white p-3 rounded text-xs text-slate-600 border border-slate-300 italic lang-en">
+                                <strong>Rule:</strong> Never automate something that can be eliminated. Eliminate first, then automate.
+                            </div>
+                            <div class="bg-white p-3 rounded text-xs text-slate-600 border border-slate-300 italic lang-id">
+                                <strong>Aturan:</strong> Jangan otomatisasi sesuatu yang bisa dieliminasi. Eliminasi dulu, baru otomatisasi.
+                            </div>
+                        </div>
+
+                        <div class="bg-orange-50 p-6 rounded-xl border border-orange-200 shadow-sm mt-4">
+                            <strong class="block text-orange-900 text-lg mb-3 lang-en">2. Creating a Muse (Case Study: BrainQuicken)</strong>
+                            <strong class="block text-orange-900 text-lg mb-3 lang-id">2. Menciptakan Muse (Studi Kasus: BrainQuicken)</strong>
+                            
+                            <p class="text-sm text-orange-800 justified-text mb-4 lang-en">
+                                Tim Ferriss founded a brain supplement company. Initially, he did everything. He worked 14 hours a day. Then he automated it.
+                            </p>
+                            <p class="text-sm text-orange-800 justified-text mb-4 lang-id">
+                                Tim Ferriss mendirikan perusahaan suplemen otak. Awalnya, dia melakukan semuanya. Kerja 14 jam sehari. Lalu dia mengotomatisasinya.
+                            </p>
+
+                            <ul class="list-disc ml-5 space-y-3 text-sm text-slate-700">
+                                <li>
+                                    <span class="lang-en"><strong>Step 1: Pick a Niche.</strong> Don't sell to everyone. Sell "Yoga for Rock Climbers," not just "Yoga."</span>
+                                    <span class="lang-id"><strong>Langkah 1: Pilih Niche.</strong> Jangan jual ke semua orang. Jual "Yoga untuk Pemanjat Tebing," bukan cuma "Yoga."</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Step 2: Test Pricing.</strong> The product should be $50-$200. Why? High margins allow you to pay for fulfillment services. Cheap products require too much customer support volume.</span>
+                                    <span class="lang-id"><strong>Langkah 2: Cek Harga.</strong> Produk harus $50-$200. Kenapa? Margin tinggi memungkinkan Anda membayar jasa pengiriman. Produk murah butuh terlalu banyak volume customer service.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Step 3: Test Demand (Dry Testing).</strong> Set up a fake website selling the product. When people click "Buy," say "Out of Stock" but collect emails. See if people actually click before you manufacture.</span>
+                                    <span class="lang-id"><strong>Langkah 3: Tes Permintaan.</strong> Buat web palsu. Saat orang klik "Beli," bilang "Stok Habis" tapi simpan email. Lihat apakah orang benar-benar klik sebelum memproduksi.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Step 4: Automate Delivery.</strong> Use a fulfillment center. The factory sends products to the fulfillment center. The website sends orders to the center. The center ships to customer. Tim never touches the box.</span>
+                                    <span class="lang-id"><strong>Langkah 4: Otomatisasi Pengiriman.</strong> Gunakan pusat pemenuhan (fulfillment center). Pabrik kirim ke gudang. Web kirim pesanan ke gudang. Gudang kirim ke pelanggan. Tim tidak pernah menyentuh kotak.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Step 4: L</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Liberation</span>
+                            <span class="lang-id">Liberasi (Kebebasan)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Liberation is about breaking the bonds that tie you to a single location. It's about mobility.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Liberasi adalah tentang memutus ikatan yang mengikat Anda pada satu lokasi. Ini tentang mobilitas.
+                        </p>
+
+                        <div class="bg-cyan-50 p-5 rounded-lg border border-cyan-200 shadow-sm">
+                            <h4 class="font-bold text-cyan-900 text-lg mb-3 lang-en">Case Study: Escaping the Office</h4>
+                            <h4 class="font-bold text-cyan-900 text-lg mb-3 lang-id">Studi Kasus: Kabur dari Kantor</h4>
+                            
+                            <p class="text-sm text-cyan-800 justified-text mb-3 lang-en">
+                                If you have a 9-5 job, you don't have to quit immediately. You can negotiate remote work.
+                            </p>
+                            <p class="text-sm text-cyan-800 justified-text mb-3 lang-id">
+                                Jika Anda punya kerja 9-5, tidak harus langsung resign. Anda bisa negosiasi kerja remote.
+                            </p>
+
+                            <ol class="list-decimal ml-5 space-y-2 text-sm text-slate-700">
+                                <li>
+                                    <span class="lang-en"><strong>Increase Value:</strong> Get the company to invest in you (training) so you are harder to fire.</span>
+                                    <span class="lang-id"><strong>Tingkatkan Nilai:</strong> Buat perusahaan investasi di Anda (pelatihan) agar susah dipecat.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Prove Productivity:</strong> Call in sick for 2 days, work from home, and produce DOUBLE your normal output. Show them the proof.</span>
+                                    <span class="lang-id"><strong>Buktikan Produktivitas:</strong> Izin sakit 2 hari, kerja dari rumah, hasilkan DUA KALI output normal. Tunjukkan buktinya.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Proposal:</strong> Propose a "trial period." "Boss, I work better without distractions. Can I try working from home Tuesdays and Thursdays?"</span>
+                                    <span class="lang-id"><strong>Proposal:</strong> Ajukan "masa percobaan." "Bos, saya kerja lebih baik tanpa gangguan. Boleh coba kerja dari rumah Selasa dan Kamis?"</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Expand:</strong> Once proven, expand to full remote. Then move to Bali.</span>
+                                    <span class="lang-id"><strong>Perluas:</strong> Setelah terbukti, perluas jadi full remote. Lalu pindah ke Bali.</span>
+                                </li>
+                            </ol>
+                        </div>
+
+                        <div class="bg-slate-800 p-5 rounded-lg text-white mt-4">
+                            <strong class="block text-lg mb-2 lang-en">Mini-Retirements</strong>
+                            <strong class="block text-lg mb-2 lang-id">Pensiun Mini</strong>
+                            <p class="text-sm opacity-90 justified-text lang-en">
+                                Don't save it all for the end. Take 1-6 month "mini-retirements" throughout your life. Go to Argentina, learn to tango. Go to Japan, learn Kendo.
+                                <br><br>
+                                <strong>Why?</strong> Because you might be physically unable to do it at 65, or you might be dead. And usually, living for a month in Argentina is cheaper than living a month in New York/Jakarta.
+                            </p>
+                            <p class="text-sm opacity-90 justified-text lang-id">
+                                Jangan simpan semuanya untuk akhir. Ambil "pensiun mini" 1-6 bulan sepanjang hidup. Pergi ke Argentina, belajar tango. Ke Jepang, belajar Kendo.
+                                <br><br>
+                                <strong>Kenapa?</strong> Karena mungkin fisik Anda tidak mampu di usia 65, atau Anda sudah meninggal. Dan biasanya, hidup sebulan di Argentina lebih murah daripada sebulan di New York/Jakarta.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#f97316'; // Orange
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#06b6d4'; // Cyan
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
