@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Outliers — Detailed Edition</title>
+    <title>Outliers — Master Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -11,20 +11,20 @@
         .fade-in { animation: fadeIn 0.5s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Teal/Slate Theme for Outliers */
-        .active-tab { background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%); } 
+        /* Teal/Slate Theme - Intellectual & Investigative */
+        .active-tab { background: linear-gradient(135deg, #0f766e 0%, #115e59 100%); } 
         .content-section { display: none; }
         .content-section.active { display: block; }
         
         .justified-text { text-align: justify; }
-        .mobile-text { font-size: 16px; line-height: 1.7; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
 
         /* Language Utilities */
         .lang-id { display: none; } 
         .lang-en { display: block; }
         
         @media (max-width: 640px) {
-            .mobile-text { font-size: 15px; line-height: 1.6; }
+            .mobile-text { font-size: 15px; line-height: 1.7; }
             .mobile-title { font-size: 1.5rem !important; }
             .mobile-subtitle { font-size: 1.1rem !important; }
             .mobile-padding { padding: 1rem !important; }
@@ -111,14 +111,14 @@
     <nav class="nav-drawer">
         <div class="p-6 border-b border-slate-700">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-gradient-to-br from-teal-500 to-teal-600 rounded-lg flex items-center justify-center">
+                <div class="w-10 h-10 bg-gradient-to-br from-teal-500 to-teal-700 rounded-lg flex items-center justify-center">
                     <span class="text-white font-bold text-lg">?</span>
                 </div>
                 <div>
                     <h2 class="text-white font-semibold text-lg">Outliers</h2>
                     <p class="text-slate-400 text-sm">
-                        <span class="lang-en">The Story of Success</span>
-                        <span class="lang-id">Kisah Sukses</span>
+                        <span class="lang-en">Comprehensive Guide</span>
+                        <span class="lang-id">Panduan Komprehensif</span>
                     </p>
                 </div>
             </div>
@@ -141,10 +141,10 @@
                     <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
                         <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
                         <div class="text-left">
-                            <div class="font-medium">The 10,000 Hour Rule</div>
+                            <div class="font-medium">The Matthew Effect</div>
                             <div class="text-xs text-slate-400">
-                                <span class="lang-en">Practice & Preparation</span>
-                                <span class="lang-id">Latihan & Persiapan</span>
+                                <span class="lang-en">Hockey & Birthdates</span>
+                                <span class="lang-id">Hoki & Tanggal Lahir</span>
                             </div>
                         </div>
                     </button>
@@ -153,10 +153,10 @@
                     <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
                         <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
                         <div class="text-left">
-                            <div class="font-medium">The Matthew Effect</div>
+                            <div class="font-medium">The 10,000 Hour Rule</div>
                             <div class="text-xs text-slate-400">
-                                <span class="lang-en">Timing & Birthdates</span>
-                                <span class="lang-id">Waktu & Tanggal Lahir</span>
+                                <span class="lang-en">Gates & The Beatles</span>
+                                <span class="lang-id">Gates & The Beatles</span>
                             </div>
                         </div>
                     </button>
@@ -165,10 +165,10 @@
                     <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
                         <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
                         <div class="text-left">
-                            <div class="font-medium">Trouble with Geniuses</div>
+                            <div class="font-medium">The Trouble with Geniuses</div>
                             <div class="text-xs text-slate-400">
-                                <span class="lang-en">IQ vs. Practical Intel.</span>
-                                <span class="lang-id">IQ vs. Kecerdasan Praktis</span>
+                                <span class="lang-en">Practical Intelligence</span>
+                                <span class="lang-id">Kecerdasan Praktis</span>
                             </div>
                         </div>
                     </button>
@@ -186,8 +186,8 @@
                         <div class="text-left">
                             <div class="font-medium">Plane Crashes</div>
                             <div class="text-xs text-slate-400">
-                                <span class="lang-en">Culture & Communication</span>
-                                <span class="lang-id">Budaya & Komunikasi</span>
+                                <span class="lang-en">Cultural Language</span>
+                                <span class="lang-id">Bahasa Budaya</span>
                             </div>
                         </div>
                     </button>
@@ -196,10 +196,10 @@
                     <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
                         <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
                         <div class="text-left">
-                            <div class="font-medium">Rice Paddies</div>
+                            <div class="font-medium">Rice Paddies & Math</div>
                             <div class="text-xs text-slate-400">
-                                <span class="lang-en">Math & Hard Work</span>
-                                <span class="lang-id">Matematika & Kerja Keras</span>
+                                <span class="lang-en">Cultural Work Ethic</span>
+                                <span class="lang-id">Etos Kerja Budaya</span>
                             </div>
                         </div>
                     </button>
@@ -210,7 +210,7 @@
         <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
             <div class="text-center">
                 <p class="text-slate-400 text-xs">© Malcolm Gladwell</p>
-                <p class="text-slate-500 text-xs mt-1">Detailed Edition</p>
+                <p class="text-slate-500 text-xs mt-1">Master Edition</p>
             </div>
         </div>
     </nav>
@@ -222,10 +222,10 @@
                     Outliers
                 </h1>
                 <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
-                    <span class="lang-en">Why Some People Succeed and Others Don't</span>
-                    <span class="lang-id">Mengapa Beberapa Orang Sukses dan yang Lain Tidak</span>
+                    <span class="lang-en">The Story of Success: A Deep Dive</span>
+                    <span class="lang-id">Kisah Sukses: Analisis Mendalam</span>
                 </p>
-                <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-teal-500 to-slate-800 mx-auto mt-3 sm:mt-4 rounded-full"></div>
+                <div class="w-24 h-1 bg-gradient-to-r from-teal-500 to-slate-800 mx-auto mt-4 rounded-full"></div>
             </div>
         </div>
     </header>
@@ -242,46 +242,120 @@
                         </span>
                         
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
-                            <span class="lang-en">The Myth of the Self-Made Man</span>
-                            <span class="lang-id">Mitos Manusia yang Sukses Sendiri</span>
+                            <span class="lang-en">The Roseto Mystery</span>
+                            <span class="lang-id">Misteri Roseto</span>
                         </h2>
                     </div>
                     
-                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
-                        <div class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-teal-500 pl-4 sm:pl-6 italic mobile-text justified-text">
-                            <span class="lang-en">"Success is not a random act. It arises out of a predictable and powerful set of circumstances and opportunities."</span>
-                            <span class="lang-id">"Kesuksesan bukanlah tindakan acak. Ia muncul dari serangkaian keadaan dan peluang yang dapat diprediksi dan kuat."</span>
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-teal-500 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"These people were dying of old age. That’s it."</span>
+                            <span class="lang-id">"Orang-orang ini meninggal karena usia tua. Itu saja."</span>
                         </div>
                         
-                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                             <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">What is an Outlier?</h4>
-                             <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Apa itu Outlier?</h4>
-                             <p class="text-sm text-slate-700 justified-text lang-en">
-                                1. Something that is situated away from or classed differently from a main or related body.
-                                <br>
-                                2. A statistical observation that is markedly different in value from the others of the sample.
-                             </p>
-                             <p class="text-sm text-slate-700 justified-text lang-id">
-                                1. Sesuatu yang terletak jauh dari atau diklasifikasikan berbeda dari badan utama atau terkait.
-                                <br>
-                                2. Pengamatan statistik yang nilainya sangat berbeda dari yang lain dalam sampel tersebut.
-                             </p>
+                        <p class="mobile-text justified-text lang-en">
+                            Gladwell opens with the story of <strong>Roseto Valfortore</strong>, an Italian immigrant town in Pennsylvania. In the 1950s, a physician named Stewart Wolf discovered something startling: virtually <strong>no one</strong> in Roseto under age 65 had heart disease. This was impossible by medical standards of the time.
+                        </p>
+                        <p class="mobile-text justified-text lang-id">
+                            Gladwell membuka dengan kisah <strong>Roseto Valfortore</strong>, sebuah kota imigran Italia di Pennsylvania. Pada tahun 1950-an, seorang dokter bernama Stewart Wolf menemukan sesuatu yang mengejutkan: hampir <strong>tidak ada seorang pun</strong> di Roseto di bawah usia 65 tahun yang menderita penyakit jantung. Ini mustahil menurut standar medis saat itu.
+                        </p>
+
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">Why were they healthy?</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Mengapa mereka sehat?</h4>
+                            
+                            <ul class="list-none space-y-3 text-sm text-slate-700">
+                                <li class="flex items-start">
+                                    <span class="text-red-500 mr-2">❌</span>
+                                    <span class="lang-en"><strong>Diet? No.</strong> They cooked with lard and smoked heavily.</span>
+                                    <span class="lang-id"><strong>Diet? Tidak.</strong> Mereka memasak dengan lemak babi dan perokok berat.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-red-500 mr-2">❌</span>
+                                    <span class="lang-en"><strong>Genetics? No.</strong> Relatives in other towns didn't share this health.</span>
+                                    <span class="lang-id"><strong>Genetik? Tidak.</strong> Kerabat di kota lain tidak sesehat ini.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-teal-600 mr-2">✅</span>
+                                    <span class="lang-en"><strong>Community Structure.</strong> Three generations lived under one roof. They stopped to chat on the street. They had a powerful protective social structure.</span>
+                                    <span class="lang-id"><strong>Struktur Komunitas.</strong> Tiga generasi tinggal di satu atap. Mereka berhenti untuk mengobrol di jalan. Mereka memiliki struktur sosial pelindung yang kuat.</span>
+                                </li>
+                            </ul>
                         </div>
-                        
-                        <div class="mobile-text justified-text">
-                            <span class="lang-en">
-                                We often attribute success to individual merit: intelligence, ambition, and hard work. Gladwell argues this is wrong. Success is a result of <strong>accumulative advantage</strong>: hidden advantages, extraordinary opportunities, and cultural legacies that allow them to learn and work hard in ways others cannot.
-                            </span>
-                            <span class="lang-id">
-                                Kita sering mengaitkan kesuksesan dengan kelebihan individu: kecerdasan, ambisi, dan kerja keras. Gladwell berpendapat ini salah. Kesuksesan adalah hasil dari <strong>keuntungan kumulatif</strong>: keunggulan tersembunyi, peluang luar biasa, dan warisan budaya yang memungkinkan mereka belajar dan bekerja keras dengan cara yang tidak bisa dilakukan orang lain.
-                            </span>
-                        </div>
+
+                        <p class="mobile-text justified-text lang-en">
+                            <strong>The Core Thesis:</strong> Just as health is not purely about the individual biology, success is not purely about individual effort. We are products of our history, our community, our opportunities, and our legacy. We are not self-made.
+                        </p>
+                        <p class="mobile-text justified-text lang-id">
+                            <strong>Tesis Inti:</strong> Sama seperti kesehatan bukan murni tentang biologi individu, kesuksesan bukan murni tentang usaha individu. Kita adalah produk dari sejarah kita, komunitas kita, peluang kita, dan warisan kita. Kita tidak sukses sendirian (self-made).
+                        </p>
                     </div>
                 </section>
 
                 <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Chapter 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Matthew Effect</span>
+                            <span class="lang-id">Efek Matius</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-teal-50 p-5 rounded-lg border border-teal-200">
+                            <h4 class="font-bold text-teal-900 text-lg mb-2 lang-en">The Mystery of the Roster</h4>
+                            <h4 class="font-bold text-teal-900 text-lg mb-2 lang-id">Misteri Daftar Pemain</h4>
+                            <p class="text-sm text-teal-800 justified-text lang-en">
+                                Gladwell examines the roster of the 2007 Medicine Hat Tigers (an elite Canadian Junior Hockey team).
+                                <br><br>
+                                <strong>The Data:</strong>
+                                <br>• 17 players born in Jan, Feb, March.
+                                <br>• Only 2 players born in Oct, Nov, Dec.
+                                <br><br>
+                                This distribution is statistically impossible by chance. Why does it happen?
+                            </p>
+                            <p class="text-sm text-teal-800 justified-text lang-id">
+                                Gladwell meneliti daftar pemain Medicine Hat Tigers 2007 (tim Hoki Junior elit Kanada).
+                                <br><br>
+                                <strong>Datanya:</strong>
+                                <br>• 17 pemain lahir di Jan, Feb, Maret.
+                                <br>• Hanya 2 pemain lahir di Okt, Nov, Des.
+                                <br><br>
+                                Distribusi ini mustahil terjadi secara kebetulan statistik. Mengapa ini terjadi?
+                            </p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <h4 class="font-bold text-slate-900 text-lg lang-en">Accumulative Advantage</h4>
+                            <h4 class="font-bold text-slate-900 text-lg lang-id">Keuntungan Kumulatif</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                In Canada, the eligibility cutoff for age-class hockey is <strong>January 1st</strong>.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Di Kanada, batas kelayakan untuk hoki kelas umur adalah <strong>1 Januari</strong>.
+                            </p>
+                            
+                            <ul class="relative border-l-4 border-slate-300 ml-4 pl-4 space-y-4">
+                                <li class="text-sm text-slate-700">
+                                    <strong class="block text-slate-900 mb-1">Age 10:</strong> A boy born on Jan 2 is almost 12 months older than a boy born on Dec 31. At age 10, a 12-month gap in physical maturity is massive. The Jan kid is bigger and stronger.
+                                </li>
+                                <li class="text-sm text-slate-700">
+                                    <strong class="block text-slate-900 mb-1">Selection:</strong> The coaches mistake "maturity" for "talent." They pick the Jan kid for the All-Star team (Rep Squad).
+                                </li>
+                                <li class="text-sm text-slate-700">
+                                    <strong class="block text-slate-900 mb-1">The Gap Widens:</strong> The Rep Squad practices 75 times a season. The regular league practices 20 times. The Jan kid gets better coaching and plays against better competition.
+                                </li>
+                                <li class="text-sm text-slate-700">
+                                    <strong class="block text-slate-900 mb-1">Age 14:</strong> Now, the Jan kid really *is* better. Not because of innate talent, but because he had thousands of hours more practice due to an arbitrary cutoff date.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Chapter 2</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
                             <span class="lang-en">The 10,000 Hour Rule</span>
                             <span class="lang-id">Aturan 10.000 Jam</span>
@@ -290,112 +364,64 @@
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
                         <p class="text-base text-slate-600 justified-text lang-en">
-                            Talent is not enough. Researchers have settled on what they believe is the magic number for true expertise: <strong>10,000 hours</strong>. But the key insight is not just hard work, but the <em>opportunity</em> to work that hard.
+                            Gladwell posits that to achieve world-class mastery in anything, you need approximately 10,000 hours of practice. But his real point is: <strong>You cannot achieve 10,000 hours on your own. You need extraordinary opportunities.</strong>
                         </p>
                         <p class="text-base text-slate-600 justified-text lang-id">
-                            Bakat saja tidak cukup. Para peneliti telah menyepakati angka ajaib untuk keahlian sejati: <strong>10.000 jam</strong>. Namun wawasan kuncinya bukan hanya kerja keras, melainkan <em>kesempatan</em> untuk bekerja sekeras itu.
+                            Gladwell berpendapat bahwa untuk mencapai penguasaan kelas dunia dalam hal apa pun, Anda membutuhkan sekitar 10.000 jam latihan. Namun poin utamanya adalah: <strong>Anda tidak bisa mencapai 10.000 jam sendirian. Anda butuh peluang luar biasa.</strong>
                         </p>
 
-                        <div class="space-y-6">
-                            <div class="border-l-4 border-teal-500 pl-4 bg-teal-50 p-4 rounded-r-lg">
-                                <h3 class="text-lg font-bold text-slate-900 mb-1">Case Study 1: The Beatles</h3>
-                                <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
-                                    Before they came to America in 1964, the Beatles were not an overnight success. They had a unique opportunity in <strong>Hamburg, Germany</strong>.
-                                </p>
-                                <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
-                                    Sebelum mereka datang ke Amerika pada tahun 1964, The Beatles bukanlah sukses semalam. Mereka memiliki kesempatan unik di <strong>Hamburg, Jerman</strong>.
-                                </p>
-                                <ul class="list-disc ml-5 text-sm text-slate-700 space-y-1">
-                                    <li>
-                                        <span class="lang-en">They played in strip clubs for 8 hours a night, 7 days a week.</span>
-                                        <span class="lang-id">Mereka bermain di klub striptis selama 8 jam semalam, 7 hari seminggu.</span>
-                                    </li>
-                                    <li>
-                                        <span class="lang-en">By 1964, they had performed live <strong>1,200 times</strong>. Most bands don't perform 1,200 times in their entire career.</span>
-                                        <span class="lang-id">Pada tahun 1964, mereka telah tampil live sebanyak <strong>1.200 kali</strong>. Kebanyakan band tidak tampil 1.200 kali sepanjang karir mereka.</span>
-                                    </li>
-                                    <li>
-                                        <span class="lang-en"><strong>The Outlier Factor:</strong> The sheer volume of practice forced them to get better and experiment.</span>
-                                        <span class="lang-id"><strong>Faktor Outlier:</strong> Volume latihan yang besar memaksa mereka menjadi lebih baik dan bereksperimen.</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="border-l-4 border-slate-500 pl-4 bg-slate-50 p-4 rounded-r-lg">
-                                <h3 class="text-lg font-bold text-slate-900 mb-1">Case Study 2: Bill Gates</h3>
-                                <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
-                                    Gates is brilliant, but his success relied on a series of incredibly rare opportunities starting in 1968.
-                                </p>
-                                <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
-                                    Gates memang jenius, tetapi kesuksesannya bergantung pada serangkaian peluang yang sangat langka dimulai pada tahun 1968.
-                                </p>
-                                <ul class="list-disc ml-5 text-sm text-slate-700 space-y-1">
-                                    <li>
-                                        <span class="lang-en">He went to Lakeside School, one of the only schools in the world with a computer terminal (paid for by a mothers' club).</span>
-                                        <span class="lang-id">Dia bersekolah di Lakeside, satu dari sedikit sekolah di dunia yang memiliki terminal komputer (dibiayai oleh klub ibu-ibu).</span>
-                                    </li>
-                                    <li>
-                                        <span class="lang-en">He lived near the University of Washington, where he could use their computers for free at night (3 AM - 6 AM).</span>
-                                        <span class="lang-id">Dia tinggal dekat University of Washington, di mana dia bisa menggunakan komputer mereka secara gratis di malam hari (jam 3 - 6 pagi).</span>
-                                    </li>
-                                    <li>
-                                        <span class="lang-en">By the time he dropped out of Harvard, he had been programming for 7 consecutive years. He had his 10,000 hours before most people even saw a computer.</span>
-                                        <span class="lang-id">Saat dia drop out dari Harvard, dia sudah memprogram selama 7 tahun berturut-turut. Dia sudah punya 10.000 jam sebelum kebanyakan orang melihat komputer.</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
-                    <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
-                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
-                            <span class="lang-en">The Matthew Effect</span>
-                            <span class="lang-id">Efek Matius</span>
-                        </h2>
-                    </div>
-                    
-                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
-                        <div class="text-base text-slate-600 italic border-l-4 border-slate-300 pl-4 mb-4 justified-text lang-en">
-                            "For unto every one that hath shall be given, and he shall have abundance." — Matthew 25:29
-                        </div>
-                        <div class="text-base text-slate-600 italic border-l-4 border-slate-300 pl-4 mb-4 justified-text lang-id">
-                            "Karena setiap orang yang mempunyai, kepadanya akan diberi, sehingga ia berkelimpahan." — Matius 25:29
-                        </div>
-
                         <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
-                            <h4 class="font-bold text-slate-800 mb-3 text-lg lang-en">Case Study: Canadian Hockey Players</h4>
-                            <h4 class="font-bold text-slate-800 mb-3 text-lg lang-id">Studi Kasus: Pemain Hoki Kanada</h4>
+                            <h4 class="font-bold text-slate-900 text-xl mb-3 lang-en">Deep Dive: Bill Gates' Lucky Break</h4>
+                            <h4 class="font-bold text-slate-900 text-xl mb-3 lang-id">Analisis Mendalam: Keberuntungan Bill Gates</h4>
                             
-                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
-                                Gladwell noticed a strange pattern in the rosters of elite Canadian hockey teams.
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-en">
+                                Bill Gates is brilliant, but he also had access to computers at a time when even scientists didn't. Here is the series of lucky breaks that got him to 10,000 hours before dropping out of Harvard:
                             </p>
-                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
-                                Gladwell memperhatikan pola aneh dalam daftar nama tim hoki elit Kanada.
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-id">
+                                Bill Gates memang jenius, tetapi dia juga memiliki akses ke komputer pada saat ilmuwan pun belum tentu punya. Inilah rangkaian keberuntungan yang membawanya ke 10.000 jam sebelum keluar dari Harvard:
                             </p>
-                            
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                                <div class="bg-teal-50 p-3 rounded border border-teal-100">
-                                    <strong class="block text-teal-800 mb-1 lang-en">The Observation</strong>
-                                    <strong class="block text-teal-800 mb-1 lang-id">Pengamatan</strong>
-                                    <p class="text-xs text-slate-600 lang-en">40% of elite players are born in January, February, or March. Only 10% are born in October, November, or December.</p>
-                                    <p class="text-xs text-slate-600 lang-id">40% pemain elit lahir di Januari, Februari, atau Maret. Hanya 10% lahir di Oktober, November, atau Desember.</p>
-                                </div>
-                                <div class="bg-slate-50 p-3 rounded border border-slate-200">
-                                    <strong class="block text-slate-800 mb-1 lang-en">The Cause (Cutoff Dates)</strong>
-                                    <strong class="block text-slate-800 mb-1 lang-id">Penyebab (Tanggal Batas)</strong>
-                                    <p class="text-xs text-slate-600 lang-en">The cutoff date for age-class hockey is January 1st. A boy born on Jan 2 is almost 12 months older than a boy born on Dec 31.</p>
-                                    <p class="text-xs text-slate-600 lang-id">Tanggal batas untuk kelas umur hoki adalah 1 Januari. Anak laki-laki yang lahir 2 Jan hampir 12 bulan lebih tua dari yang lahir 31 Des.</p>
-                                </div>
-                            </div>
 
+                            <ol class="list-decimal ml-5 space-y-3 text-sm text-slate-700">
+                                <li>
+                                    <strong class="text-teal-700">1968 (Age 13):</strong> He went to Lakeside School. The Mothers' Club used rummage sale money to buy an ASR-33 Teletype terminal. Most colleges didn't have this.
+                                </li>
+                                <li>
+                                    <strong class="text-teal-700">C-Cube:</strong> A company founded by UW graduates needed testers. Gates could go there and program for free on nights and weekends.
+                                </li>
+                                <li>
+                                    <strong class="text-teal-700">ISI:</strong> Another company needed someone to write payroll software. In exchange, they gave him free computer time.
+                                </li>
+                                <li>
+                                    <strong class="text-teal-700">TRW:</strong> A massive tech firm had a bug in their system. They hired Gates (still in high school) to fix it.
+                                </li>
+                                <li>
+                                    <strong class="text-teal-700">University of Washington:</strong> He lived within walking distance and snuck in to use their computers between 3 AM and 6 AM.
+                                </li>
+                            </ol>
+                            
+                            <div class="mt-4 p-3 bg-teal-50 rounded text-teal-900 text-sm italic justified-text lang-en">
+                                By the time Microsoft started, Gates had been programming practically non-stop for 7 years. He had passed the 10,000-hour mark way before anyone else in his generation.
+                            </div>
+                            <div class="mt-4 p-3 bg-teal-50 rounded text-teal-900 text-sm italic justified-text lang-id">
+                                Pada saat Microsoft dimulai, Gates telah memprogram praktis tanpa henti selama 7 tahun. Dia telah melewati batas 10.000 jam jauh sebelum orang lain di generasinya.
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 p-5 rounded-lg border border-slate-200">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2">The Beatles in Hamburg</h4>
                             <p class="text-sm text-slate-700 justified-text lang-en">
-                                <strong>Cumulative Advantage:</strong> The Jan-born kid is bigger and stronger at age 10. He gets picked for the All-Star team. He gets better coaching. He practices 3x more. By age 14, he really <em>is</em> better. But it started just because he was born in January.
+                                Before the "British Invasion" in 1964, The Beatles played in strip clubs in Hamburg, Germany.
+                                <br><br>
+                                They played <strong>8 hours a night, 7 days a week</strong>.
+                                <br><br>
+                                By the time they had their first burst of success, they had performed live an estimated <strong>1,200 times</strong>. Most bands today don't perform 1,200 times in their entire career. The Hamburg crucible forced them to learn covers, stamina, and stage presence that no other band had.
                             </p>
                             <p class="text-sm text-slate-700 justified-text lang-id">
-                                <strong>Keuntungan Kumulatif:</strong> Anak kelahiran Januari lebih besar dan kuat di usia 10. Dia terpilih masuk tim All-Star. Dia dapat pelatih lebih baik. Dia berlatih 3x lebih banyak. Di usia 14, dia benar-benar <em>menjadi</em> lebih baik. Tapi itu dimulai hanya karena dia lahir di Januari.
+                                Sebelum "Invasi Inggris" pada tahun 1964, The Beatles bermain di klub striptis di Hamburg, Jerman.
+                                <br><br>
+                                Mereka bermain <strong>8 jam semalam, 7 hari seminggu</strong>.
+                                <br><br>
+                                Pada saat mereka mencapai kesuksesan pertama, mereka diperkirakan telah tampil live sebanyak <strong>1.200 kali</strong>. Kebanyakan band saat ini tidak tampil 1.200 kali sepanjang karir mereka. Kawah candradimuka Hamburg memaksa mereka menguasai lagu cover, stamina, dan aksi panggung yang tidak dimiliki band lain.
                             </p>
                         </div>
                     </div>
@@ -403,7 +429,7 @@
 
                 <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Chapter 3 & 4</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
                             <span class="lang-en">The Trouble with Geniuses</span>
                             <span class="lang-id">Masalah dengan Para Jenius</span>
@@ -411,139 +437,177 @@
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
-                        <p class="text-base text-slate-600 justified-text lang-en">
-                            We assume IQ is the single determinant of success. Gladwell compares two geniuses to prove that <strong>Practical Intelligence</strong> (social skills) matters more once you pass a certain IQ threshold.
-                        </p>
-                        <p class="text-base text-slate-600 justified-text lang-id">
-                            Kita berasumsi IQ adalah penentu tunggal kesuksesan. Gladwell membandingkan dua jenius untuk membuktikan bahwa <strong>Kecerdasan Praktis</strong> (keterampilan sosial) lebih penting begitu Anda melewati ambang batas IQ tertentu.
-                        </p>
+                        <div class="border-l-4 border-red-500 pl-4 bg-red-50 p-4 rounded-r-lg">
+                            <strong class="block text-red-900 text-lg mb-1 lang-en">The Threshold Theory</strong>
+                            <strong class="block text-red-900 text-lg mb-1 lang-id">Teori Ambang Batas</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Intelligence (IQ) matters, but only up to a point (around 120 IQ). Once you are "smart enough," other factors determine success. A scientist with an IQ of 190 is not necessarily better than one with 130.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Kecerdasan (IQ) itu penting, tapi hanya sampai titik tertentu (sekitar IQ 120). Begitu Anda "cukup pintar," faktor lain yang menentukan kesuksesan. Ilmuwan dengan IQ 190 tidak serta merta lebih baik dari yang ber-IQ 130.
+                            </p>
+                        </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-red-50 p-4 rounded-lg border border-red-200">
-                                <h4 class="font-bold text-red-900 text-lg mb-2">Chris Langan</h4>
-                                <ul class="list-disc ml-4 text-sm text-red-800 space-y-1">
-                                    <li>IQ: 195 (Higher than Einstein).</li>
-                                    <li>Background: Poor, abusive stepfather.</li>
-                                    <li><strong>Outcome:</strong> Worked as a bouncer, lives on a horse farm. Never published his theories.</li>
-                                    <li><strong>The Failure:</strong> When he lost his scholarship due to paperwork, he didn't know how to negotiate with the administration. He lacked "entitlement."</li>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                                <div class="flex items-center mb-3">
+                                    <div class="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center font-bold mr-2">1</div>
+                                    <h4 class="font-bold text-slate-900 lang-en">Chris Langan (The Failure)</h4>
+                                    <h4 class="font-bold text-slate-900 lang-id">Chris Langan (Kegagalan)</h4>
+                                </div>
+                                <ul class="text-sm text-slate-700 space-y-2">
+                                    <li><strong>IQ:</strong> 195 (Higher than Einstein).</li>
+                                    <li><strong>Background:</strong> Poor, abusive stepfather, grew up alone.</li>
+                                    <li><strong>Story:</strong> He lost his scholarship at Reed College because his mother failed to fill out a financial aid form. He dropped out. Later, at Montana State, a professor refused his request to change a class time because his truck broke down. He dropped out again.</li>
+                                    <li><strong>Result:</strong> Worked as a bouncer. Never published his theories.</li>
+                                    <li><strong>Missing Link:</strong> <em>Practical Intelligence</em> (Social Skills). He didn't know how to negotiate with authority.</li>
                                 </ul>
                             </div>
-                            
-                            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
-                                <h4 class="font-bold text-green-900 text-lg mb-2">Robert Oppenheimer</h4>
-                                <ul class="list-disc ml-4 text-sm text-green-800 space-y-1">
-                                    <li>IQ: High (Physicist, Father of Atomic Bomb).</li>
-                                    <li>Background: Wealthy, cultured upbringing.</li>
-                                    <li><strong>The Incident:</strong> Tried to poison his tutor at Cambridge.</li>
-                                    <li><strong>Outcome:</strong> Instead of being expelled, he negotiated "probation." He knew how to talk his way out of trouble. This is <em>Practical Intelligence</em>.</li>
+
+                            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                                <div class="flex items-center mb-3">
+                                    <div class="w-8 h-8 bg-green-100 text-green-600 rounded-full flex items-center justify-center font-bold mr-2">2</div>
+                                    <h4 class="font-bold text-slate-900 lang-en">Oppenheimer (The Success)</h4>
+                                    <h4 class="font-bold text-slate-900 lang-id">Oppenheimer (Kesuksesan)</h4>
+                                </div>
+                                <ul class="text-sm text-slate-700 space-y-2">
+                                    <li><strong>IQ:</strong> Very High (Physicist).</li>
+                                    <li><strong>Background:</strong> Wealthy, cultured, attended Ethical Culture School.</li>
+                                    <li><strong>Story:</strong> At Cambridge, he tried to poison his tutor with a chemical-laced apple. He was caught.</li>
+                                    <li><strong>Result:</strong> He was NOT expelled. His parents negotiated probation. He went on to lead the Manhattan Project.</li>
+                                    <li><strong>Key Factor:</strong> He had "Entitlement." He knew how to talk his way out of murder and handle authority figures.</li>
                                 </ul>
                             </div>
                         </div>
+                        
+                        <p class="text-sm text-slate-600 justified-text mt-4 lang-en">
+                            <strong>Concerted Cultivation:</strong> Middle-class parents talk to their kids, reason with them, and sign them up for activities. This teaches kids "entitlement"—the right to ask questions and negotiate. Poor parents tend to use "Natural Growth," leaving kids to play alone. These kids become independent but don't learn how to navigate institutional bureaucracy.
+                        </p>
+                        <p class="text-sm text-slate-600 justified-text mt-4 lang-id">
+                            <strong>Kultivasi Terpadu:</strong> Orang tua kelas menengah berbicara dengan anak mereka, berdiskusi, dan mendaftarkan mereka ke berbagai aktivitas. Ini mengajarkan anak "hak istimewa" (entitlement)—hak untuk bertanya dan negosiasi. Orang tua miskin cenderung menggunakan "Pertumbuhan Alami", membiarkan anak bermain sendiri. Anak-anak ini mandiri tapi tidak belajar cara menavigasi birokrasi institusional.
+                        </p>
                     </div>
                 </section>
 
                 <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Chapter 7</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
-                            <span class="lang-en">Plane Crashes & Culture</span>
-                            <span class="lang-id">Kecelakaan Pesawat & Budaya</span>
+                            <span class="lang-en">The Ethnic Theory of Plane Crashes</span>
+                            <span class="lang-id">Teori Etnis Kecelakaan Pesawat</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
-                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
-                            <h4 class="font-bold text-slate-800 mb-3 text-lg lang-en">The Ethnic Theory of Plane Crashes</h4>
-                            <h4 class="font-bold text-slate-800 mb-3 text-lg lang-id">Teori Etnis Kecelakaan Pesawat</h4>
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            In the 1990s, <strong>Korean Air</strong> had a crash rate 17 times higher than United Airlines. It wasn't the planes. It wasn't the training. It was <strong>Cultural Legacy</strong>.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Di tahun 1990-an, <strong>Korean Air</strong> memiliki tingkat kecelakaan 17 kali lebih tinggi dari United Airlines. Bukan karena pesawatnya. Bukan karena pelatihannya. Itu karena <strong>Warisan Budaya</strong>.
+                        </p>
+
+                        <div class="bg-slate-50 p-5 rounded-lg border border-slate-200">
+                            <strong class="block text-slate-900 text-lg mb-2">The Crash of Flight 801 (Guam)</strong>
                             
                             <p class="text-sm text-slate-700 justified-text mb-4 lang-en">
-                                Gladwell analyzes why Korean Air had more plane crashes in the 1990s than almost any other airline. It wasn't bad planes; it was bad <strong>communication caused by culture</strong>.
+                                The Captain was tired. The weather was bad. The VOR beacon was broken. But the real cause was the communication between the First Officer (Subordinate) and the Captain (Superior).
                             </p>
                             <p class="text-sm text-slate-700 justified-text mb-4 lang-id">
-                                Gladwell menganalisis mengapa Korean Air mengalami lebih banyak kecelakaan pesawat di tahun 1990-an dibanding maskapai lain. Bukan karena pesawat buruk; tapi karena <strong>komunikasi buruk yang disebabkan oleh budaya</strong>.
+                                Kapten lelah. Cuaca buruk. Suar VOR rusak. Tapi penyebab utamanya adalah komunikasi antara First Officer (Bawahan) dan Kapten (Atasan).
                             </p>
 
-                            <div class="bg-slate-50 p-4 rounded border border-slate-200 mb-4">
-                                <strong class="block text-slate-900 mb-1">Power Distance Index (PDI)</strong>
-                                <p class="text-xs text-slate-600 justified-text lang-en">
-                                    A concept by Geert Hofstede. It measures how much a culture respects authority. High PDI = High respect for hierarchy.
-                                </p>
-                                <p class="text-xs text-slate-600 justified-text lang-id">
-                                    Konsep oleh Geert Hofstede. Mengukur seberapa besar budaya menghormati otoritas. PDI Tinggi = Hormat tinggi pada hierarki.
-                                </p>
+                            <div class="space-y-4">
+                                <div class="bg-white p-3 rounded border-l-4 border-red-500 shadow-sm">
+                                    <p class="text-xs text-slate-500 uppercase tracking-wide mb-1 lang-en">Mitigated Speech (What was said)</p>
+                                    <p class="text-xs text-slate-500 uppercase tracking-wide mb-1 lang-id">Bahasa Halus (Apa yang dikatakan)</p>
+                                    <p class="italic text-slate-800 font-serif">"Don't you think it rains more? In this area, here?"</p>
+                                </div>
+                                
+                                <div class="bg-white p-3 rounded border-l-4 border-green-500 shadow-sm">
+                                    <p class="text-xs text-slate-500 uppercase tracking-wide mb-1 lang-en">What he MEANT</p>
+                                    <p class="text-xs text-slate-500 uppercase tracking-wide mb-1 lang-id">Apa yang DIMAKSUD</p>
+                                    <p class="italic text-slate-800 font-serif">"Captain, the weather radar shows a storm ahead. We need to divert immediately or we will crash."</p>
+                                </div>
                             </div>
+                            
+                            <p class="text-sm text-slate-700 justified-text mt-4 lang-en">
+                                The First Officer used "Mitigated Speech" because in Korean culture (High Power Distance), you cannot contradict a superior directly. The Captain ignored the "hint," and they crashed into a hill.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mt-4 lang-id">
+                                First Officer menggunakan "Bahasa Halus" karena dalam budaya Korea (Jarak Kekuasaan Tinggi), Anda tidak boleh membantah atasan secara langsung. Kapten mengabaikan "kode" itu, dan mereka menabrak bukit.
+                            </p>
+                        </div>
 
-                            <ul class="list-disc ml-5 text-sm text-slate-700 space-y-2">
-                                <li>
-                                    <span class="lang-en"><strong>The Problem:</strong> In the cockpit, the Co-Pilot (lower rank) saw a mistake but was too afraid to offend the Captain (higher rank).</span>
-                                    <span class="lang-id"><strong>Masalahnya:</strong> Di kokpit, Co-Pilot (pangkat rendah) melihat kesalahan tapi terlalu takut menyinggung Kapten (pangkat tinggi).</span>
-                                </li>
-                                <li>
-                                    <span class="lang-en"><strong>Mitigated Speech:</strong> Instead of saying "Captain, you're going to crash," they hinted: "Look at the weather radar." The Captain ignored the hint.</span>
-                                    <span class="lang-id"><strong>Mitigated Speech (Bahasa Halus):</strong> Alih-alih berkata "Kapten, kita akan jatuh," mereka memberi kode: "Lihat radar cuacanya." Kapten mengabaikan kode itu.</span>
-                                </li>
-                                <li>
-                                    <span class="lang-en"><strong>The Solution:</strong> Korean Air didn't just teach flying; they taught English (a low-context language) to break the cultural hierarchy in the cockpit. Crashes stopped.</span>
-                                    <span class="lang-id"><strong>Solusinya:</strong> Korean Air tidak hanya mengajar terbang; mereka mengajar Bahasa Inggris (bahasa konteks rendah) untuk mematahkan hierarki budaya di kokpit. Kecelakaan berhenti.</span>
-                                </li>
-                            </ul>
+                        <div class="bg-teal-50 p-4 rounded-lg border border-teal-200">
+                            <h4 class="font-bold text-teal-900 lang-en">The Solution: English</h4>
+                            <h4 class="font-bold text-teal-900 lang-id">Solusinya: Bahasa Inggris</h4>
+                            <p class="text-sm text-teal-800 justified-text lang-en">
+                                Korean Air didn't fix the planes; they fixed the culture. They forced pilots to speak <strong>English</strong> in the cockpit. English is a language with a lower Power Distance Index. It allowed subordinates to speak clearly without cultural baggage. Since 1999, Korean Air has had a spotless safety record.
+                            </p>
+                            <p class="text-sm text-teal-800 justified-text lang-id">
+                                Korean Air tidak memperbaiki pesawat; mereka memperbaiki budayanya. Mereka memaksa pilot berbicara <strong>Bahasa Inggris</strong> di kokpit. Inggris adalah bahasa dengan Indeks Jarak Kekuasaan yang lebih rendah. Ini memungkinkan bawahan bicara jelas tanpa beban budaya. Sejak 1999, Korean Air memiliki rekor keselamatan sempurna.
+                            </p>
                         </div>
                     </div>
                 </section>
 
                 <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Chapter 8</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
-                            <span class="lang-en">Rice Paddies & Math Tests</span>
-                            <span class="lang-id">Sawah Padi & Tes Matematika</span>
+                            <span class="lang-en">Rice Paddies and Math Tests</span>
+                            <span class="lang-id">Sawah Padi dan Tes Matematika</span>
                         </h2>
                     </div>
                     
-                    <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
                         <p class="text-base text-slate-600 justified-text lang-en">
-                            Why are Asians good at math? It's not genetic. It's cultural legacy rooted in <strong>Rice Farming</strong>.
+                            Gladwell asks: Why are Asian students traditionally better at math? It relates to the historical legacy of rice farming spanning thousands of years.
                         </p>
                         <p class="text-base text-slate-600 justified-text lang-id">
-                            Mengapa orang Asia jago matematika? Bukan genetik. Ini adalah warisan budaya yang berakar pada <strong>Pertanian Padi</strong>.
+                            Gladwell bertanya: Mengapa siswa Asia secara tradisional lebih baik dalam matematika? Ini berhubungan dengan warisan sejarah pertanian padi yang merentang ribuan tahun.
                         </p>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-teal-50 p-4 rounded-lg border border-teal-200">
-                                <h4 class="font-bold text-teal-900 text-lg mb-2 lang-en">Western Agriculture</h4>
-                                <h4 class="font-bold text-teal-900 text-lg mb-2 lang-id">Pertanian Barat</h4>
-                                <p class="text-sm text-teal-800 justified-text lang-en">
-                                    Wheat and corn require large fields but not constant attention. Western farmers historically had long winters where they did nothing ("Hibernation").
-                                </p>
-                                <p class="text-sm text-teal-800 justified-text lang-id">
-                                    Gandum dan jagung butuh ladang luas tapi tidak butuh perhatian konstan. Petani Barat secara historis punya musim dingin panjang di mana mereka tidak melakukan apa-apa ("Hibernasi").
-                                </p>
+                            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                                <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">Western Farming (Wheat)</h4>
+                                <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Pertanian Barat (Gandum)</h4>
+                                <ul class="list-disc ml-4 text-sm text-slate-700 space-y-2">
+                                    <li><strong>Scale:</strong> Require large fields, machinery.</li>
+                                    <li><strong>Effort:</strong> You plant, you wait, you harvest. It's not constant.</li>
+                                    <li><strong>Winter:</strong> Long periods of "hibernation" or rest.</li>
+                                    <li><strong>Result:</strong> A culture that believes in "rest" and innate ability.</li>
+                                </ul>
                             </div>
-                            <div class="bg-slate-100 p-4 rounded-lg border border-slate-300">
-                                <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">Rice Farming</h4>
-                                <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Pertanian Padi</h4>
-                                <p class="text-sm text-slate-800 justified-text lang-en">
-                                    Rice requires precision, irrigation control, and labor 360 days a year. "No one who can rise before dawn 360 days a year fails to make his family rich."
-                                    <br><br>
-                                    <strong>Workload:</strong> 3,000 hours/year vs 1,000 hours/year (West).
-                                </p>
-                                <p class="text-sm text-slate-800 justified-text lang-id">
-                                    Padi butuh presisi, kontrol irigasi, dan tenaga kerja 360 hari setahun. "Tak seorang pun yang bangun sebelum fajar 360 hari setahun gagal membuat keluarganya kaya."
-                                    <br><br>
-                                    <strong>Beban Kerja:</strong> 3.000 jam/tahun vs 1.000 jam/tahun (Barat).
-                                </p>
+                            <div class="bg-teal-50 p-4 rounded-lg border border-teal-200 shadow-sm">
+                                <h4 class="font-bold text-teal-900 text-lg mb-2 lang-en">Eastern Farming (Rice)</h4>
+                                <h4 class="font-bold text-teal-900 text-lg mb-2 lang-id">Pertanian Timur (Padi)</h4>
+                                <ul class="list-disc ml-4 text-sm text-teal-800 space-y-2">
+                                    <li><strong>Scale:</strong> Tiny plots (size of a hotel room).</li>
+                                    <li><strong>Effort:</strong> Relentless. Weeding, irrigating, fertilizing 360 days/year.</li>
+                                    <li><strong>Logic:</strong> "No one who can rise before dawn 360 days a year fails to make his family rich."</li>
+                                    <li><strong>Result:</strong> A culture that believes effort > innate ability.</li>
+                                </ul>
                             </div>
                         </div>
 
-                        <div class="bg-white p-3 rounded border border-slate-200 mt-4">
-                            <strong class="text-sm text-slate-800 uppercase tracking-wide lang-en">The Math Connection</strong>
-                            <strong class="text-sm text-slate-800 uppercase tracking-wide lang-id">Koneksi Matematika</strong>
-                            <p class="text-sm text-slate-600 mt-1 justified-text lang-en">
-                                Math is difficult. It requires persistence. Cultures that are historically conditioned to work harder and longer (Rice Culture) are more likely to persist through a difficult math problem than cultures conditioned to long breaks (Western Culture).
+                        <div class="p-5 bg-slate-800 rounded-xl text-white mt-6">
+                            <h4 class="font-bold text-lg mb-2 lang-en">The Connection to Math</h4>
+                            <h4 class="font-bold text-lg mb-2 lang-id">Koneksi ke Matematika</h4>
+                            <p class="text-sm opacity-90 justified-text mb-3 lang-en">
+                                Math is not about being smart; it's about persistence. It's about how long you are willing to stare at a problem before giving up.
                             </p>
-                            <p class="text-sm text-slate-600 mt-1 justified-text lang-id">
-                                Matematika itu sulit. Butuh ketekunan. Budaya yang secara historis dikondisikan untuk bekerja lebih keras dan lama (Budaya Padi) lebih mungkin bertahan menyelesaikan soal matematika sulit dibanding budaya yang terbiasa istirahat panjang (Budaya Barat).
+                            <p class="text-sm opacity-90 justified-text mb-3 lang-id">
+                                Matematika bukan tentang menjadi pintar; ini tentang ketekunan. Ini tentang berapa lama Anda bersedia menatap masalah sebelum menyerah.
                             </p>
+                            <div class="bg-slate-700 p-3 rounded">
+                                <p class="text-xs lang-en">
+                                    <strong>The TIMSS Test:</strong> There is a questionnaire at the end of this global math test. It's boring and long. The countries whose students answer the most questions on the boring questionnaire (Singapore, South Korea, Taiwan) are the exact same countries that score highest on the math test. <strong>Hard work predicts math success.</strong>
+                                </p>
+                                <p class="text-xs lang-id">
+                                    <strong>Tes TIMSS:</strong> Ada kuesioner di akhir tes matematika global ini. Membosankan dan panjang. Negara-negara yang siswanya menjawab paling banyak pertanyaan di kuesioner membosankan ini (Singapura, Korea Selatan, Taiwan) adalah negara yang sama persis yang skor matematikanya tertinggi. <strong>Kerja keras memprediksi kesuksesan matematika.</strong>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </section>
