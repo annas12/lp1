@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Work — Detailed Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Amber/Slate Theme for Deep Work */
+        .active-tab { background: linear-gradient(135deg, #d97706 0%, #b45309 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.7; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.6; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #d97706; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-amber-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">⚡</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Deep Work</h2>
+                    <p class="text-slate-400 text-sm">
+                        <span class="lang-en">Rules for Success</span>
+                        <span class="lang-id">Aturan untuk Sukses</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The Rules</span>
+                <span class="lang-id">Aturan-Aturan</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-amber-600 rounded-lg flex items-center justify-center text-xs font-bold">🧠</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Rule #1: Work Deeply</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">The 4 Philosophies</span>
+                                <span class="lang-id">4 Filosofi Kerja</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Rule #2: Embrace Boredom</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Training Focus</span>
+                                <span class="lang-id">Melatih Fokus</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Rule #3: Quit Social Media</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Digital Minimalism</span>
+                                <span class="lang-id">Minimalisme Digital</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Rule #4: Drain the Shallows</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Scheduling Every Minute</span>
+                                <span class="lang-id">Jadwal Tiap Menit</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© Cal Newport</p>
+                <p class="text-slate-500 text-xs mt-1">Detailed Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    Deep Work
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    <span class="lang-en">Rules for Focused Success in a Distracted World</span>
+                    <span class="lang-id">Aturan untuk Sukses yang Fokus di Dunia yang Terdistraksi</span>
+                </p>
+                <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-amber-500 to-slate-800 mx-auto mt-3 sm:mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">Introduction</span>
+                            <span class="lang-id">Pendahuluan</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Deep Work Hypothesis</span>
+                            <span class="lang-id">Hipotesis Deep Work</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <div class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-amber-500 pl-4 sm:pl-6 italic mobile-text justified-text">
+                            <span class="lang-en">"The ability to perform deep work is becoming increasingly rare at exactly the same time it is becoming increasingly valuable in our economy."</span>
+                            <span class="lang-id">"Kemampuan untuk melakukan deep work menjadi semakin langka tepat pada saat kemampuan itu menjadi semakin berharga dalam ekonomi kita."</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+                            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                                <strong class="block text-slate-900 text-lg mb-2 lang-en">🌊 Deep Work</strong>
+                                <strong class="block text-slate-900 text-lg mb-2 lang-id">🌊 Deep Work (Kerja Dalam)</strong>
+                                <p class="text-sm text-slate-600 justified-text lang-en">
+                                    Professional activities performed in a state of distraction-free concentration that push your cognitive capabilities to their limit. These efforts create new value, improve your skill, and are hard to replicate.
+                                </p>
+                                <p class="text-sm text-slate-600 justified-text lang-id">
+                                    Aktivitas profesional yang dilakukan dalam keadaan konsentrasi bebas gangguan yang mendorong kemampuan kognitif Anda hingga batasnya. Upaya ini menciptakan nilai baru, meningkatkan keterampilan, dan sulit ditiru.
+                                </p>
+                            </div>
+                            <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                                <strong class="block text-amber-900 text-lg mb-2 lang-en">🏖️ Shallow Work</strong>
+                                <strong class="block text-amber-900 text-lg mb-2 lang-id">🏖️ Shallow Work (Kerja Dangkal)</strong>
+                                <p class="text-sm text-amber-800 justified-text lang-en">
+                                    Non-cognitively demanding, logistical-style tasks, often performed while distracted. These efforts tend to not create much new value in the world and are easy to replicate.
+                                </p>
+                                <p class="text-sm text-amber-800 justified-text lang-id">
+                                    Tugas-tugas bergaya logistik yang tidak menuntut secara kognitif, sering dilakukan saat terdistraksi. Upaya ini cenderung tidak menciptakan banyak nilai baru di dunia dan mudah ditiru.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 sm:p-6 border border-slate-200 rounded-lg shadow-sm">
+                            <h4 class="font-bold text-slate-800 mb-2 lang-en">Who Wins in the New Economy?</h4>
+                            <h4 class="font-bold text-slate-800 mb-2 lang-id">Siapa yang Menang di Ekonomi Baru?</h4>
+                            <ul class="list-disc ml-5 space-y-2 text-sm text-slate-700">
+                                <li>
+                                    <span class="lang-en"><strong>The High-Skilled Workers:</strong> Those who can work with intelligent machines (coders, data analysts).</span>
+                                    <span class="lang-id"><strong>Pekerja Berkeahlian Tinggi:</strong> Mereka yang bisa bekerja dengan mesin cerdas (koder, analis data).</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>The Superstars:</strong> Those who are the absolute best at what they do (remote work creates global competition).</span>
+                                    <span class="lang-id"><strong>Para Superstar:</strong> Mereka yang mutlak terbaik dalam apa yang mereka lakukan (kerja jarak jauh menciptakan kompetisi global).</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>The Owners:</strong> Those with capital to invest in new technologies.</span>
+                                    <span class="lang-id"><strong>Para Pemilik:</strong> Mereka yang memiliki modal untuk berinvestasi dalam teknologi baru.</span>
+                                </li>
+                            </ul>
+                            <p class="mt-3 text-sm font-semibold text-amber-700 justified-text lang-en">To become a High-Skilled Worker or a Superstar, you MUST master Deep Work.</p>
+                            <p class="mt-3 text-sm font-semibold text-amber-700 justified-text lang-id">Untuk menjadi Pekerja Berkeahlian Tinggi atau Superstar, Anda WAJIB menguasai Deep Work.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Rule #1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Work Deeply (The 4 Philosophies)</span>
+                            <span class="lang-id">Bekerja Secara Dalam (4 Filosofi)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            You cannot just "wish" to work deeply. You need a philosophy that fits your specific lifestyle and job. Newport identifies four distinct approaches:
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Anda tidak bisa hanya "berharap" untuk bekerja secara dalam. Anda membutuhkan filosofi yang sesuai dengan gaya hidup dan pekerjaan spesifik Anda. Newport mengidentifikasi empat pendekatan berbeda:
+                        </p>
+
+                        <div class="space-y-6">
+                            <div class="border-l-4 border-slate-800 pl-4 bg-slate-50 p-4 rounded-r-lg">
+                                <h3 class="text-lg font-bold text-slate-900 mb-1">1. Monastic Philosophy</h3>
+                                <p class="text-sm text-slate-500 mb-2 italic lang-en">(The most extreme)</p>
+                                <p class="text-sm text-slate-500 mb-2 italic lang-id">(Paling ekstrem)</p>
+                                <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                    Eliminate all shallow obligations. You isolate yourself completely to focus on one high-level goal. No email, no meetings, no distractions.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                    Hilangkan semua kewajiban dangkal. Anda mengisolasi diri sepenuhnya untuk fokus pada satu tujuan tingkat tinggi. Tidak ada email, tidak ada rapat, tidak ada gangguan.
+                                </p>
+                                <div class="bg-white p-3 rounded border border-slate-200">
+                                    <strong class="text-xs text-amber-600 uppercase tracking-wide">Case Study: Donald Knuth</strong>
+                                    <p class="text-xs text-slate-600 mt-1 lang-en">
+                                        Famous computer scientist. He does not use email. His website says: "I have been a happy man ever since January 1, 1990, when I no longer had an email address. I’d used email since about 1975, and it seems to me 15 years of email is plenty for one lifetime."
+                                    </p>
+                                    <p class="text-xs text-slate-600 mt-1 lang-id">
+                                        Ilmuwan komputer terkenal. Dia tidak menggunakan email. Websitenya berkata: "Saya menjadi orang yang bahagia sejak 1 Januari 1990, ketika saya tidak lagi memiliki alamat email. Saya sudah menggunakan email sejak 1975, dan bagi saya 15 tahun email sudah cukup untuk seumur hidup."
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="border-l-4 border-amber-500 pl-4 bg-amber-50 p-4 rounded-r-lg">
+                                <h3 class="text-lg font-bold text-slate-900 mb-1">2. Bimodal Philosophy</h3>
+                                <p class="text-sm text-slate-500 mb-2 italic lang-en">(Divide your time clearly)</p>
+                                <p class="text-sm text-slate-500 mb-2 italic lang-id">(Bagi waktu Anda dengan jelas)</p>
+                                <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                    You split your time between two distinct modes: deep and open. For example, 4 days deep work in a cabin, 3 days accessible in the office. Or, taking a sabbatical season.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                    Anda membagi waktu antara dua mode berbeda: dalam dan terbuka. Misalnya, 4 hari kerja dalam di kabin, 3 hari dapat diakses di kantor. Atau, mengambil musim sabatikal.
+                                </p>
+                                <div class="bg-white p-3 rounded border border-amber-200">
+                                    <strong class="text-xs text-amber-600 uppercase tracking-wide">Case Study: Carl Jung</strong>
+                                    <p class="text-xs text-slate-600 mt-1 lang-en">
+                                        The psychologist built a stone tower in Bollingen where he would retreat for weeks to write without distraction. When he returned to Zurich, he ran a busy clinical practice and socialized in coffee houses.
+                                    </p>
+                                    <p class="text-xs text-slate-600 mt-1 lang-id">
+                                        Psikolog ini membangun menara batu di Bollingen tempat dia akan menyepi selama berminggu-minggu untuk menulis tanpa gangguan. Ketika kembali ke Zurich, dia menjalankan praktik klinis yang sibuk dan bersosialisasi di kedai kopi.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="border-l-4 border-blue-500 pl-4 bg-blue-50 p-4 rounded-r-lg">
+                                <h3 class="text-lg font-bold text-slate-900 mb-1">3. Rhythmic Philosophy</h3>
+                                <p class="text-sm text-slate-500 mb-2 italic lang-en">(Habit based - Best for most employees)</p>
+                                <p class="text-sm text-slate-500 mb-2 italic lang-id">(Berbasis kebiasaan - Terbaik untuk kebanyakan karyawan)</p>
+                                <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                    Create a routine where you do deep work for the same hours every day (e.g., 5 AM - 7 AM). The goal is to remove the "decision" of when to work.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                    Buat rutinitas di mana Anda melakukan deep work pada jam yang sama setiap hari (misal: 05:00 - 07:00). Tujuannya adalah menghilangkan "keputusan" kapan harus bekerja.
+                                </p>
+                                <div class="bg-white p-3 rounded border border-blue-200">
+                                    <strong class="text-xs text-amber-600 uppercase tracking-wide">Case Study: Jerry Seinfeld</strong>
+                                    <p class="text-xs text-slate-600 mt-1 lang-en">
+                                        The "Chain Method." He committed to writing a joke every single day. He marked an X on a calendar. "After a few days you'll have a chain. Just keep at it and the chain will grow longer every day. You'll like seeing that chain... Your only job next is to not break the chain."
+                                    </p>
+                                    <p class="text-xs text-slate-600 mt-1 lang-id">
+                                        "Metode Rantai." Dia berkomitmen menulis lelucon setiap hari. Dia menandai X di kalender. "Setelah beberapa hari Anda akan memiliki rantai. Teruskan saja dan rantai itu akan bertambah panjang. Anda akan suka melihat rantai itu... Tugas Anda selanjutnya hanyalah jangan memutus rantai itu."
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="border-l-4 border-purple-500 pl-4 bg-purple-50 p-4 rounded-r-lg">
+                                <h3 class="text-lg font-bold text-slate-900 mb-1">4. Journalistic Philosophy</h3>
+                                <p class="text-sm text-slate-500 mb-2 italic lang-en">(Advanced - Only for those with high willpower)</p>
+                                <p class="text-sm text-slate-500 mb-2 italic lang-id">(Lanjutan - Hanya untuk yang bertekad baja)</p>
+                                <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                    Fit deep work into any available time slot. If you have 30 minutes free, you switch immediately into deep mode. Requires the ability to switch mental gears instantly.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                    Sisipkan deep work ke dalam slot waktu apa pun yang tersedia. Jika Anda punya 30 menit kosong, Anda langsung beralih ke mode dalam. Membutuhkan kemampuan untuk mengubah fokus mental secara instan.
+                                </p>
+                                <div class="bg-white p-3 rounded border border-purple-200">
+                                    <strong class="text-xs text-amber-600 uppercase tracking-wide">Case Study: Walter Isaacson</strong>
+                                    <p class="text-xs text-slate-600 mt-1 lang-en">
+                                        The famous biographer wrote his massive books on the side while being a magazine editor. He would retreat to his bedroom for 20 minutes while dinner was cooking or late at night, churning out pages whenever possible.
+                                    </p>
+                                    <p class="text-xs text-slate-600 mt-1 lang-id">
+                                        Biografer terkenal ini menulis buku-buku tebalnya sebagai sampingan saat menjadi editor majalah. Dia akan menyepi ke kamar tidurnya selama 20 menit saat makan malam sedang dimasak atau larut malam, menghasilkan halaman kapan pun memungkinkan.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Rule #2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Embrace Boredom</span>
+                            <span class="lang-id">Rangkul Kebosanan</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-800 mb-3 text-lg lang-en">The Logic</h4>
+                            <h4 class="font-bold text-slate-800 mb-3 text-lg lang-id">Logikanya</h4>
+                            <p class="text-sm text-slate-600 justified-text lang-en">
+                                Ideally, you should be comfortable being bored. If every time you feel a moment of boredom (waiting in line, waiting for a website to load) you pull out your phone, your brain loses its ability to focus. <strong>Focus is a muscle.</strong>
+                            </p>
+                            <p class="text-sm text-slate-600 justified-text lang-id">
+                                Idealnya, Anda harus nyaman merasa bosan. Jika setiap kali Anda merasakan momen kebosanan (mengantre, menunggu website loading) Anda mengeluarkan ponsel, otak Anda kehilangan kemampuannya untuk fokus. <strong>Fokus adalah otot.</strong>
+                            </p>
+                            <div class="mt-4 bg-amber-100 p-3 rounded text-amber-800 text-sm font-semibold text-center lang-en">
+                                "Don't take breaks from distraction. Instead, take breaks from focus."
+                            </div>
+                            <div class="mt-4 bg-amber-100 p-3 rounded text-amber-800 text-sm font-semibold text-center lang-id">
+                                "Jangan istirahat dari gangguan. Sebaliknya, istirahatlah dari fokus."
+                            </div>
+                        </div>
+
+                        <div class="border-l-4 border-amber-500 pl-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">Technique: Productive Meditation</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Teknik: Meditasi Produktif</h4>
+                            <p class="text-sm text-slate-700 justified-text mb-2 lang-en">
+                                Take a period of physical activity (walking, jogging, driving, showering) and focus your attention on a <strong>single professional problem</strong>.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-2 lang-id">
+                                Lakukan aktivitas fisik (berjalan, jogging, menyetir, mandi) dan fokuskan perhatian Anda pada <strong>satu masalah profesional tunggal</strong>.
+                            </p>
+                            <ul class="list-disc ml-5 text-sm text-slate-600 space-y-1">
+                                <li>
+                                    <span class="lang-en">When your mind wanders to other thoughts, pull it back to the problem (just like mindfulness meditation).</span>
+                                    <span class="lang-id">Saat pikiran Anda melayang ke hal lain, tarik kembali ke masalah itu (seperti meditasi mindfulness).</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en">This forces your brain to practice intense concentration.</span>
+                                    <span class="lang-id">Ini memaksa otak Anda untuk melatih konsentrasi yang intens.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Rule #3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Quit Social Media</span>
+                            <span class="lang-id">Keluar dari Media Sosial</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Newport argues we should treat digital tools like a craftsman treats his tools. Most people use the wrong approach to selecting apps.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Newport berpendapat kita harus memperlakukan alat digital seperti pengrajin memperlakukan alatnya. Kebanyakan orang menggunakan pendekatan yang salah dalam memilih aplikasi.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                <strong class="block text-red-900 text-lg mb-2 lang-en">❌ The Any-Benefit Approach</strong>
+                                <strong class="block text-red-900 text-lg mb-2 lang-id">❌ Pendekatan 'Asal Ada Manfaat'</strong>
+                                <p class="text-sm text-red-800 justified-text lang-en">
+                                    "I use Facebook because it helps me stay in touch with high school friends."
+                                    <br><br>
+                                    Justifying a tool because it offers <em>some</em> minor benefit, ignoring the massive cost to your time and attention.
+                                </p>
+                                <p class="text-sm text-red-800 justified-text lang-id">
+                                    "Saya pakai Facebook karena membantu saya tetap kontak dengan teman SMA."
+                                    <br><br>
+                                    Membenarkan alat karena menawarkan <em>sedikit</em> manfaat, mengabaikan biaya besar terhadap waktu dan perhatian Anda.
+                                </p>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                <strong class="block text-green-900 text-lg mb-2 lang-en">✅ The Craftsman Approach</strong>
+                                <strong class="block text-green-900 text-lg mb-2 lang-id">✅ Pendekatan Pengrajin</strong>
+                                <p class="text-sm text-green-800 justified-text lang-en">
+                                    "I will only use a tool if its positive impacts on my core goals substantially outweigh its negative impacts."
+                                    <br><br>
+                                    A craftsman doesn't use a tool just because it's "kind of useful." He uses it only if it's essential for his masterpiece.
+                                </p>
+                                <p class="text-sm text-green-800 justified-text lang-id">
+                                    "Saya hanya akan menggunakan alat jika dampak positifnya pada tujuan inti saya secara substansial lebih besar daripada dampak negatifnya."
+                                    <br><br>
+                                    Seorang pengrajin tidak menggunakan alat hanya karena "lumayan berguna." Dia menggunakannya hanya jika itu penting untuk mahakaryanya.
+                                </p>
+                            </div>
+                        </div>
+
+                         <div class="bg-white p-3 rounded border border-slate-200 mt-4">
+                            <strong class="text-sm text-slate-800 uppercase tracking-wide lang-en">Case Study: Baratunde Thurston</strong>
+                            <strong class="text-sm text-slate-800 uppercase tracking-wide lang-id">Studi Kasus: Baratunde Thurston</strong>
+                            <p class="text-sm text-slate-600 mt-1 justified-text lang-en">
+                                A digital media expert who took a 25-day break from the internet. He didn't lose his career. Instead, he felt "re-humanized." When he returned, he didn't go back to his old habits; he selectively added back only the essential tools.
+                            </p>
+                            <p class="text-sm text-slate-600 mt-1 justified-text lang-id">
+                                Seorang ahli media digital yang mengambil istirahat 25 hari dari internet. Dia tidak kehilangan karirnya. Sebaliknya, dia merasa "menjadi manusia kembali." Ketika dia kembali, dia tidak kembali ke kebiasaan lamanya; dia secara selektif menambahkan kembali hanya alat-alat penting.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-8">
+                    <div class="mb-6">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-sm font-medium rounded-full mb-4">Rule #4</span>
+                        <h2 class="text-3xl font-bold text-slate-900 mb-4">
+                            <span class="lang-en">Drain the Shallows</span>
+                            <span class="lang-id">Kuras yang Dangkal</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Treat your time like money. You have a limited budget.
+                        </p>
+                         <p class="text-base text-slate-600 justified-text lang-id">
+                            Perlakukan waktu Anda seperti uang. Anda memiliki anggaran terbatas.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                                <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">📅 Time Blocking</h4>
+                                <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">📅 Blokir Waktu</h4>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Schedule every minute of your day. Instead of a to-do list, use time blocks.
+                                    <br><br>
+                                    <strong>Why?</strong> It forces you to realize how little time you actually have. If a task takes longer, you must reschedule the rest of the day (dynamic adjustment).
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Jadwalkan setiap menit hari Anda. Alih-alih daftar tugas (to-do list), gunakan blok waktu.
+                                    <br><br>
+                                    <strong>Kenapa?</strong> Ini memaksa Anda menyadari betapa sedikit waktu yang sebenarnya Anda miliki. Jika tugas memakan waktu lebih lama, Anda harus menjadwal ulang sisa hari itu (penyesuaian dinamis).
+                                </p>
+                            </div>
+
+                            <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                                <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">🛑 Fixed-Schedule Productivity</h4>
+                                <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">🛑 Produktivitas Jadwal Tetap</h4>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Fix the firm goal of not working past a certain time (e.g., 5:30 PM).
+                                    <br><br>
+                                    <strong>Why?</strong> This constraint forces you to be ruthless with your time during the day. You stop accepting shallow meetings because you know you *must* leave at 5:30.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Tetapkan tujuan tegas untuk tidak bekerja lewat waktu tertentu (misal: 17:30).
+                                    <br><br>
+                                    <strong>Kenapa?</strong> Batasan ini memaksa Anda menjadi kejam dengan waktu Anda di siang hari. Anda berhenti menerima rapat dangkal karena Anda tahu Anda *harus* pergi jam 17:30.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-3 rounded border border-slate-200 mt-4">
+                            <strong class="text-sm text-slate-800 uppercase tracking-wide lang-en">Case Study: 37Signals (Basecamp)</strong>
+                            <strong class="text-sm text-slate-800 uppercase tracking-wide lang-id">Studi Kasus: 37Signals (Basecamp)</strong>
+                            <p class="text-sm text-slate-600 mt-1 justified-text lang-en">
+                                The software company experimented with shortening their work week to 4 days (32 hours). They found that employees produced the <em>same</em> amount of work as in 5 days. By removing shallow work (meetings, interruptions), they compressed the deep work into fewer hours effectively.
+                            </p>
+                            <p class="text-sm text-slate-600 mt-1 justified-text lang-id">
+                                Perusahaan software ini bereksperimen dengan memendekkan minggu kerja mereka menjadi 4 hari (32 jam). Mereka menemukan bahwa karyawan menghasilkan jumlah pekerjaan yang <em>sama</em> seperti dalam 5 hari. Dengan menghapus kerja dangkal (rapat, interupsi), mereka memadatkan deep work ke dalam jam yang lebih sedikit secara efektif.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#d97706'; // Amber
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#475569'; // Slate
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
