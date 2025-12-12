@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivering Happiness — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Blue/Yellow Theme for Zappos/Happiness */
+        .active-tab { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #0ea5e9; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-sky-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-sky-900">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-sky-500 to-blue-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">Z</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Delivering Happiness</h2>
+                    <p class="text-sky-200 text-sm">
+                        <span class="lang-en">Profits, Passion, Purpose</span>
+                        <span class="lang-id">Profit, Gairah, Tujuan</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-sky-200 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The Zappos Way</span>
+                <span class="lang-id">Cara Zappos</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-sky-800 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-sky-600 rounded-lg flex items-center justify-center text-xs font-bold">📦</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-sky-800 text-sky-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Profits</div>
+                            <div class="text-xs text-sky-300">
+                                <span class="lang-en">The Entrepreneurial Journey</span>
+                                <span class="lang-id">Perjalanan Wirausaha</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-sky-800 text-sky-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Passion</div>
+                            <div class="text-xs text-sky-300">
+                                <span class="lang-en">Culture is Everything</span>
+                                <span class="lang-id">Budaya adalah Segalanya</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-sky-800 text-sky-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-yellow-500 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Purpose</div>
+                            <div class="text-xs text-sky-300">
+                                <span class="lang-en">Customer Service</span>
+                                <span class="lang-id">Layanan Pelanggan</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-sky-800 text-sky-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">The 10 Values</div>
+                            <div class="text-xs text-sky-300">
+                                <span class="lang-en">The Core of Zappos</span>
+                                <span class="lang-id">Inti dari Zappos</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-sky-800 text-sky-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Science of Happiness</div>
+                            <div class="text-xs text-sky-300">
+                                <span class="lang-en">Beyond Business</span>
+                                <span class="lang-id">Melampaui Bisnis</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-sky-900">
+            <div class="text-center">
+                <p class="text-sky-400 text-xs">© Tony Hsieh</p>
+                <p class="text-sky-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-sky-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    Delivering Happiness
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    <span class="lang-en">A Path to Profits, Passion, and Purpose</span>
+                    <span class="lang-id">Jalan Menuju Keuntungan, Gairah, dan Tujuan</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-sky-500 to-yellow-400 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-sky-100 text-sky-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">Introduction</span>
+                            <span class="lang-id">Pendahuluan</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">It's Not About the Shoes</span>
+                            <span class="lang-id">Ini Bukan Tentang Sepatu</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-sky-500 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"Zappos is a customer service company that just happens to sell shoes."</span>
+                            <span class="lang-id">"Zappos adalah perusahaan layanan pelanggan yang kebetulan menjual sepatu."</span>
+                        </div>
+                        
+                        <p class="mobile-text justified-text lang-en">
+                            Tony Hsieh (pronounced Shay) built Zappos from a struggling startup into a billion-dollar giant acquired by Amazon. He did this by violating almost every standard corporate rule. This book is his story of how prioritizing <strong>Culture</strong> and <strong>Happiness</strong> (for employees and customers) led to massive financial success.
+                        </p>
+                        <p class="mobile-text justified-text lang-id">
+                            Tony Hsieh (dibaca Shay) membangun Zappos dari startup yang kesulitan menjadi raksasa bernilai miliaran dolar yang diakuisisi Amazon. Dia melakukannya dengan melanggar hampir setiap aturan standar perusahaan. Buku ini adalah kisahnya tentang bagaimana memprioritaskan <strong>Budaya</strong> dan <strong>Kebahagiaan</strong> (bagi karyawan dan pelanggan) menghasilkan kesuksesan finansial yang masif.
+                        </p>
+
+                        <div class="bg-yellow-50 p-6 rounded-xl border border-yellow-200 shadow-sm">
+                            <h4 class="font-bold text-yellow-900 text-lg mb-3 lang-en">The Core Philosophy</h4>
+                            <h4 class="font-bold text-yellow-900 text-lg mb-3 lang-id">Filosofi Inti</h4>
+                            
+                            <ul class="list-none space-y-3 text-sm text-slate-800">
+                                <li class="flex items-start">
+                                    <span class="text-sky-600 mr-2 font-bold">1.</span>
+                                    <span class="lang-en"><strong>Customer Service as Marketing:</strong> Instead of spending money on ads, invest it in customer service. Let your customers do the marketing for you (Word of Mouth).</span>
+                                    <span class="lang-id"><strong>Layanan Pelanggan sebagai Pemasaran:</strong> Daripada buang uang untuk iklan, investasikan di layanan pelanggan. Biarkan pelanggan melakukan pemasaran untuk Anda (Dari Mulut ke Mulut).</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-sky-600 mr-2 font-bold">2.</span>
+                                    <span class="lang-en"><strong>Culture is Brand:</strong> Your brand is just a lagging indicator of your culture. If the culture is toxic, the brand will eventually fail.</span>
+                                    <span class="lang-id"><strong>Budaya adalah Merek:</strong> Merek Anda hanyalah indikator tertinggal dari budaya Anda. Jika budayanya beracun, mereknya akhirnya akan gagal.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-sky-600 mr-2 font-bold">3.</span>
+                                    <span class="lang-en"><strong>Chase Vision, Not Money:</strong> Money follows passion and purpose, not the other way around.</span>
+                                    <span class="lang-id"><strong>Kejar Visi, Bukan Uang:</strong> Uang mengikuti gairah dan tujuan, bukan sebaliknya.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Profits (The Early Mistakes)</span>
+                            <span class="lang-id">Profit (Kesalahan Awal)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Before Zappos, Tony founded <strong>LinkExchange</strong>. He sold it to Microsoft for $265 million when he was just 24. It sounds like a dream, but Tony was miserable.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Sebelum Zappos, Tony mendirikan <strong>LinkExchange</strong>. Dia menjualnya ke Microsoft seharga $265 juta saat usianya baru 24 tahun. Terdengar seperti mimpi, tapi Tony merasa sengsara.
+                        </p>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">Why He Quit LinkExchange</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Mengapa Dia Keluar dari LinkExchange</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Initially, he hired friends who fit the culture. As they grew fast, they hired anyone with a pulse and skills.
+                                <br><br>
+                                <strong>The Result:</strong> The culture died. Office politics took over. Tony dreaded going to his own company. He realized that <strong>Company Culture</strong> was more important than pure growth or money. He walked away from millions in earn-out bonuses just to escape the toxic environment he created.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Awalnya, dia merekrut teman yang cocok dengan budaya. Karena tumbuh cepat, mereka merekrut siapa saja yang punya keahlian.
+                                <br><br>
+                                <strong>Hasilnya:</strong> Budaya mati. Politik kantor mengambil alih. Tony takut pergi ke perusahaannya sendiri. Dia sadar bahwa <strong>Budaya Perusahaan</strong> lebih penting daripada pertumbuhan murni atau uang. Dia meninggalkan bonus jutaan dolar hanya untuk kabur dari lingkungan beracun yang dia ciptakan.
+                            </p>
+                        </div>
+
+                        <div class="border-l-4 border-sky-500 pl-4 bg-sky-50 p-4 rounded-r-lg">
+                            <strong class="block text-sky-900 text-lg mb-2 lang-en">The Lesson of Poker</strong>
+                            <strong class="block text-sky-900 text-lg mb-2 lang-id">Pelajaran dari Poker</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Tony was a serious poker player. He applied poker lessons to business:
+                                <br>1. <strong>Table Selection:</strong> It doesn't matter how good you are if you sit at a table with people much better than you. In business, choose an industry (table) where you can win.
+                                <br>2. <strong>Long Term Thinking:</strong> Do not tilt (get emotional) over short-term losses. Focus on the Expected Value (EV) of decisions over 1,000 hands.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Tony adalah pemain poker serius. Dia menerapkan pelajaran poker ke bisnis:
+                                <br>1. <strong>Pemilihan Meja:</strong> Tidak peduli seberapa jago Anda jika duduk di meja dengan orang yang jauh lebih jago. Dalam bisnis, pilih industri (meja) di mana Anda bisa menang.
+                                <br>2. <strong>Berpikir Jangka Panjang:</strong> Jangan emosi (tilt) karena kerugian jangka pendek. Fokus pada Nilai Harapan (EV) dari keputusan lebih dari 1.000 putaran.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-sky-100 text-sky-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Passion: Building the Culture</span>
+                            <span class="lang-id">Gairah: Membangun Budaya</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            At Zappos, culture is not a plaque on the wall. It is the hiring and firing criteria. If you are a genius but destroy the culture, you are fired.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Di Zappos, budaya bukan plakat di dinding. Itu adalah kriteria perekrutan dan pemecatan. Jika Anda jenius tapi merusak budaya, Anda dipecat.
+                        </p>
+
+                        <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg text-white">
+                            <h4 class="font-bold text-sky-400 text-lg mb-3 lang-en">Case Study: "The Offer" (Pay to Quit)</h4>
+                            <h4 class="font-bold text-sky-400 text-lg mb-3 lang-id">Studi Kasus: "Tawaran" (Dibayar untuk Keluar)</h4>
+                            
+                            <p class="text-sm opacity-90 justified-text mb-3 lang-en">
+                                Zappos has a 4-week rigorous training program. At the end of the training, they make a shocking offer to every new hire:
+                            </p>
+                            <p class="text-sm opacity-90 justified-text mb-3 lang-id">
+                                Zappos memiliki program pelatihan ketat 4 minggu. Di akhir pelatihan, mereka memberikan tawaran mengejutkan kepada setiap karyawan baru:
+                            </p>
+                            
+                            <div class="bg-white text-slate-900 p-4 rounded text-center font-bold text-lg mb-3">
+                                <span class="lang-en">"We will pay you for your time worked, PLUS a $2,000 bonus if you quit right now."</span>
+                                <span class="lang-id">"Kami akan membayar waktu kerja Anda, DITAMBAH bonus $2.000 jika Anda keluar sekarang juga."</span>
+                            </div>
+
+                            <p class="text-sm opacity-90 justified-text lang-en">
+                                <strong>Why?</strong> Tony wants people who are there for the culture and the long-term vision, not just a paycheck. If someone is willing to take $2,000 to leave, they don't have the commitment Zappos needs. Less than 1% take the offer.
+                            </p>
+                            <p class="text-sm opacity-90 justified-text lang-id">
+                                <strong>Mengapa?</strong> Tony menginginkan orang yang ada di sana demi budaya dan visi jangka panjang, bukan cuma gaji. Jika seseorang mau ambil $2.000 untuk pergi, mereka tidak punya komitmen yang dibutuhkan Zappos. Kurang dari 1% yang mengambil tawaran ini.
+                            </p>
+                        </div>
+
+                        <div class="bg-sky-50 p-5 rounded-lg border border-sky-200">
+                            <h4 class="font-bold text-sky-900 text-lg mb-2 lang-en">Hiring for Luck & Kindness</h4>
+                            <h4 class="font-bold text-sky-900 text-lg mb-2 lang-id">Merekrut Berdasarkan Keberuntungan & Kebaikan</h4>
+                            <ul class="list-disc ml-5 space-y-2 text-sm text-slate-700">
+                                <li>
+                                    <span class="lang-en"><strong>The Shuttle Driver Test:</strong> Zappos interviews often involve a shuttle ride from the airport. Recruiters check with the driver later: "How did the candidate treat you?" If they were rude to the driver, they are rejected, no matter how smart they are.</span>
+                                    <span class="lang-id"><strong>Tes Supir Jemputan:</strong> Wawancara Zappos sering melibatkan jemputan dari bandara. Perekrut cek ke supir nanti: "Gimana kandidat memperlakukanmu?" Jika mereka kasar ke supir, mereka ditolak, tak peduli sepintar apa pun.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>The "Lucky" Question:</strong> Candidates are asked: "On a scale of 1-10, how lucky are you?" Zappos hires people who feel lucky, because they tend to see opportunities rather than problems.</span>
+                                    <span class="lang-id"><strong>Pertanyaan "Beruntung":</strong> Kandidat ditanya: "Skala 1-10, seberapa beruntung Anda?" Zappos merekrut orang yang merasa beruntung, karena mereka cenderung melihat peluang daripada masalah.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Purpose: Extreme Service</span>
+                            <span class="lang-id">Tujuan: Layanan Ekstrem</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">The Telephone is NOT Dead</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Telepon TIDAK Mati</h4>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                While most companies hide their phone number, Zappos puts it at the top of every page. They view every call as an opportunity to build a lifelong emotional connection.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Sementara kebanyakan perusahaan menyembunyikan nomor telepon, Zappos menaruhnya di bagian paling atas setiap halaman. Mereka melihat setiap panggilan sebagai peluang membangun koneksi emosional seumur hidup.
+                            </p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                <div class="bg-red-50 p-3 rounded border border-red-100">
+                                    <strong class="text-red-700 block mb-1 text-sm lang-en">Standard Call Center</strong>
+                                    <strong class="text-red-700 block mb-1 text-sm lang-id">Call Center Standar</strong>
+                                    <ul class="text-xs text-slate-600 list-disc ml-4">
+                                        <li>Measured by "Average Handle Time" (Speed).</li>
+                                        <li>Use scripts.</li>
+                                        <li>Goal: Get off the phone ASAP.</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-green-50 p-3 rounded border border-green-100">
+                                    <strong class="text-green-700 block mb-1 text-sm lang-en">Zappos Call Center</strong>
+                                    <strong class="text-green-700 block mb-1 text-sm lang-id">Call Center Zappos</strong>
+                                    <ul class="text-xs text-slate-600 list-disc ml-4">
+                                        <li>NO scripts.</li>
+                                        <li>NO time limits.</li>
+                                        <li>Goal: Deliver WOW through service.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-sky-50 p-5 rounded-lg border border-sky-200">
+                            <h4 class="font-bold text-sky-900 text-lg mb-2 lang-en">Legendary Case Study: The Pizza</h4>
+                            <h4 class="font-bold text-sky-900 text-lg mb-2 lang-id">Studi Kasus Legendaris: Pizza</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Tony was at a conference in Santa Monica. It was late (post-midnight), and room service was closed. His clients were hungry for pepperoni pizza.
+                                <br><br>
+                                Tony bet them: <strong>"Call Zappos customer service. I bet they will help you find a pizza."</strong>
+                                <br><br>
+                                The client thought he was crazy (Zappos sells shoes!). They put it on speaker. The Zappos rep was confused for 2 seconds, then said: "Hold on." She spent 2 minutes searching and returned with a list of the 3 nearest pizza places open at 2 AM.
+                                <br><br>
+                                <strong>The Lesson:</strong> Zappos isn't about shoes. It's about solving problems and being helpful.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Tony ada di konferensi di Santa Monica. Sudah larut malam, layanan kamar tutup. Kliennya lapar ingin pizza pepperoni.
+                                <br><br>
+                                Tony bertaruh: <strong>"Telepon CS Zappos. Aku taruhan mereka akan bantu kamu cari pizza."</strong>
+                                <br><br>
+                                Klien pikir dia gila (Zappos jual sepatu!). Mereka loudspeaker. Rep Zappos bingung 2 detik, lalu bilang: "Tunggu sebentar." Dia mencari 2 menit dan kembali dengan daftar 3 tempat pizza terdekat yang buka jam 2 pagi.
+                                <br><br>
+                                <strong>Pelajaran:</strong> Zappos bukan tentang sepatu. Ini tentang memecahkan masalah dan membantu.
+                            </p>
+                        </div>
+
+                        <div class="border-l-4 border-yellow-500 pl-4 bg-yellow-50 p-4 rounded-r-lg">
+                            <strong class="block text-slate-900 mb-1 lang-en">Record Breaking Call</strong>
+                            <strong class="block text-slate-900 mb-1 lang-id">Rekor Panggilan Terlama</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                The longest call at Zappos lasted <strong>10 hours and 43 minutes</strong>. The rep didn't just sell shoes; she chatted, listened, and connected. Zappos celebrated this, they didn't punish it.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Panggilan terlama di Zappos berlangsung <strong>10 jam 43 menit</strong>. Rep itu tidak cuma jual sepatu; dia ngobrol, mendengarkan, dan terhubung. Zappos merayakan ini, tidak menghukumnya.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The 10 Core Values</span>
+                            <span class="lang-id">10 Nilai Inti</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            These aren't just corporate jargon. Zappos hires, fires, and reviews performance based on these 10 values.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Ini bukan sekadar jargon perusahaan. Zappos merekrut, memecat, dan meninjau kinerja berdasarkan 10 nilai ini.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                <strong class="text-indigo-700 block mb-1">1. Deliver WOW Through Service</strong>
+                                <span class="text-xs text-slate-600 lang-en">Go above and beyond what is expected.</span>
+                                <span class="text-xs text-slate-600 lang-id">Lakukan lebih dari yang diharapkan.</span>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                <strong class="text-indigo-700 block mb-1">2. Embrace and Drive Change</strong>
+                                <span class="text-xs text-slate-600 lang-en">Don't fear change; initiate it.</span>
+                                <span class="text-xs text-slate-600 lang-id">Jangan takut perubahan; mulailah.</span>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                <strong class="text-indigo-700 block mb-1">3. Create Fun and A Little Weirdness</strong>
+                                <span class="text-xs text-slate-600 lang-en">Be your authentic self, even if it's quirky.</span>
+                                <span class="text-xs text-slate-600 lang-id">Jadilah diri sendiri, meski agak aneh.</span>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                <strong class="text-indigo-700 block mb-1">4. Be Adventurous, Creative, and Open-Minded</strong>
+                                <span class="text-xs text-slate-600 lang-en">Take risks. Mistakes are okay.</span>
+                                <span class="text-xs text-slate-600 lang-id">Ambil risiko. Kesalahan itu oke.</span>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                <strong class="text-indigo-700 block mb-1">5. Pursue Growth and Learning</strong>
+                                <span class="text-xs text-slate-600 lang-en">Zappos has a library. Read and grow.</span>
+                                <span class="text-xs text-slate-600 lang-id">Zappos punya perpustakaan. Baca & tumbuh.</span>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                <strong class="text-indigo-700 block mb-1">6. Build Open and Honest Relationships</strong>
+                                <span class="text-xs text-slate-600 lang-en">Communication via trust.</span>
+                                <span class="text-xs text-slate-600 lang-id">Komunikasi melalui kepercayaan.</span>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                <strong class="text-indigo-700 block mb-1">7. Build a Positive Team and Family Spirit</strong>
+                                <span class="text-xs text-slate-600 lang-en">Coworkers are more than just coworkers.</span>
+                                <span class="text-xs text-slate-600 lang-id">Rekan kerja lebih dari sekadar rekan.</span>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                <strong class="text-indigo-700 block mb-1">8. Do More With Less</strong>
+                                <span class="text-xs text-slate-600 lang-en">Efficiency and innovation.</span>
+                                <span class="text-xs text-slate-600 lang-id">Efisiensi dan inovasi.</span>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                <strong class="text-indigo-700 block mb-1">9. Be Passionate and Determined</strong>
+                                <span class="text-xs text-slate-600 lang-en">Passion is the fuel.</span>
+                                <span class="text-xs text-slate-600 lang-id">Gairah adalah bahan bakarnya.</span>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                <strong class="text-indigo-700 block mb-1">10. Be Humble</strong>
+                                <span class="text-xs text-slate-600 lang-en">No arrogance, no matter how successful.</span>
+                                <span class="text-xs text-slate-600 lang-id">Tidak sombong, sesukses apa pun.</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Science of Happiness</span>
+                            <span class="lang-id">Sains Kebahagiaan</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-gradient-to-r from-sky-50 to-green-50 p-6 rounded-xl border border-sky-200">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">The 3 Types of Happiness</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">3 Jenis Kebahagiaan</h4>
+                            
+                            <ul class="space-y-4">
+                                <li class="flex flex-col">
+                                    <strong class="text-sky-700 lang-en">1. Pleasure (Rock Star)</strong>
+                                    <strong class="text-sky-700 lang-id">1. Kesenangan (Bintang Rock)</strong>
+                                    <span class="text-sm text-slate-600 lang-en">Chasing the next high. Very short-term. Once the stimulus is gone, happiness is gone. (Least sustainable).</span>
+                                    <span class="text-sm text-slate-600 lang-id">Mengejar kesenangan sesaat. Sangat jangka pendek. Begitu stimulus hilang, bahagia hilang. (Paling tidak berkelanjutan).</span>
+                                </li>
+                                <li class="flex flex-col">
+                                    <strong class="text-sky-700 lang-en">2. Passion (Flow)</strong>
+                                    <strong class="text-sky-700 lang-id">2. Gairah (Aliran/Flow)</strong>
+                                    <span class="text-sm text-slate-600 lang-en">Engagement. Being so absorbed in an activity that time flies. More sustainable than pleasure.</span>
+                                    <span class="text-sm text-slate-600 lang-id">Keterlibatan. Begitu larut dalam aktivitas hingga waktu berlalu cepat. Lebih berkelanjutan dari kesenangan.</span>
+                                </li>
+                                <li class="flex flex-col">
+                                    <strong class="text-sky-700 lang-en">3. Higher Purpose (Meaning)</strong>
+                                    <strong class="text-sky-700 lang-id">3. Tujuan Lebih Tinggi (Makna)</strong>
+                                    <span class="text-sm text-slate-600 lang-en">Being part of something bigger than yourself. This is the <strong>most sustainable</strong> form of happiness.</span>
+                                    <span class="text-sm text-slate-600 lang-id">Menjadi bagian dari sesuatu yang lebih besar dari diri sendiri. Ini adalah bentuk kebahagiaan <strong>paling berkelanjutan</strong>.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="text-center mt-6 p-4 bg-slate-50 rounded-lg">
+                            <p class="text-slate-600 italic lang-en">"Zappos decided to focus on Passion and Higher Purpose. Delivering Happiness to the world is the purpose; selling shoes is just the mechanism."</p>
+                            <p class="text-slate-600 italic lang-id">"Zappos memutuskan untuk fokus pada Gairah dan Tujuan Lebih Tinggi. Mengantarkan Kebahagiaan ke dunia adalah tujuannya; menjual sepatu hanyalah mekanismenya."</p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#0ea5e9'; // Sky Blue
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#eab308'; // Yellow
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-sky-100');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-sky-100');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
