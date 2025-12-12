@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Influence — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Indigo/Rose Theme for Psychology & Persuasion */
+        .active-tab { background: linear-gradient(135deg, #4338ca 0%, #3730a3 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #1e1b4b 0%, #312e81 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(67, 56, 202, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(67, 56, 202, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #4f46e5; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-indigo-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-indigo-900">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">Ψ</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Influence</h2>
+                    <p class="text-indigo-200 text-sm">
+                        <span class="lang-en">Psychology of Persuasion</span>
+                        <span class="lang-id">Psikologi Persuasi</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-indigo-200 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The 6 Weapons</span>
+                <span class="lang-id">6 Senjata Pengaruh</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-indigo-800 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-xs font-bold">🧠</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-indigo-800 text-indigo-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-rose-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Reciprocity</div>
+                            <div class="text-xs text-indigo-300">
+                                <span class="lang-en">Give & Take</span>
+                                <span class="lang-id">Timbal Balik</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-indigo-800 text-indigo-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Commitment</div>
+                            <div class="text-xs text-indigo-300">
+                                <span class="lang-en">& Consistency</span>
+                                <span class="lang-id">& Konsistensi</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-indigo-800 text-indigo-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Social Proof</div>
+                            <div class="text-xs text-indigo-300">
+                                <span class="lang-en">Truths Are Us</span>
+                                <span class="lang-id">Bukti Sosial</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-indigo-800 text-indigo-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Liking & Authority</div>
+                            <div class="text-xs text-indigo-300">
+                                <span class="lang-en">The Friendly Thief</span>
+                                <span class="lang-id">Disukai & Otoritas</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-indigo-800 text-indigo-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-amber-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Scarcity</div>
+                            <div class="text-xs text-indigo-300">
+                                <span class="lang-en">The Rule of the Few</span>
+                                <span class="lang-id">Kelangkaan</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-indigo-900">
+            <div class="text-center">
+                <p class="text-indigo-400 text-xs">© Robert Cialdini</p>
+                <p class="text-indigo-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-indigo-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    Influence
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    <span class="lang-en">The Psychology of Persuasion</span>
+                    <span class="lang-id">Psikologi Persuasi</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-indigo-500 to-rose-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Core Mechanism</span>
+                            <span class="lang-id">Mekanisme Inti</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Click, Whirr: Fixed Action Patterns</span>
+                            <span class="lang-id">Klik, Gerasak: Pola Tindakan Tetap</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-indigo-500 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"We all have foolable mental shortcuts. Understanding them makes you powerful; ignoring them makes you a victim."</span>
+                            <span class="lang-id">"Kita semua memiliki jalan pintas mental yang bisa dikelabui. Memahaminya membuat Anda kuat; mengabaikannya membuat Anda menjadi korban."</span>
+                        </div>
+                        
+                        <p class="mobile-text justified-text lang-en">
+                            Robert Cialdini introduces the concept of <strong>Fixed Action Patterns</strong>. Animals (and humans) have pre-programmed behaviors that are triggered by a specific stimulus. Like a tape recorder: you press "Click" (the trigger), and the tape plays "Whirr" (the standard behavior).
+                        </p>
+                        <p class="mobile-text justified-text lang-id">
+                            Robert Cialdini memperkenalkan konsep <strong>Pola Tindakan Tetap</strong>. Hewan (dan manusia) memiliki perilaku terprogram yang dipicu oleh stimulus tertentu. Seperti alat perekam: Anda tekan "Klik" (pemicu), dan kaset berputar "Gerasak" (perilaku standar).
+                        </p>
+
+                        <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-200 shadow-sm">
+                            <h4 class="font-bold text-indigo-900 text-lg mb-3 lang-en">Case Study: The Turkey Mother</h4>
+                            <h4 class="font-bold text-indigo-900 text-lg mb-3 lang-id">Studi Kasus: Induk Kalkun</h4>
+                            
+                            <p class="text-sm text-indigo-800 justified-text mb-3 lang-en">
+                                A mother turkey is protective of her chicks. But her maternal instinct is triggered by <strong>one sound</strong>: the "cheep-cheep" of the baby.
+                                <br><br>
+                                <strong>The Experiment:</strong> Scientists took a stuffed <em>polecat</em> (the turkey's natural enemy). When the polecat approached, the mother turkey attacked it violently.
+                                <br>However, when the scientists put a recorder inside the polecat that played the "cheep-cheep" sound, the mother turkey not only accepted the enemy but embraced it under her wings.
+                            </p>
+                            <p class="text-sm text-indigo-800 justified-text mb-3 lang-id">
+                                Induk kalkun sangat protektif terhadap anaknya. Namun naluri keibuannya dipicu oleh <strong>satu suara</strong>: bunyi "cip-cip" bayinya.
+                                <br><br>
+                                <strong>Eksperimen:</strong> Ilmuwan mengambil boneka <em>musang</em> (musuh alami kalkun). Saat musang mendekat, induk kalkun menyerangnya dengan ganas.
+                                <br>Namun, saat ilmuwan memasang perekam di dalam boneka musang yang memutar suara "cip-cip", induk kalkun tidak hanya menerima musuh itu tetapi memeluknya di bawah sayapnya.
+                            </p>
+                            
+                            <div class="bg-white p-3 rounded text-xs text-indigo-900 font-semibold border border-indigo-200 italic">
+                                <span class="lang-en">Lesson: Humans are the same. If you hit the right "Click" (trigger), people will blindly play the "Whirr" (compliance).</span>
+                                <span class="lang-id">Pelajaran: Manusia sama saja. Jika Anda menekan "Klik" (pemicu) yang tepat, orang akan secara buta memainkan "Gerasak" (kepatuhan).</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-rose-100 text-rose-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Weapon #1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Reciprocity</span>
+                            <span class="lang-id">Timbal Balik (Resiprositas)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-white p-5 rounded-lg border border-rose-200 shadow-sm">
+                            <strong class="block text-rose-900 text-lg mb-2 lang-en">The Rule</strong>
+                            <strong class="block text-rose-900 text-lg mb-2 lang-id">Aturannya</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                We feel a deep obligation to repay what another person has provided for us. This rule is so strong it overpowers liking. Even if we dislike someone, we will help them if they did us a favor first.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Kita merasa memiliki kewajiban mendalam untuk membalas apa yang telah diberikan orang lain kepada kita. Aturan ini begitu kuat hingga mengalahkan rasa suka. Bahkan jika kita tidak menyukai seseorang, kita akan membantunya jika dia memberi kita bantuan terlebih dahulu.
+                            </p>
+                        </div>
+
+                        <div class="border-l-4 border-rose-500 pl-4 bg-rose-50 p-4 rounded-r-lg">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">Case Study: The Hare Krishna Society</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Studi Kasus: Kelompok Hare Krishna</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                In the 70s, the Krishnas struggled to raise funds. People didn't like how they looked or chanted. So, they changed tactics.
+                                <br><br>
+                                They moved to airports. Before asking for a donation, a devotee would walk up to a traveler and <strong>shove a flower into their hand</strong>.
+                                <br><br>
+                                Traveler: "I don't want this."
+                                <br>Devotee: "It is our gift to you." (Refuses to take it back).
+                                <br><br>
+                                <strong>The Result:</strong> Now armed with a "gift" (even an unwanted one), the traveler felt a psychological debt. When the devotee then asked for a donation, the traveler often gave money just to relieve the pressure of obligation.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Di tahun 70-an, kelompok Krishna kesulitan galang dana. Orang tidak suka penampilan mereka. Jadi, mereka ubah taktik.
+                                <br><br>
+                                Mereka pergi ke bandara. Sebelum minta sumbangan, seorang anggota akan mendatangi pelancong dan <strong>menjejalkan bunga ke tangan mereka</strong>.
+                                <br><br>
+                                Pelancong: "Saya tidak mau ini."
+                                <br>Anggota: "Ini hadiah kami untuk Anda." (Menolak mengambilnya kembali).
+                                <br><br>
+                                <strong>Hasilnya:</strong> Kini dengan memegang "hadiah" (meski tidak diinginkan), pelancong merasa berhutang secara psikologis. Saat anggota kemudian meminta sumbangan, pelancong sering memberi uang hanya untuk meredakan tekanan kewajiban itu.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <strong class="block text-slate-900 mb-1 lang-en">Defense Strategy</strong>
+                            <strong class="block text-slate-900 mb-1 lang-id">Strategi Bertahan</strong>
+                            <p class="text-xs text-slate-600 justified-text lang-en">
+                                Redefine the gift. If you realize it's a sales tactic, mentally classify it as a "sales device," not a "gift." Reciprocity says you must return favor for favor, not favor for sales trick.
+                            </p>
+                            <p class="text-xs text-slate-600 justified-text lang-id">
+                                Definisikan ulang hadiahnya. Jika Anda sadar itu taktik penjualan, klasifikasikan secara mental sebagai "alat jualan," bukan "hadiah." Timbal balik mengatakan Anda harus membalas budi dengan budi, bukan membalas trik jualan dengan budi.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Weapon #2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Commitment & Consistency</span>
+                            <span class="lang-id">Komitmen & Konsistensi</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Once we make a choice or take a stand, we will encounter personal and interpersonal pressures to behave consistently with that commitment. We fool ourselves to keep our thoughts and actions aligned.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Begitu kita membuat pilihan atau mengambil sikap, kita akan menghadapi tekanan pribadi dan antarpribadi untuk berperilaku konsisten dengan komitmen tersebut. Kita membohongi diri sendiri untuk menjaga agar pikiran dan tindakan kita tetap selaras.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                <h4 class="font-bold text-blue-900 text-lg mb-2 lang-en">Case Study: The Ugly Sign</h4>
+                                <h4 class="font-bold text-blue-900 text-lg mb-2 lang-id">Studi Kasus: Papan Jelek</h4>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Researchers asked homeowners to put a huge, ugly "DRIVE CAREFULLY" sign in their lawn. Only 17% agreed.
+                                    <br><br>
+                                    <strong>The Twist:</strong> A different group was asked to put a tiny 3-inch sticker ("Be a Safe Driver") in their window. Almost everyone agreed (Small Commitment).
+                                    <br><br>
+                                    Two weeks later, they asked to put the huge ugly sign. <strong>76% agreed.</strong> Why? Because the sticker changed their self-image to "I am a conscientious citizen."
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Peneliti meminta pemilik rumah memasang papan besar jelek bertuliskan "MENGEMUDI DENGAN HATI-HATI" di halaman. Hanya 17% setuju.
+                                    <br><br>
+                                    <strong>Twist-nya:</strong> Kelompok lain diminta menempel stiker kecil 3 inci ("Jadilah Pengemudi Aman") di jendela. Hampir semua setuju (Komitmen Kecil).
+                                    <br><br>
+                                    Dua minggu kemudian, mereka diminta pasang papan besar jelek itu. <strong>76% setuju.</strong> Kenapa? Karena stiker itu mengubah citra diri mereka menjadi "Saya warga negara yang teliti."
+                                </p>
+                            </div>
+
+                            <div class="bg-slate-100 p-4 rounded-lg border border-slate-200">
+                                <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">Case Study: Korean War POWs</h4>
+                                <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Studi Kasus: Tahanan Perang Korea</h4>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Chinese communists didn't torture American POWs to turn them. They used "Start Small."
+                                    <br><br>
+                                    They asked prisoners to write mild statements like "The USA is not perfect." Once written, the prisoner felt a need to justify it.
+                                    <br><br>
+                                    Then they were asked to read it aloud. Then write a list of problems with the USA. Gradually, these small commitments turned loyal soldiers into collaborators without violence.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Komunis Tiongkok tidak menyiksa POW Amerika untuk membelot. Mereka menggunakan "Mulai dari yang Kecil."
+                                    <br><br>
+                                    Mereka meminta tahanan menulis pernyataan ringan seperti "AS tidak sempurna." Setelah ditulis, tahanan merasa perlu membenarkannya.
+                                    <br><br>
+                                    Lalu mereka diminta membacanya keras-keras. Lalu menulis daftar masalah AS. Perlahan, komitmen kecil ini mengubah tentara setia menjadi kolaborator tanpa kekerasan.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-teal-100 text-teal-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Weapon #3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Social Proof</span>
+                            <span class="lang-id">Bukti Sosial</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base text-slate-600 justified-text lang-en">
+                            We view a behavior as more correct in a given situation to the degree that we see others performing it. It works best under <strong>Uncertainty</strong> and <strong>Similarity</strong>.
+                        </div>
+                        <div class="text-base text-slate-600 justified-text lang-id">
+                            Kita memandang suatu perilaku lebih benar dalam situasi tertentu sejauh kita melihat orang lain melakukannya. Ini bekerja paling baik di bawah <strong>Ketidakpastian</strong> dan <strong>Kesamaan</strong>.
+                        </div>
+
+                        <div class="bg-teal-50 p-5 rounded-lg border border-teal-200">
+                            <h4 class="font-bold text-teal-900 text-lg mb-2 lang-en">The Bystander Effect (Kitty Genovese)</h4>
+                            <h4 class="font-bold text-teal-900 text-lg mb-2 lang-id">Efek Penonton (Kitty Genovese)</h4>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                In 1964, Kitty Genovese was stabbed to death in New York over 35 minutes. 38 neighbors watched from their windows. <strong>Nobody called the police.</strong>
+                                <br><br>
+                                Why? Not because they were heartless, but because there were <em>too many</em> of them.
+                                <br>1. <strong>Diffusion of Responsibility:</strong> "Someone else probably called."
+                                <br>2. <strong>Pluralistic Ignorance:</strong> Everyone looked at everyone else's window. Seeing no one reacting, they assumed nothing was wrong.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Pada 1964, Kitty Genovese ditikam hingga tewas di New York selama 35 menit. 38 tetangga menonton dari jendela. <strong>Tak ada yang menelepon polisi.</strong>
+                                <br><br>
+                                Kenapa? Bukan karena mereka tidak punya hati, tapi karena ada <em>terlalu banyak</em> orang.
+                                <br>1. <strong>Difusi Tanggung Jawab:</strong> "Orang lain pasti sudah nelpon."
+                                <br>2. <strong>Ketidaktahuan Pluralistik:</strong> Semua orang melihat jendela orang lain. Melihat tidak ada yang bereaksi, mereka berasumsi tidak ada yang salah.
+                            </p>
+                            
+                            <div class="bg-white p-3 rounded text-xs text-teal-800 border border-teal-100 font-bold lang-en">
+                                Lesson: If you have an emergency in a crowd, don't yell "Help!" Point to ONE person and say: "YOU in the blue shirt, call an ambulance!"
+                            </div>
+                            <div class="bg-white p-3 rounded text-xs text-teal-800 border border-teal-100 font-bold lang-id">
+                                Pelajaran: Jika Anda dalam keadaan darurat di keramaian, jangan teriak "Tolong!" Tunjuk SATU orang dan bilang: "KAMU yang baju biru, panggil ambulans!"
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-purple-100 text-purple-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Weapons #4 & #5</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Liking & Authority</span>
+                            <span class="lang-id">Disukai & Otoritas</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        
+                        <div class="border-l-4 border-purple-500 pl-4 bg-purple-50 p-4 rounded-r-lg mb-6">
+                            <h3 class="text-lg font-bold text-purple-900 mb-2 lang-en">Weapon #4: Liking</h3>
+                            <h3 class="text-lg font-bold text-purple-900 mb-2 lang-id">Senjata #4: Disukai (Liking)</h3>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                We prefer to say yes to people we know and like.
+                                <br><strong>Factors:</strong>
+                                <br>1. <strong>Physical Attractiveness:</strong> Halo effect. Good looking = smart/honest.
+                                <br>2. <strong>Similarity:</strong> We like people who dress like us or have similar backgrounds.
+                                <br>3. <strong>Compliments:</strong> We love praise, even if we know it's fake.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Kita lebih suka bilang ya pada orang yang kita kenal dan sukai.
+                                <br><strong>Faktor:</strong>
+                                <br>1. <strong>Daya Tarik Fisik:</strong> Efek Halo. Cakep = pintar/jujur.
+                                <br>2. <strong>Kesamaan:</strong> Kita suka orang yang berpakaian seperti kita atau latar belakang sama.
+                                <br>3. <strong>Pujian:</strong> Kita suka pujian, bahkan jika kita tahu itu palsu.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h3 class="text-lg font-bold text-slate-900 mb-3 lang-en">Weapon #5: Authority (The Milgram Experiment)</h3>
+                            <h3 class="text-lg font-bold text-slate-900 mb-3 lang-id">Senjata #5: Otoritas (Eksperimen Milgram)</h3>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                <strong>The Setup:</strong> A "Teacher" (Subject) asks a "Learner" (Actor) questions. If wrong, the Teacher shocks the Learner.
+                                <br><strong>The Authority:</strong> A researcher in a lab coat tells the Teacher to increase voltage for every wrong answer.
+                                <br><br>
+                                <strong>The Horror:</strong> The Learner screams, begs to stop, and eventually goes silent (feigning unconsciousness). The Teacher wants to stop. The Researcher says: "The experiment requires that you continue."
+                                <br><br>
+                                <strong>The Result:</strong> 65% of normal people pulled the switch all the way to 450 Volts (Potential Death).
+                                <br><strong>Why?</strong> We are trained from birth that obedience to authority is right and disobedience is wrong. The "Lab Coat" bypassed their conscience.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                <strong>Setup:</strong> "Guru" (Subjek) tanya "Murid" (Aktor). Jika salah, Guru menyetrum Murid.
+                                <br><strong>Otoritas:</strong> Peneliti berjas lab menyuruh Guru menaikkan voltase setiap jawaban salah.
+                                <br><br>
+                                <strong>Horornya:</strong> Murid menjerit, memohon berhenti, lalu diam (pura-pura pingsan). Guru ingin berhenti. Peneliti bilang: "Eksperimen mengharuskan Anda lanjut."
+                                <br><br>
+                                <strong>Hasil:</strong> 65% orang normal menekan saklar sampai 450 Volt (Potensi Mati).
+                                <br><strong>Kenapa?</strong> Kita dilatih sejak lahir bahwa patuh pada otoritas itu benar dan membangkang itu salah. "Jas Lab" itu memintas hati nurani mereka.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Weapon #6</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Scarcity</span>
+                            <span class="lang-id">Kelangkaan</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            The rule of the few: Opportunities seem more valuable to us when their availability is limited. We fear losing something more than we desire gaining something (Loss Aversion).
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Aturan yang sedikit: Peluang tampak lebih berharga bagi kita ketika ketersediaannya terbatas. Kita lebih takut kehilangan sesuatu daripada ingin mendapatkan sesuatu (Loss Aversion).
+                        </p>
+
+                        <div class="bg-amber-50 p-5 rounded-lg border border-amber-200">
+                            <h4 class="font-bold text-amber-900 text-lg mb-2 lang-en">Case Study: The Cookie Experiment</h4>
+                            <h4 class="font-bold text-amber-900 text-lg mb-2 lang-id">Studi Kasus: Eksperimen Biskuit</h4>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="bg-white p-3 rounded border border-amber-100 text-center">
+                                    <strong class="block text-slate-800 mb-1">Jar A</strong>
+                                    <span class="text-2xl">🍪🍪🍪🍪🍪</span>
+                                    <span class="text-2xl">🍪🍪🍪🍪🍪</span>
+                                    <p class="text-xs text-slate-500 mt-2">(10 Cookies)</p>
+                                </div>
+                                <div class="bg-white p-3 rounded border border-amber-100 text-center">
+                                    <strong class="block text-slate-800 mb-1">Jar B</strong>
+                                    <span class="text-2xl">🍪🍪</span>
+                                    <p class="text-xs text-slate-500 mt-2">(2 Cookies)</p>
+                                </div>
+                            </div>
+                            
+                            <p class="text-sm text-slate-700 justified-text mt-4 lang-en">
+                                Participants rated the cookies from Jar B as <strong>tasting better, more attractive, and more expensive</strong> than the cookies from Jar A.
+                                <br><br>
+                                <strong>The Twist:</strong> Cookies rated highest were those that started with 10, but were then reduced to 2 (Newly Scarce). We want what we recently lost the most.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mt-4 lang-id">
+                                Peserta menilai biskuit dari Toples B <strong>rasanya lebih enak, lebih menarik, dan lebih mahal</strong> daripada biskuit Toples A.
+                                <br><br>
+                                <strong>Twist-nya:</strong> Biskuit yang dinilai paling tinggi adalah yang awalnya 10, lalu dikurangi jadi 2 (Baru Langka). Kita paling menginginkan apa yang baru saja hilang dari kita.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-800 p-6 rounded-xl text-white mt-4">
+                            <h4 class="font-bold text-lg mb-2 lang-en">Conclusion: Instant Influence</h4>
+                            <h4 class="font-bold text-lg mb-2 lang-id">Kesimpulan: Pengaruh Instan</h4>
+                            <p class="text-sm opacity-90 justified-text lang-en">
+                                In a modern world overloaded with information, we rely on these shortcuts (Reciprocity, Consistency, Social Proof, Liking, Authority, Scarcity) more than ever. We don't have time to analyze everything. This makes us vulnerable to those who know how to fake these signals. <strong>Awareness is your only defense.</strong>
+                            </p>
+                            <p class="text-sm opacity-90 justified-text lang-id">
+                                Di dunia modern yang kelebihan informasi, kita mengandalkan jalan pintas ini (Timbal Balik, Konsistensi, Bukti Sosial, Disukai, Otoritas, Kelangkaan) lebih dari sebelumnya. Kita tak punya waktu menganalisis segalanya. Ini membuat kita rentan terhadap mereka yang tahu cara memalsukan sinyal ini. <strong>Kesadaran adalah satu-satunya pertahanan Anda.</strong>
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#4f46e5'; // Indigo
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#e11d48'; // Rose
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-indigo-100');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-indigo-100');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
