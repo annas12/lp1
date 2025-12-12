@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Think and Grow Rich — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Gold/Slate Theme for Wealth & Wisdom */
+        .active-tab { background: linear-gradient(135deg, #b45309 0%, #78350f 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(217, 119, 6, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #d97706; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-amber-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">💰</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Think & Grow Rich</h2>
+                    <p class="text-slate-400 text-sm">
+                        <span class="lang-en">Master Edition</span>
+                        <span class="lang-id">Edisi Master</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The 13 Steps</span>
+                <span class="lang-id">13 Langkah</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-amber-600 rounded-lg flex items-center justify-center text-xs font-bold">🧠</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Desire & Faith</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">The Starting Point</span>
+                                <span class="lang-id">Titik Awal</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Auto-Suggestion</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Programming the Mind</span>
+                                <span class="lang-id">Memprogram Pikiran</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Imagination & Planning</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Turning Ideas to Gold</span>
+                                <span class="lang-id">Mengubah Ide jadi Emas</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Persistence & Master Mind</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">The Driving Force</span>
+                                <span class="lang-id">Kekuatan Pendorong</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Mystery</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Sex Transmutation & Sixth Sense</span>
+                                <span class="lang-id">Transmutasi Seks & Indra Keenam</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© Napoleon Hill</p>
+                <p class="text-slate-500 text-xs mt-1">Detailed Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    Think and Grow Rich
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    <span class="lang-en">The Grandfather of All Success Books</span>
+                    <span class="lang-id">Kakek dari Semua Buku Sukses</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-amber-500 to-yellow-300 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">Introduction</span>
+                            <span class="lang-id">Pendahuluan</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Thoughts are Things</span>
+                            <span class="lang-id">Pikiran adalah Benda</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-amber-500 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"Truly, thoughts are things, and powerful things at that, when they are mixed with definiteness of purpose, persistence, and a burning desire for their translation into riches."</span>
+                            <span class="lang-id">"Sungguh, pikiran adalah benda, dan benda yang kuat, ketika dicampur dengan kejelasan tujuan, ketekunan, dan hasrat yang membara untuk menerjemahkannya menjadi kekayaan."</span>
+                        </div>
+                        
+                        <p class="mobile-text justified-text lang-en">
+                            This book is the result of 20 years of research. Napoleon Hill was commissioned by <strong>Andrew Carnegie</strong> (the richest man in the world at the time) to interview 500 of the most successful people (Edison, Ford, Rockefeller) and distill their "Secret" into a formula that the average person could use.
+                        </p>
+                        <p class="mobile-text justified-text lang-id">
+                            Buku ini adalah hasil penelitian selama 20 tahun. Napoleon Hill ditugaskan oleh <strong>Andrew Carnegie</strong> (orang terkaya di dunia saat itu) untuk mewawancarai 500 orang paling sukses (Edison, Ford, Rockefeller) dan menyaring "Rahasia" mereka menjadi formula yang bisa digunakan orang biasa.
+                        </p>
+
+                        <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg text-white">
+                            <h4 class="font-bold text-amber-400 text-lg mb-3 lang-en">Case Study: Edwin C. Barnes</h4>
+                            <h4 class="font-bold text-amber-400 text-lg mb-3 lang-id">Studi Kasus: Edwin C. Barnes</h4>
+                            
+                            <p class="text-sm opacity-90 justified-text mb-3 lang-en">
+                                Barnes looked like a tramp when he arrived at Thomas Edison’s lab. But his <strong>mind</strong> was set on one thing: He did not want to work <em>for</em> Edison; he wanted to work <em>with</em> Edison.
+                            </p>
+                            <p class="text-sm opacity-90 justified-text mb-3 lang-id">
+                                Barnes tampak seperti gelandangan saat tiba di laboratorium Thomas Edison. Tapi <strong>pikirannya</strong> tertuju pada satu hal: Dia tidak ingin bekerja <em>untuk</em> Edison; dia ingin bekerja <em>dengan</em> Edison.
+                            </p>
+                            
+                            <ul class="list-disc ml-5 text-sm opacity-80 space-y-2">
+                                <li>
+                                    <span class="lang-en"><strong>The Start:</strong> Edison hired him to sweep floors. Barnes did this for 5 years, but never let go of his vision.</span>
+                                    <span class="lang-id"><strong>Awalnya:</strong> Edison mempekerjakannya untuk menyapu lantai. Barnes melakukan ini selama 5 tahun, tapi tidak pernah melepas visinya.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>The Opportunity:</strong> Edison invented the "Ediphone." Salesmen hated it. Barnes saw the chance: "I can sell this."</span>
+                                    <span class="lang-id"><strong>Peluang:</strong> Edison menemukan "Ediphone." Para penjual membencinya. Barnes melihat peluang: "Saya bisa menjual ini."</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>The Result:</strong> He sold it so successfully that Edison gave him a contract. The slogan became: "Made by Edison and Installed by Barnes." He became a multimillionaire.</span>
+                                    <span class="lang-id"><strong>Hasil:</strong> Dia menjualnya dengan sangat sukses hingga Edison memberinya kontrak. Slogannya menjadi: "Dibuat oleh Edison dan Dipasang oleh Barnes." Dia menjadi jutawan.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Steps 1 & 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Desire & Faith</span>
+                            <span class="lang-id">Hasrat & Keyakinan</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">Step 1: Desire (The Starting Point)</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Langkah 1: Hasrat (Titik Awal)</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Wishing will not bring riches. But desiring riches with a state of mind that becomes an obsession, then planning definite ways and means to acquire riches, and backing those plans with persistence which does not recognize failure, will bring riches.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Berharap tidak akan mendatangkan kekayaan. Namun menginginkan kekayaan dengan keadaan pikiran yang menjadi obsesi, lalu merencanakan cara yang pasti untuk memperolehnya, dan mendukung rencana itu dengan ketekunan yang tidak mengenal kegagalan, akan mendatangkan kekayaan.
+                            </p>
+                        </div>
+
+                        <div class="bg-amber-50 p-6 rounded-lg border border-amber-200">
+                            <strong class="block text-amber-900 text-lg mb-4 text-center lang-en">The 6 Practical Steps to Transmute Desire into Gold</strong>
+                            <strong class="block text-amber-900 text-lg mb-4 text-center lang-id">6 Langkah Praktis Mengubah Hasrat Menjadi Emas</strong>
+                            
+                            <ol class="list-decimal ml-5 space-y-3 text-sm text-slate-800">
+                                <li>
+                                    <span class="lang-en">Fix in your mind the <strong>exact amount</strong> of money you desire. Not "I want plenty." Be definite.</span>
+                                    <span class="lang-id">Tetapkan dalam pikiran Anda <strong>jumlah pasti</strong> uang yang Anda inginkan. Bukan "Saya ingin banyak." Harus pasti.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en">Determine exactly what you intend to <strong>give in return</strong> for the money. (There is no such thing as something for nothing).</span>
+                                    <span class="lang-id">Tentukan dengan tepat apa yang akan Anda <strong>berikan sebagai ganti</strong> uang tersebut. (Tidak ada sesuatu yang gratis).</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en">Establish a <strong>definite date</strong> when you intend to possess the money.</span>
+                                    <span class="lang-id">Tetapkan <strong>tanggal pasti</strong> kapan Anda bermaksud memiliki uang tersebut.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en">Create a definite plan and start <strong>immediately</strong>, whether you are ready or not.</span>
+                                    <span class="lang-id">Buat rencana pasti dan mulai <strong>segera</strong>, siap atau tidak.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en">Write out a clear, concise statement of the above four steps.</span>
+                                    <span class="lang-id">Tulis pernyataan yang jelas dan ringkas dari empat langkah di atas.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en">Read your written statement aloud, <strong>twice daily</strong> (once before bed, once upon arising). As you read, SEE and FEEL yourself already in possession of the money.</span>
+                                    <span class="lang-id">Baca pernyataan tertulis Anda dengan keras, <strong>dua kali sehari</strong> (sebelum tidur dan saat bangun). Saat membaca, LIHAT dan RASAKAN diri Anda sudah memiliki uang itu.</span>
+                                </li>
+                            </ol>
+                        </div>
+
+                        <div class="bg-slate-50 p-5 rounded-lg border border-slate-200">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">Step 2: Faith (Visualization)</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Langkah 2: Keyakinan (Visualisasi)</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Faith is a state of mind which may be induced by auto-suggestion. It is the "Eternal Elixir" which gives life, power, and action to the impulse of thought.
+                                <br><br>
+                                <strong>Important:</strong> The subconscious mind makes no distinction between constructive and destructive thought impulses. If you fear poverty, you are "having faith" in poverty, and the mind will create it.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Keyakinan adalah keadaan pikiran yang dapat dipicu oleh autosugesti. Ini adalah "Eliksir Abadi" yang memberi kehidupan, kekuatan, dan tindakan pada impuls pikiran.
+                                <br><br>
+                                <strong>Penting:</strong> Pikiran bawah sadar tidak membedakan antara impuls pikiran konstruktif dan destruktif. Jika Anda takut miskin, Anda sedang "meyakini" kemiskinan, dan pikiran akan menciptakannya.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Steps 3 & 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Auto-Suggestion & Knowledge</span>
+                            <span class="lang-id">Autosugesti & Pengetahuan</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">Step 3: Auto-Suggestion (The Medium)</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Langkah 3: Autosugesti (Perantara)</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Auto-suggestion is self-suggestion. It is the agency of communication between that part of the mind where conscious thought takes place and that which serves as the seat of action for the subconscious mind.
+                                <br><br>
+                                <strong>How to do it:</strong> When reading your statement (from Step 1), you must mix <strong>EMOTION</strong> with your words. Reading without feeling is useless. Your subconscious only recognizes thoughts mixed with feeling.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Autosugesti adalah sugesti diri. Ini adalah agen komunikasi antara pikiran sadar dan pikiran bawah sadar.
+                                <br><br>
+                                <strong>Caranya:</strong> Saat membaca pernyataan Anda (dari Langkah 1), Anda harus mencampurkan <strong>EMOSI</strong> dengan kata-kata Anda. Membaca tanpa perasaan itu sia-sia. Bawah sadar Anda hanya mengenali pikiran yang bercampur dengan perasaan.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg text-white">
+                            <h4 class="font-bold text-amber-400 text-lg mb-3 lang-en">Step 4: Specialized Knowledge</h4>
+                            <h4 class="font-bold text-amber-400 text-lg mb-3 lang-id">Langkah 4: Pengetahuan Spesialis</h4>
+                            
+                            <p class="text-sm opacity-90 justified-text mb-3 lang-en">
+                                <strong>Myth:</strong> "Knowledge is Power."
+                                <br><strong>Truth:</strong> "Knowledge is only <em>Potential</em> Power." It becomes power only when organized into definite plans of action.
+                            </p>
+                            <p class="text-sm opacity-90 justified-text mb-3 lang-id">
+                                <strong>Mitos:</strong> "Pengetahuan adalah Kekuatan."
+                                <br><strong>Kebenaran:</strong> "Pengetahuan hanyalah <em>Potensi</em> Kekuatan." Ia menjadi kekuatan hanya jika diorganisir ke dalam rencana tindakan yang pasti.
+                            </p>
+
+                            <div class="bg-slate-700 p-4 rounded border-l-4 border-amber-500 mt-4">
+                                <strong class="block text-white mb-2 lang-en">Case Study: Henry Ford's Ignorance</strong>
+                                <strong class="block text-white mb-2 lang-id">Studi Kasus: Ketidaktahuan Henry Ford</strong>
+                                <p class="text-xs opacity-80 justified-text lang-en">
+                                    During WWI, a newspaper called Ford an "ignorant pacifist." Ford sued for libel. In court, lawyers tried to prove he was ignorant by asking him trivia like "How many soldiers did the British send to America in 1776?"
+                                    <br><br>
+                                    Ford got annoyed and said: "Why should I clutter my mind with general knowledge when I have a row of electric push-buttons on my desk? I can push a button and summon men who can answer ANY question I ask."
+                                    <br><br>
+                                    <strong>Lesson:</strong> An educated man is not one who knows a lot of facts, but one who knows where to get knowledge when he needs it.
+                                </p>
+                                <p class="text-xs opacity-80 justified-text lang-id">
+                                    Saat PD I, sebuah koran menyebut Ford "pasifis bodoh." Ford menuntut. Di pengadilan, pengacara mencoba membuktikan dia bodoh dengan bertanya trivia seperti "Berapa tentara Inggris dikirim ke Amerika tahun 1776?"
+                                    <br><br>
+                                    Ford kesal dan berkata: "Mengapa saya harus mengacaukan pikiran saya dengan pengetahuan umum ketika saya punya deretan tombol di meja saya? Saya bisa tekan tombol dan memanggil orang yang bisa menjawab pertanyaan APAPUN."
+                                    <br><br>
+                                    <strong>Pelajaran:</strong> Orang terdidik bukan yang tahu banyak fakta, tapi yang tahu di mana mencari pengetahuan saat membutuhkannya.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Steps 5 & 6</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Imagination & Planning</span>
+                            <span class="lang-id">Imajinasi & Perencanaan</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                                <strong class="block text-slate-900 text-lg mb-2 lang-en">Synthetic Imagination</strong>
+                                <strong class="block text-slate-900 text-lg mb-2 lang-id">Imajinasi Sintetis</strong>
+                                <p class="text-sm text-slate-600 justified-text lang-en">
+                                    Arranging old concepts, ideas, or plans into new combinations. This is what most inventors do. (e.g., Improving the lightbulb).
+                                </p>
+                                <p class="text-sm text-slate-600 justified-text lang-id">
+                                    Menyusun konsep, ide, atau rencana lama menjadi kombinasi baru. Ini yang dilakukan kebanyakan penemu. (misal: Memperbaiki bola lampu).
+                                </p>
+                            </div>
+                            <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                                <strong class="block text-amber-900 text-lg mb-2 lang-en">Creative Imagination</strong>
+                                <strong class="block text-amber-900 text-lg mb-2 lang-id">Imajinasi Kreatif</strong>
+                                <p class="text-sm text-amber-800 justified-text lang-en">
+                                    The finite mind of man has direct communication with Infinite Intelligence. This is where "hunches" and "inspirations" come from.
+                                </p>
+                                <p class="text-sm text-amber-800 justified-text lang-id">
+                                    Pikiran terbatas manusia berkomunikasi langsung dengan Kecerdasan Tak Terbatas. Dari sinilah "firasat" dan "inspirasi" berasal.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">Case Study: The Enchanted Kettle (Coca-Cola)</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Studi Kasus: Ketel Ajaib (Coca-Cola)</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                A country doctor (Doc Pemberton) sold an old kettle, a wooden paddle, and a secret formula to a clerk named <strong>Asa Candler</strong> for $500.
+                                <br><br>
+                                Pemberton thought he sold a headache cure. Candler used his <strong>Imagination</strong>. He didn't change the formula; he added the ingredient the doctor lacked: <strong>Marketing & Vision</strong>. He imagined the drink becoming a national symbol. The kettle began to pour out gold, eventually turning into the Coca-Cola empire.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Seorang dokter desa (Doc Pemberton) menjual ketel tua, pengaduk kayu, dan formula rahasia kepada pegawai toko bernama <strong>Asa Candler</strong> seharga $500.
+                                <br><br>
+                                Pemberton mengira dia menjual obat sakit kepala. Candler menggunakan <strong>Imajinasinya</strong>. Dia tidak mengubah formula; dia menambahkan bahan yang tidak dimiliki dokter itu: <strong>Pemasaran & Visi</strong>. Dia membayangkan minuman itu menjadi simbol nasional. Ketel itu mulai menuangkan emas, akhirnya berubah menjadi kerajaan Coca-Cola.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Steps 7, 8, 9</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Persistence & The Master Mind</span>
+                            <span class="lang-id">Ketekunan & Master Mind</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-slate-50 p-5 rounded-lg border border-slate-200">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">Step 8: Persistence</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Langkah 8: Ketekunan</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Lack of persistence is one of the major causes of failure. It is a state of mind, therefore it can be cultivated.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Kurangnya ketekunan adalah salah satu penyebab utama kegagalan. Ini adalah keadaan pikiran, oleh karena itu dapat dilatih.
+                            </p>
+                            
+                            <div class="mt-4 p-3 bg-white rounded border-l-4 border-amber-500">
+                                <strong class="block text-amber-700 text-sm mb-1 lang-en">Case Study: The V8 Engine</strong>
+                                <strong class="block text-amber-700 text-sm mb-1 lang-id">Studi Kasus: Mesin V8</strong>
+                                <p class="text-xs text-slate-600 justified-text lang-en">
+                                    Henry Ford wanted a V-8 engine cast in one block. Engineers said it was impossible.
+                                    <br>Ford said: "Produce it anyway."
+                                    <br>6 months passed. Nothing. 12 months passed. Nothing. Ford said: "Go right ahead. I want it, and I'll have it."
+                                    <br>Finally, by a stroke of luck/persistence, the secret was discovered. Ford's persistence won over "impossible."
+                                </p>
+                                <p class="text-xs text-slate-600 justified-text lang-id">
+                                    Henry Ford ingin mesin V-8 dicor dalam satu blok. Insinyur bilang itu mustahil.
+                                    <br>Ford bilang: "Tetap buat."
+                                    <br>6 bulan berlalu. Nihil. 12 bulan berlalu. Nihil. Ford bilang: "Teruskan. Saya menginginkannya, dan saya akan mendapatkannya."
+                                    <br>Akhirnya, berkat keberuntungan/ketekunan, rahasianya ditemukan. Ketekunan Ford mengalahkan "kemustahilan."
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg text-white">
+                            <h4 class="font-bold text-amber-400 text-lg mb-3 lang-en">Step 9: Power of the Master Mind</h4>
+                            <h4 class="font-bold text-amber-400 text-lg mb-3 lang-id">Langkah 9: Kekuatan Master Mind</h4>
+                            
+                            <p class="text-sm opacity-90 justified-text mb-3 lang-en">
+                                <strong>Definition:</strong> Coordination of knowledge and effort, in a spirit of harmony, between two or more people, for the attainment of a definite purpose.
+                                <br><br>
+                                <strong>The Psychic Principle:</strong> No two minds ever come together without creating a third, invisible, intangible force, which may be likened to a third mind. (1 + 1 = 3).
+                            </p>
+                            <p class="text-sm opacity-90 justified-text mb-3 lang-id">
+                                <strong>Definisi:</strong> Koordinasi pengetahuan dan upaya, dalam semangat harmoni, antara dua orang atau lebih, untuk mencapai tujuan tertentu.
+                                <br><br>
+                                <strong>Prinsip Psikis:</strong> Tidak ada dua pikiran yang bersatu tanpa menciptakan kekuatan ketiga yang tidak terlihat dan tidak berwujud, yang dapat disamakan dengan pikiran ketiga. (1 + 1 = 3).
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-purple-100 text-purple-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Steps 10-13</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Mystery of Sex & The Mind</span>
+                            <span class="lang-id">Misteri Seks & Pikiran</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">Step 10: Sex Transmutation</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Langkah 10: Transmutasi Seksual</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                This is often misunderstood. It does not mean celibacy. It means <strong>switching the mind</strong> from thoughts of physical expression to thoughts of some other creative nature.
+                                <br><br>
+                                Sexual desire is the most powerful of human desires. When driven by this desire, men develop keenness of imagination, courage, will-power, and persistence. If "transmuted" (redirected) into business or art, this energy creates genius.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Ini sering disalahpahami. Ini bukan berarti selibat. Ini berarti <strong>mengalihkan pikiran</strong> dari ekspresi fisik ke pemikiran kreatif lainnya.
+                                <br><br>
+                                Hasrat seksual adalah hasrat manusia yang paling kuat. Saat didorong hasrat ini, manusia mengembangkan ketajaman imajinasi, keberanian, tekad, dan ketekunan. Jika "ditransmutasikan" (dialihkan) ke bisnis atau seni, energi ini menciptakan kejeniusan.
+                            </p>
+                            
+                            <div class="bg-purple-50 p-3 rounded text-purple-900 text-xs italic lang-en">
+                                Fact: Hill observed that most men do not achieve great success until after the age of 40-50, because that is when they learn to transmute sexual energy rather than dissipate it.
+                            </div>
+                            <div class="bg-purple-50 p-3 rounded text-purple-900 text-xs italic lang-id">
+                                Fakta: Hill mengamati bahwa kebanyakan pria tidak mencapai kesuksesan besar sampai usia 40-50, karena saat itulah mereka belajar mentransmutasikan energi seksual daripada memboroskannya.
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                                <strong class="block text-slate-900 text-lg mb-2 lang-en">Step 11: The Subconscious</strong>
+                                <strong class="block text-slate-900 text-lg mb-2 lang-id">Langkah 11: Bawah Sadar</strong>
+                                <p class="text-sm text-slate-600 justified-text lang-en">
+                                    It works day and night. You cannot entirely control it, but you can hand over to it any plan using the method of Auto-suggestion. It is the link to Infinite Intelligence.
+                                </p>
+                                <p class="text-sm text-slate-600 justified-text lang-id">
+                                    Ia bekerja siang malam. Anda tidak bisa mengontrolnya sepenuhnya, tapi Anda bisa menyerahkan rencana padanya menggunakan Autosugesti. Ini adalah penghubung ke Kecerdasan Tak Terbatas.
+                                </p>
+                            </div>
+                            <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                                <strong class="block text-amber-900 text-lg mb-2 lang-en">Step 13: The Sixth Sense</strong>
+                                <strong class="block text-amber-900 text-lg mb-2 lang-id">Langkah 13: Indra Keenam</strong>
+                                <p class="text-sm text-amber-800 justified-text lang-en">
+                                    The apex of the philosophy. Only understood after mastering the other 12 principles. It is the "receiving set" through which ideas, plans, and thoughts flash into the mind (hunches).
+                                </p>
+                                <p class="text-sm text-amber-800 justified-text lang-id">
+                                    Puncak filosofi. Hanya dipahami setelah menguasai 12 prinsip lain. Ini adalah "alat penerima" di mana ide, rencana, dan pikiran melintas masuk ke pikiran (firasat).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#d97706'; // Amber
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#475569'; // Slate
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
