@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delivering Happiness — Master Edition</title>
+    <title>Delivering Happiness — Ultimate Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -11,8 +11,8 @@
         .fade-in { animation: fadeIn 0.5s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Blue/Yellow Theme for Zappos/Happiness */
-        .active-tab { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); } 
+        /* Zappos Theme: Sky Blue & Happiness Yellow */
+        .active-tab { background: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%); } 
         .content-section { display: none; }
         .content-section.active { display: block; }
         
@@ -91,7 +91,7 @@
         @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 to-sky-50 min-h-screen">
+<body class="bg-gradient-to-br from-sky-50 to-blue-50 min-h-screen">
 
     <button class="lang-btn-simple" onclick="toggleLanguage()">
         <span class="lang-indicator"></span>
@@ -117,8 +117,8 @@
                 <div>
                     <h2 class="text-white font-semibold text-lg">Delivering Happiness</h2>
                     <p class="text-sky-200 text-sm">
-                        <span class="lang-en">Profits, Passion, Purpose</span>
-                        <span class="lang-id">Profit, Gairah, Tujuan</span>
+                        <span class="lang-en">Ultimate Summary</span>
+                        <span class="lang-id">Ringkasan Utama</span>
                     </p>
                 </div>
             </div>
@@ -126,13 +126,13 @@
         
         <div class="p-4">
             <h3 class="text-sky-200 text-sm font-medium uppercase tracking-wider mb-4 px-2">
-                <span class="lang-en">The Zappos Way</span>
-                <span class="lang-id">Cara Zappos</span>
+                <span class="lang-en">The 3 Sections</span>
+                <span class="lang-id">3 Bagian Utama</span>
             </h3>
             <ul class="space-y-2">
                 <li class="nav-item">
                     <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-sky-800 active-tab text-white flex items-center space-x-3">
-                        <span class="w-8 h-8 bg-sky-600 rounded-lg flex items-center justify-center text-xs font-bold">📦</span>
+                        <span class="w-8 h-8 bg-sky-600 rounded-lg flex items-center justify-center text-xs font-bold">🚀</span>
                         <span class="lang-en">Introduction</span>
                         <span class="lang-id">Pendahuluan</span>
                     </button>
@@ -143,8 +143,8 @@
                         <div class="text-left">
                             <div class="font-medium">Profits</div>
                             <div class="text-xs text-sky-300">
-                                <span class="lang-en">The Entrepreneurial Journey</span>
-                                <span class="lang-id">Perjalanan Wirausaha</span>
+                                <span class="lang-en">Finding Your Path</span>
+                                <span class="lang-id">Menemukan Jalan</span>
                             </div>
                         </div>
                     </button>
@@ -155,8 +155,8 @@
                         <div class="text-left">
                             <div class="font-medium">Passion</div>
                             <div class="text-xs text-sky-300">
-                                <span class="lang-en">Culture is Everything</span>
-                                <span class="lang-id">Budaya adalah Segalanya</span>
+                                <span class="lang-en">Profits & Philosophy</span>
+                                <span class="lang-id">Profit & Filosofi</span>
                             </div>
                         </div>
                     </button>
@@ -167,8 +167,8 @@
                         <div class="text-left">
                             <div class="font-medium">Purpose</div>
                             <div class="text-xs text-sky-300">
-                                <span class="lang-en">Customer Service</span>
-                                <span class="lang-id">Layanan Pelanggan</span>
+                                <span class="lang-en">Profits, Passion, Purpose</span>
+                                <span class="lang-id">Profit, Gairah, Tujuan</span>
                             </div>
                         </div>
                     </button>
@@ -179,8 +179,8 @@
                         <div class="text-left">
                             <div class="font-medium">The 10 Values</div>
                             <div class="text-xs text-sky-300">
-                                <span class="lang-en">The Core of Zappos</span>
-                                <span class="lang-id">Inti dari Zappos</span>
+                                <span class="lang-en">Deep Dive</span>
+                                <span class="lang-id">Analisis Mendalam</span>
                             </div>
                         </div>
                     </button>
@@ -191,8 +191,8 @@
                         <div class="text-left">
                             <div class="font-medium">Science of Happiness</div>
                             <div class="text-xs text-sky-300">
-                                <span class="lang-en">Beyond Business</span>
-                                <span class="lang-id">Melampaui Bisnis</span>
+                                <span class="lang-en">Frameworks</span>
+                                <span class="lang-id">Kerangka Kerja</span>
                             </div>
                         </div>
                     </button>
@@ -203,7 +203,7 @@
         <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-sky-900">
             <div class="text-center">
                 <p class="text-sky-400 text-xs">© Tony Hsieh</p>
-                <p class="text-sky-500 text-xs mt-1">Master Edition</p>
+                <p class="text-sky-500 text-xs mt-1">Ultimate Edition</p>
             </div>
         </div>
     </nav>
@@ -235,43 +235,38 @@
                         </span>
                         
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
-                            <span class="lang-en">It's Not About the Shoes</span>
-                            <span class="lang-id">Ini Bukan Tentang Sepatu</span>
+                            <span class="lang-en">Zappos: A Service Company</span>
+                            <span class="lang-id">Zappos: Perusahaan Layanan</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
                         <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-sky-500 pl-4 italic mobile-text justified-text">
-                            <span class="lang-en">"Zappos is a customer service company that just happens to sell shoes."</span>
-                            <span class="lang-id">"Zappos adalah perusahaan layanan pelanggan yang kebetulan menjual sepatu."</span>
+                            <span class="lang-en">"We decided that if we get the culture right, most of the other stuff, like delivering great customer service or building a long-term enduring brand, will happen naturally on its own."</span>
+                            <span class="lang-id">"Kami memutuskan bahwa jika kami memperbaiki budaya, sebagian besar hal lain, seperti memberikan layanan pelanggan yang hebat atau membangun merek jangka panjang yang bertahan lama, akan terjadi secara alami dengan sendirinya."</span>
                         </div>
                         
                         <p class="mobile-text justified-text lang-en">
-                            Tony Hsieh (pronounced Shay) built Zappos from a struggling startup into a billion-dollar giant acquired by Amazon. He did this by violating almost every standard corporate rule. This book is his story of how prioritizing <strong>Culture</strong> and <strong>Happiness</strong> (for employees and customers) led to massive financial success.
+                            Tony Hsieh (1973–2020) was a visionary entrepreneur who believed that <strong>Happiness</strong> was a viable business model. This book documents his journey from a childhood worm farmer to selling LinkExchange to Microsoft for $265 million, and finally betting everything on Zappos, which was acquired by Amazon for $1.2 billion.
                         </p>
                         <p class="mobile-text justified-text lang-id">
-                            Tony Hsieh (dibaca Shay) membangun Zappos dari startup yang kesulitan menjadi raksasa bernilai miliaran dolar yang diakuisisi Amazon. Dia melakukannya dengan melanggar hampir setiap aturan standar perusahaan. Buku ini adalah kisahnya tentang bagaimana memprioritaskan <strong>Budaya</strong> dan <strong>Kebahagiaan</strong> (bagi karyawan dan pelanggan) menghasilkan kesuksesan finansial yang masif.
+                            Tony Hsieh (1973–2020) adalah pengusaha visioner yang percaya bahwa <strong>Kebahagiaan</strong> adalah model bisnis yang layak. Buku ini mendokumentasikan perjalanannya dari peternak cacing saat kecil, menjual LinkExchange ke Microsoft seharga $265 juta, hingga mempertaruhkan segalanya di Zappos, yang diakuisisi Amazon seharga $1,2 miliar.
                         </p>
 
                         <div class="bg-yellow-50 p-6 rounded-xl border border-yellow-200 shadow-sm">
-                            <h4 class="font-bold text-yellow-900 text-lg mb-3 lang-en">The Core Philosophy</h4>
-                            <h4 class="font-bold text-yellow-900 text-lg mb-3 lang-id">Filosofi Inti</h4>
+                            <h4 class="font-bold text-yellow-900 text-lg mb-3 lang-en">The Core Philosophy of Zappos</h4>
+                            <h4 class="font-bold text-yellow-900 text-lg mb-3 lang-id">Filosofi Inti Zappos</h4>
                             
                             <ul class="list-none space-y-3 text-sm text-slate-800">
                                 <li class="flex items-start">
                                     <span class="text-sky-600 mr-2 font-bold">1.</span>
-                                    <span class="lang-en"><strong>Customer Service as Marketing:</strong> Instead of spending money on ads, invest it in customer service. Let your customers do the marketing for you (Word of Mouth).</span>
-                                    <span class="lang-id"><strong>Layanan Pelanggan sebagai Pemasaran:</strong> Daripada buang uang untuk iklan, investasikan di layanan pelanggan. Biarkan pelanggan melakukan pemasaran untuk Anda (Dari Mulut ke Mulut).</span>
+                                    <span class="lang-en"><strong>Customer Service IS Marketing:</strong> Zappos took the money usually spent on billboards and TV ads and put it into customer service (free shipping, 24/7 support, surprise upgrades).</span>
+                                    <span class="lang-id"><strong>Layanan Pelanggan ADALAH Pemasaran:</strong> Zappos mengambil uang yang biasanya untuk iklan TV/papan reklame dan memasukkannya ke layanan pelanggan (gratis ongkir, dukungan 24/7, upgrade kejutan).</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="text-sky-600 mr-2 font-bold">2.</span>
-                                    <span class="lang-en"><strong>Culture is Brand:</strong> Your brand is just a lagging indicator of your culture. If the culture is toxic, the brand will eventually fail.</span>
-                                    <span class="lang-id"><strong>Budaya adalah Merek:</strong> Merek Anda hanyalah indikator tertinggal dari budaya Anda. Jika budayanya beracun, mereknya akhirnya akan gagal.</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <span class="text-sky-600 mr-2 font-bold">3.</span>
-                                    <span class="lang-en"><strong>Chase Vision, Not Money:</strong> Money follows passion and purpose, not the other way around.</span>
-                                    <span class="lang-id"><strong>Kejar Visi, Bukan Uang:</strong> Uang mengikuti gairah dan tujuan, bukan sebaliknya.</span>
+                                    <span class="lang-en"><strong>Culture is Everything:</strong> Your brand is just a lagging indicator of your culture. If the internal culture is strong, the brand will be strong.</span>
+                                    <span class="lang-id"><strong>Budaya adalah Segalanya:</strong> Merek Anda hanyalah indikator tertinggal dari budaya Anda. Jika budaya internal kuat, merek akan kuat.</span>
                                 </li>
                             </ul>
                         </div>
@@ -280,48 +275,54 @@
 
                 <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Section 1</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
-                            <span class="lang-en">Profits (The Early Mistakes)</span>
-                            <span class="lang-id">Profit (Kesalahan Awal)</span>
+                            <span class="lang-en">Profits: In Search of Profits</span>
+                            <span class="lang-id">Profit: Mencari Keuntungan</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
                         <p class="text-base text-slate-600 justified-text lang-en">
-                            Before Zappos, Tony founded <strong>LinkExchange</strong>. He sold it to Microsoft for $265 million when he was just 24. It sounds like a dream, but Tony was miserable.
+                            This section covers Tony's early life. He was always an entrepreneur. From trying to start a worm farm (which failed because the worms escaped) to making buttons by mail order.
                         </p>
                         <p class="text-base text-slate-600 justified-text lang-id">
-                            Sebelum Zappos, Tony mendirikan <strong>LinkExchange</strong>. Dia menjualnya ke Microsoft seharga $265 juta saat usianya baru 24 tahun. Terdengar seperti mimpi, tapi Tony merasa sengsara.
+                            Bagian ini membahas kehidupan awal Tony. Dia selalu menjadi pengusaha. Dari mencoba beternak cacing (gagal karena cacingnya kabur) hingga membuat lencana pesanan lewat pos.
                         </p>
 
                         <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
-                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">Why He Quit LinkExchange</h4>
-                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Mengapa Dia Keluar dari LinkExchange</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">The LinkExchange Lesson</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Pelajaran LinkExchange</h4>
                             <p class="text-sm text-slate-700 justified-text lang-en">
-                                Initially, he hired friends who fit the culture. As they grew fast, they hired anyone with a pulse and skills.
+                                Tony co-founded LinkExchange. It grew rapidly. Microsoft offered to buy it for <strong>$265 million</strong>.
                                 <br><br>
-                                <strong>The Result:</strong> The culture died. Office politics took over. Tony dreaded going to his own company. He realized that <strong>Company Culture</strong> was more important than pure growth or money. He walked away from millions in earn-out bonuses just to escape the toxic environment he created.
+                                <strong>The Problem:</strong> As they scaled, they hired anyone smart, regardless of culture fit. The company became political and bureaucratic. Tony realized he dreaded going to the office. He had lost his passion.
+                                <br><br>
+                                <strong>The Decision:</strong> The deal required him to stay for 12 months to get his full payout ("vesting"). He realized no amount of money was worth being miserable for a year. He walked away early, leaving millions on the table, to pursue happiness. This was his first major realization: <strong>Culture matters more than money.</strong>
                             </p>
                             <p class="text-sm text-slate-700 justified-text lang-id">
-                                Awalnya, dia merekrut teman yang cocok dengan budaya. Karena tumbuh cepat, mereka merekrut siapa saja yang punya keahlian.
+                                Tony mendirikan LinkExchange. Tumbuh pesat. Microsoft menawar <strong>$265 juta</strong>.
                                 <br><br>
-                                <strong>Hasilnya:</strong> Budaya mati. Politik kantor mengambil alih. Tony takut pergi ke perusahaannya sendiri. Dia sadar bahwa <strong>Budaya Perusahaan</strong> lebih penting daripada pertumbuhan murni atau uang. Dia meninggalkan bonus jutaan dolar hanya untuk kabur dari lingkungan beracun yang dia ciptakan.
+                                <strong>Masalahnya:</strong> Saat membesar, mereka merekrut siapa saja yang pintar, tanpa peduli kecocokan budaya. Perusahaan jadi politis dan birokratis. Tony sadar dia takut pergi ke kantor. Dia kehilangan gairahnya.
+                                <br><br>
+                                <strong>Keputusannya:</strong> Kesepakatan mengharuskannya tinggal 12 bulan untuk dapat bayaran penuh ("vesting"). Dia sadar tidak ada jumlah uang yang sepadan dengan kesengsaraan selama setahun. Dia pergi lebih awal, meninggalkan jutaan dolar, demi mengejar kebahagiaan. Ini realisasi besar pertamanya: <strong>Budaya lebih penting dari uang.</strong>
                             </p>
                         </div>
 
-                        <div class="border-l-4 border-sky-500 pl-4 bg-sky-50 p-4 rounded-r-lg">
-                            <strong class="block text-sky-900 text-lg mb-2 lang-en">The Lesson of Poker</strong>
-                            <strong class="block text-sky-900 text-lg mb-2 lang-id">Pelajaran dari Poker</strong>
+                        <div class="bg-sky-50 p-5 rounded-lg border border-sky-200">
+                            <strong class="block text-sky-900 text-lg mb-2 lang-en">The Zappos Pitch</strong>
+                            <strong class="block text-sky-900 text-lg mb-2 lang-id">Pitching Zappos</strong>
                             <p class="text-sm text-slate-700 justified-text lang-en">
-                                Tony was a serious poker player. He applied poker lessons to business:
-                                <br>1. <strong>Table Selection:</strong> It doesn't matter how good you are if you sit at a table with people much better than you. In business, choose an industry (table) where you can win.
-                                <br>2. <strong>Long Term Thinking:</strong> Do not tilt (get emotional) over short-term losses. Focus on the Expected Value (EV) of decisions over 1,000 hands.
+                                Nick Swinmurn approached Tony with an idea to sell shoes online. Tony almost deleted the voicemail. But then Nick shared a stat:
+                                <br><em>"Footwear is a $40 billion industry in the US. 5% of that is already being done by mail order catalogs. People ARE willing to buy shoes without trying them on."</em>
+                                <br><br>
+                                Tony invested. But they struggled. They tried drop-shipping (sending orders to brands to ship), but inventory was inaccurate, and shipping was slow. Tony realized to control the customer experience, <strong>Zappos had to own the inventory and the warehouse.</strong> This was risky and expensive, but necessary for happiness.
                             </p>
                             <p class="text-sm text-slate-700 justified-text lang-id">
-                                Tony adalah pemain poker serius. Dia menerapkan pelajaran poker ke bisnis:
-                                <br>1. <strong>Pemilihan Meja:</strong> Tidak peduli seberapa jago Anda jika duduk di meja dengan orang yang jauh lebih jago. Dalam bisnis, pilih industri (meja) di mana Anda bisa menang.
-                                <br>2. <strong>Berpikir Jangka Panjang:</strong> Jangan emosi (tilt) karena kerugian jangka pendek. Fokus pada Nilai Harapan (EV) dari keputusan lebih dari 1.000 putaran.
+                                Nick Swinmurn mendekati Tony dengan ide jual sepatu online. Tony hampir menghapus pesan suaranya. Tapi Nick membagikan statistik:
+                                <br><em>"Alas kaki adalah industri $40 miliar di AS. 5% darinya sudah dilakukan lewat katalog pos. Orang-orang BERSEDIA beli sepatu tanpa mencobanya."</em>
+                                <br><br>
+                                Tony berinvestasi. Tapi mereka kesulitan. Mereka mencoba drop-shipping (kirim pesanan ke merek untuk dikirim), tapi inventaris tidak akurat, dan pengiriman lambat. Tony sadar untuk mengontrol pengalaman pelanggan, <strong>Zappos harus memiliki inventaris dan gudang sendiri.</strong> Ini berisiko dan mahal, tapi perlu demi kebahagiaan.
                             </p>
                         </div>
                     </div>
@@ -329,136 +330,121 @@
 
                 <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-sky-100 text-sky-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <span class="inline-block px-3 py-1 bg-sky-100 text-sky-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Section 2</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
-                            <span class="lang-en">Passion: Building the Culture</span>
-                            <span class="lang-id">Gairah: Membangun Budaya</span>
+                            <span class="lang-en">Passion: Profits and Passion</span>
+                            <span class="lang-id">Gairah: Profit dan Gairah</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
                         <p class="text-base text-slate-600 justified-text lang-en">
-                            At Zappos, culture is not a plaque on the wall. It is the hiring and firing criteria. If you are a genius but destroy the culture, you are fired.
+                            This section details the dark days. Zappos ran out of money. Tony sold almost all his real estate to fund it. He paid himself a salary of $24/year to extend the runway. But through this struggle, they forged their core philosophy: <strong>Customer Service.</strong>
                         </p>
                         <p class="text-base text-slate-600 justified-text lang-id">
-                            Di Zappos, budaya bukan plakat di dinding. Itu adalah kriteria perekrutan dan pemecatan. Jika Anda jenius tapi merusak budaya, Anda dipecat.
+                            Bagian ini merinci hari-hari gelap. Zappos kehabisan uang. Tony menjual hampir semua propertinya untuk mendanainya. Dia menggaji dirinya $24/tahun untuk memperpanjang napas perusahaan. Tapi melalui perjuangan ini, mereka menempa filosofi inti mereka: <strong>Layanan Pelanggan.</strong>
                         </p>
 
-                        <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg text-white">
-                            <h4 class="font-bold text-sky-400 text-lg mb-3 lang-en">Case Study: "The Offer" (Pay to Quit)</h4>
-                            <h4 class="font-bold text-sky-400 text-lg mb-3 lang-id">Studi Kasus: "Tawaran" (Dibayar untuk Keluar)</h4>
+                        <div class="bg-yellow-50 p-6 rounded-xl border border-yellow-200 shadow-sm">
+                            <h4 class="font-bold text-yellow-900 text-lg mb-3 lang-en">Legendary Case Study: The Pizza Call</h4>
+                            <h4 class="font-bold text-yellow-900 text-lg mb-3 lang-id">Studi Kasus Legendaris: Panggilan Pizza</h4>
                             
-                            <p class="text-sm opacity-90 justified-text mb-3 lang-en">
-                                Zappos has a 4-week rigorous training program. At the end of the training, they make a shocking offer to every new hire:
+                            <p class="text-sm text-yellow-800 justified-text mb-3 lang-en">
+                                Tony was at a Skechers conference in Santa Monica. After a night of partying, his clients were hungry for pizza at 3 AM. Room service was closed.
+                                <br><br>
+                                Tony said: <strong>"Call Zappos."</strong>
+                                <br>Client: "You sell shoes, Tony."
+                                <br>Tony: "Just try it. Put it on speaker."
+                                <br><br>
+                                The client called Zappos customer service. The rep was initially confused ("You want... pizza?") but she didn't hang up. She put them on hold, searched Google, and returned with a list of the 3 nearest pizza places still open in Santa Monica.
+                                <br><br>
+                                <strong>The Lesson:</strong> Zappos isn't about shoes. It's about being helpful. It's about building a relationship so strong that the customer will never buy from anyone else.
                             </p>
-                            <p class="text-sm opacity-90 justified-text mb-3 lang-id">
-                                Zappos memiliki program pelatihan ketat 4 minggu. Di akhir pelatihan, mereka memberikan tawaran mengejutkan kepada setiap karyawan baru:
-                            </p>
-                            
-                            <div class="bg-white text-slate-900 p-4 rounded text-center font-bold text-lg mb-3">
-                                <span class="lang-en">"We will pay you for your time worked, PLUS a $2,000 bonus if you quit right now."</span>
-                                <span class="lang-id">"Kami akan membayar waktu kerja Anda, DITAMBAH bonus $2.000 jika Anda keluar sekarang juga."</span>
-                            </div>
-
-                            <p class="text-sm opacity-90 justified-text lang-en">
-                                <strong>Why?</strong> Tony wants people who are there for the culture and the long-term vision, not just a paycheck. If someone is willing to take $2,000 to leave, they don't have the commitment Zappos needs. Less than 1% take the offer.
-                            </p>
-                            <p class="text-sm opacity-90 justified-text lang-id">
-                                <strong>Mengapa?</strong> Tony menginginkan orang yang ada di sana demi budaya dan visi jangka panjang, bukan cuma gaji. Jika seseorang mau ambil $2.000 untuk pergi, mereka tidak punya komitmen yang dibutuhkan Zappos. Kurang dari 1% yang mengambil tawaran ini.
+                            <p class="text-sm text-yellow-800 justified-text mb-3 lang-id">
+                                Tony berada di konferensi Skechers di Santa Monica. Setelah pesta malam, kliennya lapar ingin pizza jam 3 pagi. Layanan kamar tutup.
+                                <br><br>
+                                Tony bilang: <strong>"Telepon Zappos."</strong>
+                                <br>Klien: "Kamu jual sepatu, Tony."
+                                <br>Tony: "Coba saja. Loudspeaker."
+                                <br><br>
+                                Klien menelepon CS Zappos. Rep awalnya bingung ("Anda mau... pizza?") tapi dia tidak menutup telepon. Dia menahan panggilan, mencari di Google, dan kembali dengan daftar 3 tempat pizza terdekat yang masih buka di Santa Monica.
+                                <br><br>
+                                <strong>Pelajaran:</strong> Zappos bukan tentang sepatu. Ini tentang menjadi penolong. Ini tentang membangun hubungan yang begitu kuat sehingga pelanggan tidak akan pernah membeli dari orang lain.
                             </p>
                         </div>
 
-                        <div class="bg-sky-50 p-5 rounded-lg border border-sky-200">
-                            <h4 class="font-bold text-sky-900 text-lg mb-2 lang-en">Hiring for Luck & Kindness</h4>
-                            <h4 class="font-bold text-sky-900 text-lg mb-2 lang-id">Merekrut Berdasarkan Keberuntungan & Kebaikan</h4>
-                            <ul class="list-disc ml-5 space-y-2 text-sm text-slate-700">
-                                <li>
-                                    <span class="lang-en"><strong>The Shuttle Driver Test:</strong> Zappos interviews often involve a shuttle ride from the airport. Recruiters check with the driver later: "How did the candidate treat you?" If they were rude to the driver, they are rejected, no matter how smart they are.</span>
-                                    <span class="lang-id"><strong>Tes Supir Jemputan:</strong> Wawancara Zappos sering melibatkan jemputan dari bandara. Perekrut cek ke supir nanti: "Gimana kandidat memperlakukanmu?" Jika mereka kasar ke supir, mereka ditolak, tak peduli sepintar apa pun.</span>
-                                </li>
-                                <li>
-                                    <span class="lang-en"><strong>The "Lucky" Question:</strong> Candidates are asked: "On a scale of 1-10, how lucky are you?" Zappos hires people who feel lucky, because they tend to see opportunities rather than problems.</span>
-                                    <span class="lang-id"><strong>Pertanyaan "Beruntung":</strong> Kandidat ditanya: "Skala 1-10, seberapa beruntung Anda?" Zappos merekrut orang yang merasa beruntung, karena mereka cenderung melihat peluang daripada masalah.</span>
-                                </li>
-                            </ul>
+                        <div class="border-l-4 border-blue-500 pl-4 bg-blue-50 p-4 rounded-r-lg">
+                            <strong class="block text-blue-900 text-lg mb-2 lang-en">365-Day Return Policy & Free Shipping</strong>
+                            <strong class="block text-blue-900 text-lg mb-2 lang-id">Kebijakan Retur 365 Hari & Gratis Ongkir</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Most CFOs would say this is financial suicide. Zappos pays for shipping BOTH ways.
+                                <br><br>
+                                <strong>The Logic:</strong> They want customers to order 10 pairs of shoes, try them on in their living room, and return the 9 they don't like. They removed the risk of buying.
+                                <br><br>
+                                <strong>The Result:</strong> Customers who have the highest return rates are actually the <strong>most profitable</strong> customers. They buy more frequently and have higher lifetime value (LTV).
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Kebanyakan CFO akan bilang ini bunuh diri finansial. Zappos membayar pengiriman KEDUA arah.
+                                <br><br>
+                                <strong>Logikanya:</strong> Mereka ingin pelanggan memesan 10 pasang sepatu, mencobanya di ruang tamu, dan mengembalikan 9 yang tidak disuka. Mereka menghapus risiko membeli.
+                                <br><br>
+                                <strong>Hasilnya:</strong> Pelanggan dengan tingkat pengembalian tertinggi justru adalah pelanggan <strong>paling menguntungkan</strong>. Mereka membeli lebih sering dan memiliki nilai seumur hidup (LTV) lebih tinggi.
+                            </p>
                         </div>
                     </div>
                 </section>
 
                 <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <span class="inline-block px-3 py-1 bg-sky-100 text-sky-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Section 3</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
-                            <span class="lang-en">Purpose: Extreme Service</span>
-                            <span class="lang-id">Tujuan: Layanan Ekstrem</span>
+                            <span class="lang-en">Purpose: Profits, Passion, and Purpose</span>
+                            <span class="lang-id">Tujuan: Keuntungan, Gairah, dan Tujuan</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
-                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
-                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">The Telephone is NOT Dead</h4>
-                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Telepon TIDAK Mati</h4>
-                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
-                                While most companies hide their phone number, Zappos puts it at the top of every page. They view every call as an opportunity to build a lifelong emotional connection.
+                        
+                        <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg text-white">
+                            <h4 class="font-bold text-sky-400 text-lg mb-3 lang-en">The Famous "Offer" (Pay to Quit)</h4>
+                            <h4 class="font-bold text-sky-400 text-lg mb-3 lang-id">"Tawaran" Terkenal (Dibayar untuk Keluar)</h4>
+                            
+                            <p class="text-sm opacity-90 justified-text mb-3 lang-en">
+                                New hires go through 4 weeks of training (learning culture, answering phones). At the end of week 1, Tony makes an offer:
                             </p>
-                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
-                                Sementara kebanyakan perusahaan menyembunyikan nomor telepon, Zappos menaruhnya di bagian paling atas setiap halaman. Mereka melihat setiap panggilan sebagai peluang membangun koneksi emosional seumur hidup.
+                            <p class="text-sm opacity-90 justified-text mb-3 lang-id">
+                                Karyawan baru menjalani pelatihan 4 minggu (belajar budaya, angkat telepon). Di akhir minggu 1, Tony memberi tawaran:
                             </p>
                             
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                                <div class="bg-red-50 p-3 rounded border border-red-100">
-                                    <strong class="text-red-700 block mb-1 text-sm lang-en">Standard Call Center</strong>
-                                    <strong class="text-red-700 block mb-1 text-sm lang-id">Call Center Standar</strong>
-                                    <ul class="text-xs text-slate-600 list-disc ml-4">
-                                        <li>Measured by "Average Handle Time" (Speed).</li>
-                                        <li>Use scripts.</li>
-                                        <li>Goal: Get off the phone ASAP.</li>
-                                    </ul>
-                                </div>
-                                <div class="bg-green-50 p-3 rounded border border-green-100">
-                                    <strong class="text-green-700 block mb-1 text-sm lang-en">Zappos Call Center</strong>
-                                    <strong class="text-green-700 block mb-1 text-sm lang-id">Call Center Zappos</strong>
-                                    <ul class="text-xs text-slate-600 list-disc ml-4">
-                                        <li>NO scripts.</li>
-                                        <li>NO time limits.</li>
-                                        <li>Goal: Deliver WOW through service.</li>
-                                    </ul>
-                                </div>
+                            <div class="bg-white text-slate-900 p-4 rounded text-center font-bold text-lg mb-3">
+                                <span class="lang-en">"If you quit today, we will pay you for the time you worked, PLUS a $2,000 bonus."</span>
+                                <span class="lang-id">"Jika Anda keluar hari ini, kami bayar waktu kerja Anda, DITAMBAH bonus $2.000."</span>
                             </div>
-                        </div>
 
-                        <div class="bg-sky-50 p-5 rounded-lg border border-sky-200">
-                            <h4 class="font-bold text-sky-900 text-lg mb-2 lang-en">Legendary Case Study: The Pizza</h4>
-                            <h4 class="font-bold text-sky-900 text-lg mb-2 lang-id">Studi Kasus Legendaris: Pizza</h4>
-                            
-                            <p class="text-sm text-slate-700 justified-text lang-en">
-                                Tony was at a conference in Santa Monica. It was late (post-midnight), and room service was closed. His clients were hungry for pepperoni pizza.
-                                <br><br>
-                                Tony bet them: <strong>"Call Zappos customer service. I bet they will help you find a pizza."</strong>
-                                <br><br>
-                                The client thought he was crazy (Zappos sells shoes!). They put it on speaker. The Zappos rep was confused for 2 seconds, then said: "Hold on." She spent 2 minutes searching and returned with a list of the 3 nearest pizza places open at 2 AM.
-                                <br><br>
-                                <strong>The Lesson:</strong> Zappos isn't about shoes. It's about solving problems and being helpful.
+                            <p class="text-sm opacity-90 justified-text lang-en">
+                                <strong>Why?</strong> He wants to bribe people to leave if they are not 100% committed to the vision. Bad hires cost way more than $2,000 in the long run (toxic culture). About 2-3% of people take the offer. Those who stay are fiercely loyal.
                             </p>
-                            <p class="text-sm text-slate-700 justified-text lang-id">
-                                Tony ada di konferensi di Santa Monica. Sudah larut malam, layanan kamar tutup. Kliennya lapar ingin pizza pepperoni.
-                                <br><br>
-                                Tony bertaruh: <strong>"Telepon CS Zappos. Aku taruhan mereka akan bantu kamu cari pizza."</strong>
-                                <br><br>
-                                Klien pikir dia gila (Zappos jual sepatu!). Mereka loudspeaker. Rep Zappos bingung 2 detik, lalu bilang: "Tunggu sebentar." Dia mencari 2 menit dan kembali dengan daftar 3 tempat pizza terdekat yang buka jam 2 pagi.
-                                <br><br>
-                                <strong>Pelajaran:</strong> Zappos bukan tentang sepatu. Ini tentang memecahkan masalah dan membantu.
+                            <p class="text-sm opacity-90 justified-text lang-id">
+                                <strong>Mengapa?</strong> Dia ingin menyuap orang untuk pergi jika mereka tidak 100% berkomitmen pada visi. Karyawan buruk memakan biaya jauh lebih dari $2.000 dalam jangka panjang (budaya beracun). Sekitar 2-3% orang mengambil tawaran itu. Mereka yang tinggal menjadi sangat setia.
                             </p>
                         </div>
 
-                        <div class="border-l-4 border-yellow-500 pl-4 bg-yellow-50 p-4 rounded-r-lg">
-                            <strong class="block text-slate-900 mb-1 lang-en">Record Breaking Call</strong>
-                            <strong class="block text-slate-900 mb-1 lang-id">Rekor Panggilan Terlama</strong>
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">The Culture Book</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Buku Budaya</h4>
                             <p class="text-sm text-slate-700 justified-text lang-en">
-                                The longest call at Zappos lasted <strong>10 hours and 43 minutes</strong>. The rep didn't just sell shoes; she chatted, listened, and connected. Zappos celebrated this, they didn't punish it.
+                                Every year, Zappos asks employees to write a few paragraphs about what Zappos culture means to them.
+                                <br><br>
+                                <strong>The Rule:</strong> It is unedited. Good or bad, it goes in the book.
+                                <br><br>
+                                This transparency builds trust. It serves as a yearbook for employees and a marketing tool for prospective hires and partners. It proves the culture is real, not just a memo from HR.
                             </p>
                             <p class="text-sm text-slate-700 justified-text lang-id">
-                                Panggilan terlama di Zappos berlangsung <strong>10 jam 43 menit</strong>. Rep itu tidak cuma jual sepatu; dia ngobrol, mendengarkan, dan terhubung. Zappos merayakan ini, tidak menghukumnya.
+                                Setiap tahun, Zappos meminta karyawan menulis beberapa paragraf tentang arti budaya Zappos bagi mereka.
+                                <br><br>
+                                <strong>Aturannya:</strong> Tidak diedit. Bagus atau buruk, semua masuk buku.
+                                <br><br>
+                                Transparansi ini membangun kepercayaan. Ini berfungsi sebagai buku tahunan bagi karyawan dan alat pemasaran bagi calon karyawan dan mitra. Ini membuktikan budayanya nyata, bukan sekadar memo dari HRD.
                             </p>
                         </div>
                     </div>
@@ -475,62 +461,62 @@
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
                         <p class="text-base text-slate-600 justified-text lang-en">
-                            These aren't just corporate jargon. Zappos hires, fires, and reviews performance based on these 10 values.
+                            Zappos didn't just write these on a wall. They interview based on them. They fire based on them. (50% of a performance review is based on these values, not just job output).
                         </p>
                         <p class="text-base text-slate-600 justified-text lang-id">
-                            Ini bukan sekadar jargon perusahaan. Zappos merekrut, memecat, dan meninjau kinerja berdasarkan 10 nilai ini.
+                            Zappos tidak hanya menulis ini di dinding. Mereka mewawancarai berdasarkan ini. Mereka memecat berdasarkan ini. (50% dari tinjauan kinerja didasarkan pada nilai-nilai ini, bukan hanya hasil kerja).
                         </p>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
-                                <strong class="text-indigo-700 block mb-1">1. Deliver WOW Through Service</strong>
-                                <span class="text-xs text-slate-600 lang-en">Go above and beyond what is expected.</span>
-                                <span class="text-xs text-slate-600 lang-id">Lakukan lebih dari yang diharapkan.</span>
+                            <div class="bg-sky-50 p-4 rounded border border-sky-200">
+                                <strong class="text-sky-900 block mb-1">1. Deliver WOW Through Service</strong>
+                                <span class="text-xs text-slate-600 lang-en">"WOW" is a verb. It means doing something a little unconventional and innovative that creates an emotional impact.</span>
+                                <span class="text-xs text-slate-600 lang-id">"WOW" adalah kata kerja. Artinya melakukan sesuatu yang sedikit tidak konvensional dan inovatif yang menciptakan dampak emosional.</span>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
-                                <strong class="text-indigo-700 block mb-1">2. Embrace and Drive Change</strong>
-                                <span class="text-xs text-slate-600 lang-en">Don't fear change; initiate it.</span>
-                                <span class="text-xs text-slate-600 lang-id">Jangan takut perubahan; mulailah.</span>
+                            <div class="bg-sky-50 p-4 rounded border border-sky-200">
+                                <strong class="text-sky-900 block mb-1">2. Embrace and Drive Change</strong>
+                                <span class="text-xs text-slate-600 lang-en">We must never get comfortable with the status quo.</span>
+                                <span class="text-xs text-slate-600 lang-id">Kita tidak boleh merasa nyaman dengan status quo.</span>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
-                                <strong class="text-indigo-700 block mb-1">3. Create Fun and A Little Weirdness</strong>
-                                <span class="text-xs text-slate-600 lang-en">Be your authentic self, even if it's quirky.</span>
-                                <span class="text-xs text-slate-600 lang-id">Jadilah diri sendiri, meski agak aneh.</span>
+                            <div class="bg-sky-50 p-4 rounded border border-sky-200">
+                                <strong class="text-sky-900 block mb-1">3. Create Fun and A Little Weirdness</strong>
+                                <span class="text-xs text-slate-600 lang-en">We want the "real you" at work, not a corporate drone.</span>
+                                <span class="text-xs text-slate-600 lang-id">Kami ingin "diri aslimu" di tempat kerja, bukan robot korporat.</span>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
-                                <strong class="text-indigo-700 block mb-1">4. Be Adventurous, Creative, and Open-Minded</strong>
-                                <span class="text-xs text-slate-600 lang-en">Take risks. Mistakes are okay.</span>
-                                <span class="text-xs text-slate-600 lang-id">Ambil risiko. Kesalahan itu oke.</span>
+                            <div class="bg-sky-50 p-4 rounded border border-sky-200">
+                                <strong class="text-sky-900 block mb-1">4. Be Adventurous, Creative, and Open-Minded</strong>
+                                <span class="text-xs text-slate-600 lang-en">Takes risks. Making mistakes is better than inaction.</span>
+                                <span class="text-xs text-slate-600 lang-id">Ambil risiko. Membuat kesalahan lebih baik daripada tidak bertindak.</span>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
-                                <strong class="text-indigo-700 block mb-1">5. Pursue Growth and Learning</strong>
-                                <span class="text-xs text-slate-600 lang-en">Zappos has a library. Read and grow.</span>
-                                <span class="text-xs text-slate-600 lang-id">Zappos punya perpustakaan. Baca & tumbuh.</span>
+                            <div class="bg-sky-50 p-4 rounded border border-sky-200">
+                                <strong class="text-sky-900 block mb-1">5. Pursue Growth and Learning</strong>
+                                <span class="text-xs text-slate-600 lang-en">Employees must grow personally and professionally.</span>
+                                <span class="text-xs text-slate-600 lang-id">Karyawan harus tumbuh secara pribadi dan profesional.</span>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
-                                <strong class="text-indigo-700 block mb-1">6. Build Open and Honest Relationships</strong>
-                                <span class="text-xs text-slate-600 lang-en">Communication via trust.</span>
-                                <span class="text-xs text-slate-600 lang-id">Komunikasi melalui kepercayaan.</span>
+                            <div class="bg-sky-50 p-4 rounded border border-sky-200">
+                                <strong class="text-sky-900 block mb-1">6. Build Open and Honest Relationships</strong>
+                                <span class="text-xs text-slate-600 lang-en">Communication is key. Trust allows speed.</span>
+                                <span class="text-xs text-slate-600 lang-id">Komunikasi adalah kunci. Kepercayaan memungkinkan kecepatan.</span>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
-                                <strong class="text-indigo-700 block mb-1">7. Build a Positive Team and Family Spirit</strong>
-                                <span class="text-xs text-slate-600 lang-en">Coworkers are more than just coworkers.</span>
-                                <span class="text-xs text-slate-600 lang-id">Rekan kerja lebih dari sekadar rekan.</span>
+                            <div class="bg-sky-50 p-4 rounded border border-sky-200">
+                                <strong class="text-sky-900 block mb-1">7. Build a Positive Team and Family Spirit</strong>
+                                <span class="text-xs text-slate-600 lang-en">We are more than just coworkers. We care about each other.</span>
+                                <span class="text-xs text-slate-600 lang-id">Kami lebih dari sekadar rekan kerja. Kami peduli satu sama lain.</span>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
-                                <strong class="text-indigo-700 block mb-1">8. Do More With Less</strong>
-                                <span class="text-xs text-slate-600 lang-en">Efficiency and innovation.</span>
-                                <span class="text-xs text-slate-600 lang-id">Efisiensi dan inovasi.</span>
+                            <div class="bg-sky-50 p-4 rounded border border-sky-200">
+                                <strong class="text-sky-900 block mb-1">8. Do More With Less</strong>
+                                <span class="text-xs text-slate-600 lang-en">Operational efficiency. Innovation comes from constraints.</span>
+                                <span class="text-xs text-slate-600 lang-id">Efisiensi operasional. Inovasi berasal dari keterbatasan.</span>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
-                                <strong class="text-indigo-700 block mb-1">9. Be Passionate and Determined</strong>
-                                <span class="text-xs text-slate-600 lang-en">Passion is the fuel.</span>
-                                <span class="text-xs text-slate-600 lang-id">Gairah adalah bahan bakarnya.</span>
+                            <div class="bg-sky-50 p-4 rounded border border-sky-200">
+                                <strong class="text-sky-900 block mb-1">9. Be Passionate and Determined</strong>
+                                <span class="text-xs text-slate-600 lang-en">Passion is the fuel that drives us forward.</span>
+                                <span class="text-xs text-slate-600 lang-id">Gairah adalah bahan bakar yang mendorong kami maju.</span>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
-                                <strong class="text-indigo-700 block mb-1">10. Be Humble</strong>
-                                <span class="text-xs text-slate-600 lang-en">No arrogance, no matter how successful.</span>
-                                <span class="text-xs text-slate-600 lang-id">Tidak sombong, sesukses apa pun.</span>
+                            <div class="bg-sky-50 p-4 rounded border border-sky-200">
+                                <strong class="text-sky-900 block mb-1">10. Be Humble</strong>
+                                <span class="text-xs text-slate-600 lang-en">There is always more to learn. Check your ego at the door.</span>
+                                <span class="text-xs text-slate-600 lang-id">Selalu ada yang bisa dipelajari. Tinggalkan ego di pintu.</span>
                             </div>
                         </div>
                     </div>
@@ -547,34 +533,34 @@
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
                         <div class="bg-gradient-to-r from-sky-50 to-green-50 p-6 rounded-xl border border-sky-200">
-                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">The 3 Types of Happiness</h4>
-                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">3 Jenis Kebahagiaan</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">The 3 Frameworks of Happiness</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">3 Kerangka Kebahagiaan</h4>
                             
                             <ul class="space-y-4">
                                 <li class="flex flex-col">
-                                    <strong class="text-sky-700 lang-en">1. Pleasure (Rock Star)</strong>
-                                    <strong class="text-sky-700 lang-id">1. Kesenangan (Bintang Rock)</strong>
-                                    <span class="text-sm text-slate-600 lang-en">Chasing the next high. Very short-term. Once the stimulus is gone, happiness is gone. (Least sustainable).</span>
-                                    <span class="text-sm text-slate-600 lang-id">Mengejar kesenangan sesaat. Sangat jangka pendek. Begitu stimulus hilang, bahagia hilang. (Paling tidak berkelanjutan).</span>
+                                    <strong class="text-sky-700 lang-en">1. Pleasure (Rock Star Type)</strong>
+                                    <strong class="text-sky-700 lang-id">1. Kesenangan (Tipe Bintang Rock)</strong>
+                                    <span class="text-sm text-slate-600 lang-en">Chasing the next high (buying things, parties). This is the <strong>shortest</strong> lasting type of happiness. You need a constant stimulus to maintain it.</span>
+                                    <span class="text-sm text-slate-600 lang-id">Mengejar kesenangan berikutnya (beli barang, pesta). Ini tipe kebahagiaan <strong>paling singkat</strong>. Anda butuh stimulus konstan untuk mempertahankannya.</span>
                                 </li>
                                 <li class="flex flex-col">
                                     <strong class="text-sky-700 lang-en">2. Passion (Flow)</strong>
                                     <strong class="text-sky-700 lang-id">2. Gairah (Aliran/Flow)</strong>
-                                    <span class="text-sm text-slate-600 lang-en">Engagement. Being so absorbed in an activity that time flies. More sustainable than pleasure.</span>
-                                    <span class="text-sm text-slate-600 lang-id">Keterlibatan. Begitu larut dalam aktivitas hingga waktu berlalu cepat. Lebih berkelanjutan dari kesenangan.</span>
+                                    <span class="text-sm text-slate-600 lang-en">Being so engaged in an activity that you lose track of time. This is the <strong>second longest</strong> lasting type.</span>
+                                    <span class="text-sm text-slate-600 lang-id">Begitu terlibat dalam aktivitas hingga lupa waktu. Ini tipe <strong>kedua terlama</strong>.</span>
                                 </li>
                                 <li class="flex flex-col">
                                     <strong class="text-sky-700 lang-en">3. Higher Purpose (Meaning)</strong>
                                     <strong class="text-sky-700 lang-id">3. Tujuan Lebih Tinggi (Makna)</strong>
-                                    <span class="text-sm text-slate-600 lang-en">Being part of something bigger than yourself. This is the <strong>most sustainable</strong> form of happiness.</span>
-                                    <span class="text-sm text-slate-600 lang-id">Menjadi bagian dari sesuatu yang lebih besar dari diri sendiri. Ini adalah bentuk kebahagiaan <strong>paling berkelanjutan</strong>.</span>
+                                    <span class="text-sm text-slate-600 lang-en">Being part of something bigger than yourself (e.g., Zappos culture, charity, family). This is the <strong>most sustainable</strong> form of happiness.</span>
+                                    <span class="text-sm text-slate-600 lang-id">Menjadi bagian dari sesuatu yang lebih besar dari diri sendiri (misal: budaya Zappos, amal, keluarga). Ini adalah bentuk kebahagiaan <strong>paling berkelanjutan</strong>.</span>
                                 </li>
                             </ul>
                         </div>
 
                         <div class="text-center mt-6 p-4 bg-slate-50 rounded-lg">
-                            <p class="text-slate-600 italic lang-en">"Zappos decided to focus on Passion and Higher Purpose. Delivering Happiness to the world is the purpose; selling shoes is just the mechanism."</p>
-                            <p class="text-slate-600 italic lang-id">"Zappos memutuskan untuk fokus pada Gairah dan Tujuan Lebih Tinggi. Mengantarkan Kebahagiaan ke dunia adalah tujuannya; menjual sepatu hanyalah mekanismenya."</p>
+                            <p class="text-slate-600 italic lang-en">"Happiness is really just about four things: Perceived Control, Perceived Progress, Connectedness (number and depth of your relationships), and Vision/Meaning (being part of something bigger than yourself)."</p>
+                            <p class="text-slate-600 italic lang-id">"Kebahagiaan sebenarnya hanya tentang empat hal: Kontrol yang Dirasakan, Kemajuan yang Dirasakan, Keterhubungan (jumlah dan kedalaman hubungan Anda), dan Visi/Makna (menjadi bagian dari sesuatu yang lebih besar dari diri sendiri)."</p>
                         </div>
                     </div>
                 </section>
