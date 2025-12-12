@@ -8,7 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Inter', sans-serif; }
-    /* Efek hover halus untuk gambar */
     .book-card:hover img {
         transform: scale(1.05);
     }
@@ -44,34 +43,129 @@
   <main id="content" class="pb-10 max-w-md mx-auto min-h-screen"></main>
 
   <script>
-    // Data disesuaikan dengan folder di gambar Anda
+    /* UPDATE: Nama file gambar disesuaikan dengan screenshot.
+      Pastikan folder gambar bernama 'image'.
+    */
     const books = [
-      { dir: "Deep-Work", title: "Deep Work", author: "Cal Newport", img: "https://picsum.photos/seed/deepwork/600/900" },
-      { dir: "Delivering-Happiness", title: "Delivering Happiness", author: "Tony Hsieh", img: "https://picsum.photos/seed/delivering/600/900" },
-      { dir: "Don-Quixote", title: "Don Quixote", author: "Miguel de Cervantes", img: "https://picsum.photos/seed/quixote/600/900" },
-      { dir: "Eat-That-Frog", title: "Eat That Frog!", author: "Brian Tracy", img: "https://picsum.photos/seed/eatfrog/600/900" },
-      { dir: "Good-to-Great", title: "Good to Great", author: "Jim Collins", img: "https://picsum.photos/seed/goodgreat/600/900" },
-      { dir: "How-to-Win-Friends-and-Influence-People", title: "How to Win Friends & Influence People", author: "Dale Carnegie", img: "https://picsum.photos/seed/winfriends/600/900" },
-      { dir: "Influence:-Science-and-Practice", title: "Influence: Science and Practice", author: "Robert Cialdini", img: "https://picsum.photos/seed/influence/600/900" },
-      { dir: "Outliers", title: "Outliers", author: "Malcolm Gladwell", img: "https://picsum.photos/seed/outliers/600/900" },
-      { dir: "Rich-Dad-Poor-Dad", title: "Rich Dad Poor Dad", author: "Robert Kiyosaki", img: "https://picsum.photos/seed/richdad/600/900" },
-      { dir: "The-48-Law-of-Power", title: "The 48 Laws of Power", author: "Robert Greene", img: "https://picsum.photos/seed/48laws/600/900" },
-      { dir: "The-4-Hour-Workweek", title: "The 4-Hour Workweek", author: "Tim Ferriss", img: "https://picsum.photos/seed/4hour/600/900" },
-      { dir: "The-Lean-Startup", title: "The Lean Startup", author: "Eric Ries", img: "https://picsum.photos/seed/leanstartup/600/900" },
-      { dir: "The-Magic-of-Thinking-Big", title: "The Magic of Thinking Big", author: "David J. Schwartz", img: "https://picsum.photos/seed/thinkingbig/600/900" },
-      { dir: "The-One-Thing", title: "The One Thing", author: "Gary Keller", img: "https://picsum.photos/seed/onething/600/900" },
-      { dir: "Think-and-Grow-Rich", title: "Think and Grow Rich", author: "Napoleon Hill", img: "https://picsum.photos/seed/growrich/600/900" },
-      { dir: "You-Can-Heal-Your-Life", title: "You Can Heal Your Life", author: "Louise Hay", img: "https://picsum.photos/seed/heallife/600/900" },
-      { dir: "Your-Erroneous-Zones", title: "Your Erroneous Zones", author: "Wayne Dyer", img: "https://picsum.photos/seed/erroneous/600/900" },
-      { dir: "toyota", title: "The Toyota Way", author: "Jeffrey K. Liker", img: "https://picsum.photos/seed/toyota/600/900" }
+      { 
+        dir: "Deep-Work", 
+        title: "Deep Work", 
+        author: "Cal Newport", 
+        img: "image/DeepWorkNEW_1100x.webp" 
+      },
+      { 
+        dir: "Delivering-Happiness", 
+        title: "Delivering Happiness", 
+        author: "Tony Hsieh", 
+        img: "image/DeliveringHappinessNEW_1100x.webp" 
+      },
+      { 
+        dir: "Eat-That-Frog", 
+        title: "Eat That Frog!", 
+        author: "Brian Tracy", 
+        img: "image/EatThatFrog_2NEW_1100x.webp" 
+      },
+      { 
+        dir: "Good-to-Great", 
+        title: "Good to Great", 
+        author: "Jim Collins", 
+        img: "image/GoodtoGreatNEW_1100x.webp" 
+      },
+      { 
+        dir: "How-to-Win-Friends-and-Influence-People", 
+        title: "How to Win Friends & Influence People", 
+        author: "Dale Carnegie", 
+        img: "image/HowtowinFriendsNEW_1100x.webp" 
+      },
+      { 
+        dir: "Influence:-Science-and-Practice", 
+        title: "Influence: Science and Practice", 
+        author: "Robert Cialdini", 
+        img: "image/Influence Science and Practice Robert Cialdini.webp" 
+      },
+      { 
+        dir: "Outliers", 
+        title: "Outliers", 
+        author: "Malcolm Gladwell", 
+        img: "image/Outliers_2_NEW_1100x.webp" 
+      },
+      { 
+        dir: "Rich-Dad-Poor-Dad", 
+        title: "Rich Dad Poor Dad", 
+        author: "Robert Kiyosaki", 
+        img: "image/RichDadPoorDadNEW_1100x.webp" 
+      },
+      { 
+        dir: "The-Magic-of-Thinking-Big", 
+        title: "The Magic of Thinking Big", 
+        author: "David J. Schwartz", 
+        img: "image/The_Magic_of_Thinking_Big_PRH_NEW_1100x.webp" 
+      },
+      { 
+        dir: "The-4-Hour-Workweek", 
+        title: "The 4-Hour Workweek", 
+        author: "Tim Ferriss", 
+        img: "image/The4-HourWorkweek2NEW_1100x.webp" 
+      },
+      { 
+        dir: "The-48-Law-of-Power", 
+        title: "The 48 Laws of Power", 
+        author: "Robert Greene", 
+        img: "image/The48LawsofPowerNEW_1100x.webp" 
+      },
+      { 
+        dir: "The-Lean-Startup", 
+        title: "The Lean Startup", 
+        author: "Eric Ries", 
+        img: "image/TheLeanStartupNEW_1100x.webp" 
+      },
+      { 
+        dir: "The-One-Thing", 
+        title: "The One Thing", 
+        author: "Gary Keller", 
+        img: "image/TheOneThingNEW_1100x.webp" 
+      },
+      { 
+        dir: "Think-and-Grow-Rich", 
+        title: "Think and Grow Rich", 
+        author: "Napoleon Hill", 
+        img: "image/ThinkandGrowRichNEW_1100x.webp" 
+      },
+      { 
+        dir: "You-Can-Heal-Your-Life", 
+        title: "You Can Heal Your Life", 
+        author: "Louise Hay", 
+        // PENTING: Di screenshot file ini formatnya .html (salah). 
+        // Anda perlu upload gambar .webp dengan nama di bawah ini agar muncul.
+        img: "image/You Can Heal Your Life — Louise Hay cover.webp" 
+      },
+      { 
+        dir: "Your-Erroneous-Zones", 
+        title: "Your Erroneous Zones", 
+        author: "Wayne Dyer", 
+        img: "image/Your Erroneous Zones — Wayne Dyer.webp" 
+      },
+      // Buku di bawah ini tidak terlihat di screenshot list file, saya beri placeholder
+      { 
+        dir: "Don-Quixote", 
+        title: "Don Quixote", 
+        author: "Miguel de Cervantes", 
+        img: "https://picsum.photos/seed/quixote/600/900" 
+      },
+      { 
+        dir: "toyota", 
+        title: "The Toyota Way", 
+        author: "Jeffrey K. Liker", 
+        img: "https://picsum.photos/seed/toyota/600/900" 
+      }
     ];
 
     function toggleDrawer() {
       document.getElementById('drawer-check').checked = false;
     }
 
-    // Fungsi untuk membuka link eksternal
     function openBook(directory) {
+        // Link redirect sesuai request
         const baseUrl = "https://lp1.affiliateid.my.id/";
         window.location.href = baseUrl + directory;
     }
@@ -99,21 +193,19 @@
           </div>`;
       }
       
-      // Halaman Statis
-      if (page === 'about')  content.innerHTML = `<div class="p-6 pt-10"><div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center"><h1 class="text-2xl font-bold mb-4 text-gray-800">About</h1><p class="text-gray-600">This app curates the best-selling books for your personal growth.</p></div></div>`;
-      if (page === 'terms')  content.innerHTML = `<div class="p-6 pt-10"><div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center"><h1 class="text-2xl font-bold mb-4 text-gray-800">Terms</h1><p class="text-gray-600">Educational purposes only.</p></div></div>`;
-      if (page === 'privacy') content.innerHTML = `<div class="p-6 pt-10"><div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center"><h1 class="text-2xl font-bold mb-4 text-gray-800">Privacy</h1><p class="text-gray-600">No personal data is collected.</p></div></div>`;
+      if (page === 'about') content.innerHTML = `<div class="p-6 pt-10"><div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center"><h1 class="text-2xl font-bold mb-4 text-gray-800">About</h1><p class="text-gray-600">Curated best-sellers.</p></div></div>`;
+      if (page === 'terms') content.innerHTML = `<div class="p-6 pt-10"><div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center"><h1 class="text-2xl font-bold mb-4 text-gray-800">Terms</h1><p class="text-gray-600">Educational use.</p></div></div>`;
+      if (page === 'privacy') content.innerHTML = `<div class="p-6 pt-10"><div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center"><h1 class="text-2xl font-bold mb-4 text-gray-800">Privacy</h1><p class="text-gray-600">No data collected.</p></div></div>`;
     }
 
     function renderBooks(bookList) {
       if (bookList.length === 0) {
           return `<div class="col-span-2 text-center text-gray-400 py-10">No books found</div>`;
       }
-      // Perhatikan di sini: onclick memanggil openBook dengan parameter directory
       return bookList.map(b => `
         <div onclick="openBook('${b.dir}')" class="book-card cursor-pointer group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
-          <div class="overflow-hidden h-56 relative">
-            <img src="${b.img}" alt="${b.title}" class="w-full h-full object-cover transition-transform duration-500">
+          <div class="overflow-hidden h-56 relative bg-gray-200">
+            <img src="${b.img}" alt="${b.title}" loading="lazy" class="w-full h-full object-cover transition-transform duration-500">
             <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
           </div>
           <div class="p-4">
@@ -132,7 +224,6 @@
       document.getElementById('book-grid').innerHTML = renderBooks(filtered);
     }
 
-    // Inisialisasi
     window.onload = () => showPage('home');
   </script>
 </body>
