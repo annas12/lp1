@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outliers — Detailed Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Teal/Slate Theme for Outliers */
+        .active-tab { background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.7; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.6; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(20, 184, 166, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #0d9488; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-teal-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-teal-500 to-teal-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">?</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Outliers</h2>
+                    <p class="text-slate-400 text-sm">
+                        <span class="lang-en">The Story of Success</span>
+                        <span class="lang-id">Kisah Sukses</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">Part 1: Opportunity</span>
+                <span class="lang-id">Bagian 1: Peluang</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center text-xs font-bold">📖</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">The 10,000 Hour Rule</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Practice & Preparation</span>
+                                <span class="lang-id">Latihan & Persiapan</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Matthew Effect</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Timing & Birthdates</span>
+                                <span class="lang-id">Waktu & Tanggal Lahir</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Trouble with Geniuses</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">IQ vs. Practical Intel.</span>
+                                <span class="lang-id">IQ vs. Kecerdasan Praktis</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+
+             <h3 class="text-slate-400 text-sm font-medium uppercase tracking-wider mb-4 px-2 mt-6">
+                <span class="lang-en">Part 2: Legacy</span>
+                <span class="lang-id">Bagian 2: Warisan</span>
+            </h3>
+            <ul class="space-y-2">
+                 <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Plane Crashes</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Culture & Communication</span>
+                                <span class="lang-id">Budaya & Komunikasi</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                 <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Rice Paddies</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Math & Hard Work</span>
+                                <span class="lang-id">Matematika & Kerja Keras</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© Malcolm Gladwell</p>
+                <p class="text-slate-500 text-xs mt-1">Detailed Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    Outliers
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    <span class="lang-en">Why Some People Succeed and Others Don't</span>
+                    <span class="lang-id">Mengapa Beberapa Orang Sukses dan yang Lain Tidak</span>
+                </p>
+                <div class="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-teal-500 to-slate-800 mx-auto mt-3 sm:mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-teal-100 text-teal-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">Introduction</span>
+                            <span class="lang-id">Pendahuluan</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Myth of the Self-Made Man</span>
+                            <span class="lang-id">Mitos Manusia yang Sukses Sendiri</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-4 sm:space-y-6">
+                        <div class="text-base sm:text-lg md:text-xl text-slate-600 font-medium border-l-4 border-teal-500 pl-4 sm:pl-6 italic mobile-text justified-text">
+                            <span class="lang-en">"Success is not a random act. It arises out of a predictable and powerful set of circumstances and opportunities."</span>
+                            <span class="lang-id">"Kesuksesan bukanlah tindakan acak. Ia muncul dari serangkaian keadaan dan peluang yang dapat diprediksi dan kuat."</span>
+                        </div>
+                        
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                             <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">What is an Outlier?</h4>
+                             <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Apa itu Outlier?</h4>
+                             <p class="text-sm text-slate-700 justified-text lang-en">
+                                1. Something that is situated away from or classed differently from a main or related body.
+                                <br>
+                                2. A statistical observation that is markedly different in value from the others of the sample.
+                             </p>
+                             <p class="text-sm text-slate-700 justified-text lang-id">
+                                1. Sesuatu yang terletak jauh dari atau diklasifikasikan berbeda dari badan utama atau terkait.
+                                <br>
+                                2. Pengamatan statistik yang nilainya sangat berbeda dari yang lain dalam sampel tersebut.
+                             </p>
+                        </div>
+                        
+                        <div class="mobile-text justified-text">
+                            <span class="lang-en">
+                                We often attribute success to individual merit: intelligence, ambition, and hard work. Gladwell argues this is wrong. Success is a result of <strong>accumulative advantage</strong>: hidden advantages, extraordinary opportunities, and cultural legacies that allow them to learn and work hard in ways others cannot.
+                            </span>
+                            <span class="lang-id">
+                                Kita sering mengaitkan kesuksesan dengan kelebihan individu: kecerdasan, ambisi, dan kerja keras. Gladwell berpendapat ini salah. Kesuksesan adalah hasil dari <strong>keuntungan kumulatif</strong>: keunggulan tersembunyi, peluang luar biasa, dan warisan budaya yang memungkinkan mereka belajar dan bekerja keras dengan cara yang tidak bisa dilakukan orang lain.
+                            </span>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The 10,000 Hour Rule</span>
+                            <span class="lang-id">Aturan 10.000 Jam</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Talent is not enough. Researchers have settled on what they believe is the magic number for true expertise: <strong>10,000 hours</strong>. But the key insight is not just hard work, but the <em>opportunity</em> to work that hard.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Bakat saja tidak cukup. Para peneliti telah menyepakati angka ajaib untuk keahlian sejati: <strong>10.000 jam</strong>. Namun wawasan kuncinya bukan hanya kerja keras, melainkan <em>kesempatan</em> untuk bekerja sekeras itu.
+                        </p>
+
+                        <div class="space-y-6">
+                            <div class="border-l-4 border-teal-500 pl-4 bg-teal-50 p-4 rounded-r-lg">
+                                <h3 class="text-lg font-bold text-slate-900 mb-1">Case Study 1: The Beatles</h3>
+                                <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                    Before they came to America in 1964, the Beatles were not an overnight success. They had a unique opportunity in <strong>Hamburg, Germany</strong>.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                    Sebelum mereka datang ke Amerika pada tahun 1964, The Beatles bukanlah sukses semalam. Mereka memiliki kesempatan unik di <strong>Hamburg, Jerman</strong>.
+                                </p>
+                                <ul class="list-disc ml-5 text-sm text-slate-700 space-y-1">
+                                    <li>
+                                        <span class="lang-en">They played in strip clubs for 8 hours a night, 7 days a week.</span>
+                                        <span class="lang-id">Mereka bermain di klub striptis selama 8 jam semalam, 7 hari seminggu.</span>
+                                    </li>
+                                    <li>
+                                        <span class="lang-en">By 1964, they had performed live <strong>1,200 times</strong>. Most bands don't perform 1,200 times in their entire career.</span>
+                                        <span class="lang-id">Pada tahun 1964, mereka telah tampil live sebanyak <strong>1.200 kali</strong>. Kebanyakan band tidak tampil 1.200 kali sepanjang karir mereka.</span>
+                                    </li>
+                                    <li>
+                                        <span class="lang-en"><strong>The Outlier Factor:</strong> The sheer volume of practice forced them to get better and experiment.</span>
+                                        <span class="lang-id"><strong>Faktor Outlier:</strong> Volume latihan yang besar memaksa mereka menjadi lebih baik dan bereksperimen.</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="border-l-4 border-slate-500 pl-4 bg-slate-50 p-4 rounded-r-lg">
+                                <h3 class="text-lg font-bold text-slate-900 mb-1">Case Study 2: Bill Gates</h3>
+                                <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                    Gates is brilliant, but his success relied on a series of incredibly rare opportunities starting in 1968.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                    Gates memang jenius, tetapi kesuksesannya bergantung pada serangkaian peluang yang sangat langka dimulai pada tahun 1968.
+                                </p>
+                                <ul class="list-disc ml-5 text-sm text-slate-700 space-y-1">
+                                    <li>
+                                        <span class="lang-en">He went to Lakeside School, one of the only schools in the world with a computer terminal (paid for by a mothers' club).</span>
+                                        <span class="lang-id">Dia bersekolah di Lakeside, satu dari sedikit sekolah di dunia yang memiliki terminal komputer (dibiayai oleh klub ibu-ibu).</span>
+                                    </li>
+                                    <li>
+                                        <span class="lang-en">He lived near the University of Washington, where he could use their computers for free at night (3 AM - 6 AM).</span>
+                                        <span class="lang-id">Dia tinggal dekat University of Washington, di mana dia bisa menggunakan komputer mereka secara gratis di malam hari (jam 3 - 6 pagi).</span>
+                                    </li>
+                                    <li>
+                                        <span class="lang-en">By the time he dropped out of Harvard, he had been programming for 7 consecutive years. He had his 10,000 hours before most people even saw a computer.</span>
+                                        <span class="lang-id">Saat dia drop out dari Harvard, dia sudah memprogram selama 7 tahun berturut-turut. Dia sudah punya 10.000 jam sebelum kebanyakan orang melihat komputer.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Matthew Effect</span>
+                            <span class="lang-id">Efek Matius</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base text-slate-600 italic border-l-4 border-slate-300 pl-4 mb-4 justified-text lang-en">
+                            "For unto every one that hath shall be given, and he shall have abundance." — Matthew 25:29
+                        </div>
+                        <div class="text-base text-slate-600 italic border-l-4 border-slate-300 pl-4 mb-4 justified-text lang-id">
+                            "Karena setiap orang yang mempunyai, kepadanya akan diberi, sehingga ia berkelimpahan." — Matius 25:29
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-800 mb-3 text-lg lang-en">Case Study: Canadian Hockey Players</h4>
+                            <h4 class="font-bold text-slate-800 mb-3 text-lg lang-id">Studi Kasus: Pemain Hoki Kanada</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                Gladwell noticed a strange pattern in the rosters of elite Canadian hockey teams.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Gladwell memperhatikan pola aneh dalam daftar nama tim hoki elit Kanada.
+                            </p>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                <div class="bg-teal-50 p-3 rounded border border-teal-100">
+                                    <strong class="block text-teal-800 mb-1 lang-en">The Observation</strong>
+                                    <strong class="block text-teal-800 mb-1 lang-id">Pengamatan</strong>
+                                    <p class="text-xs text-slate-600 lang-en">40% of elite players are born in January, February, or March. Only 10% are born in October, November, or December.</p>
+                                    <p class="text-xs text-slate-600 lang-id">40% pemain elit lahir di Januari, Februari, atau Maret. Hanya 10% lahir di Oktober, November, atau Desember.</p>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                                    <strong class="block text-slate-800 mb-1 lang-en">The Cause (Cutoff Dates)</strong>
+                                    <strong class="block text-slate-800 mb-1 lang-id">Penyebab (Tanggal Batas)</strong>
+                                    <p class="text-xs text-slate-600 lang-en">The cutoff date for age-class hockey is January 1st. A boy born on Jan 2 is almost 12 months older than a boy born on Dec 31.</p>
+                                    <p class="text-xs text-slate-600 lang-id">Tanggal batas untuk kelas umur hoki adalah 1 Januari. Anak laki-laki yang lahir 2 Jan hampir 12 bulan lebih tua dari yang lahir 31 Des.</p>
+                                </div>
+                            </div>
+
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                <strong>Cumulative Advantage:</strong> The Jan-born kid is bigger and stronger at age 10. He gets picked for the All-Star team. He gets better coaching. He practices 3x more. By age 14, he really <em>is</em> better. But it started just because he was born in January.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                <strong>Keuntungan Kumulatif:</strong> Anak kelahiran Januari lebih besar dan kuat di usia 10. Dia terpilih masuk tim All-Star. Dia dapat pelatih lebih baik. Dia berlatih 3x lebih banyak. Di usia 14, dia benar-benar <em>menjadi</em> lebih baik. Tapi itu dimulai hanya karena dia lahir di Januari.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Trouble with Geniuses</span>
+                            <span class="lang-id">Masalah dengan Para Jenius</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            We assume IQ is the single determinant of success. Gladwell compares two geniuses to prove that <strong>Practical Intelligence</strong> (social skills) matters more once you pass a certain IQ threshold.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Kita berasumsi IQ adalah penentu tunggal kesuksesan. Gladwell membandingkan dua jenius untuk membuktikan bahwa <strong>Kecerdasan Praktis</strong> (keterampilan sosial) lebih penting begitu Anda melewati ambang batas IQ tertentu.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                <h4 class="font-bold text-red-900 text-lg mb-2">Chris Langan</h4>
+                                <ul class="list-disc ml-4 text-sm text-red-800 space-y-1">
+                                    <li>IQ: 195 (Higher than Einstein).</li>
+                                    <li>Background: Poor, abusive stepfather.</li>
+                                    <li><strong>Outcome:</strong> Worked as a bouncer, lives on a horse farm. Never published his theories.</li>
+                                    <li><strong>The Failure:</strong> When he lost his scholarship due to paperwork, he didn't know how to negotiate with the administration. He lacked "entitlement."</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                <h4 class="font-bold text-green-900 text-lg mb-2">Robert Oppenheimer</h4>
+                                <ul class="list-disc ml-4 text-sm text-green-800 space-y-1">
+                                    <li>IQ: High (Physicist, Father of Atomic Bomb).</li>
+                                    <li>Background: Wealthy, cultured upbringing.</li>
+                                    <li><strong>The Incident:</strong> Tried to poison his tutor at Cambridge.</li>
+                                    <li><strong>Outcome:</strong> Instead of being expelled, he negotiated "probation." He knew how to talk his way out of trouble. This is <em>Practical Intelligence</em>.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Plane Crashes & Culture</span>
+                            <span class="lang-id">Kecelakaan Pesawat & Budaya</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-800 mb-3 text-lg lang-en">The Ethnic Theory of Plane Crashes</h4>
+                            <h4 class="font-bold text-slate-800 mb-3 text-lg lang-id">Teori Etnis Kecelakaan Pesawat</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-en">
+                                Gladwell analyzes why Korean Air had more plane crashes in the 1990s than almost any other airline. It wasn't bad planes; it was bad <strong>communication caused by culture</strong>.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-id">
+                                Gladwell menganalisis mengapa Korean Air mengalami lebih banyak kecelakaan pesawat di tahun 1990-an dibanding maskapai lain. Bukan karena pesawat buruk; tapi karena <strong>komunikasi buruk yang disebabkan oleh budaya</strong>.
+                            </p>
+
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200 mb-4">
+                                <strong class="block text-slate-900 mb-1">Power Distance Index (PDI)</strong>
+                                <p class="text-xs text-slate-600 justified-text lang-en">
+                                    A concept by Geert Hofstede. It measures how much a culture respects authority. High PDI = High respect for hierarchy.
+                                </p>
+                                <p class="text-xs text-slate-600 justified-text lang-id">
+                                    Konsep oleh Geert Hofstede. Mengukur seberapa besar budaya menghormati otoritas. PDI Tinggi = Hormat tinggi pada hierarki.
+                                </p>
+                            </div>
+
+                            <ul class="list-disc ml-5 text-sm text-slate-700 space-y-2">
+                                <li>
+                                    <span class="lang-en"><strong>The Problem:</strong> In the cockpit, the Co-Pilot (lower rank) saw a mistake but was too afraid to offend the Captain (higher rank).</span>
+                                    <span class="lang-id"><strong>Masalahnya:</strong> Di kokpit, Co-Pilot (pangkat rendah) melihat kesalahan tapi terlalu takut menyinggung Kapten (pangkat tinggi).</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Mitigated Speech:</strong> Instead of saying "Captain, you're going to crash," they hinted: "Look at the weather radar." The Captain ignored the hint.</span>
+                                    <span class="lang-id"><strong>Mitigated Speech (Bahasa Halus):</strong> Alih-alih berkata "Kapten, kita akan jatuh," mereka memberi kode: "Lihat radar cuacanya." Kapten mengabaikan kode itu.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>The Solution:</strong> Korean Air didn't just teach flying; they taught English (a low-context language) to break the cultural hierarchy in the cockpit. Crashes stopped.</span>
+                                    <span class="lang-id"><strong>Solusinya:</strong> Korean Air tidak hanya mengajar terbang; mereka mengajar Bahasa Inggris (bahasa konteks rendah) untuk mematahkan hierarki budaya di kokpit. Kecelakaan berhenti.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Rice Paddies & Math Tests</span>
+                            <span class="lang-id">Sawah Padi & Tes Matematika</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Why are Asians good at math? It's not genetic. It's cultural legacy rooted in <strong>Rice Farming</strong>.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Mengapa orang Asia jago matematika? Bukan genetik. Ini adalah warisan budaya yang berakar pada <strong>Pertanian Padi</strong>.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-teal-50 p-4 rounded-lg border border-teal-200">
+                                <h4 class="font-bold text-teal-900 text-lg mb-2 lang-en">Western Agriculture</h4>
+                                <h4 class="font-bold text-teal-900 text-lg mb-2 lang-id">Pertanian Barat</h4>
+                                <p class="text-sm text-teal-800 justified-text lang-en">
+                                    Wheat and corn require large fields but not constant attention. Western farmers historically had long winters where they did nothing ("Hibernation").
+                                </p>
+                                <p class="text-sm text-teal-800 justified-text lang-id">
+                                    Gandum dan jagung butuh ladang luas tapi tidak butuh perhatian konstan. Petani Barat secara historis punya musim dingin panjang di mana mereka tidak melakukan apa-apa ("Hibernasi").
+                                </p>
+                            </div>
+                            <div class="bg-slate-100 p-4 rounded-lg border border-slate-300">
+                                <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">Rice Farming</h4>
+                                <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Pertanian Padi</h4>
+                                <p class="text-sm text-slate-800 justified-text lang-en">
+                                    Rice requires precision, irrigation control, and labor 360 days a year. "No one who can rise before dawn 360 days a year fails to make his family rich."
+                                    <br><br>
+                                    <strong>Workload:</strong> 3,000 hours/year vs 1,000 hours/year (West).
+                                </p>
+                                <p class="text-sm text-slate-800 justified-text lang-id">
+                                    Padi butuh presisi, kontrol irigasi, dan tenaga kerja 360 hari setahun. "Tak seorang pun yang bangun sebelum fajar 360 hari setahun gagal membuat keluarganya kaya."
+                                    <br><br>
+                                    <strong>Beban Kerja:</strong> 3.000 jam/tahun vs 1.000 jam/tahun (Barat).
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-3 rounded border border-slate-200 mt-4">
+                            <strong class="text-sm text-slate-800 uppercase tracking-wide lang-en">The Math Connection</strong>
+                            <strong class="text-sm text-slate-800 uppercase tracking-wide lang-id">Koneksi Matematika</strong>
+                            <p class="text-sm text-slate-600 mt-1 justified-text lang-en">
+                                Math is difficult. It requires persistence. Cultures that are historically conditioned to work harder and longer (Rice Culture) are more likely to persist through a difficult math problem than cultures conditioned to long breaks (Western Culture).
+                            </p>
+                            <p class="text-sm text-slate-600 mt-1 justified-text lang-id">
+                                Matematika itu sulit. Butuh ketekunan. Budaya yang secara historis dikondisikan untuk bekerja lebih keras dan lama (Budaya Padi) lebih mungkin bertahan menyelesaikan soal matematika sulit dibanding budaya yang terbiasa istirahat panjang (Budaya Barat).
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#0d9488'; // Teal
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#475569'; // Slate
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
