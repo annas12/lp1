@@ -8,9 +8,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Inter', sans-serif; }
-    /* Supaya gambar tidak gepeng */
-    .book-cover {
-        object-fit: cover;
+    
+    /* PENTING: Class ini membuat gambar full */
+    .book-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Memaksa gambar mengisi penuh container */
         object-position: center;
     }
   </style>
@@ -43,16 +46,16 @@
   <main id="content" class="pb-10 max-w-md mx-auto min-h-screen"></main>
 
   <script>
-    /* DATA BUKU
-      Disalin persis sesuai nama file di Screenshot Folder 'image' Anda.
-      Format path: "image/NAMA_FILE_PERSIS"
+    /* PENTING:
+       Pastikan file "You Can Heal Your Life" di folder Anda sudah diganti
+       dari .html menjadi .webp atau .jpg agar muncul.
     */
     const books = [
       { 
         dir: "Deep-Work", 
         title: "Deep Work", 
         author: "Cal Newport", 
-        img: "image/deepwork.webp" 
+        img: "image/DeepWorkNEW_1100x.webp" 
       },
       { 
         dir: "Delivering-Happiness", 
@@ -64,7 +67,6 @@
         dir: "Eat-That-Frog", 
         title: "Eat That Frog!", 
         author: "Brian Tracy", 
-        // Perhatikan ada "_2" di nama file
         img: "image/EatThatFrog_2NEW_1100x.webp" 
       },
       { 
@@ -83,14 +85,12 @@
         dir: "Influence:-Science-and-Practice", 
         title: "Influence: Science and Practice", 
         author: "Robert Cialdini", 
-        // File ini memiliki spasi di screenshot
         img: "image/Influence Science and Practice Robert Cialdini.webp" 
       },
       { 
         dir: "Outliers", 
         title: "Outliers", 
         author: "Malcolm Gladwell", 
-        // Perhatikan ada "_2_"
         img: "image/Outliers_2_NEW_1100x.webp" 
       },
       { 
@@ -103,7 +103,6 @@
         dir: "The-Magic-of-Thinking-Big", 
         title: "The Magic of Thinking Big", 
         author: "David J. Schwartz", 
-        // Perhatikan underscore "_"
         img: "image/The_Magic_of_Thinking_Big_PRH_NEW_1100x.webp" 
       },
       { 
@@ -140,21 +139,15 @@
         dir: "You-Can-Heal-Your-Life", 
         title: "You Can Heal Your Life", 
         author: "Louise Hay", 
-        /* PERINGATAN: Di screenshot Anda file ini formatnya .html
-           Saya ubah kode ini jadi .webp. ANDA HARUS UPLOAD file .webp 
-           dengan nama persis di bawah ini agar muncul.
-        */
         img: "image/You Can Heal Your Life — Louise Hay cover.webp" 
       },
       { 
         dir: "Your-Erroneous-Zones", 
         title: "Your Erroneous Zones", 
         author: "Wayne Dyer", 
-        // File ini pakai tanda pisah panjang "—"
         img: "image/Your Erroneous Zones — Wayne Dyer.webp" 
       },
-      // Dua buku ini ada folder tapi tidak ada file gambar di screenshot 'image'
-      // Saya pakai placeholder sementara
+      // Placeholder untuk folder tanpa gambar di list
       { 
         dir: "Don-Quixote", 
         title: "Don Quixote", 
@@ -174,7 +167,6 @@
     }
 
     function openBook(directory) {
-        // Redirect ke link affiliate
         const baseUrl = "https://lp1.affiliate.my.id/";
         window.location.href = baseUrl + directory;
     }
@@ -207,14 +199,17 @@
           return `<div class="col-span-2 text-center text-gray-400 py-10">No books found</div>`;
       }
       return bookList.map(b => `
-        <div onclick="openBook('${b.dir}')" class="cursor-pointer group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
-          <div class="overflow-hidden h-64 relative bg-gray-100">
-            <img src="${b.img}" alt="${b.title}" loading="lazy" class="book-cover w-full h-full transition-transform duration-500 group-hover:scale-105" 
+        <div onclick="openBook('${b.dir}')" class="cursor-pointer group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col h-full">
+          
+          <div class="aspect-[2/3] w-full relative overflow-hidden bg-gray-200">
+            <img src="${b.img}" alt="${b.title}" loading="lazy" 
+                 class="book-image absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
                  onerror="this.src='https://placehold.co/600x900?text=No+Image';this.onerror=null;">
           </div>
-          <div class="p-4">
-            <h3 class="font-bold text-gray-800 text-sm line-clamp-2 leading-tight mb-1">${b.title}</h3>
-            <p class="text-xs text-gray-500 font-medium">${b.author}</p>
+          
+          <div class="p-3 flex-grow flex flex-col justify-center">
+            <h3 class="font-bold text-gray-800 text-sm line-clamp-2 leading-tight mb-1 text-center">${b.title}</h3>
+            <p class="text-xs text-gray-500 font-medium text-center">${b.author}</p>
           </div>
         </div>`).join('');
     }
