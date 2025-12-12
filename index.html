@@ -9,11 +9,11 @@
   <style>
     body { font-family: 'Inter', sans-serif; }
     
-    /* PENTING: Class ini membuat gambar full */
+    /* Style agar gambar full memenuhi kotak */
     .book-image {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* Memaksa gambar mengisi penuh container */
+        object-fit: cover; 
         object-position: center;
     }
   </style>
@@ -46,119 +46,125 @@
   <main id="content" class="pb-10 max-w-md mx-auto min-h-screen"></main>
 
   <script>
-    /* PENTING:
-       Pastikan file "You Can Heal Your Life" di folder Anda sudah diganti
-       dari .html menjadi .webp atau .jpg agar muncul.
+    /* DATA BUKU DIPERBARUI
+       Disalin PERSIS sesuai nama file di screenshot GitHub Anda.
     */
     const books = [
       { 
         dir: "Deep-Work", 
         title: "Deep Work", 
         author: "Cal Newport", 
-        img: "image/deepwork.webp" 
+        img: "image/deepwork.jpeg" 
       },
       { 
         dir: "Delivering-Happiness", 
         title: "Delivering Happiness", 
         author: "Tony Hsieh", 
-        img: "image/deliveringhappiness.webp" 
+        // Sesuai screenshot: "happines" (s satu)
+        img: "image/deliveringhappines.jpeg" 
       },
       { 
         dir: "Eat-That-Frog", 
         title: "Eat That Frog!", 
         author: "Brian Tracy", 
-        img: "image/EatThatFrog_2NEW_1100x.webp" 
+        img: "image/eatthatfrog.jpeg" 
       },
       { 
         dir: "Good-to-Great", 
         title: "Good to Great", 
         author: "Jim Collins", 
-        img: "image/GoodtoGreatNEW_1100x.webp" 
+        // Sesuai screenshot: ada kata "the" di tengah
+        img: "image/goodthegreat.jpeg" 
       },
       { 
         dir: "How-to-Win-Friends-and-Influence-People", 
-        title: "How to Win Friends & Influence People", 
+        title: "How to Win Friends", 
         author: "Dale Carnegie", 
-        img: "image/HowtowinFriendsNEW_1100x.webp" 
+        img: "image/howtowinfriendsinfluencepeople.jpeg" 
       },
       { 
         dir: "Influence:-Science-and-Practice", 
-        title: "Influence: Science and Practice", 
+        title: "Influence", 
         author: "Robert Cialdini", 
-        img: "image/Influence Science and Practice Robert Cialdini.webp" 
+        /* File tidak terlihat di screenshot list, saya asumsi namanya ini. 
+           Jika gambar tidak muncul, pastikan Anda upload file 'influence.jpeg' */
+        img: "image/influence.jpeg" 
       },
       { 
         dir: "Outliers", 
         title: "Outliers", 
         author: "Malcolm Gladwell", 
-        img: "image/Outliers_2_NEW_1100x.webp" 
+        img: "image/outliers.jpeg" 
       },
       { 
         dir: "Rich-Dad-Poor-Dad", 
         title: "Rich Dad Poor Dad", 
         author: "Robert Kiyosaki", 
-        img: "image/RichDadPoorDadNEW_1100x.webp" 
+        img: "image/richdadpoordad.jpeg" 
       },
       { 
         dir: "The-Magic-of-Thinking-Big", 
         title: "The Magic of Thinking Big", 
         author: "David J. Schwartz", 
-        img: "image/The_Magic_of_Thinking_Big_PRH_NEW_1100x.webp" 
+        img: "image/themagicofthinking.jpeg" 
       },
       { 
         dir: "The-4-Hour-Workweek", 
         title: "The 4-Hour Workweek", 
         author: "Tim Ferriss", 
-        img: "image/The4-HourWorkweek2NEW_1100x.webp" 
+        // Sesuai screenshot: pakai "hur" bukan "hour"
+        img: "image/the4hurworkweek.jpeg" 
       },
       { 
         dir: "The-48-Law-of-Power", 
         title: "The 48 Laws of Power", 
         author: "Robert Greene", 
-        img: "image/The48LawsofPowerNEW_1100x.webp" 
+        img: "image/the48lawsofpower.jpeg" 
       },
       { 
         dir: "The-Lean-Startup", 
         title: "The Lean Startup", 
         author: "Eric Ries", 
-        img: "image/TheLeanStartupNEW_1100x.webp" 
+        img: "image/theleanstartup.jpeg" 
       },
       { 
         dir: "The-One-Thing", 
         title: "The One Thing", 
         author: "Gary Keller", 
-        img: "image/TheOneThingNEW_1100x.webp" 
+        img: "image/theonething.jpeg" 
       },
       { 
         dir: "Think-and-Grow-Rich", 
         title: "Think and Grow Rich", 
         author: "Napoleon Hill", 
-        img: "image/ThinkandGrowRichNEW_1100x.webp" 
+        img: "image/thinkgrowrich.jpeg" 
       },
       { 
         dir: "You-Can-Heal-Your-Life", 
         title: "You Can Heal Your Life", 
         author: "Louise Hay", 
-        img: "image/YouCanHealYourLife.webp" 
+        img: "image/youcanhealyourlife.jpeg" 
       },
       { 
         dir: "Your-Erroneous-Zones", 
         title: "Your Erroneous Zones", 
         author: "Wayne Dyer", 
-        img: "image/Your Erroneous Zones — Wayne Dyer.webp" 
+        // Sesuai screenshot: "zone" (tanpa s)
+        img: "image/yourerroneouszone.jpeg" 
       },
-      // Placeholder untuk folder tanpa gambar di list
       { 
         dir: "Don-Quixote", 
         title: "Don Quixote", 
         author: "Miguel de Cervantes", 
-        img: "https://picsum.photos/seed/quixote/600/900" 
+        // Belum ada di screenshot list, pakai placeholder
+        img: "https://placehold.co/600x900?text=Don+Quixote" 
       },
       { 
         dir: "toyota", 
         title: "The Toyota Way", 
         author: "Jeffrey K. Liker", 
-        img: "https://picsum.photos/seed/toyota/600/900" 
+         // Belum ada di screenshot list, pakai placeholder
+        img: "https://placehold.co/600x900?text=Toyota+Way" 
       }
     ];
 
@@ -204,7 +210,7 @@
           <div class="aspect-[2/3] w-full relative overflow-hidden bg-gray-200">
             <img src="${b.img}" alt="${b.title}" loading="lazy" 
                  class="book-image absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-                 onerror="this.src='https://placehold.co/600x900?text=No+Image';this.onerror=null;">
+                 onerror="this.onerror=null;this.src='https://placehold.co/600x900?text=No+Image';">
           </div>
           
           <div class="p-3 flex-grow flex flex-col justify-center">
