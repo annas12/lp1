@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Psychology of Selling — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Royal Blue/Gold Theme for Sales Authority */
+        .active-tab { background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #1e3a8a; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">$</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Sales Psychology</h2>
+                    <p class="text-slate-400 text-sm">
+                        <span class="lang-en">Ultimate Guide</span>
+                        <span class="lang-id">Panduan Utama</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The Sales Process</span>
+                <span class="lang-id">Proses Penjualan</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-xs font-bold">🧠</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Why People Buy</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Emotion vs. Logic</span>
+                                <span class="lang-id">Emosi vs. Logika</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-amber-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Creative Selling</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Problem Solving</span>
+                                <span class="lang-id">Pemecahan Masalah</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Prospecting</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Spending Time Wisely</span>
+                                <span class="lang-id">Menggunakan Waktu Bijak</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Objections</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Handling "No"</span>
+                                <span class="lang-id">Menangani "Tidak"</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Closing Techniques</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">The Art of Asking</span>
+                                <span class="lang-id">Seni Meminta</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© Brian Tracy</p>
+                <p class="text-slate-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    The Psychology of Selling
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    <span class="lang-en">Increase Your Sales Faster and Easier Than You Ever Thought Possible</span>
+                    <span class="lang-id">Tingkatkan Penjualan Anda Lebih Cepat dan Mudah dari yang Pernah Anda Bayangkan</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-yellow-400 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Inner Game</span>
+                            <span class="lang-id">Permainan Mental</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Winning Edge Concept</span>
+                            <span class="lang-id">Konsep Keunggulan Pemenang</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-blue-500 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"Selling is an inner game. Your success is 80% psychology and 20% technique."</span>
+                            <span class="lang-id">"Menjual adalah permainan batin. Kesuksesan Anda adalah 80% psikologi dan 20% teknik."</span>
+                        </div>
+                        
+                        <p class="mobile-text justified-text lang-en">
+                            Brian Tracy begins by establishing that small differences in ability lead to enormous differences in results. This is called the <strong>Winning Edge</strong>. You don't have to be 100% better than your competition. You just have to be a little bit better in the key areas.
+                        </p>
+                        <p class="mobile-text justified-text lang-id">
+                            Brian Tracy memulai dengan menetapkan bahwa perbedaan kecil dalam kemampuan menghasilkan perbedaan besar dalam hasil. Ini disebut <strong>Keunggulan Pemenang</strong>. Anda tidak perlu 100% lebih baik dari pesaing. Anda hanya perlu sedikit lebih baik di area-area kunci.
+                        </p>
+
+                        <div class="bg-amber-50 p-6 rounded-xl border border-amber-200 shadow-sm">
+                            <h4 class="font-bold text-amber-900 text-lg mb-3 lang-en">The Self-Concept: Your Income Thermostat</h4>
+                            <h4 class="font-bold text-amber-900 text-lg mb-3 lang-id">Konsep Diri: Termostat Penghasilan Anda</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                You will never earn more than your self-concept allows. If you see yourself as a $50,000/year salesperson, and you start earning more, you will unconsciously sabotage yourself (get sick, procrastinate) to drop back down.
+                                <br><br>
+                                <strong>To earn more, you must first SEE yourself earning more.</strong> You must visualize yourself as a top earner.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Anda tidak akan pernah menghasilkan lebih dari yang diizinkan konsep diri Anda. Jika Anda melihat diri Anda sebagai penjual dengan gaji $50.000/tahun, dan Anda mulai menghasilkan lebih, Anda akan secara tidak sadar menyabotase diri sendiri (sakit, menunda) untuk turun kembali.
+                                <br><br>
+                                <strong>Untuk menghasilkan lebih, Anda harus terlebih dahulu MELIHAT diri Anda menghasilkan lebih.</strong> Anda harus memvisualisasikan diri Anda sebagai penghasil tertinggi.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Why People Buy</span>
+                            <span class="lang-id">Mengapa Orang Membeli</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            People buy for their own reasons, not yours. And those reasons are always emotional.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Orang membeli karena alasan mereka sendiri, bukan alasan Anda. Dan alasan tersebut selalu emosional.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                                <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">The Two Main Motivators</h4>
+                                <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Dua Motivator Utama</h4>
+                                <ul class="list-none space-y-3 text-sm text-slate-700">
+                                    <li class="flex items-start">
+                                        <span class="text-green-600 mr-2 font-bold">1.</span>
+                                        <span class="lang-en"><strong>Desire for Gain:</strong> Trying to get something they don't have (Health, Wealth, Status).</span>
+                                        <span class="lang-id"><strong>Keinginan untuk Mendapatkan:</strong> Mencoba mendapatkan sesuatu yang belum dimiliki (Kesehatan, Kekayaan, Status).</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="text-red-600 mr-2 font-bold">2.</span>
+                                        <span class="lang-en"><strong>Fear of Loss:</strong> Trying to keep what they have. (Safety, Security).</span>
+                                        <span class="lang-id"><strong>Ketakutan akan Kehilangan:</strong> Mencoba mempertahankan apa yang dimiliki. (Keamanan, Keselamatan).</span>
+                                    </li>
+                                </ul>
+                                <p class="text-xs text-slate-500 mt-3 italic lang-en">
+                                    <strong>Critical Note:</strong> Fear of Loss is 2.5x more powerful than Desire for Gain. People will work harder to keep $100 than to gain $100.
+                                </p>
+                                <p class="text-xs text-slate-500 mt-3 italic lang-id">
+                                    <strong>Catatan Kritis:</strong> Ketakutan Kehilangan 2,5x lebih kuat daripada Keinginan Mendapatkan. Orang akan bekerja lebih keras untuk mempertahankan $100 daripada mendapatkan $100.
+                                </p>
+                            </div>
+
+                            <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+                                <h4 class="font-bold text-blue-900 text-lg mb-2 lang-en">Logic vs. Emotion</h4>
+                                <h4 class="font-bold text-blue-900 text-lg mb-2 lang-id">Logika vs. Emosi</h4>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    "People decide emotionally and then justify logically."
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    "Orang memutuskan secara emosional dan kemudian membenarkannya secara logis."
+                                </p>
+                                <div class="mt-3 bg-white p-3 rounded border border-blue-100">
+                                    <strong class="text-xs text-blue-800 block mb-1 lang-en">Example: Buying a Luxury Car</strong>
+                                    <strong class="text-xs text-blue-800 block mb-1 lang-id">Contoh: Membeli Mobil Mewah</strong>
+                                    <ul class="text-xs text-slate-600 list-disc ml-4">
+                                        <li class="lang-en"><strong>Emotion (Real Reason):</strong> I want to feel successful and admired by my neighbors.</li>
+                                        <li class="lang-id"><strong>Emosi (Alasan Asli):</strong> Saya ingin merasa sukses dan dikagumi tetangga.</li>
+                                        <li class="lang-en"><strong>Logic (Justification):</strong> It has great resale value and safety features.</li>
+                                        <li class="lang-id"><strong>Logika (Pembenaran):</strong> Nilai jual kembalinya tinggi dan fitur keselamatannya bagus.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Creative Selling (Problem Solving)</span>
+                            <span class="lang-id">Penjualan Kreatif (Pemecahan Masalah)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Stop seeing yourself as a "salesperson." Start seeing yourself as a <strong>Consultant</strong>. A consultant provides solutions to problems.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Berhenti melihat diri Anda sebagai "penjual." Mulailah melihat diri Anda sebagai <strong>Konsultan</strong>. Seorang konsultan memberikan solusi untuk masalah.
+                        </p>
+
+                        <div class="bg-amber-50 p-6 rounded-xl border border-amber-200 shadow-sm">
+                            <h4 class="font-bold text-amber-900 text-lg mb-3 lang-en">Case Study: The Photocopier Salesman</h4>
+                            <h4 class="font-bold text-amber-900 text-lg mb-3 lang-id">Studi Kasus: Penjual Mesin Fotokopi</h4>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <strong class="text-red-700 text-sm block mb-1 lang-en">❌ Amateur Approach (Feature Dumping)</strong>
+                                    <strong class="text-red-700 text-sm block mb-1 lang-id">❌ Pendekatan Amatir (Pamer Fitur)</strong>
+                                    <p class="text-xs text-slate-600 italic">"This machine prints 50 pages a minute, has wifi connectivity, and holds 500 sheets of paper."</p>
+                                    <p class="text-xs text-slate-600 italic">"Mesin ini mencetak 50 halaman per menit, punya koneksi wifi, dan menampung 500 lembar kertas."</p>
+                                    <p class="text-xs text-slate-500 mt-1">(Client thinks: So what?)</p>
+                                </div>
+                                
+                                <div class="border-t border-amber-200 pt-3">
+                                    <strong class="text-green-700 text-sm block mb-1 lang-en">✅ Consultant Approach (Problem Solving)</strong>
+                                    <strong class="text-green-700 text-sm block mb-1 lang-id">✅ Pendekatan Konsultan (Pemecahan Masalah)</strong>
+                                    <p class="text-xs text-slate-600 italic">"I see your staff waiting in line for the old copier. That costs you about 20 minutes per employee per day. With 10 employees, that's 200 minutes lost daily. My machine eliminates that line, saving you roughly $3,000 a month in lost productivity. Would you be interested in saving $3,000 a month?"</p>
+                                    <p class="text-xs text-slate-600 italic">"Saya lihat staf Anda mengantre di mesin lama. Itu menghabiskan sekitar 20 menit per karyawan per hari. Dengan 10 karyawan, itu 200 menit hilang setiap hari. Mesin saya menghilangkan antrean itu, menghemat sekitar $3.000 sebulan dalam produktivitas yang hilang. Apakah Anda tertarik menghemat $3.000 sebulan?"</p>
+                                    <p class="text-xs text-slate-500 mt-1">(Client thinks: Yes, I want to save money.)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded border border-slate-200 mt-4">
+                            <strong class="block text-slate-900 mb-2 lang-en">The 3 Types of Prospects</strong>
+                            <strong class="block text-slate-900 mb-2 lang-id">3 Tipe Prospek</strong>
+                            <ul class="list-disc ml-5 text-sm text-slate-700 space-y-1">
+                                <li>
+                                    <span class="lang-en"><strong>Negative:</strong> Will never buy. Don't waste time.</span>
+                                    <span class="lang-id"><strong>Negatif:</strong> Tidak akan pernah beli. Jangan buang waktu.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Positive:</strong> Ready to buy. Treat them well.</span>
+                                    <span class="lang-id"><strong>Positif:</strong> Siap beli. Perlakukan dengan baik.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Lukewarm (The Swing Vote):</strong> They need persuasion. This is where you make your money.</span>
+                                    <span class="lang-id"><strong>Hangat-Hangat Kuku (Penentu):</strong> Mereka butuh persuasi. Di sinilah Anda menghasilkan uang.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Prospecting & First Impressions</span>
+                            <span class="lang-id">Prospek & Kesan Pertama</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+                            <h4 class="font-bold text-blue-900 text-lg mb-2 lang-en">The First 4 Minutes</h4>
+                            <h4 class="font-bold text-blue-900 text-lg mb-2 lang-id">4 Menit Pertama</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Customers decide whether they will buy from you within the first 4 minutes. In fact, they decide if they <em>like</em> you in the first 30 seconds.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Pelanggan memutuskan apakah mereka akan membeli dari Anda dalam 4 menit pertama. Faktanya, mereka memutuskan apakah mereka <em>menyukai</em> Anda dalam 30 detik pertama.
+                            </p>
+                            <ul class="list-disc ml-5 mt-3 text-sm text-slate-700 space-y-2">
+                                <li><strong>Visuals:</strong> 95% of the first impression is dress and grooming.</li>
+                                <li><strong>Body Language:</strong> Stand tall, smile, firm handshake.</li>
+                                <li><strong>The Opening Question:</strong> Don't talk about the product. Ask a question that grabs attention.</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <strong class="block text-slate-900 text-lg mb-3 lang-en">The Sales Funnel Concept</strong>
+                            <strong class="block text-slate-900 text-lg mb-3 lang-id">Konsep Corong Penjualan</strong>
+                            
+                            <div class="space-y-2 text-sm text-slate-700">
+                                <div class="flex items-center">
+                                    <span class="w-24 font-bold text-blue-700">Leads:</span>
+                                    <span>(100 People) Everyone you talk to.</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="w-24 font-bold text-blue-700">Prospects:</span>
+                                    <span>(20 People) Those who have the need and money.</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="w-24 font-bold text-blue-700">Customers:</span>
+                                    <span>(5 People) Those who actually buy.</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-3 italic justified-text lang-en">
+                                <strong>Key:</strong> Spend more time qualifying Prospects and less time talking to general Leads. "Spend more time with better prospects."
+                            </p>
+                            <p class="text-xs text-slate-500 mt-3 italic justified-text lang-id">
+                                <strong>Kunci:</strong> Habiskan lebih banyak waktu mengkualifikasi Prospek dan kurangi waktu bicara dengan Leads umum. "Habiskan lebih banyak waktu dengan prospek yang lebih baik."
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Handling Objections</span>
+                            <span class="lang-id">Menangani Keberatan</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            An objection is not a "No." It is a request for more information. If they didn't care, they wouldn't object; they would just leave.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Keberatan bukanlah "Tidak." Itu adalah permintaan informasi lebih lanjut. Jika mereka tidak peduli, mereka tidak akan keberatan; mereka akan pergi begitu saja.
+                        </p>
+
+                        <div class="bg-purple-50 p-5 rounded-lg border border-purple-200">
+                            <h4 class="font-bold text-purple-900 text-lg mb-3 lang-en">The Law of Six</h4>
+                            <h4 class="font-bold text-purple-900 text-lg mb-3 lang-id">Hukum Enam</h4>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                There are usually no more than 6 major objections to any product. (Price, Quality, Competitor, Not Now, etc.). You must know the answer to all 6 by heart.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Biasanya tidak ada lebih dari 6 keberatan utama untuk produk apa pun. (Harga, Kualitas, Pesaing, Tidak Sekarang, dll). Anda harus tahu jawaban untuk ke-6 hal itu di luar kepala.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">Script: The "Price" Objection</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Skrip: Keberatan "Harga"</h4>
+                            
+                            <div class="space-y-4">
+                                <div class="bg-red-50 p-3 rounded border border-red-100">
+                                    <strong class="text-red-800 text-xs block mb-1">Customer:</strong>
+                                    <p class="text-sm text-slate-700 italic">"It costs too much."</p>
+                                </div>
+                                <div class="bg-green-50 p-3 rounded border border-green-100">
+                                    <strong class="text-green-800 text-xs block mb-1">Salesperson (The Feel-Felt-Found Method):</strong>
+                                    <p class="text-sm text-slate-700 italic lang-en">
+                                        "I understand exactly how you <strong>feel</strong>. Others have <strong>felt</strong> the same way when they first saw the price. But what they <strong>found</strong> was that the durability of this product saved them money in the long run because they didn't have to replace it every year."
+                                    </p>
+                                    <p class="text-sm text-slate-700 italic lang-id">
+                                        "Saya mengerti persis apa yang Anda <strong>rasakan</strong>. Orang lain juga <strong>merasakan</strong> hal yang sama saat pertama kali melihat harganya. Tapi yang mereka <strong>temukan</strong> adalah daya tahan produk ini menghemat uang mereka dalam jangka panjang karena tidak perlu diganti setiap tahun."
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Closing Techniques</span>
+                            <span class="lang-id">Teknik Menutup Penjualan (Closing)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Closing is not manipulation. It is helping the customer make a decision that is good for them. Here are the master techniques:
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Closing bukan manipulasi. Itu membantu pelanggan membuat keputusan yang baik untuk mereka. Berikut adalah teknik masternya:
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                <strong class="block text-blue-900 text-lg mb-2 lang-en">1. The Invitational Close</strong>
+                                <strong class="block text-blue-900 text-lg mb-2 lang-id">1. Penutupan Undangan</strong>
+                                <p class="text-sm text-slate-700 italic mb-2 lang-en">
+                                    "Why don't you give it a try?"
+                                </p>
+                                <p class="text-sm text-slate-700 italic mb-2 lang-id">
+                                    "Mengapa tidak Anda coba saja dulu?"
+                                </p>
+                                <p class="text-xs text-slate-600 justified-text lang-en">
+                                    Simple, low pressure. It invites them to take ownership without demanding it.
+                                </p>
+                                <p class="text-xs text-slate-600 justified-text lang-id">
+                                    Sederhana, tekanan rendah. Mengundang mereka untuk memiliki tanpa menuntut.
+                                </p>
+                            </div>
+
+                            <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                                <strong class="block text-amber-900 text-lg mb-2 lang-en">2. The Alternative Close</strong>
+                                <strong class="block text-amber-900 text-lg mb-2 lang-id">2. Penutupan Alternatif</strong>
+                                <p class="text-sm text-slate-700 italic mb-2 lang-en">
+                                    "Would you prefer delivery on Monday or Tuesday?"
+                                </p>
+                                <p class="text-sm text-slate-700 italic mb-2 lang-id">
+                                    "Anda lebih suka pengiriman hari Senin atau Selasa?"
+                                </p>
+                                <p class="text-xs text-slate-600 justified-text lang-en">
+                                    Never ask "Do you want to buy?". Ask <em>which one</em> or <em>when</em>. Assume the sale.
+                                </p>
+                                <p class="text-xs text-slate-600 justified-text lang-id">
+                                    Jangan tanya "Mau beli?". Tanya <em>yang mana</em> atau <em>kapan</em>. Asumsikan penjualan terjadi.
+                                </p>
+                            </div>
+
+                            <div class="bg-slate-100 p-4 rounded-lg border border-slate-200">
+                                <strong class="block text-slate-900 text-lg mb-2 lang-en">3. The Secondary Close</strong>
+                                <strong class="block text-slate-900 text-lg mb-2 lang-id">3. Penutupan Sekunder</strong>
+                                <p class="text-sm text-slate-700 italic mb-2 lang-en">
+                                    "Do you like the red one or the blue one?"
+                                </p>
+                                <p class="text-sm text-slate-700 italic mb-2 lang-id">
+                                    "Anda suka yang merah atau yang biru?"
+                                </p>
+                                <p class="text-xs text-slate-600 justified-text lang-en">
+                                    Focus on a minor detail. If they agree on the color, they have implicitly agreed to buy the car.
+                                </p>
+                                <p class="text-xs text-slate-600 justified-text lang-id">
+                                    Fokus pada detail kecil. Jika mereka setuju soal warna, mereka secara implisit setuju membeli mobilnya.
+                                </p>
+                            </div>
+
+                            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                <strong class="block text-green-900 text-lg mb-2 lang-en">4. The Puppy Dog Close</strong>
+                                <strong class="block text-green-900 text-lg mb-2 lang-id">4. Penutupan Anak Anjing</strong>
+                                <p class="text-sm text-slate-700 italic mb-2 lang-en">
+                                    "Take it home for the weekend. If you don't like it, bring it back."
+                                </p>
+                                <p class="text-sm text-slate-700 italic mb-2 lang-id">
+                                    "Bawa pulang akhir pekan ini. Kalau tidak suka, kembalikan."
+                                </p>
+                                <p class="text-xs text-slate-600 justified-text lang-en">
+                                    Based on the idea that if you let a family take a puppy home, they will fall in love and never return it. Let them experience ownership.
+                                </p>
+                                <p class="text-xs text-slate-600 justified-text lang-id">
+                                    Berdasarkan ide jika Anda biarkan keluarga bawa pulang anak anjing, mereka akan jatuh cinta dan takkan mengembalikannya. Biarkan mereka merasakan kepemilikan.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#1e3a8a'; // Royal Blue
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#d97706'; // Gold/Amber
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
