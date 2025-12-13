@@ -47,123 +47,64 @@
 
   <script>
     /* DATA BUKU DIPERBARUI
-       Disalin PERSIS sesuai nama file di screenshot GitHub Anda.
+       Nama file disesuaikan persis dengan screenshot folder Anda.
     */
     const books = [
-      { 
-        dir: "Deep-Work", 
-        title: "Deep Work", 
-        author: "Cal Newport", 
-        img: "image/deepwork.jpeg" 
-      },
-      { 
-        dir: "Delivering-Happiness", 
-        title: "Delivering Happiness", 
-        author: "Tony Hsieh", 
-        // Sesuai screenshot: "happines" (s satu)
-        img: "image/deliveringhappines.jpeg" 
-      },
-      { 
-        dir: "Eat-That-Frog", 
-        title: "Eat That Frog!", 
-        author: "Brian Tracy", 
-        img: "image/eatthatfrog.jpeg" 
-      },
-      { 
-        dir: "Good-to-Great", 
-        title: "Good to Great", 
-        author: "Jim Collins", 
-        // Sesuai screenshot: ada kata "the" di tengah
-        img: "image/goodthegreat.jpeg" 
-      },
-      { 
-        dir: "How-to-Win-Friends-and-Influence-People", 
-        title: "How-to-Win-Friends-and-Influence-People", 
-        author: "Dale Carnegie", 
-        img: "image/howtowinfriendsinfluencepeople.jpeg" 
-      },
-      { 
-        dir: "Influence:-Science-and-Practice", 
-        title: "Influence: Science and Practice", 
-        author: "Robert Cialdini", 
-        img: "image/Influence.jpeg" 
-      },
-      { 
-        dir: "Outliers", 
-        title: "Outliers", 
-        author: "Malcolm Gladwell", 
-        img: "image/outliers.jpeg" 
-      },
-      { 
-        dir: "Rich-Dad-Poor-Dad", 
-        title: "Rich Dad Poor Dad", 
-        author: "Robert Kiyosaki", 
-        img: "image/richdadpoordad.jpeg" 
-      },
-      { 
-        dir: "The-Magic-of-Thinking-Big", 
-        title: "The Magic of Thinking Big", 
-        author: "David J. Schwartz", 
-        img: "image/themagicofthinking.jpeg" 
-      },
-      { 
-        dir: "The-4‑Hour-Workweek", 
-        title: "The 4 Hour Workweek", 
-        author: "Tim Ferriss", 
-        // Sesuai screenshot: pakai "hur" bukan "hour"
-        img: "image/the4hurworkweek.jpeg" 
-      },
-      { 
-        dir: "The-48-Law-of-Power", 
-        title: "The 48 Laws of Power", 
-        author: "Robert Greene", 
-        img: "image/the48lawsofpower.jpeg" 
-      },
-      { 
-        dir: "The-Lean-Startup", 
-        title: "The Lean Startup", 
-        author: "Eric Ries", 
-        img: "image/theleanstartup.jpeg" 
-      },
-      { 
-        dir: "The-One-Thing", 
-        title: "The One Thing", 
-        author: "Gary Keller", 
-        img: "image/theonething.jpeg" 
-      },
-      { 
-        dir: "Think-and-Grow-Rich", 
-        title: "Think and Grow Rich", 
-        author: "Napoleon Hill", 
-        img: "image/thinkgrowrich.jpeg" 
-      },
-      { 
-        dir: "You-Can-Heal-Your-Life", 
-        title: "You Can Heal Your Life", 
-        author: "Louise Hay", 
-        img: "image/youcanhealyourlife.jpeg" 
-      },
-      { 
-        dir: "Your-Erroneous-Zones", 
-        title: "Your Erroneous Zones", 
-        author: "Wayne Dyer", 
-        // Sesuai screenshot: "zone" (tanpa s)
-        img: "image/yourerroneouszone.jpeg" 
-      },
-      { 
-        dir: "Don-Quixote", 
-        title: "Don Quixote", 
-        author: "Miguel de Cervantes", 
-        // Belum ada di screenshot list, pakai placeholder
-        img: "image/Donquixote.jpeg" 
-      },
-      { 
-        dir: "toyota", 
-        title: "The Toyota Way", 
-        author: "Jeffrey K. Liker", 
-         // Belum ada di screenshot list, pakai placeholder
-        img: "image/Thetoyotaway.jpeg" 
-      }
+      // --- BUKU LAMA (Existing) ---
+      { dir: "Deep-Work", title: "Deep Work", author: "Cal Newport", img: "image/deepwork.jpeg" },
+      { dir: "Delivering-Happiness", title: "Delivering Happiness", author: "Tony Hsieh", img: "image/deliveringhappines.jpeg" },
+      { dir: "Eat-That-Frog", title: "Eat That Frog!", author: "Brian Tracy", img: "image/eatthatfrog.jpeg" },
+      { dir: "Good-to-Great", title: "Good to Great", author: "Jim Collins", img: "image/goodthegreat.jpeg" },
+      { dir: "How-to-Win-Friends-and-Influence-People", title: "How to Win Friends", author: "Dale Carnegie", img: "image/howtowinfriendsinfluencepeople.jpeg" },
+      { dir: "Influence:-Science-and-Practice", title: "Influence", author: "Robert Cialdini", img: "image/Influence.jpeg" },
+      { dir: "Outliers", title: "Outliers", author: "Malcolm Gladwell", img: "image/outliers.jpeg" },
+      { dir: "Rich-Dad-Poor-Dad", title: "Rich Dad Poor Dad", author: "Robert Kiyosaki", img: "image/richdadpoordad.jpeg" },
+      { dir: "The-Magic-of-Thinking-Big", title: "The Magic of Thinking Big", author: "David J. Schwartz", img: "image/themagicofthinking.jpeg" },
+      { dir: "The-4-Hour-Workweek", title: "The 4 Hour Workweek", author: "Tim Ferriss", img: "image/the4hurworkweek.jpeg" },
+      { dir: "The-48-Law-of-Power", title: "The 48 Laws of Power", author: "Robert Greene", img: "image/the48lawsofpower.jpeg" },
+      { dir: "The-Lean-Startup", title: "The Lean Startup", author: "Eric Ries", img: "image/theleanstartup.jpeg" },
+      { dir: "The-One-Thing", title: "The One Thing", author: "Gary Keller", img: "image/theonething.jpeg" },
+      { dir: "Think-and-Grow-Rich", title: "Think and Grow Rich", author: "Napoleon Hill", img: "image/thinkgrowrich.jpeg" },
+      { dir: "You-Can-Heal-Your-Life", title: "You Can Heal Your Life", author: "Louise Hay", img: "image/youcanhealyourlife.jpeg" },
+      { dir: "Your-Erroneous-Zones", title: "Your Erroneous Zones", author: "Wayne Dyer", img: "image/yourerroneouszone.jpeg" },
+      
+      // Update: File gambar ditemukan di screenshot
+      { dir: "Don-Quixote", title: "Don Quixote", author: "Miguel de Cervantes", img: "image/Donquixote.jpeg" },
+      { dir: "toyota", title: "The Toyota Way", author: "Jeffrey K. Liker", img: "image/Thetoyotaway.jpeg" },
+
+      // --- BUKU BARU (Ditambahkan & Disesuaikan Nama Filenya) ---
+      { dir: "The-Psychology-of-Selling", title: "The Psychology of Selling", author: "Brian Tracy", img: "image/The-Psychology-of-Selling.jpeg" },
+      { dir: "Guerrilla-Marketing", title: "Guerrilla Marketing", author: "Jay Conrad Levinson", img: "image/Guerrilla-Marketing.jpeg" },
+      { dir: "Purple-Cow", title: "Purple Cow", author: "Seth Godin", img: "image/Purple-Cow.jpeg" },
+      { dir: "The-1-Page-Marketing-Plan", title: "The 1-Page Marketing Plan", author: "Allan Dib", img: "image/The-1-Page-Marketing-Plan.jpeg" },
+      { dir: "Mastering-the-Rockefeller-Habits", title: "Mastering the Rockefeller Habits", author: "Verne Harnish", img: "image/Mastering-the-Rockefeller-Habits.jpeg" },
+      { dir: "Leaders-Eat-Last", title: "Leaders Eat Last", author: "Simon Sinek", img: "image/Leaders-Eat-Last.jpeg" },
+      { dir: "The-One-Minute-Manager", title: "The One Minute Manager", author: "Kenneth H. Blanchard", img: "image/The-1-minute-manager.jpeg" },
+      { dir: "Sprint", title: "Sprint", author: "Jake Knapp", img: "image/Sprint.jpeg" },
+      { dir: "Bad-Blood", title: "Bad Blood", author: "John Carreyrou", img: "image/Bad-Blood.jpeg" },
+      { dir: "The-Chimp-Paradox", title: "The Chimp Paradox", author: "Steve Peters", img: "image/The-Chimp-Paradox.jpeg" },
+      { dir: "Grit", title: "Grit", author: "Angela Duckworth", img: "image/Grit.jpeg" },
+      { dir: "The-Jelly-Effect", title: "The Jelly Effect", author: "Andy Bounds", img: "image/The-Jelly-Effect.jpeg" },
+      { dir: "Instant-Cashflow", title: "Instant Cashflow", author: "Brad Sugars", img: "image/Instant-Cashflow.jpeg" },
+      { dir: "Little-Red-Book-of-Sales", title: "Little Red Book of Sales", author: "Jeffrey Gitomer", img: "image/Little-Red-Book-of-Sales.jpeg" },
+      { dir: "Fish", title: "Fish!", author: "Stephen Lundin", img: "image/Fish.jpeg" },
+      { dir: "The-Infinite-Game", title: "The Infinite Game", author: "Simon Sinek", img: "image/The-Infinite-Game.jpeg" },
+      { dir: "Secrets-of-Six-Figure-Women", title: "Secrets of Six-Figure Women", author: "Barbara Stanny", img: "image/Secrets-of-Six-Figure-Women.jpeg" },
+      { dir: "Girl-Stop-Apologizing", title: "Girl, Stop Apologizing", author: "Rachel Hollis", img: "image/Girl-Stop-Apologizing.jpeg" },
+      { dir: "How-Women-Rise", title: "How Women Rise", author: "Sally Helgesen", img: "image/How-Women-Rise.jpeg" },
+      { dir: "The-Essays-of-Warren-Buffett", title: "The Essays of Warren Buffett", author: "Warren Buffett", img: "image/The-Essays-of-Warren-Buffett.jpeg" },
+      { dir: "Secrets-of-the-Millionaire-Mind", title: "Secrets of the Millionaire Mind", author: "T. Harv Eker", img: "image/Secrets-of-the-Millionaire-Mind.jpeg" },
+      { dir: "How-To-Get-Rich", title: "How To Get Rich", author: "Felix Dennis", img: "image/How-To-Get-Rich.jpeg" },
+      { dir: "The-Gospel-of-Wealth", title: "The Gospel of Wealth", author: "Andrew Carnegie", img: "image/The-Gospel-of-Wealth.jpeg" },
+      { dir: "Innovation-and-Entrepreneurship", title: "Innovation and Entrepreneurship", author: "Peter Drucker", img: "image/Innovation-and-Entrepreneurship.jpeg" },
+      { dir: "The-Visible-Hand", title: "The Visible Hand", author: "Alfred Chandler", img: "image/The-Visible-Hand.jpeg" },
+      { dir: "Titan", title: "Titan", author: "Ron Chernow", img: "image/Titan.jpeg" },
+      { dir: "Alibaba", title: "Alibaba", author: "Duncan Clark", img: "image/Alibaba.jpeg" },
+      { dir: "Great-by-Choice", title: "Great by Choice", author: "Jim Collins", img: "image/Great-by-Choice.jpeg" },
+      { dir: "Out-of-the-Crisis", title: "Out of the Crisis", author: "W. Edwards Deming", img: "image/Out-of-the-Crisis.jpeg" },
+      { dir: "Losing-My-Virginity", title: "Losing My Virginity", author: "Richard Branson", img: "image/Losing-My-Virginity.jpeg" },
+      { dir: "Art-of-Money-Getting", title: "The Art of Money Getting", author: "P. T. Barnum", img: "image/Art-of-money-getting.jpeg" },
+      { dir: "50-Self-Help-Classics", title: "50 Self-Help Classics", author: "Tom Butler-Bowdon", img: "image/50-self-help-classics.jpeg" }
     ];
 
     function toggleDrawer() {
@@ -171,6 +112,7 @@
     }
 
     function openBook(directory) {
+        // Link disesuaikan dengan kode terakhir Anda
         const baseUrl = "https://lp1.affiliateid.my.id/";
         window.location.href = baseUrl + directory;
     }
