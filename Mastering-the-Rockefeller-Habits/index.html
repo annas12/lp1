@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rockefeller Habits — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Navy/Silver Theme for Corporate Structure */
+        .active-tab { background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #1d4ed8; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-slate-800 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">R</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Rockefeller Habits</h2>
+                    <p class="text-slate-400 text-sm">
+                        <span class="lang-en">Scaling Up Guide</span>
+                        <span class="lang-id">Panduan Scaling Up</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The 3 Pillars</span>
+                <span class="lang-id">3 Pilar Utama</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-800 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-700 rounded-lg flex items-center justify-center text-xs font-bold">🏛️</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-800 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Priorities</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Alignment & OPSP</span>
+                                <span class="lang-id">Penyelarasan & OPSP</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-800 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Data</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Metrics & Feedback</span>
+                                <span class="lang-id">Metrik & Umpan Balik</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-800 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-cyan-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Rhythm</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Meeting Routines</span>
+                                <span class="lang-id">Rutinitas Rapat</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-800 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Brand Promise</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">The X Factor</span>
+                                <span class="lang-id">Faktor X</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-800 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-amber-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Case Studies</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Real Application</span>
+                                <span class="lang-id">Penerapan Nyata</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© Verne Harnish</p>
+                <p class="text-slate-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    Mastering the Rockefeller Habits
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    <span class="lang-en">What You Must Do to Increase the Value of Your Growing Firm</span>
+                    <span class="lang-id">Apa yang Harus Anda Lakukan untuk Meningkatkan Nilai Perusahaan yang Sedang Tumbuh</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-blue-700 to-slate-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Concept</span>
+                            <span class="lang-id">Konsep Dasar</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Chaos is Normal</span>
+                            <span class="lang-id">Kekacauan itu Normal</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-blue-600 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"Growth sucks cash. Growth creates chaos. You need a system to manage the chaos."</span>
+                            <span class="lang-id">"Pertumbuhan menyedot uang tunai. Pertumbuhan menciptakan kekacauan. Anda membutuhkan sistem untuk mengelola kekacauan itu."</span>
+                        </div>
+                        
+                        <p class="mobile-text justified-text lang-en">
+                            Verne Harnish analyzed how J.D. Rockefeller built Standard Oil. He found that sustainable growth relies on three fundamental pillars. Without these, companies hit the "Barriers to Growth" (usually at 10, 50, and 100 employees) and stall or implode.
+                        </p>
+                        <p class="mobile-text justified-text lang-id">
+                            Verne Harnish menganalisis bagaimana J.D. Rockefeller membangun Standard Oil. Dia menemukan bahwa pertumbuhan berkelanjutan bergantung pada tiga pilar fundamental. Tanpa ini, perusahaan menabrak "Hambatan Pertumbuhan" (biasanya saat karyawan berjumlah 10, 50, dan 100) dan macet atau hancur.
+                        </p>
+
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">The 3 Barriers to Scaling Up</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">3 Hambatan Scaling Up</h4>
+                            
+                            <ul class="list-none space-y-3 text-sm text-slate-700">
+                                <li class="flex items-start">
+                                    <span class="text-blue-600 mr-2 font-bold">1.</span>
+                                    <div>
+                                        <strong class="block text-slate-900 lang-en">Leadership:</strong>
+                                        <span class="lang-en">The inability to grow enough leaders throughout the organization who have the ability to delegate and predict.</span>
+                                        <strong class="block text-slate-900 lang-id">Kepemimpinan:</strong>
+                                        <span class="lang-id">Ketidakmampuan menumbuhkan cukup pemimpin di organisasi yang memiliki kemampuan untuk mendelegasikan dan memprediksi.</span>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-blue-600 mr-2 font-bold">2.</span>
+                                    <div>
+                                        <strong class="block text-slate-900 lang-en">Scalable Infrastructure:</strong>
+                                        <span class="lang-en">The lack of systems and structures (physical and organizational) to handle the complexities of communication and decisions.</span>
+                                        <strong class="block text-slate-900 lang-id">Infrastruktur yang Dapat Diskalakan:</strong>
+                                        <span class="lang-id">Kurangnya sistem dan struktur (fisik dan organisasi) untuk menangani kompleksitas komunikasi dan keputusan.</span>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-blue-600 mr-2 font-bold">3.</span>
+                                    <div>
+                                        <strong class="block text-slate-900 lang-en">Market Dynamics:</strong>
+                                        <span class="lang-en">The failure to address the increasing competitive pressures that erode margins as you scale.</span>
+                                        <strong class="block text-slate-900 lang-id">Dinamika Pasar:</strong>
+                                        <span class="lang-id">Kegagalan mengatasi tekanan kompetitif yang mengikis margin saat Anda membesar.</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Pillar 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Priorities (Alignment)</span>
+                            <span class="lang-id">Prioritas (Penyelarasan)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            A company with too many priorities has no priorities. The goal is <strong>Alignment</strong>. Everyone in the boat must row in the same direction.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Perusahaan dengan terlalu banyak prioritas berarti tidak punya prioritas. Tujuannya adalah <strong>Penyelarasan</strong>. Semua orang di perahu harus mendayung ke arah yang sama.
+                        </p>
+
+                        <div class="bg-blue-50 p-5 rounded-lg border border-blue-200 shadow-sm">
+                            <h4 class="font-bold text-blue-900 text-lg mb-2 lang-en">The One Page Strategic Plan (OPSP)</h4>
+                            <h4 class="font-bold text-blue-900 text-lg mb-2 lang-id">Rencana Strategis Satu Halaman (OPSP)</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                This is the core tool. It puts your entire vision on a single sheet of paper (11x17 inch). If you can't explain your strategy on one page, it's too complex.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Ini adalah alat inti. Ini menempatkan seluruh visi Anda pada selembar kertas tunggal. Jika Anda tidak bisa menjelaskan strategi Anda dalam satu halaman, itu terlalu rumit.
+                            </p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                <div class="bg-white p-3 rounded border border-blue-100">
+                                    <strong class="block text-slate-900 mb-1 text-sm lang-en">Long Term (Vision)</strong>
+                                    <strong class="block text-slate-900 mb-1 text-sm lang-id">Jangka Panjang (Visi)</strong>
+                                    <ul class="text-xs text-slate-600 list-disc ml-4">
+                                        <li><strong>Core Values:</strong> "Shoulds/Shouldn'ts".</li>
+                                        <li><strong>Purpose:</strong> Why we exist.</li>
+                                        <li><strong>BHAG:</strong> Big Hairy Audacious Goal (10-25 years).</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-3 rounded border border-blue-100">
+                                    <strong class="block text-slate-900 mb-1 text-sm lang-en">Short Term (Action)</strong>
+                                    <strong class="block text-slate-900 mb-1 text-sm lang-id">Jangka Pendek (Aksi)</strong>
+                                    <ul class="text-xs text-slate-600 list-disc ml-4">
+                                        <li><strong>3-5 Year Target:</strong> Financials.</li>
+                                        <li><strong>1 Year Plan:</strong> The "Big 5" priorities.</li>
+                                        <li><strong>Quarterly Theme:</strong> The single focus for 90 days.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-l-4 border-indigo-500 pl-4 bg-indigo-50 p-4 rounded-r-lg">
+                            <strong class="block text-indigo-900 text-lg mb-2 lang-en">The Critical Number</strong>
+                            <strong class="block text-indigo-900 text-lg mb-2 lang-id">Angka Kritis</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Every quarter, you must identify <strong>ONE</strong> Critical Number. This is the single metric that, if improved, fixes the biggest bottleneck in the business.
+                                <br>Example: If sales are high but cash is low, the Critical Number might be "Days Sales Outstanding" (collecting cash faster).
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Setiap kuartal, Anda harus mengidentifikasi <strong>SATU</strong> Angka Kritis. Ini adalah metrik tunggal yang, jika ditingkatkan, memperbaiki kemacetan terbesar dalam bisnis.
+                                <br>Contoh: Jika penjualan tinggi tapi uang tunai rendah, Angka Kritisnya mungkin "Days Sales Outstanding" (menagih uang lebih cepat).
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Pillar 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Data (Metrics)</span>
+                            <span class="lang-id">Data (Metrik)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            You cannot manage what you do not measure. But most companies measure the wrong things (Lagging Indicators). You need <strong>Leading Indicators</strong>.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Anda tidak bisa mengelola apa yang tidak Anda ukur. Tapi kebanyakan perusahaan mengukur hal yang salah (Indikator Tertinggal). Anda butuh <strong>Indikator Utama (Leading)</strong>.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                                <strong class="block text-slate-900 text-lg mb-2 lang-en">Lagging Indicators (History)</strong>
+                                <strong class="block text-slate-900 text-lg mb-2 lang-id">Indikator Tertinggal (Sejarah)</strong>
+                                <p class="text-sm text-slate-600 justified-text lang-en">
+                                    Financial statements, last month's sales.
+                                    <br><em>Problem:</em> By the time you see them, it's too late to change the outcome. It's like driving while looking in the rearview mirror.
+                                </p>
+                                <p class="text-sm text-slate-600 justified-text lang-id">
+                                    Laporan keuangan, penjualan bulan lalu.
+                                    <br><em>Masalah:</em> Saat Anda melihatnya, sudah terlambat untuk mengubah hasil. Seperti menyetir sambil melihat kaca spion.
+                                </p>
+                            </div>
+
+                            <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-200">
+                                <strong class="block text-indigo-900 text-lg mb-2 lang-en">Leading Indicators (Forecast)</strong>
+                                <strong class="block text-indigo-900 text-lg mb-2 lang-id">Indikator Utama (Ramalan)</strong>
+                                <p class="text-sm text-indigo-800 justified-text lang-en">
+                                    Predictive metrics.
+                                    <br><em>Examples:</em> Number of sales calls made today, number of defects found on the line this morning.
+                                    <br><em>Benefit:</em> You can act NOW to fix the end result.
+                                </p>
+                                <p class="text-sm text-indigo-800 justified-text lang-id">
+                                    Metrik prediktif.
+                                    <br><em>Contoh:</em> Jumlah panggilan penjualan hari ini, jumlah cacat ditemukan pagi ini.
+                                    <br><em>Manfaat:</em> Anda bisa bertindak SEKARANG untuk memperbaiki hasil akhir.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">Employee Feedback: Start/Stop/Keep</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Umpan Balik Karyawan: Mulai/Henti/Lanjut</h4>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                Executives are often the last to know about problems. Front-line employees know first. Implement a weekly feedback loop asking 3 questions:
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Eksekutif seringkali yang terakhir tahu masalah. Karyawan garis depan tahu duluan. Terapkan putaran umpan balik mingguan dengan 3 pertanyaan:
+                            </p>
+                            <ul class="list-decimal ml-5 text-sm text-slate-600 space-y-1">
+                                <li><strong>Start:</strong> What should we start doing? (Opportunities).</li>
+                                <li><strong>Stop:</strong> What should we stop doing? (Bottlenecks/Stupidity).</li>
+                                <li><strong>Keep:</strong> What should we keep doing? (What's working).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Pillar 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Rhythm (Meeting Routine)</span>
+                            <span class="lang-id">Ritme (Rutinitas Rapat)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Routine sets you free. A regular rhythm of meetings saves time by preventing the "Got a minute?" interruptions. It creates a heartbeat for the organization.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Rutinitas membebaskan Anda. Ritme rapat yang teratur menghemat waktu dengan mencegah gangguan "Punya waktu sebentar?". Ini menciptakan detak jantung bagi organisasi.
+                        </p>
+
+                        <div class="space-y-4">
+                            <div class="flex flex-col sm:flex-row bg-cyan-50 p-4 rounded-lg border border-cyan-200">
+                                <div class="sm:w-1/4 font-bold text-cyan-900 text-lg mb-2 sm:mb-0">Daily Huddle</div>
+                                <div class="sm:w-3/4">
+                                    <strong class="block text-slate-900 text-sm mb-1 lang-en">Duration: 15 Minutes (Stand up)</strong>
+                                    <strong class="block text-slate-900 text-sm mb-1 lang-id">Durasi: 15 Menit (Berdiri)</strong>
+                                    <p class="text-xs text-slate-600 justified-text lang-en">
+                                        Agenda: 1. What's up? (News) 2. Daily Metrics (Data) 3. Stuck points (Where do you need help?).
+                                        <br>Goal: Synchronization. Fix issues immediately.
+                                    </p>
+                                    <p class="text-xs text-slate-600 justified-text lang-id">
+                                        Agenda: 1. Ada kabar apa? (Berita) 2. Metrik Harian (Data) 3. Kemacetan (Di mana butuh bantuan?).
+                                        <br>Tujuan: Sinkronisasi. Perbaiki masalah segera.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col sm:flex-row bg-slate-50 p-4 rounded-lg border border-slate-200">
+                                <div class="sm:w-1/4 font-bold text-slate-800 text-lg mb-2 sm:mb-0">Weekly</div>
+                                <div class="sm:w-3/4">
+                                    <strong class="block text-slate-900 text-sm mb-1 lang-en">Duration: 60-90 Minutes</strong>
+                                    <strong class="block text-slate-900 text-sm mb-1 lang-id">Durasi: 60-90 Menit</strong>
+                                    <p class="text-xs text-slate-600 justified-text lang-en">
+                                        Agenda: Review Weekly KPIs, Customer/Employee Feedback, solve ONE big strategic issue ("The Rock").
+                                        <br>Goal: Focus and execution for the week.
+                                    </p>
+                                    <p class="text-xs text-slate-600 justified-text lang-id">
+                                        Agenda: Tinjau KPI Mingguan, Umpan Balik Pelanggan/Karyawan, selesaikan SATU masalah strategis besar ("Batu Besar").
+                                        <br>Tujuan: Fokus dan eksekusi untuk minggu ini.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col sm:flex-row bg-white p-4 rounded-lg border border-slate-300">
+                                <div class="sm:w-1/4 font-bold text-slate-800 text-lg mb-2 sm:mb-0">Quarterly</div>
+                                <div class="sm:w-3/4">
+                                    <strong class="block text-slate-900 text-sm mb-1 lang-en">Duration: 1 Day (Offsite)</strong>
+                                    <strong class="block text-slate-900 text-sm mb-1 lang-id">Durasi: 1 Hari (Di Luar Kantor)</strong>
+                                    <p class="text-xs text-slate-600 justified-text lang-en">
+                                        Agenda: Review previous quarter, set new Quarterly Theme, set Critical Number, update OPSP.
+                                        <br>Goal: Reset and realignment.
+                                    </p>
+                                    <p class="text-xs text-slate-600 justified-text lang-id">
+                                        Agenda: Tinjau kuartal lalu, tetapkan Tema Kuartalan baru, tetapkan Angka Kritis, perbarui OPSP.
+                                        <br>Tujuan: Reset dan penyelarasan ulang.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-teal-100 text-teal-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Differentiation</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Brand Promise & X-Factor</span>
+                            <span class="lang-id">Janji Merek & Faktor X</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-teal-50 p-5 rounded-lg border border-teal-200">
+                            <h4 class="font-bold text-teal-900 text-lg mb-2 lang-en">The Brand Promise</h4>
+                            <h4 class="font-bold text-teal-900 text-lg mb-2 lang-id">Janji Merek</h4>
+                            <p class="text-sm text-teal-800 justified-text lang-en">
+                                What is the ONE thing you guarantee? It must be measurable.
+                                <br><br>
+                                <strong>Example (Rackspace):</strong> "Fanatical Support." (They answer the phone within 3 rings).
+                                <br><strong>Catalytic Mechanism:</strong> If they break the promise, what happens? (e.g., Pizza delivered in 30 mins or it's FREE). The penalty hurts you, forcing you to execute.
+                            </p>
+                            <p class="text-sm text-teal-800 justified-text lang-id">
+                                Apa SATU hal yang Anda jamin? Harus terukur.
+                                <br><br>
+                                <strong>Contoh (Rackspace):</strong> "Dukungan Fanatik." (Mereka jawab telepon dalam 3 dering).
+                                <br><strong>Mekanisme Katalitik:</strong> Jika janji dilanggar, apa yang terjadi? (misal: Pizza 30 menit atau GRATIS). Hukuman itu menyakitkan, memaksa Anda untuk mengeksekusi.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">The X-Factor (10x Advantage)</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Faktor X (Keunggulan 10x)</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                To dominate, you need an underlying advantage that competitors cannot copy easily. It often addresses a bottleneck in the industry.
+                                <br><br>
+                                <strong>Example (Outback Steakhouse):</strong> The bottleneck in restaurants is manager turnover (they leave every 6 months). Outback's X-Factor: Managers invest $25k and keep 10% of the cash flow. They stay for 5+ years. This continuity made Outback huge.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Untuk mendominasi, Anda butuh keunggulan mendasar yang tidak bisa ditiru pesaing dengan mudah. Seringkali ini mengatasi kemacetan industri.
+                                <br><br>
+                                <strong>Contoh (Outback Steakhouse):</strong> Kemacetan di restoran adalah pergantian manajer (mereka keluar tiap 6 bulan). Faktor X Outback: Manajer investasi $25k dan dapat 10% arus kas. Mereka bertahan 5+ tahun. Kontinuitas ini membuat Outback besar.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Application</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Case Study: RedBalloon</span>
+                            <span class="lang-id">Studi Kasus: RedBalloon</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                            <strong class="block text-slate-900 text-lg mb-2 lang-en">The Problem</strong>
+                            <strong class="block text-slate-900 text-lg mb-2 lang-id">Masalahnya</strong>
+                            <p class="text-sm text-slate-600 justified-text mb-4 lang-en">
+                                Naomi Simson founded RedBalloon (experience gifts) in Australia. She was stuck. She had a vision but the team wasn't aligned. Growth was chaotic.
+                            </p>
+                            <p class="text-sm text-slate-600 justified-text mb-4 lang-id">
+                                Naomi Simson mendirikan RedBalloon (hadiah pengalaman) di Australia. Dia macet. Dia punya visi tapi tim tidak selaras. Pertumbuhan kacau.
+                            </p>
+
+                            <strong class="block text-slate-900 text-lg mb-2 lang-en">The Rockefeller Solution</strong>
+                            <strong class="block text-slate-900 text-lg mb-2 lang-id">Solusi Rockefeller</strong>
+                            <ul class="list-disc ml-5 text-sm text-slate-700 space-y-2">
+                                <li>
+                                    <span class="lang-en"><strong>Alignment:</strong> She implemented the OPSP. Everyone saw the BHAG: "2 Million Experiences sold by 2015."</span>
+                                    <span class="lang-id"><strong>Penyelarasan:</strong> Dia menerapkan OPSP. Semua orang melihat BHAG: "2 Juta Pengalaman terjual pada 2015."</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Rhythm:</strong> She started the Daily Huddle at 8:50 AM. It aligned the sales and marketing teams daily.</span>
+                                    <span class="lang-id"><strong>Ritme:</strong> Dia memulai Huddle Harian jam 8:50 pagi. Ini menyelaraskan tim penjualan dan pemasaran setiap hari.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Data:</strong> She displayed the "Critical Number" on screens around the office.</span>
+                                    <span class="lang-id"><strong>Data:</strong> Dia menampilkan "Angka Kritis" di layar di seluruh kantor.</span>
+                                </li>
+                            </ul>
+
+                            <strong class="block text-slate-900 text-lg mt-4 mb-2 lang-en">The Result</strong>
+                            <strong class="block text-slate-900 text-lg mt-4 mb-2 lang-id">Hasilnya</strong>
+                            <p class="text-sm text-slate-600 justified-text lang-en">
+                                RedBalloon grew to be one of Australia's fastest-growing companies and was named a "Best Place to Work" multiple times. They hit their BHAG.
+                            </p>
+                            <p class="text-sm text-slate-600 justified-text lang-id">
+                                RedBalloon tumbuh menjadi salah satu perusahaan dengan pertumbuhan tercepat di Australia dan dinobatkan sebagai "Tempat Kerja Terbaik" berkali-kali. Mereka mencapai BHAG mereka.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#1d4ed8'; // Blue
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#64748b'; // Slate
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
