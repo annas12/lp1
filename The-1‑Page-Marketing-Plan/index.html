@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1-Page Marketing Plan — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Yellow/Slate Theme for Action & Clarity */
+        .active-tab { background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(250, 204, 21, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(250, 204, 21, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #eab308; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-yellow-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-yellow-500 to-amber-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">1</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">1-Page Marketing</h2>
+                    <p class="text-slate-400 text-sm">
+                        <span class="lang-en">Ultimate Guide</span>
+                        <span class="lang-id">Panduan Utama</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The 3 Phases</span>
+                <span class="lang-id">3 Fase Utama</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-yellow-600 rounded-lg flex items-center justify-center text-xs font-bold">🚀</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Phase 1: Before</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Prospects</span>
+                                <span class="lang-id">Prospek</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-amber-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Phase 2: During</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Leads</span>
+                                <span class="lang-id">Leads (Calon Pelanggan)</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Phase 3: After</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Customers</span>
+                                <span class="lang-id">Pelanggan</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© Allan Dib</p>
+                <p class="text-slate-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    The 1-Page Marketing Plan
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    <span class="lang-en">Get New Customers, Make More Money, And Stand Out</span>
+                    <span class="lang-id">Dapatkan Pelanggan Baru, Hasilkan Lebih Banyak Uang, dan Tampil Menonjol</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-yellow-500 to-amber-600 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">Introduction</span>
+                            <span class="lang-id">Pendahuluan</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Direct Response vs. Branding</span>
+                            <span class="lang-id">Respon Langsung vs. Branding</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-yellow-500 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"Marketing is the strategy you use to get your ideal target market to know you, like you, and trust you enough to become a customer."</span>
+                            <span class="lang-id">"Pemasaran adalah strategi yang Anda gunakan untuk membuat target pasar ideal Anda mengenal, menyukai, dan mempercayai Anda cukup untuk menjadi pelanggan."</span>
+                        </div>
+                        
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">The Small Business Trap</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Perangkap Bisnis Kecil</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Most small businesses try to copy big businesses (Coca-Cola, Nike). They do "Mass Marketing" or "Branding." This is a mistake because you don't have a $100 million budget.
+                                <br><br>
+                                Instead, you must use <strong>Direct Response Marketing</strong>.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Kebanyakan bisnis kecil mencoba meniru bisnis besar (Coca-Cola, Nike). Mereka melakukan "Mass Marketing" atau "Branding." Ini kesalahan karena Anda tidak punya anggaran $100 juta.
+                                <br><br>
+                                Sebaliknya, Anda harus menggunakan <strong>Pemasaran Respon Langsung</strong>.
+                            </p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                <div class="bg-white p-3 rounded border border-slate-200">
+                                    <strong class="block text-slate-900 mb-1 lang-en">Mass Marketing (Branding)</strong>
+                                    <strong class="block text-slate-900 mb-1 lang-id">Pemasaran Massal</strong>
+                                    <ul class="text-xs text-slate-600 list-disc ml-4">
+                                        <li>"Getting your name out there."</li>
+                                        <li>Vague, not measurable.</li>
+                                        <li>Expensive.</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-yellow-50 p-3 rounded border border-yellow-200">
+                                    <strong class="block text-yellow-900 mb-1 lang-en">Direct Response</strong>
+                                    <strong class="block text-yellow-900 mb-1 lang-id">Respon Langsung</strong>
+                                    <ul class="text-xs text-slate-600 list-disc ml-4">
+                                        <li>Designed to evoke an immediate response.</li>
+                                        <li>Trackable & Measurable.</li>
+                                        <li>Focuses on ROI (Return on Investment).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Phase 1: Before</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Prospects (Squares 1-3)</span>
+                            <span class="lang-id">Prospek (Kotak 1-3)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 bg-yellow-500 text-white rounded-full flex items-center justify-center font-bold mr-2">1</div>
+                                <h4 class="font-bold text-slate-900 text-lg">My Target Market</h4>
+                            </div>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                <strong>Rule:</strong> "If you target everyone, you target no one."
+                                <br>A flashlight is weak because its light is scattered. A laser is powerful because it is focused. Be a laser.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                <strong>Aturan:</strong> "Jika Anda menargetkan semua orang, Anda tidak menargetkan siapa pun."
+                                <br>Senter itu lemah karena cahayanya tersebar. Laser itu kuat karena terfokus. Jadilah laser.
+                            </p>
+                            <div class="bg-yellow-50 p-3 rounded text-sm text-yellow-900 border border-yellow-200 italic">
+                                <strong class="not-italic block mb-1 lang-en">The PVP Index (Rating your niche):</strong>
+                                <strong class="not-italic block mb-1 lang-id">Indeks PVP (Menilai niche Anda):</strong>
+                                <ul class="list-disc ml-4">
+                                    <li><strong>P</strong>ersonal Fulfillment: Do you enjoy working with them?</li>
+                                    <li><strong>V</strong>alue to the Marketplace: Are they willing to pay?</li>
+                                    <li><strong>P</strong>rofitability: Can you make a high margin?</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 bg-yellow-500 text-white rounded-full flex items-center justify-center font-bold mr-2">2</div>
+                                <h4 class="font-bold text-slate-900 text-lg">My Message (USP)</h4>
+                            </div>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                <strong>Unique Selling Proposition:</strong> Why should I buy from you rather than the competitor?
+                                <br><br>
+                                <strong>The "Commodity" Trap:</strong> If you don't differentiate, you compete on price. That is a race to the bottom.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                <strong>Proposisi Penjualan Unik:</strong> Mengapa saya harus membeli dari Anda, bukan dari pesaing?
+                                <br><br>
+                                <strong>Perangkap "Komoditas":</strong> Jika Anda tidak membedakan diri, Anda bersaing harga. Itu adalah perlombaan menuju kehancuran.
+                            </p>
+                            <div class="border-l-4 border-yellow-500 pl-3">
+                                <strong class="block text-slate-900 text-sm mb-1 lang-en">Case Study: Domino's Pizza</strong>
+                                <strong class="block text-slate-900 text-sm mb-1 lang-id">Studi Kasus: Domino's Pizza</strong>
+                                <p class="text-xs text-slate-600 lang-en">They didn't say "Best Pizza." They said: "Fresh, hot pizza delivered in 30 minutes or it's free." That is a powerful USP.</p>
+                                <p class="text-xs text-slate-600 lang-id">Mereka tidak bilang "Pizza Terbaik." Mereka bilang: "Pizza segar dan panas diantar dalam 30 menit atau gratis." Itu USP yang kuat.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 bg-yellow-500 text-white rounded-full flex items-center justify-center font-bold mr-2">3</div>
+                                <h4 class="font-bold text-slate-900 text-lg">Media Channels</h4>
+                            </div>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Where does your target market hang out? Don't just guess. Measure the ROI.
+                                <br><br>
+                                <strong>Warning:</strong> Never rely on a single source of leads (e.g., only SEO or only Facebook Ads). This is like diving from a board with one screw. If Google changes the algorithm, your business dies.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Di mana target pasar Anda berkumpul? Jangan asal tebak. Ukur ROI-nya.
+                                <br><br>
+                                <strong>Peringatan:</strong> Jangan pernah mengandalkan satu sumber leads saja (misal: hanya SEO atau Iklan Facebook). Ini seperti menyelam dari papan dengan satu sekrup. Jika Google ubah algoritma, bisnis Anda mati.
+                            </p>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Phase 2: During</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Leads (Squares 4-6)</span>
+                            <span class="lang-id">Leads (Kotak 4-6)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 bg-amber-600 text-white rounded-full flex items-center justify-center font-bold mr-2">4</div>
+                                <h4 class="font-bold text-slate-900 text-lg">Lead Capture System</h4>
+                            </div>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                <strong>The Rule:</strong> Don't try to sell immediately. Only 3% of people are ready to buy NOW. 97% are not ready yet. If you ask for the sale, you lose the 97%.
+                                <br><br>
+                                Instead, capture their details so you can market to them later.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                <strong>Aturan:</strong> Jangan coba menjual langsung. Hanya 3% orang siap beli SEKARANG. 97% belum siap. Jika Anda minta penjualan, Anda kehilangan 97% itu.
+                                <br><br>
+                                Sebaliknya, tangkap data mereka agar Anda bisa memasarkan kepada mereka nanti.
+                            </p>
+                            <div class="bg-amber-50 p-3 rounded border border-amber-200">
+                                <strong class="block text-amber-900 text-sm mb-1 lang-en">The Ethical Bribe</strong>
+                                <strong class="block text-amber-900 text-sm mb-1 lang-id">Suap Etis</strong>
+                                <p class="text-xs text-slate-600 lang-en">Give something of high value in exchange for their name and email. E.g., "The 7 Mistakes Homeowners Make When Selling" (Free Report).</p>
+                                <p class="text-xs text-slate-600 lang-id">Berikan sesuatu bernilai tinggi sebagai ganti nama dan email mereka. Misal: "7 Kesalahan Pemilik Rumah Saat Menjual" (Laporan Gratis).</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 bg-amber-600 text-white rounded-full flex items-center justify-center font-bold mr-2">5</div>
+                                <h4 class="font-bold text-slate-900 text-lg">Lead Nurturing</h4>
+                            </div>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                Moving them from "Interested" to "Ready." This is where you build trust and authority.
+                                <br><br>
+                                <strong>Shock and Awe Package:</strong> When a lead comes in, send them a physical package (book, DVD, cookies, handwritten letter). Overwhelm them with value before they even buy.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Menggerakkan mereka dari "Tertarik" menjadi "Siap." Di sinilah Anda membangun kepercayaan dan otoritas.
+                                <br><br>
+                                <strong>Paket Shock and Awe:</strong> Saat lead masuk, kirim paket fisik (buku, DVD, kue, surat tulisan tangan). Buat mereka terpesona dengan nilai sebelum mereka membeli.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 bg-amber-600 text-white rounded-full flex items-center justify-center font-bold mr-2">6</div>
+                                <h4 class="font-bold text-slate-900 text-lg">Sales Conversion</h4>
+                            </div>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                Turning a shopper into a buyer. The biggest barrier is <strong>Trust</strong>.
+                                <br><br>
+                                <strong>Strategy: Risk Reversal.</strong>
+                                <br>Example: "If you don't like it in 30 days, I will refund your money AND pay you $50 for your time." Make it riskier for them NOT to buy.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Mengubah pengunjung menjadi pembeli. Hambatan terbesar adalah <strong>Kepercayaan</strong>.
+                                <br><br>
+                                <strong>Strategi: Pembalikan Risiko.</strong>
+                                <br>Contoh: "Jika Anda tidak suka dalam 30 hari, saya kembalikan uang Anda DAN bayar Anda $50 untuk waktu Anda." Buat lebih berisiko bagi mereka untuk TIDAK membeli.
+                            </p>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-orange-100 text-orange-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Phase 3: After</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Customers (Squares 7-9)</span>
+                            <span class="lang-id">Pelanggan (Kotak 7-9)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 bg-orange-600 text-white rounded-full flex items-center justify-center font-bold mr-2">7</div>
+                                <h4 class="font-bold text-slate-900 text-lg">World-Class Experience</h4>
+                            </div>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                Create "Raving Fans." Don't just satisfy; delight.
+                                <br><br>
+                                <strong>The Tribe Concept:</strong> People want to belong. Apple users are a tribe. Harley Davidson riders are a tribe. Turn your customers into a tribe by creating rituals and a shared identity.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Ciptakan "Penggemar Fanatik." Jangan hanya memuaskan; bahagiakan.
+                                <br><br>
+                                <strong>Konsep Suku:</strong> Orang ingin memiliki rasa. Pengguna Apple adalah suku. Pengendara Harley adalah suku. Ubah pelanggan Anda menjadi suku dengan menciptakan ritual dan identitas bersama.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 bg-orange-600 text-white rounded-full flex items-center justify-center font-bold mr-2">8</div>
+                                <h4 class="font-bold text-slate-900 text-lg">Increase Lifetime Value (LTV)</h4>
+                            </div>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                It costs 5x more to get a new customer than to sell to an existing one. The real money is in the "Back End."
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Biayanya 5x lebih mahal untuk dapat pelanggan baru dibanding menjual ke pelanggan lama. Uang sebenarnya ada di "Back End" (Penjualan Lanjutan).
+                            </p>
+                            <div class="bg-orange-50 p-3 rounded border border-orange-200">
+                                <strong class="block text-orange-900 text-sm mb-1">Tactics:</strong>
+                                <ul class="list-disc ml-4 text-xs text-slate-600">
+                                    <li><strong>Upsell:</strong> "Do you want fries with that?" (Add-ons).</li>
+                                    <li><strong>Cross-sell:</strong> Selling related products.</li>
+                                    <li><strong>Resell:</strong> Subscription models or reminders to buy again.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 bg-orange-600 text-white rounded-full flex items-center justify-center font-bold mr-2">9</div>
+                                <h4 class="font-bold text-slate-900 text-lg">Orchestrate Referrals</h4>
+                            </div>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                Don't just "hope" for referrals. Build a system.
+                                <br><br>
+                                <strong>Case Study: The Golden Ticket.</strong> A carpet cleaner gave his best clients a physical "Golden Ticket" worth $50. "Give this to a friend who needs cleaning. They get $50 off, and YOU get a free movie ticket."
+                                <br>It worked because it made the client look like a hero to their friend ("I have a special hookup for you").
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Jangan cuma "berharap" referensi. Bangun sistemnya.
+                                <br><br>
+                                <strong>Studi Kasus: Tiket Emas.</strong> Seorang pembersih karpet memberi klien terbaiknya "Tiket Emas" fisik senilai $50. "Berikan ini ke teman yang butuh pembersihan. Mereka dapat diskon $50, dan ANDA dapat tiket bioskop gratis."
+                                <br>Ini berhasil karena membuat klien terlihat seperti pahlawan bagi temannya ("Saya punya koneksi khusus buat kamu").
+                            </p>
+                        </div>
+
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#eab308'; // Yellow
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#475569'; // Slate
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
