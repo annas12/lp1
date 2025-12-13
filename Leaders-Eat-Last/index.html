@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaders Eat Last — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Crimson/Slate Theme for Leadership & Sacrifice */
+        .active-tab { background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #b91c1c; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-red-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-red-600 to-red-800 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">S</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Leaders Eat Last</h2>
+                    <p class="text-slate-400 text-sm">
+                        <span class="lang-en">Ultimate Summary</span>
+                        <span class="lang-id">Ringkasan Utama</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The Concept</span>
+                <span class="lang-id">Konsep</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center text-xs font-bold">🦅</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Biology</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">EDSO Chemicals</span>
+                                <span class="lang-id">Bahan Kimia EDSO</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Circle of Safety</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Protection & Trust</span>
+                                <span class="lang-id">Perlindungan & Kepercayaan</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Enemy</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Cortisol & Abstraction</span>
+                                <span class="lang-id">Kortisol & Abstraksi</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Leadership Lessons</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Service & Sacrifice</span>
+                                <span class="lang-id">Layanan & Pengorbanan</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© Simon Sinek</p>
+                <p class="text-slate-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    Leaders Eat Last
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    <span class="lang-en">Why Some Teams Pull Together and Others Don't</span>
+                    <span class="lang-id">Mengapa Beberapa Tim Bersatu dan Lainnya Tidak</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-red-600 to-slate-600 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Title Origin</span>
+                            <span class="lang-id">Asal Usul Judul</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Marine Corps Tradition</span>
+                            <span class="lang-id">Tradisi Korps Marinir</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-red-600 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"The true price of leadership is the willingness to place the needs of others above your own."</span>
+                            <span class="lang-id">"Harga sejati dari kepemimpinan adalah kesediaan untuk menempatkan kebutuhan orang lain di atas kebutuhan sendiri."</span>
+                        </div>
+                        
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">Why Junior Officers Eat First</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Mengapa Perwira Junior Makan Duluan</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Simon Sinek visited a Marine Corps base and noticed a pattern in the chow hall (cafeteria). The most junior Marines ate first, and the most senior officers ate last.
+                                <br><br>
+                                <strong>No one ordered them to do this.</strong> It wasn't in the rulebook. It is simply the culture. Leaders view their responsibility as the care of their people. If food runs out, the leader goes hungry so the soldiers can eat.
+                                <br><br>
+                                This simple act is a metaphor for all great leadership: <strong>Leaders sacrifice their own comfort for the survival of the tribe.</strong>
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Simon Sinek mengunjungi markas Korps Marinir dan melihat pola di kantin. Marinir paling junior makan duluan, dan perwira paling senior makan terakhir.
+                                <br><br>
+                                <strong>Tidak ada yang memerintahkan mereka.</strong> Itu tidak ada di buku peraturan. Itu hanyalah budaya. Pemimpin memandang tanggung jawab mereka sebagai merawat orang-orangnya. Jika makanan habis, pemimpinlah yang lapar agar prajurit bisa makan.
+                                <br><br>
+                                Tindakan sederhana ini adalah metafora untuk semua kepemimpinan hebat: <strong>Pemimpin mengorbankan kenyamanan mereka sendiri demi kelangsungan hidup sukunya.</strong>
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The 4 Chemicals (EDSO)</span>
+                            <span class="lang-id">4 Bahan Kimia (EDSO)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Our behavior is driven by four primary chemicals designed by evolution to keep us alive and working together. Sinek divides them into "Selfish" and "Selfless" chemicals.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Perilaku kita didorong oleh empat bahan kimia utama yang dirancang oleh evolusi untuk membuat kita tetap hidup dan bekerja sama. Sinek membaginya menjadi bahan kimia "Egois" dan "Tanpa Pamrih".
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-red-50 p-5 rounded-lg border border-red-200">
+                                <strong class="block text-red-900 text-lg mb-3 lang-en">The Selfish Chemicals</strong>
+                                <strong class="block text-red-900 text-lg mb-3 lang-id">Bahan Kimia Egois</strong>
+                                
+                                <div class="mb-4">
+                                    <strong class="text-red-800 text-sm">1. Endorphins (The Runner's High)</strong>
+                                    <p class="text-xs text-slate-600 justified-text lang-en">
+                                        Designed to mask physical pain. It allowed our ancestors to keep hunting even when tired. In business, it's the "push through" feeling.
+                                    </p>
+                                    <p class="text-xs text-slate-600 justified-text lang-id">
+                                        Dirancang untuk menutupi rasa sakit fisik. Ini memungkinkan nenek moyang kita terus berburu meski lelah. Dalam bisnis, ini perasaan "memaksakan diri".
+                                    </p>
+                                </div>
+                                
+                                <div>
+                                    <strong class="text-red-800 text-sm">2. Dopamine (The Goal Achiever)</strong>
+                                    <p class="text-xs text-slate-600 justified-text lang-en">
+                                        The feeling of satisfaction when you check something off a list, hit a target, or find food. It is highly addictive. It focuses on "I" (What did *I* achieve?).
+                                    </p>
+                                    <p class="text-xs text-slate-600 justified-text lang-id">
+                                        Perasaan puas saat mencentang daftar tugas, mencapai target, atau menemukan makanan. Sangat adiktif. Fokus pada "Aku" (Apa yang *aku* capai?).
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+                                <strong class="block text-blue-900 text-lg mb-3 lang-en">The Selfless Chemicals</strong>
+                                <strong class="block text-blue-900 text-lg mb-3 lang-id">Bahan Kimia Tanpa Pamrih</strong>
+                                
+                                <div class="mb-4">
+                                    <strong class="text-blue-800 text-sm">3. Serotonin (The Leadership Chemical)</strong>
+                                    <p class="text-xs text-slate-600 justified-text lang-en">
+                                        The feeling of pride and status. It flows when others respect us or when we make our parents/boss proud. It reinforces the social hierarchy. Leaders get serotonin (status) but "pay" for it by offering protection.
+                                    </p>
+                                    <p class="text-xs text-slate-600 justified-text lang-id">
+                                        Perasaan bangga dan status. Mengalir saat orang lain menghormati kita atau saat kita membanggakan orang tua/bos. Memperkuat hierarki sosial. Pemimpin dapat serotonin (status) tapi "membayarnya" dengan menawarkan perlindungan.
+                                    </p>
+                                </div>
+                                
+                                <div>
+                                    <strong class="text-blue-800 text-sm">4. Oxytocin (The Love Chemical)</strong>
+                                    <p class="text-xs text-slate-600 justified-text lang-en">
+                                        The feeling of friendship, trust, and love. It is released by physical touch (handshakes, hugs) and acts of kindness. It takes <strong>time</strong> to build. It creates bonds that allow us to sleep safely knowing someone is watching our back.
+                                    </p>
+                                    <p class="text-xs text-slate-600 justified-text lang-id">
+                                        Perasaan persahabatan, kepercayaan, dan cinta. Dilepaskan oleh sentuhan fisik (jabat tangan, pelukan) dan tindakan kebaikan. Butuh <strong>waktu</strong> untuk dibangun. Menciptakan ikatan yang memungkinkan kita tidur aman karena tahu ada yang menjaga kita.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Circle of Safety</span>
+                            <span class="lang-id">Lingkaran Keamanan</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            The world is full of dangers (competitors, economy, technology). These are external forces we cannot control. The leader's job is to create a <strong>Circle of Safety</strong> inside the company. Inside the circle, employees should feel safe from each other (no politics, no backstabbing).
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Dunia penuh bahaya (pesaing, ekonomi, teknologi). Ini kekuatan eksternal yang tak bisa kita kontrol. Tugas pemimpin adalah menciptakan <strong>Lingkaran Keamanan</strong> di dalam perusahaan. Di dalam lingkaran, karyawan harus merasa aman dari satu sama lain (tanpa politik, tanpa tusuk dari belakang).
+                        </p>
+
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">Case Study: Bob Chapman (Barry-Wehmiller)</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Studi Kasus: Bob Chapman (Barry-Wehmiller)</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-en">
+                                In 2008, the recession hit hard. Barry-Wehmiller lost 30% of its orders overnight. The board said: "We need to layoff people to save $10 million."
+                                <br><br>
+                                Bob Chapman refused. He said: <strong>"We don't fire family."</strong>
+                                <br><br>
+                                Instead, he proposed a furlough program. Every employee, from the CEO to the janitor, had to take 4 weeks of unpaid vacation. They could take it anytime.
+                                <br><br>
+                                <strong>His Rationale:</strong> "It is better that we all suffer a little, than any of us suffer a lot."
+                                <br><br>
+                                <strong>The Result:</strong> Morale skyrocketed. People traded time off (those who could afford it took more weeks so those who couldn't took less). The company saved $20 million (double the goal) because motivated employees found ways to cut costs. No one was fired.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-id">
+                                Pada 2008, resesi menghantam. Barry-Wehmiller kehilangan 30% pesanan dalam semalam. Dewan direksi bilang: "Kita perlu PHK orang untuk hemat $10 juta."
+                                <br><br>
+                                Bob Chapman menolak. Dia bilang: <strong>"Kami tidak memecat keluarga."</strong>
+                                <br><br>
+                                Sebaliknya, dia mengusulkan program cuti. Setiap karyawan, dari CEO hingga janitor, harus mengambil 4 minggu cuti tanpa bayaran. Bisa diambil kapan saja.
+                                <br><br>
+                                <strong>Alasannya:</strong> "Lebih baik kita semua menderita sedikit, daripada salah satu dari kita menderita banyak."
+                                <br><br>
+                                <strong>Hasilnya:</strong> Moral meroket. Orang bertukar waktu libur (yang mampu mengambil lebih banyak minggu agar yang tidak mampu bisa mengambil lebih sedikit). Perusahaan hemat $20 juta (dua kali lipat target) karena karyawan termotivasi mencari cara memangkas biaya. Tidak ada yang dipecat.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Enemy: Cortisol & Abstraction</span>
+                            <span class="lang-id">Musuh: Kortisol & Abstraksi</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-red-50 p-5 rounded-lg border border-red-200">
+                            <h4 class="font-bold text-red-900 text-lg mb-2 lang-en">Cortisol (The Stress Chemical)</h4>
+                            <h4 class="font-bold text-red-900 text-lg mb-2 lang-id">Kortisol (Bahan Kimia Stres)</h4>
+                            <p class="text-sm text-red-800 justified-text lang-en">
+                                Cortisol is designed to keep us safe. It makes us paranoid and anxious so we look for danger (predators).
+                                <br><br>
+                                <strong>The Biological Cost:</strong> When Cortisol is in your system, it shuts down non-essential functions like digestion, growth, and the <strong>Immune System</strong>. It also inhibits Oxytocin (empathy).
+                                <br><br>
+                                If leaders create a stressful environment (fear of layoffs, humiliation), employees have constant cortisol. They become biologically less healthy, less empathetic, and focus only on self-preservation, not the company.
+                            </p>
+                            <p class="text-sm text-red-800 justified-text lang-id">
+                                Kortisol dirancang untuk menjaga kita tetap aman. Ini membuat kita paranoid dan cemas agar kita mencari bahaya (predator).
+                                <br><br>
+                                <strong>Biaya Biologis:</strong> Saat Kortisol ada di sistem, ia mematikan fungsi non-esensial seperti pencernaan, pertumbuhan, dan <strong>Sistem Kekebalan Tubuh</strong>. Ia juga menghambat Oksitosin (empati).
+                                <br><br>
+                                Jika pemimpin menciptakan lingkungan stres (takut PHK, penghinaan), karyawan mengalami kortisol konstan. Mereka secara biologis menjadi kurang sehat, kurang berempati, dan hanya fokus menyelamatkan diri sendiri, bukan perusahaan.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-100 p-5 rounded-lg border border-slate-300">
+                            <strong class="block text-slate-900 text-lg mb-2 lang-en">The Danger of Abstraction</strong>
+                            <strong class="block text-slate-900 text-lg mb-2 lang-id">Bahaya Abstraksi</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Sinek references the <strong>Milgram Experiment</strong>. People are capable of doing terrible things to others if they are separated by distance or authority.
+                                <br><br>
+                                In modern business, leaders manage "screens," not people. They see "headcounts," not humans. When you lay off 1,000 people via email to balance a spreadsheet, that is Abstraction. It dehumanizes the workforce and destroys the Circle of Safety.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Sinek merujuk pada <strong>Eksperimen Milgram</strong>. Orang mampu melakukan hal mengerikan pada orang lain jika dipisahkan oleh jarak atau otoritas.
+                                <br><br>
+                                Dalam bisnis modern, pemimpin mengelola "layar," bukan orang. Mereka melihat "jumlah kepala," bukan manusia. Saat Anda mem-PHK 1.000 orang via email untuk menyeimbangkan spreadsheet, itu adalah Abstraksi. Itu mendehumanisasi tenaga kerja dan menghancurkan Lingkaran Keamanan.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Leadership Lessons</span>
+                            <span class="lang-id">Pelajaran Kepemimpinan</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        
+                        <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg text-white">
+                            <h4 class="font-bold text-red-400 text-lg mb-3 lang-en">Case Study: Captain Johnny Bravo</h4>
+                            <h4 class="font-bold text-red-400 text-lg mb-3 lang-id">Studi Kasus: Kapten Johnny Bravo</h4>
+                            
+                            <p class="text-sm opacity-90 justified-text mb-3 lang-en">
+                                On August 16, 2002, in Afghanistan, 22 Special Forces troops were pinned down by heavy fire. The weather was terrible (thick clouds).
+                                <br><br>
+                                Captain Johnny Bravo (A-10 Pilot) arrived. He couldn't see the ground. The standard procedure was to turn back. But he heard the screams of the troops on the radio: "We are going to die!"
+                                <br><br>
+                                <strong>The Sacrifice:</strong> Johnny Bravo decided to fly <em>into</em> the clouds, descending blindly into a valley, risking crashing into the mountains, just to do a "show of force" (a loud flyover) to scare the enemy. It worked. He risked his life for strangers he never met.
+                                <br><br>
+                                <strong>Why?</strong> Because he knew they would do the same for him. That is the bond of the Circle of Safety.
+                            </p>
+                            <p class="text-sm opacity-90 justified-text mb-3 lang-id">
+                                Pada 16 Agustus 2002, di Afghanistan, 22 pasukan Khusus terjebak tembakan gencar. Cuaca buruk (awan tebal).
+                                <br><br>
+                                Kapten Johnny Bravo (Pilot A-10) tiba. Dia tidak bisa melihat tanah. Prosedur standar adalah kembali. Tapi dia mendengar teriakan pasukan di radio: "Kami akan mati!"
+                                <br><br>
+                                <strong>Pengorbanan:</strong> Johnny Bravo memutuskan terbang <em>masuk</em> ke dalam awan, turun buta ke lembah, mempertaruhkan menabrak gunung, hanya untuk melakukan "show of force" (terbang rendah dengan suara keras) untuk menakuti musuh. Itu berhasil. Dia mempertaruhkan nyawanya untuk orang asing yang belum pernah ditemuinya.
+                                <br><br>
+                                <strong>Mengapa?</strong> Karena dia tahu mereka akan melakukan hal yang sama untuknya. Itulah ikatan Lingkaran Keamanan.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 mt-4">
+                            <strong class="block text-slate-900 text-lg mb-2 lang-en">Leadership is Not a Rank</strong>
+                            <strong class="block text-slate-900 text-lg mb-2 lang-id">Kepemimpinan Bukanlah Pangkat</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                We all know people with high ranks (authorities) who are not leaders; we do what they say because they have authority, but we would not follow them.
+                                <br><br>
+                                We also know people with no rank who are leaders. They have chosen to look after the person to the left of them and the person to the right of them.
+                                <br><br>
+                                <strong>True Leadership</strong> is like being a parent. It's about giving your people the skills, opportunity, and confidence to achieve more than you ever could.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Kita semua tahu orang berpangkat tinggi (otoritas) yang bukan pemimpin; kita melakukan apa kata mereka karena mereka punya wewenang, tapi kita tidak akan mengikuti mereka.
+                                <br><br>
+                                Kita juga tahu orang tanpa pangkat yang merupakan pemimpin. Mereka memilih untuk menjaga orang di sebelah kiri dan kanan mereka.
+                                <br><br>
+                                <strong>Kepemimpinan Sejati</strong> seperti menjadi orang tua. Ini tentang memberi orang-orang Anda keterampilan, kesempatan, dan kepercayaan diri untuk mencapai lebih dari yang pernah Anda bisa.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#b91c1c'; // Red
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#475569'; // Slate
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
