@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guerrilla Marketing — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Army Green/Stone Theme for Guerrilla Tactics */
+        .active-tab { background: linear-gradient(135deg, #14532d 0%, #064e3b 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #1c1917 0%, #292524 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #65a30d 0%, #4d7c0f 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(77, 124, 15, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(77, 124, 15, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #44403c 0%, #292524 100%); box-shadow: 0 4px 12px rgba(68, 64, 60, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #4d7c0f; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-stone-100 to-green-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-stone-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-emerald-600 to-green-800 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">G</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Guerrilla Mkt.</h2>
+                    <p class="text-stone-400 text-sm">
+                        <span class="lang-en">Ultimate Guide</span>
+                        <span class="lang-id">Panduan Utama</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-stone-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">Tactical Menu</span>
+                <span class="lang-id">Menu Taktis</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-stone-800 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-emerald-700 rounded-lg flex items-center justify-center text-xs font-bold">🎖️</span>
+                        <span class="lang-en">The Mindset</span>
+                        <span class="lang-id">Pola Pikir</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-stone-800 text-stone-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-stone-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Differences</div>
+                            <div class="text-xs text-stone-400">
+                                <span class="lang-en">Traditional vs. Guerrilla</span>
+                                <span class="lang-id">Tradisional vs. Gerilya</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-stone-800 text-stone-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-amber-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">The 7-Sentence Plan</div>
+                            <div class="text-xs text-stone-400">
+                                <span class="lang-en">Strategy Core</span>
+                                <span class="lang-id">Inti Strategi</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-stone-800 text-stone-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-lime-700 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Weapons</div>
+                            <div class="text-xs text-stone-400">
+                                <span class="lang-en">200+ Tools</span>
+                                <span class="lang-id">200+ Alat</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-stone-800 text-stone-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-teal-700 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Psychology</div>
+                            <div class="text-xs text-stone-400">
+                                <span class="lang-en">The Unconscious Mind</span>
+                                <span class="lang-id">Pikiran Bawah Sadar</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-stone-800 text-stone-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-orange-700 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Fusion Marketing</div>
+                            <div class="text-xs text-stone-400">
+                                <span class="lang-en">Partnerships</span>
+                                <span class="lang-id">Kemitraan</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-stone-700">
+            <div class="text-center">
+                <p class="text-stone-400 text-xs">© Jay Conrad Levinson</p>
+                <p class="text-stone-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-stone-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-stone-900 mb-2 mobile-title">
+                    Guerrilla Marketing
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-stone-600 font-medium px-2">
+                    <span class="lang-en">Unconventional Weapons and Tactics for Increasing Profits</span>
+                    <span class="lang-id">Senjata dan Taktik Non-Konvensional untuk Meningkatkan Keuntungan</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-emerald-600 to-stone-600 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Philosophy</span>
+                            <span class="lang-id">Filosofi</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-stone-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Brains Over Budget</span>
+                            <span class="lang-id">Otak di Atas Anggaran</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-stone-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-stone-600 font-medium border-l-4 border-emerald-600 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"Guerrilla Marketing is achieving conventional goals, such as profits and joy, with unconventional methods, such as investing energy instead of money."</span>
+                            <span class="lang-id">"Guerrilla Marketing adalah mencapai tujuan konvensional, seperti laba dan kebahagiaan, dengan metode non-konvensional, seperti menginvestasikan energi alih-alih uang."</span>
+                        </div>
+                        
+                        <p class="mobile-text justified-text lang-en">
+                            In warfare, a guerrilla fighter cannot defeat a traditional army in open combat. They would be crushed by superior firepower (budget). Instead, the guerrilla uses ambush, surprise, and mobility. In business, the small company must use <strong>Time, Energy, and Imagination</strong> to defeat competitors with massive bank accounts.
+                        </p>
+                        <p class="mobile-text justified-text lang-id">
+                            Dalam perang, pejuang gerilya tidak bisa mengalahkan tentara tradisional dalam pertempuran terbuka. Mereka akan dihancurkan oleh daya tembak (anggaran) yang lebih unggul. Sebaliknya, gerilyawan menggunakan penyergapan, kejutan, dan mobilitas. Dalam bisnis, perusahaan kecil harus menggunakan <strong>Waktu, Energi, dan Imajinasi</strong> untuk mengalahkan pesaing dengan rekening bank raksasa.
+                        </p>
+
+                        <div class="bg-stone-100 p-6 rounded-xl border border-stone-300 shadow-sm">
+                            <h4 class="font-bold text-stone-900 text-lg mb-3 lang-en">The Soul of a Guerrilla</h4>
+                            <h4 class="font-bold text-stone-900 text-lg mb-3 lang-id">Jiwa Seorang Gerilyawan</h4>
+                            <ul class="list-disc ml-5 space-y-2 text-sm text-stone-700">
+                                <li>
+                                    <span class="lang-en"><strong>Certainty:</strong> You must be absolutely confident in your product.</span>
+                                    <span class="lang-id"><strong>Kepastian:</strong> Anda harus benar-benar yakin dengan produk Anda.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Patience:</strong> Marketing is a process, not an event. It takes time to penetrate the unconscious mind.</span>
+                                    <span class="lang-id"><strong>Kesabaran:</strong> Pemasaran adalah proses, bukan acara. Butuh waktu untuk menembus pikiran bawah sadar.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Generosity:</strong> You give value first (free content, samples) to trigger reciprocity.</span>
+                                    <span class="lang-id"><strong>Kedermawanan:</strong> Anda memberi nilai dulu (konten gratis, sampel) untuk memicu timbal balik.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-stone-100 text-stone-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-stone-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Traditional vs. Guerrilla</span>
+                            <span class="lang-id">Tradisional vs. Gerilya</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-stone-700 leading-relaxed space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-red-50 p-5 rounded-lg border border-red-200">
+                                <strong class="block text-red-900 text-lg mb-3 lang-en">🛑 Traditional Marketing</strong>
+                                <strong class="block text-red-900 text-lg mb-3 lang-id">🛑 Pemasaran Tradisional</strong>
+                                <ul class="space-y-3 text-sm text-stone-700">
+                                    <li class="flex items-start">
+                                        <span class="mr-2">•</span>
+                                        <span class="lang-en">Requires <strong>Money</strong> (Big Budget).</span>
+                                        <span class="lang-id">Membutuhkan <strong>Uang</strong> (Anggaran Besar).</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="mr-2">•</span>
+                                        <span class="lang-en">Focuses on "Brand Awareness" or "Traffic." (Vanity Metrics).</span>
+                                        <span class="lang-id">Fokus pada "Brand Awareness" atau "Traffic." (Metrik Kesombongan).</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="mr-2">•</span>
+                                        <span class="lang-en">Ignores customers after the sale.</span>
+                                        <span class="lang-id">Mengabaikan pelanggan setelah penjualan.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="mr-2">•</span>
+                                        <span class="lang-en">Measures success by sales revenue (Top Line).</span>
+                                        <span class="lang-id">Mengukur sukses dari pendapatan penjualan (Omzet).</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="mr-2">•</span>
+                                        <span class="lang-en">Competes with others.</span>
+                                        <span class="lang-id">Bersaing dengan orang lain.</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-emerald-50 p-5 rounded-lg border border-emerald-200">
+                                <strong class="block text-emerald-900 text-lg mb-3 lang-en">🚀 Guerrilla Marketing</strong>
+                                <strong class="block text-emerald-900 text-lg mb-3 lang-id">🚀 Pemasaran Gerilya</strong>
+                                <ul class="space-y-3 text-sm text-stone-700">
+                                    <li class="flex items-start">
+                                        <span class="mr-2">•</span>
+                                        <span class="lang-en">Requires <strong>Time, Energy, Imagination</strong>.</span>
+                                        <span class="lang-id">Membutuhkan <strong>Waktu, Energi, Imajinasi</strong>.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="mr-2">•</span>
+                                        <span class="lang-en">Focuses on <strong>Profits</strong>. (Reality).</span>
+                                        <span class="lang-id">Fokus pada <strong>Keuntungan/Laba</strong>. (Realita).</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="mr-2">•</span>
+                                        <span class="lang-en">Focuses heavily on follow-up and referrals (Customer Lifetime Value).</span>
+                                        <span class="lang-id">Fokus berat pada tindak lanjut dan referensi (Nilai Seumur Hidup Pelanggan).</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="mr-2">•</span>
+                                        <span class="lang-en">Measures success by profits (Bottom Line).</span>
+                                        <span class="lang-id">Mengukur sukses dari laba bersih (Profit).</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="mr-2">•</span>
+                                        <span class="lang-en"><strong>Cooperates</strong> with others (Fusion).</span>
+                                        <span class="lang-id"><strong>Bekerja sama</strong> dengan orang lain (Fusi).</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bg-stone-50 p-4 border-l-4 border-stone-500 rounded-r-lg">
+                            <strong class="block text-stone-900 text-sm mb-1 lang-en">Crucial Insight:</strong>
+                            <strong class="block text-stone-900 text-sm mb-1 lang-id">Wawasan Kunci:</strong>
+                            <p class="text-xs text-stone-600 justified-text lang-en">
+                                68% of business is lost not because of price or quality, but because of <strong>apathy</strong> after the sale. The customer feels ignored. Guerrillas never ignore a customer.
+                            </p>
+                            <p class="text-xs text-stone-600 justified-text lang-id">
+                                68% bisnis hilang bukan karena harga atau kualitas, tapi karena <strong>apati</strong> (pengabaian) setelah penjualan. Pelanggan merasa diabaikan. Gerilyawan tidak pernah mengabaikan pelanggan.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-stone-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The 7-Sentence Marketing Plan</span>
+                            <span class="lang-id">Rencana Pemasaran 7 Kalimat</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-stone-700 leading-relaxed space-y-6">
+                        <p class="text-base text-stone-600 justified-text lang-en">
+                            You don't need a 50-page document. Guerrillas use a 7-sentence plan to maintain laser focus.
+                        </p>
+                        <p class="text-base text-stone-600 justified-text lang-id">
+                            Anda tidak butuh dokumen 50 halaman. Gerilyawan menggunakan rencana 7 kalimat untuk menjaga fokus yang tajam.
+                        </p>
+
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded border border-stone-200 shadow-sm">
+                                <strong class="text-emerald-700 block mb-1">1. The Purpose</strong>
+                                <span class="text-sm text-stone-600 lang-en">"The purpose of my marketing is to..." (e.g., get people to call me, visit my website, download my ebook). Be specific.</span>
+                                <span class="text-sm text-stone-600 lang-id">"Tujuan pemasaran saya adalah untuk..." (misal: buat orang nelpon, kunjungi web, unduh ebook). Harus spesifik.</span>
+                            </div>
+                            <div class="bg-white p-4 rounded border border-stone-200 shadow-sm">
+                                <strong class="text-emerald-700 block mb-1">2. The Benefit (Competitive Advantage)</strong>
+                                <span class="text-sm text-stone-600 lang-en">"I will achieve this by emphasizing..." (e.g., our 24-hour delivery, our lifetime guarantee). Why you?</span>
+                                <span class="text-sm text-stone-600 lang-id">"Saya akan mencapainya dengan menekankan..." (misal: pengiriman 24 jam, garansi seumur hidup). Kenapa Anda?</span>
+                            </div>
+                            <div class="bg-white p-4 rounded border border-stone-200 shadow-sm">
+                                <strong class="text-emerald-700 block mb-1">3. The Target Audience</strong>
+                                <span class="text-sm text-stone-600 lang-en">"My target audience is..." (e.g., Men over 40 who play golf in Jakarta). Niche down.</span>
+                                <span class="text-sm text-stone-600 lang-id">"Target audiens saya adalah..." (misal: Pria di atas 40 yang main golf di Jakarta). Spesifikkan.</span>
+                            </div>
+                            <div class="bg-white p-4 rounded border border-stone-200 shadow-sm">
+                                <strong class="text-emerald-700 block mb-1">4. The Weapons</strong>
+                                <span class="text-sm text-stone-600 lang-en">"The marketing weapons I will use are..." (e.g., SEO, Networking, Email Newsletter). Pick from the list of 200.</span>
+                                <span class="text-sm text-stone-600 lang-id">"Senjata pemasaran yang saya gunakan adalah..." (misal: SEO, Networking, Buletin Email). Pilih dari 200 daftar.</span>
+                            </div>
+                            <div class="bg-white p-4 rounded border border-stone-200 shadow-sm">
+                                <strong class="text-emerald-700 block mb-1">5. The Niche (Positioning)</strong>
+                                <span class="text-sm text-stone-600 lang-en">"My niche in the marketplace is..." (e.g., The high-end luxury option, or the fastest service).</span>
+                                <span class="text-sm text-stone-600 lang-id">"Niche saya di pasar adalah..." (misal: Opsi mewah kelas atas, atau layanan tercepat).</span>
+                            </div>
+                            <div class="bg-white p-4 rounded border border-stone-200 shadow-sm">
+                                <strong class="text-emerald-700 block mb-1">6. The Identity</strong>
+                                <span class="text-sm text-stone-600 lang-en">"My identity is..." (e.g., Professional, Quirky, Authoritative, Friendly). The personality of the brand.</span>
+                                <span class="text-sm text-stone-600 lang-id">"Identitas saya adalah..." (misal: Profesional, Unik, Otoritatif, Ramah). Kepribadian merek.</span>
+                            </div>
+                            <div class="bg-white p-4 rounded border border-stone-200 shadow-sm">
+                                <strong class="text-emerald-700 block mb-1">7. The Budget</strong>
+                                <span class="text-sm text-stone-600 lang-en">"My budget is..." (e.g., 10% of sales, or $500/month).</span>
+                                <span class="text-sm text-stone-600 lang-id">"Anggaran saya adalah..." (misal: 10% dari penjualan, atau $500/bulan).</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-lime-100 text-lime-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-stone-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Weapons of Mass Attraction</span>
+                            <span class="lang-id">Senjata Penarik Massa</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-stone-700 leading-relaxed space-y-6">
+                        <p class="text-base text-stone-600 justified-text lang-en">
+                            Levinson lists over 200 weapons. More than half are <strong>Free</strong>. Here are the most critical categories:
+                        </p>
+                        <p class="text-base text-stone-600 justified-text lang-id">
+                            Levinson mencantumkan lebih dari 200 senjata. Lebih dari separuhnya <strong>Gratis</strong>. Berikut kategori paling kritis:
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-stone-50 p-4 rounded-lg border border-stone-200">
+                                <strong class="text-lg text-stone-900 block mb-2 lang-en">Mini-Media (High Control)</strong>
+                                <strong class="text-lg text-stone-900 block mb-2 lang-id">Mini-Media (Kontrol Tinggi)</strong>
+                                <ul class="list-disc ml-4 text-sm text-stone-700 space-y-1">
+                                    <li>Business Cards (Make them unique/functional).</li>
+                                    <li>Personal Letters (Handwritten is powerful).</li>
+                                    <li>Telephone demeanor (Every call is marketing).</li>
+                                    <li>Your attire/dress.</li>
+                                    <li>Your elevator pitch.</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+                                <strong class="text-lg text-emerald-900 block mb-2 lang-en">New-Media (Digital)</strong>
+                                <strong class="text-lg text-emerald-900 block mb-2 lang-id">New-Media (Digital)</strong>
+                                <ul class="list-disc ml-4 text-sm text-emerald-800 space-y-1">
+                                    <li>Website (Must be mobile-friendly and fast).</li>
+                                    <li>Content Marketing (Providing value before asking).</li>
+                                    <li>Email Marketing (The highest ROI tool).</li>
+                                    <li>Social Media (For engagement, not just broadcasting).</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-xl border border-stone-300 shadow-lg mt-4">
+                            <h4 class="font-bold text-stone-900 text-lg mb-2 lang-en">Case Study: The Furniture Store</h4>
+                            <h4 class="font-bold text-stone-900 text-lg mb-2 lang-id">Studi Kasus: Toko Furnitur</h4>
+                            <p class="text-sm text-stone-700 justified-text mb-3 lang-en">
+                                A small furniture store couldn't compete with big box stores on TV ads.
+                                <br><br>
+                                <strong>The Guerrilla Tactic:</strong> They used "Mini-Media." They hired a consultant to teach a free class in their store on "Interior Design for Small Spaces."
+                                <br><br>
+                                <strong>The Result:</strong> People came for the free knowledge. They trusted the store because of the value provided. They bought furniture. Cost: $0 (The consultant did it for exposure). This is using <strong>Education</strong> as a weapon.
+                            </p>
+                            <p class="text-sm text-stone-700 justified-text mb-3 lang-id">
+                                Toko furnitur kecil tidak bisa bersaing iklan TV dengan toko raksasa.
+                                <br><br>
+                                <strong>Taktik Gerilya:</strong> Mereka pakai "Mini-Media." Mereka menyewa konsultan untuk mengajar kelas gratis di toko tentang "Desain Interior untuk Ruang Sempit."
+                                <br><br>
+                                <strong>Hasil:</strong> Orang datang untuk ilmu gratis. Mereka percaya toko itu karena nilai yang diberikan. Mereka beli furnitur. Biaya: $0 (Konsultan melakukannya demi eksposur). Ini menggunakan <strong>Edukasi</strong> sebagai senjata.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-stone-100 text-stone-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-stone-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Psychology & Behavior</span>
+                            <span class="lang-id">Psikologi & Perilaku</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-stone-700 leading-relaxed space-y-6">
+                        <p class="text-base text-stone-600 justified-text lang-en">
+                            Marketing is not an event; it is a process to penetrate the unconscious mind. Purchase decisions are made in the unconscious mind, then justified by the conscious mind.
+                        </p>
+                        <p class="text-base text-stone-600 justified-text lang-id">
+                            Pemasaran bukan acara; itu proses untuk menembus pikiran bawah sadar. Keputusan pembelian dibuat di bawah sadar, lalu dibenarkan oleh pikiran sadar.
+                        </p>
+
+                        <div class="bg-stone-50 p-5 rounded-lg border border-stone-200">
+                            <h4 class="font-bold text-stone-900 text-lg mb-2 lang-en">The Rule of Repetition</h4>
+                            <h4 class="font-bold text-stone-900 text-lg mb-2 lang-id">Aturan Repetisi</h4>
+                            <p class="text-sm text-stone-700 justified-text lang-en">
+                                Guerrillas know that people rarely buy the first time they see an ad.
+                                <br>1. First time: They don't see it.
+                                <br>2. Third time: They are aware of it.
+                                <br>3. Ninth time: They consider it.
+                                <br>4. Twentieth time: They buy it.
+                                <br><br>
+                                <strong>Lesson:</strong> Consistency and Repetition are more important than "Creativity" or changing your message constantly. Boredom is a sign you are doing it right.
+                            </p>
+                            <p class="text-sm text-stone-700 justified-text lang-id">
+                                Gerilyawan tahu orang jarang beli saat pertama kali lihat iklan.
+                                <br>1. Pertama kali: Tidak lihat.
+                                <br>2. Ketiga kali: Sadar akan keberadaannya.
+                                <br>3. Kesembilan kali: Mempertimbangkannya.
+                                <br>4. Kedua puluh kali: Membelinya.
+                                <br><br>
+                                <strong>Pelajaran:</strong> Konsistensi dan Repetisi lebih penting daripada "Kreativitas" atau mengubah pesan terus-menerus. Kebosanan adalah tanda Anda melakukannya dengan benar.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-stone-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Fusion Marketing</span>
+                            <span class="lang-id">Pemasaran Fusi</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-stone-700 leading-relaxed space-y-6">
+                        <p class="text-base text-stone-600 justified-text lang-en">
+                            This is the ultimate guerrilla weapon. It means cooperating with businesses that share your target audience but are not your competitors.
+                        </p>
+                        <p class="text-base text-stone-600 justified-text lang-id">
+                            Ini senjata gerilya pamungkas. Artinya bekerja sama dengan bisnis yang berbagi target audiens yang sama tetapi bukan pesaing Anda.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                                <strong class="block text-amber-900 mb-2 lang-en">How it Works</strong>
+                                <strong class="block text-amber-900 mb-2 lang-id">Cara Kerjanya</strong>
+                                <p class="text-sm text-amber-800 justified-text lang-en">
+                                    You share marketing costs. Instead of paying $1000 for a flyer alone, find 3 partners. Each pays $250. You save money and reach 3x the audience (their lists).
+                                </p>
+                                <p class="text-sm text-amber-800 justified-text lang-id">
+                                    Anda berbagi biaya pemasaran. Daripada bayar $1000 untuk pamflet sendirian, cari 3 mitra. Masing-masing bayar $250. Anda hemat uang dan jangkau 3x audiens (daftar mereka).
+                                </p>
+                            </div>
+                            
+                            <div class="bg-stone-100 p-4 rounded-lg border border-stone-300">
+                                <strong class="block text-stone-900 mb-2 lang-en">Examples</strong>
+                                <strong class="block text-stone-900 mb-2 lang-id">Contoh</strong>
+                                <ul class="list-disc ml-4 text-sm text-stone-700 space-y-1">
+                                    <li>Gym + Health Food Store (Coupons).</li>
+                                    <li>Wedding Planner + Florist + Photographer (Package Deal).</li>
+                                    <li>Pet Store + Dog Walker + Vet (Referral Network).</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bg-stone-800 p-5 rounded-xl text-white mt-4 text-center">
+                            <p class="italic text-sm lang-en">"Competition is the enemy of the traditional marketer. Cooperation is the ally of the guerrilla."</p>
+                            <p class="italic text-sm lang-id">"Kompetisi adalah musuh pemasar tradisional. Kerja sama adalah sekutu gerilyawan."</p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#4d7c0f'; // Army Green
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#d97706'; // Amber
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-stone-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-stone-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
