@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Women Rise — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Coral/Teal Theme for Feminine Ambition & Growth */
+        .active-tab { background: linear-gradient(135deg, #be123c 0%, #9f1239 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(244, 63, 94, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #e11d48; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-rose-50 to-teal-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-rose-500 to-pink-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">W</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">How Women Rise</h2>
+                    <p class="text-slate-400 text-sm">
+                        <span class="lang-en">Master Edition</span>
+                        <span class="lang-id">Edisi Master</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The 12 Habits</span>
+                <span class="lang-id">12 Kebiasaan</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-rose-600 rounded-lg flex items-center justify-center text-xs font-bold">🚀</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Visibility Trap</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Habits 1-3</span>
+                                <span class="lang-id">Kebiasaan 1-3</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Relationship Trap</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Habits 4-6</span>
+                                <span class="lang-id">Kebiasaan 4-6</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">The "Good Girl" Trap</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Habits 7-9</span>
+                                <span class="lang-id">Kebiasaan 7-9</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Emotion Trap</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Habits 10-12</span>
+                                <span class="lang-id">Kebiasaan 10-12</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Case Studies</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Real Scenarios</span>
+                                <span class="lang-id">Skenario Nyata</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© Helgesen & Goldsmith</p>
+                <p class="text-slate-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 mb-2 mobile-title">
+                    How Women Rise
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-rose-600 font-medium px-2">
+                    <span class="lang-en">Break the 12 Habits Holding You Back from Your Next Raise, Promotion, or Job</span>
+                    <span class="lang-id">Hancurkan 12 Kebiasaan yang Menahan Anda dari Kenaikan Gaji atau Promosi</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-rose-500 to-teal-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-rose-100 text-rose-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Concept</span>
+                            <span class="lang-id">Konsep Dasar</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">What Got You Here Won't Get You There</span>
+                            <span class="lang-id">Apa yang Membawa Anda ke Sini, Tak Akan Membawa Anda ke Sana</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-rose-500 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"Women face specific barriers because the behaviors that make them 'good employees' early in their careers often become liabilities as they seek senior leadership roles."</span>
+                            <span class="lang-id">"Wanita menghadapi hambatan spesifik karena perilaku yang membuat mereka jadi 'karyawan baik' di awal karir seringkali menjadi beban saat mereka mengejar peran kepemimpinan senior."</span>
+                        </div>
+                        
+                        <div class="mobile-text justified-text">
+                            <p class="lang-en mb-4">
+                                Sally Helgesen (expert in women's leadership) and Marshall Goldsmith (executive coach) combined their expertise to identify 12 specific habits that hold women back. These habits are often deeply ingrained because they are rewarded in junior roles. For example, being helpful, keeping your head down, and doing perfect work are great for a junior analyst, but they can be fatal for a Vice President who needs to delegate, network, and take risks.
+                            </p>
+                            <p class="lang-id mb-4">
+                                Sally Helgesen (ahli kepemimpinan wanita) dan Marshall Goldsmith (pelatih eksekutif) menggabungkan keahlian mereka untuk mengidentifikasi 12 kebiasaan spesifik yang menahan wanita. Kebiasaan ini seringkali mendarah daging karena dihargai di peran junior. Misalnya, suka membantu, menundukkan kepala, dan bekerja sempurna sangat bagus untuk analis junior, tapi bisa fatal bagi Wakil Presiden yang harus mendelegasikan, berjejaring, dan mengambil risiko.
+                            </p>
+                            
+                            <div class="bg-rose-50 p-5 rounded-lg border border-rose-200 mt-4">
+                                <strong class="block text-rose-900 text-lg mb-2">The "Stuck" Point</strong>
+                                <p class="lang-en text-sm">
+                                    You might feel frustrated because you are working harder than ever, but less qualified male colleagues are passing you by. This isn't just sexism (though that exists); it's often because you are playing by the old rules of "doing good work," while they are playing by the new rules of "visibility and leverage."
+                                </p>
+                                <p class="lang-id text-sm">
+                                    Anda mungkin merasa frustrasi karena bekerja lebih keras dari sebelumnya, tapi kolega pria yang kurang kompeten menyalip Anda. Ini bukan hanya seksisme (meski itu ada); ini seringkali karena Anda bermain dengan aturan lama "kerja bagus," sementara mereka bermain dengan aturan baru "visibilitas dan leverage."
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Habits 1-3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Visibility Trap</span>
+                            <span class="lang-id">Perangkap Visibilitas</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-rose-700 text-lg mb-2 lang-en">1. Reluctance to Claim Your Achievements</h4>
+                            <h4 class="font-bold text-rose-700 text-lg mb-2 lang-id">1. Enggan Mengklaim Pencapaian Anda</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                <strong>The Psychology:</strong> Many women feel that talking about their success is "bragging" or "obnoxious." They fear being seen as self-centered.
+                                <br><br>
+                                <strong>Why it Hurts:</strong> If you don't claim your wins, someone else will, or they will go unnoticed. In senior roles, you are not hired for doing the work; you are hired for your <em>impact</em>. If no one knows your impact, you have no currency.
+                                <br><br>
+                                <strong>The Fix:</strong> Reframe "bragging" as "informing." You are serving your organization by letting them know where the talent lies. Use factual statements: "I led the team that saved $50k," rather than "I'm amazing."
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                <strong>Psikologinya:</strong> Banyak wanita merasa membicarakan kesuksesan itu "sombong" atau "menyebalkan." Mereka takut dianggap egois.
+                                <br><br>
+                                <strong>Kenapa Merugikan:</strong> Jika Anda tidak mengklaim kemenangan Anda, orang lain yang akan melakukannya, atau itu tidak akan terlihat. Di peran senior, Anda tidak disewa untuk melakukan pekerjaan; Anda disewa untuk <em>dampak</em> Anda. Jika tidak ada yang tahu dampak Anda, Anda tidak punya nilai tawar.
+                                <br><br>
+                                <strong>Solusinya:</strong> Bingkai ulang "menyombong" sebagai "menginformasikan." Anda melayani organisasi dengan memberi tahu mereka di mana letak bakatnya. Gunakan pernyataan faktual: "Saya memimpin tim yang menghemat $50k," bukan "Saya hebat."
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-sm mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">2. Expecting Others to Spontaneously Notice and Reward You</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">2. Berharap Orang Lain Tiba-tiba Sadar dan Memberi Imbalan</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                <strong>The "Tiara Syndrome":</strong> This is the belief that if you just do your job perfectly, someone will come along and place a tiara on your head.
+                                <br><br>
+                                <strong>Why it Hurts:</strong> Leaders are busy. They are focused on their own problems. They are not studying your daily output. If you wait to be noticed, you will be waiting forever, and you will grow resentful.
+                                <br><br>
+                                <strong>The Fix:</strong> You must market yourself. Schedule time with your boss specifically to discuss your achievements and ambitions.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                <strong>"Sindrom Tiara":</strong> Ini adalah keyakinan bahwa jika Anda melakukan pekerjaan dengan sempurna, seseorang akan datang dan menaruh mahkota di kepala Anda.
+                                <br><br>
+                                <strong>Kenapa Merugikan:</strong> Pemimpin itu sibuk. Mereka fokus pada masalah mereka sendiri. Mereka tidak mempelajari output harian Anda. Jika Anda menunggu untuk diperhatikan, Anda akan menunggu selamanya, dan Anda akan jadi kesal.
+                                <br><br>
+                                <strong>Solusinya:</strong> Anda harus memasarkan diri sendiri. Jadwalkan waktu dengan bos khusus untuk membahas pencapaian dan ambisi Anda.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">3. Overvaluing Expertise</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">3. Terlalu Menghargai Keahlian (Expertise)</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                <strong>The Mistake:</strong> Thinking that mastering every detail of your job is the key to promotion.
+                                <br><br>
+                                <strong>Why it Hurts:</strong> Expertise is just the entry ticket. There are 4 types of power: Expertise, Connections, Personal Authority, and Position. Women get stuck on Expertise. If you become <em>too</em> indispensable in your current role because you know every detail, you become unpromotable. You are too valuable where you are.
+                                <br><br>
+                                <strong>The Fix:</strong> Delegate the details. Focus on building <strong>Connections</strong> and <strong>Vision</strong>.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                <strong>Kesalahannya:</strong> Berpikir bahwa menguasai setiap detail pekerjaan adalah kunci promosi.
+                                <br><br>
+                                <strong>Kenapa Merugikan:</strong> Keahlian hanyalah tiket masuk. Ada 4 jenis kekuasaan: Keahlian, Koneksi, Otoritas Pribadi, dan Posisi. Wanita sering terjebak di Keahlian. Jika Anda menjadi <em>terlalu</em> tak tergantikan di peran saat ini karena tahu semua detail, Anda jadi tidak bisa dipromosikan. Anda terlalu berharga di tempat Anda sekarang.
+                                <br><br>
+                                <strong>Solusinya:</strong> Delegasikan detailnya. Fokus membangun <strong>Koneksi</strong> dan <strong>Visi</strong>.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-teal-100 text-teal-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Habits 4-6</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Relationship Trap</span>
+                            <span class="lang-id">Perangkap Hubungan</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        
+                        <div class="bg-teal-50 p-6 rounded-xl border border-teal-200">
+                            <h4 class="font-bold text-teal-900 text-lg mb-2 lang-en">4. Building Rather Than Leveraging Relationships</h4>
+                            <h4 class="font-bold text-teal-900 text-lg mb-2 lang-id">4. Membangun, Bukan Memanfaatkan Hubungan</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                <strong>The Insight:</strong> Women are often great at building friendships and networks. But they feel guilty about "using" those friends for business gain. They view leverage as manipulative.
+                                <br><br>
+                                <strong>The Reality:</strong> Men view leveraging relationships as a natural part of business. It is a "quid pro quo" (I help you, you help me). By refusing to leverage your network, you are fighting with one hand tied behind your back.
+                                <br><br>
+                                <strong>The Fix:</strong> Ask for help. Understand that people <em>want</em> to help you. It strengthens the bond.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                <strong>Wawasan:</strong> Wanita seringkali hebat membangun persahabatan dan jaringan. Tapi mereka merasa bersalah "menggunakan" teman untuk keuntungan bisnis. Mereka melihat leverage sebagai manipulasi.
+                                <br><br>
+                                <strong>Realitanya:</strong> Pria melihat pemanfaatan hubungan sebagai bagian alami dari bisnis. Ini adalah "quid pro quo" (saya bantu kamu, kamu bantu saya). Dengan menolak memanfaatkan jaringan, Anda bertarung dengan satu tangan terikat.
+                                <br><br>
+                                <strong>Solusinya:</strong> Mintalah bantuan. Pahami bahwa orang <em>ingin</em> membantu Anda. Itu memperkuat ikatan.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 mt-4 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">5. Failing to Enlist Allies from Day One</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">5. Gagal Mencari Sekutu Sejak Hari Pertama</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Women often want to prove they can do the job <em>before</em> they ask for support. They wait until they have mastered the role.
+                                <br><br>
+                                <strong>The Risk:</strong> By the time you realize you need allies to get a project done or to get promoted, it's too late. Men often spend their first month in a new job just walking around, meeting people, and building alliances. Women spend it reading manuals and working at their desks.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Wanita sering ingin membuktikan bahwa mereka bisa melakukan pekerjaan <em>sebelum</em> meminta dukungan. Mereka menunggu sampai menguasai peran tersebut.
+                                <br><br>
+                                <strong>Risikonya:</strong> Saat Anda sadar butuh sekutu untuk selesaikan proyek atau promosi, sudah terlambat. Pria sering habiskan bulan pertama di pekerjaan baru dengan berkeliling, bertemu orang, dan membangun aliansi. Wanita menghabiskannya membaca manual dan bekerja di meja.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-purple-100 text-purple-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Habits 7-9</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The "Good Girl" Trap</span>
+                            <span class="lang-id">Perangkap "Gadis Baik"</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        
+                        <div class="bg-purple-50 p-6 rounded-xl border border-purple-200">
+                            <h4 class="font-bold text-purple-900 text-lg mb-2 lang-en">7. The Perfection Trap</h4>
+                            <h4 class="font-bold text-purple-900 text-lg mb-2 lang-id">7. Perangkap Kesempurnaan</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                <strong>The Cause:</strong> Girls are rewarded for being neat, precise, and obedient. Boys are rewarded for being bold and taking risks.
+                                <br><br>
+                                <strong>The Cost:</strong> Perfectionism causes stress and risk aversion. Leaders need to take risks. If you obsess over every detail, you slow down the organization. You become a bottleneck. Also, you create distance; people don't trust "perfect" leaders, they trust authentic ones who admit mistakes.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                <strong>Penyebabnya:</strong> Anak perempuan dihargai karena rapi, presisi, dan patuh. Anak laki-laki dihargai karena berani dan mengambil risiko.
+                                <br><br>
+                                <strong>Biayanya:</strong> Perfeksionisme menyebabkan stres dan penghindaran risiko. Pemimpin perlu ambil risiko. Jika Anda terobsesi setiap detail, Anda memperlambat organisasi. Anda jadi leher botol. Juga, Anda menciptakan jarak; orang tidak percaya pemimpin "sempurna," mereka percaya yang otentik yang mengakui kesalahan.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 mt-4 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">8. The Disease to Please</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">8. Penyakit Ingin Menyenangkan (Disease to Please)</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                This is the chronic need to be liked by everyone. It leads to saying "Yes" to low-value tasks just to be helpful. It prevents you from making tough decisions or giving negative feedback because you don't want to upset anyone.
+                                <br><br>
+                                <strong>Leadership Truth:</strong> You cannot be a leader and make everyone happy. You must choose being <em>respected</em> over being <em>liked</em>.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Ini adalah kebutuhan kronis untuk disukai semua orang. Ini mengarah pada mengatakan "Ya" untuk tugas bernilai rendah hanya untuk membantu. Ini mencegah Anda membuat keputusan sulit atau memberi umpan balik negatif karena takut menyinggung.
+                                <br><br>
+                                <strong>Kebenaran Kepemimpinan:</strong> Anda tidak bisa jadi pemimpin dan membuat semua orang senang. Anda harus memilih <em>dihormati</em> daripada <em>disukai</em>.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-orange-100 text-orange-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Habits 10-12</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Emotion & Focus Trap</span>
+                            <span class="lang-id">Perangkap Emosi & Fokus</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <div class="mb-4">
+                                <h4 class="font-bold text-slate-900 text-lg mb-1 lang-en">9. Minimizing</h4>
+                                <h4 class="font-bold text-slate-900 text-lg mb-1 lang-id">9. Mengecilkan Diri (Minimizing)</h4>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Literally making yourself physically smaller (crossing legs, folding arms, sitting at the edge of the room). Or verbally minimizing ("Just a quick question," "I'm sorry, but..."). Stop apologizing for your existence. Take up space.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Secara harfiah membuat fisik Anda lebih kecil (menyilangkan kaki, melipat tangan, duduk di pinggir ruangan). Atau mengecilkan secara verbal ("Cuma mau tanya dikit," "Maaf, tapi..."). Berhenti minta maaf atas keberadaan Anda. Ambil ruang.
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-lg mb-1 lang-en">10. Too Much (Emotion/Words)</h4>
+                                <h4 class="font-bold text-slate-900 text-lg mb-1 lang-id">10. Terlalu Banyak (Emosi/Kata-kata)</h4>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Women often offer too much context, explanation, or emotion. In senior circles, brevity is power. If you over-explain, you sound defensive or unsure. State your point and stop talking.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Wanita sering memberi terlalu banyak konteks, penjelasan, atau emosi. Di kalangan senior, keringkasan adalah kekuatan. Jika Anda menjelaskan berlebihan, Anda terdengar defensif atau tidak yakin. Sampaikan poin Anda dan berhenti bicara.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-orange-50 p-6 rounded-xl border border-orange-200 mt-4">
+                            <h4 class="font-bold text-orange-900 text-lg mb-2 lang-en">11. Ruminating</h4>
+                            <h4 class="font-bold text-orange-900 text-lg mb-2 lang-id">11. Ruminasi (Memikirkan Terus-menerus)</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Women are more prone to replaying mistakes over and over in their heads. "Why did I say that? He must hate me."
+                                <br><br>
+                                <strong>Why it Hurts:</strong> It drains your energy and keeps you stuck in the past. Men tend to move on faster.
+                                <br><br>
+                                <strong>The Fix:</strong> Distraction. When you start ruminating, interrupt the pattern physically (go for a walk, change rooms). Let it go.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Wanita lebih rentan memutar ulang kesalahan terus-menerus di kepala. "Kenapa aku bilang gitu? Dia pasti benci aku."
+                                <br><br>
+                                <strong>Kenapa Merugikan:</strong> Ini menguras energi dan membuat Anda terjebak di masa lalu. Pria cenderung move on lebih cepat.
+                                <br><br>
+                                <strong>Solusinya:</strong> Distraksi. Saat mulai ruminasi, potong polanya secara fisik (jalan-jalan, pindah ruangan). Lepaskan.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-100 p-6 rounded-xl border border-slate-300 mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">12. Letting Your Radar Distract You</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">12. Membiarkan "Radar" Anda Mengganggu</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                <strong>The Superpower:</strong> Women often have high emotional intelligence (Radar). They notice everything: who is upset, the mood in the room, the subtext.
+                                <br><br>
+                                <strong>The Trap:</strong> Because you notice everything, you get distracted by everything. You try to fix everyone's mood. You lose focus on the main strategic goal.
+                                <br><br>
+                                <strong>The Fix:</strong> Use your Radar to understand the environment, but do not let it dictate your actions. Stay focused on the prize.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                <strong>Kekuatan Super:</strong> Wanita sering punya kecerdasan emosional tinggi (Radar). Mereka memperhatikan segalanya: siapa yang kesal, suasana ruangan, makna tersirat.
+                                <br><br>
+                                <strong>Perangkapnya:</strong> Karena Anda memperhatikan segalanya, Anda terganggu oleh segalanya. Anda mencoba memperbaiki suasana hati semua orang. Anda kehilangan fokus pada tujuan strategis utama.
+                                <br><br>
+                                <strong>Solusinya:</strong> Gunakan Radar Anda untuk memahami lingkungan, tapi jangan biarkan itu mendikte tindakan Anda. Tetap fokus pada hadiahnya.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Case Studies</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Real Scenarios</span>
+                            <span class="lang-id">Skenario Nyata</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <strong class="block text-rose-700 text-lg mb-2 lang-en">Case Study: The Engineer (Expertise Trap)</strong>
+                            <strong class="block text-rose-700 text-lg mb-2 lang-id">Studi Kasus: Insinyur (Perangkap Keahlian)</strong>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                "Sarah" was the best engineer in the firm. She knew every code update. When a VP role opened, she applied, assuming her superior knowledge made her a shoo-in.
+                                <br><br>
+                                She lost to "Mark," who knew less about engineering but had spent the last year having lunch with the heads of Marketing and Sales.
+                                <br><br>
+                                <strong>The Lesson:</strong> The VP role required cross-departmental collaboration (Connections), not coding skills (Expertise). Sarah was too valuable as a coder to be promoted. She needed to stop doing the technical work and start building bridges.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                "Sarah" adalah insinyur terbaik di firma. Dia tahu setiap update kode. Saat peran VP dibuka, dia melamar, berasumsi pengetahuan superiornya membuatnya pasti diterima.
+                                <br><br>
+                                Dia kalah dari "Mark," yang kurang tahu soal teknik tapi menghabiskan setahun terakhir makan siang dengan kepala Pemasaran dan Penjualan.
+                                <br><br>
+                                <strong>Pelajaran:</strong> Peran VP membutuhkan kolaborasi lintas departemen (Koneksi), bukan keterampilan coding (Keahlian). Sarah terlalu berharga sebagai coder untuk dipromosikan. Dia perlu berhenti melakukan pekerjaan teknis dan mulai membangun jembatan.
+                            </p>
+                        </div>
+
+                        <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-200 mt-4">
+                            <strong class="block text-indigo-900 text-lg mb-2 lang-en">Action Plan: Peer Coaching</strong>
+                            <strong class="block text-indigo-900 text-lg mb-2 lang-id">Rencana Aksi: Peer Coaching</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Don't try to fix all 12 habits at once. Pick <strong>ONE</strong>.
+                                <br><br>
+                                Find a buddy (a peer coach). Tell them: "I am trying to stop apologizing. For the next month, if you hear me say 'Sorry' when I haven't done anything wrong, please call me out."
+                                <br><br>
+                                This external accountability is the fastest way to change behavior.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Jangan coba perbaiki 12 kebiasaan sekaligus. Pilih <strong>SATU</strong>.
+                                <br><br>
+                                Cari teman (peer coach). Bilang ke mereka: "Saya lagi coba berhenti minta maaf. Bulan depan, kalau kamu dengar saya bilang 'Maaf' padahal saya gak salah, tolong tegur saya."
+                                <br><br>
+                                Akuntabilitas eksternal ini adalah cara tercepat mengubah perilaku.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#e11d48'; // Rose
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#0f766e'; // Teal
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
