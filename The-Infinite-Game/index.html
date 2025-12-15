@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Infinite Game — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Violet/Indigo Theme for Infinite Vision */
+        .active-tab { background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #0f172a 0%, #312e81 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #7c3aed; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-indigo-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-indigo-900">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">∞</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Infinite Game</h2>
+                    <p class="text-indigo-200 text-sm">
+                        <span class="lang-en">Master Edition</span>
+                        <span class="lang-id">Edisi Master</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-indigo-200 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The 5 Essential Practices</span>
+                <span class="lang-id">5 Praktik Esensial</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-indigo-900 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-violet-600 rounded-lg flex items-center justify-center text-xs font-bold">♾️</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-indigo-900 text-indigo-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Just Cause</div>
+                            <div class="text-xs text-indigo-300">
+                                <span class="lang-en">A Cause Worthy of Sacrifice</span>
+                                <span class="lang-id">Tujuan yang Layak</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-indigo-900 text-indigo-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Trusting Teams</div>
+                            <div class="text-xs text-indigo-300">
+                                <span class="lang-en">Safety over Performance</span>
+                                <span class="lang-id">Keamanan di atas Kinerja</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-indigo-900 text-indigo-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Worthy Rival</div>
+                            <div class="text-xs text-indigo-300">
+                                <span class="lang-en">Better, Not Best</span>
+                                <span class="lang-id">Lebih Baik, Bukan Terbaik</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-indigo-900 text-indigo-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Existential Flexibility</div>
+                            <div class="text-xs text-indigo-300">
+                                <span class="lang-en">The Willingness to Pivot</span>
+                                <span class="lang-id">Kesediaan untuk Pivot</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-indigo-900 text-indigo-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Courage to Lead</div>
+                            <div class="text-xs text-indigo-300">
+                                <span class="lang-en">Long-Term over Short-Term</span>
+                                <span class="lang-id">Jangka Panjang vs Pendek</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-indigo-900">
+            <div class="text-center">
+                <p class="text-indigo-400 text-xs">© Simon Sinek</p>
+                <p class="text-indigo-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-indigo-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    The Infinite Game
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-indigo-600 font-medium px-2">
+                    <span class="lang-en">Business is Not a Game You Win. It’s a Game You Keep Playing.</span>
+                    <span class="lang-id">Bisnis Bukanlah Permainan untuk Dimenangkan. Ini Permainan untuk Terus Dimainkan.</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-violet-600 to-indigo-600 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-violet-100 text-violet-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Core Philosophy</span>
+                            <span class="lang-id">Filosofi Inti</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Finite vs. Infinite Games</span>
+                            <span class="lang-id">Permainan Terbatas vs. Tak Terbatas</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-violet-600 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"In an infinite game, the goal is not to win, but to keep playing."</span>
+                            <span class="lang-id">"Dalam permainan tak terbatas, tujuannya bukan untuk menang, tetapi untuk terus bermain."</span>
+                        </div>
+                        
+                        <div class="mobile-text justified-text">
+                            <p class="lang-en mb-4">
+                                Simon Sinek begins by distinguishing between two types of games. <strong>Finite Games</strong> have known players, fixed rules, and an agreed-upon objective (like Football or Chess). The game ends when someone wins. <strong>Infinite Games</strong>, however, have known and unknown players, changeable rules, and the objective is to perpetuate the game itself (like Business, Politics, or Life).
+                            </p>
+                            <p class="lang-id mb-4">
+                                Simon Sinek memulai dengan membedakan dua jenis permainan. <strong>Permainan Terbatas</strong> memiliki pemain yang dikenal, aturan tetap, dan tujuan yang disepakati (seperti Sepak Bola atau Catur). Permainan berakhir saat seseorang menang. Namun, <strong>Permainan Tak Terbatas</strong> memiliki pemain yang dikenal dan tidak dikenal, aturan yang bisa berubah, dan tujuannya adalah melanggengkan permainan itu sendiri (seperti Bisnis, Politik, atau Kehidupan).
+                            </p>
+                            <p class="lang-en">
+                                The problem arises when leaders play with a Finite Mindset in an Infinite Game. They obsess over "winning," "beating the competition," or quarterly earnings. But you cannot "win" business. There is no finish line. Companies that play finitely eventually run out of will and resources. They drop out of the game.
+                            </p>
+                            <p class="lang-id">
+                                Masalah muncul ketika pemimpin bermain dengan Pola Pikir Terbatas dalam Permainan Tak Terbatas. Mereka terobsesi untuk "menang," "mengalahkan pesaing," atau pendapatan kuartalan. Tapi Anda tidak bisa "memenangkan" bisnis. Tidak ada garis finis. Perusahaan yang bermain secara terbatas akhirnya kehabisan tekad dan sumber daya. Mereka tersingkir dari permainan.
+                            </p>
+                        </div>
+
+                        <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-200 shadow-sm">
+                            <h4 class="font-bold text-indigo-900 text-lg mb-3 lang-en">Case Study: The Vietnam War</h4>
+                            <h4 class="font-bold text-indigo-900 text-lg mb-3 lang-id">Studi Kasus: Perang Vietnam</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                The United States won almost every single battle in the Vietnam War. They had superior troops, technology, and logistics. By all Finite metrics (kill counts, territory taken), America was "winning."
+                                <br><br>
+                                Yet, America lost the war. Why? Because the North Vietnamese were playing an Infinite Game. They were fighting for their lives and their independence. They were willing to fight for 100 years if necessary. The US was fighting to "win" a political objective. When the US ran out of will, they left. <strong>You cannot win an Infinite Game with Finite tactics.</strong>
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Amerika Serikat memenangkan hampir setiap pertempuran dalam Perang Vietnam. Mereka memiliki pasukan, teknologi, dan logistik yang unggul. Berdasarkan semua metrik Terbatas (jumlah musuh tewas, wilayah dikuasai), Amerika "menang."
+                                <br><br>
+                                Namun, Amerika kalah perang. Mengapa? Karena Vietnam Utara memainkan Permainan Tak Terbatas. Mereka berjuang untuk hidup dan kemerdekaan mereka. Mereka bersedia bertempur selama 100 tahun jika perlu. AS berjuang untuk "memenangkan" tujuan politik. Ketika AS kehabisan tekad, mereka pergi. <strong>Anda tidak bisa memenangkan Permainan Tak Terbatas dengan taktik Terbatas.</strong>
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Practice 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Advance a Just Cause</span>
+                            <span class="lang-id">Memajukan Tujuan yang Layak (Just Cause)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            A Just Cause is a specific vision of a future state that does not yet exist; a future state so appealing that people are willing to make sacrifices in order to help advance toward that vision. It is more than just "Why." It is the "Where are we going?"
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Tujuan yang Layak adalah visi spesifik tentang keadaan masa depan yang belum ada; keadaan masa depan yang begitu menarik sehingga orang bersedia berkorban untuk membantu memajukan visi tersebut. Ini lebih dari sekadar "Mengapa." Ini adalah "Ke mana kita pergi?"
+                        </p>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">Criteria for a Just Cause</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Kriteria Tujuan yang Layak</h4>
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-en">
+                                A Just Cause must be:
+                                <br>1. <strong>For something:</strong> Affirmative and optimistic (not just "against poverty").
+                                <br>2. <strong>Inclusive:</strong> Open to all who would like to contribute.
+                                <br>3. <strong>Service-oriented:</strong> For the primary benefit of others.
+                                <br>4. <strong>Resilient:</strong> Able to endure political, technological, and cultural changes.
+                                <br>5. <strong>Idealistic:</strong> Big, bold, and ultimately unachievable (you can never fully "achieve" freedom, you can only advance it).
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-id">
+                                Tujuan yang Layak haruslah:
+                                <br>1. <strong>Untuk sesuatu:</strong> Afirmatif dan optimis (bukan hanya "melawan kemiskinan").
+                                <br>2. <strong>Inklusif:</strong> Terbuka bagi semua yang ingin berkontribusi.
+                                <br>3. <strong>Berorientasi layanan:</strong> Untuk manfaat utama orang lain.
+                                <br>4. <strong>Tangguh:</strong> Mampu bertahan dari perubahan politik, teknologi, dan budaya.
+                                <br>5. <strong>Idealis:</strong> Besar, berani, dan pada akhirnya tidak dapat dicapai sepenuhnya (Anda tidak pernah bisa sepenuhnya "mencapai" kebebasan, Anda hanya bisa memajukannya).
+                            </p>
+                        </div>
+
+                        <div class="bg-violet-50 p-5 rounded-lg border border-violet-200">
+                            <strong class="block text-violet-900 text-lg mb-2 lang-en">Moonshots vs. Just Cause</strong>
+                            <strong class="block text-violet-900 text-lg mb-2 lang-id">Moonshots vs. Just Cause</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                "Put a man on the moon" was a moonshot, not a Just Cause. Once the moon landing was achieved, NASA lost its direction. They had "won" the finite game.
+                                <br><br>
+                                A Just Cause would be: "To explore the universe for the benefit of mankind." That never ends. It survives beyond any single mission or administration.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                "Menempatkan manusia di bulan" adalah moonshot, bukan Just Cause. Begitu pendaratan di bulan tercapai, NASA kehilangan arah. Mereka telah "memenangkan" permainan terbatas.
+                                <br><br>
+                                Just Cause seharusnya: "Menjelajahi alam semesta demi kebaikan umat manusia." Itu tidak pernah berakhir. Itu bertahan melampaui misi atau administrasi tunggal mana pun.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Practice 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Build Trusting Teams</span>
+                            <span class="lang-id">Membangun Tim yang Saling Percaya</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            In a finite organization, the focus is on performance. In an infinite organization, the focus is on trust. Without trust, people hide mistakes. If people hide mistakes, the organization cannot learn, and it eventually breaks.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Dalam organisasi terbatas, fokusnya adalah pada kinerja. Dalam organisasi tak terbatas, fokusnya adalah pada kepercayaan. Tanpa kepercayaan, orang menyembunyikan kesalahan. Jika orang menyembunyikan kesalahan, organisasi tidak bisa belajar, dan akhirnya hancur.
+                        </p>
+
+                        <div class="bg-blue-50 p-6 rounded-xl border border-blue-200 shadow-sm">
+                            <h4 class="font-bold text-blue-900 text-lg mb-3 lang-en">The Navy SEALs Matrix</h4>
+                            <h4 class="font-bold text-blue-900 text-lg mb-3 lang-id">Matriks Navy SEALs</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-en">
+                                Sinek asked the Navy SEALs how they select the elite team for Team 6. They drew a graph.
+                                <br>• <strong>Performance</strong> (Technical competence) on the Y-axis.
+                                <br>• <strong>Trust</strong> (Character) on the X-axis.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-id">
+                                Sinek bertanya kepada Navy SEALs bagaimana mereka memilih tim elit untuk Tim 6. Mereka menggambar grafik.
+                                <br>• <strong>Kinerja</strong> (Kompetensi teknis) di sumbu Y.
+                                <br>• <strong>Kepercayaan</strong> (Karakter) di sumbu X.
+                            </p>
+
+                            <ul class="list-disc ml-5 text-sm text-slate-700 space-y-2">
+                                <li>
+                                    <span class="lang-en"><strong>High Performance / Low Trust:</strong> The Toxic Leader. They are skilled but selfish. SEALs say: "I may trust you with my life, but I don't trust you with my money or my wife."</span>
+                                    <span class="lang-id"><strong>Kinerja Tinggi / Kepercayaan Rendah:</strong> Pemimpin Beracun. Mereka terampil tapi egois. SEALs bilang: "Aku mungkin percayakan nyawaku padamu, tapi tidak uangku atau istriku."</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Medium Performance / High Trust:</strong> The Ideal. SEALs prefer a mediocre performer who is highly trustworthy over a high performer who is toxic.</span>
+                                    <span class="lang-id"><strong>Kinerja Menengah / Kepercayaan Tinggi:</strong> Ideal. SEALs lebih memilih orang berkemampuan biasa yang sangat bisa dipercaya daripada orang berkinerja tinggi yang beracun.</span>
+                                </li>
+                            </ul>
+                            
+                            <div class="mt-3 bg-white p-3 rounded border border-blue-100 italic text-xs text-blue-800 lang-en">
+                                The problem is that most businesses measure only Performance. They promote the toxic high performers, which destroys the culture of Trust.
+                            </div>
+                            <div class="mt-3 bg-white p-3 rounded border border-blue-100 italic text-xs text-blue-800 lang-id">
+                                Masalahnya adalah kebanyakan bisnis hanya mengukur Kinerja. Mereka mempromosikan orang beracun berkinerja tinggi, yang menghancurkan budaya Kepercayaan.
+                            </div>
+                        </div>
+
+                        <div class="border-l-4 border-slate-500 pl-4">
+                            <strong class="block text-slate-900 text-lg mb-2 lang-en">Performance Faking</strong>
+                            <strong class="block text-slate-900 text-lg mb-2 lang-id">Kepalsuan Kinerja (Performance Faking)</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                When psychological safety is low (Low Trust), employees engage in "Performance Faking." They act like they know everything, they hide errors, and they don't ask for help. This illusion of perfection prevents innovation, because innovation requires the risk of failure.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Saat keamanan psikologis rendah (Kepercayaan Rendah), karyawan melakukan "Kepalsuan Kinerja." Mereka bertindak seolah tahu segalanya, menyembunyikan kesalahan, dan tidak meminta bantuan. Ilusi kesempurnaan ini mencegah inovasi, karena inovasi membutuhkan risiko kegagalan.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Practice 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Study a Worthy Rival</span>
+                            <span class="lang-id">Pelajari Pesaing yang Layak</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            In a Finite Game, you have "Competitors" you want to beat. In an Infinite Game, you have "Rivals" who help you improve. A Worthy Rival is someone whose strengths reveal your weaknesses.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Dalam Permainan Terbatas, Anda punya "Kompetitor" yang ingin dikalahkan. Dalam Permainan Tak Terbatas, Anda punya "Rival" yang membantu Anda berkembang. Pesaing yang Layak adalah seseorang yang kekuatannya mengungkapkan kelemahan Anda.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-teal-50 p-5 rounded-lg border border-teal-200">
+                                <strong class="block text-teal-900 text-lg mb-2 lang-en">Finite Mindset: To Beat</strong>
+                                <strong class="block text-teal-900 text-lg mb-2 lang-id">Pola Pikir Terbatas: Mengalahkan</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Focuses on market share and destroying the competition. This leads to obsession with what <em>they</em> are doing, rather than improving your own vision.
+                                    <br><br>
+                                    <em>Example:</em> Microsoft under Steve Ballmer was obsessed with beating Apple's iPod (creating the Zune), rather than defining their own future.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Fokus pada pangsa pasar dan menghancurkan kompetisi. Ini mengarah pada obsesi tentang apa yang <em>mereka</em> lakukan, daripada memperbaiki visi sendiri.
+                                    <br><br>
+                                    <em>Contoh:</em> Microsoft di bawah Steve Ballmer terobsesi mengalahkan iPod Apple (membuat Zune), daripada mendefinisikan masa depan mereka sendiri.
+                                </p>
+                            </div>
+
+                            <div class="bg-violet-50 p-5 rounded-lg border border-violet-200">
+                                <strong class="block text-violet-900 text-lg mb-2 lang-en">Infinite Mindset: To Improve</strong>
+                                <strong class="block text-violet-900 text-lg mb-2 lang-id">Pola Pikir Tak Terbatas: Memperbaiki</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Views rivals as necessary for growth. You can lose a battle but still stay in the game.
+                                    <br><br>
+                                    <em>Example:</em> Alan Mulally at Ford. He drove a Lexus and a BMW. He didn't hate them; he studied them to understand why they were better, so Ford could improve.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Memandang rival sebagai kebutuhan untuk tumbuh. Anda bisa kalah dalam pertempuran tapi tetap bertahan dalam permainan.
+                                    <br><br>
+                                    <em>Contoh:</em> Alan Mulally di Ford. Dia menyetir Lexus dan BMW. Dia tidak membenci mereka; dia mempelajarinya untuk mengerti mengapa mereka lebih baik, agar Ford bisa berkembang.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">Sinek's Personal Story</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Kisah Pribadi Sinek</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Simon Sinek hated another author, Adam Grant. He constantly checked Adam's book rankings and felt angry if Adam was ahead. He viewed Adam as a competitor to be beaten.
+                                <br><br>
+                                Later, they met on a panel. Simon admitted: "You make me incredibly insecure because all your strengths are my weaknesses." Adam replied: "Funny, I feel the same about you."
+                                <br><br>
+                                By acknowledging this, they became friends. They realized they were playing different games and could coexist and push each other to be better. They shifted from Competitors to Worthy Rivals.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Simon Sinek membenci penulis lain, Adam Grant. Dia terus mengecek peringkat buku Adam dan marah jika Adam unggul. Dia melihat Adam sebagai kompetitor yang harus dikalahkan.
+                                <br><br>
+                                Kemudian, mereka bertemu di sebuah panel. Simon mengakui: "Kamu membuatku sangat tidak aman karena semua kelebihanmu adalah kelemahanku." Adam menjawab: "Lucu, aku merasakan hal yang sama tentangmu."
+                                <br><br>
+                                Dengan mengakui ini, mereka berteman. Mereka sadar mereka memainkan permainan yang berbeda dan bisa hidup berdampingan serta saling mendorong untuk jadi lebih baik. Mereka berubah dari Kompetitor menjadi Pesaing yang Layak.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Practice 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Prepare for Existential Flexibility</span>
+                            <span class="lang-id">Bersiap untuk Fleksibilitas Eksistensial</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Existential Flexibility is the capacity to initiate an extreme disruption to a business model or strategic course in order to more effectively advance a Just Cause. It is not a defensive pivot; it is an offensive move.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Fleksibilitas Eksistensial adalah kapasitas untuk memulai gangguan ekstrem pada model bisnis atau arah strategis demi memajukan Tujuan yang Layak secara lebih efektif. Ini bukan pivot defensif; ini langkah ofensif.
+                        </p>
+
+                        <div class="bg-purple-50 p-6 rounded-xl border border-purple-200 shadow-sm">
+                            <h4 class="font-bold text-purple-900 text-lg mb-3 lang-en">Case Study: Steve Jobs & The GUI</h4>
+                            <h4 class="font-bold text-purple-900 text-lg mb-3 lang-id">Studi Kasus: Steve Jobs & GUI</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-en">
+                                In 1979, Apple was already successful with the Apple II. But upon visiting Xerox PARC, Steve Jobs saw a "Graphic User Interface" (mouse, icons, windows).
+                                <br><br>
+                                Xerox didn't know what to do with it. Jobs instantly saw that this was the future of computing. He instructed his team to scrap their current roadmap and focus entirely on the GUI (which became the Macintosh).
+                                <br><br>
+                                <strong>The Cost:</strong> This decision would make their own cash cow (Apple II) obsolete. But Jobs knew if he didn't blow up his own company, someone else would. He chose to advance the Cause of "empowering individuals" over protecting the current profit model.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-id">
+                                Pada 1979, Apple sudah sukses dengan Apple II. Tapi saat mengunjungi Xerox PARC, Steve Jobs melihat "Graphic User Interface" (mouse, ikon, jendela).
+                                <br><br>
+                                Xerox tidak tahu harus buat apa dengan itu. Jobs langsung melihat bahwa ini adalah masa depan komputasi. Dia menginstruksikan timnya untuk membuang peta jalan mereka saat ini dan fokus sepenuhnya pada GUI (yang kemudian jadi Macintosh).
+                                <br><br>
+                                <strong>Biayanya:</strong> Keputusan ini akan membuat sapi perah mereka sendiri (Apple II) menjadi usang. Tapi Jobs tahu jika dia tidak meledakkan perusahaannya sendiri, orang lain yang akan melakukannya. Dia memilih memajukan Tujuan "memberdayakan individu" di atas melindungi model profit saat ini.
+                            </p>
+                        </div>
+
+                        <div class="bg-red-50 p-5 rounded-lg border border-red-200 mt-4">
+                            <strong class="block text-red-900 text-lg mb-2 lang-en">Failure Case: Kodak</strong>
+                            <strong class="block text-red-900 text-lg mb-2 lang-id">Kasus Kegagalan: Kodak</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Kodak actually invented the digital camera in 1975. But they suppressed it because they made money selling film and chemicals. They lacked Existential Flexibility. They protected their finite business model instead of advancing their Just Cause. As a result, they went bankrupt.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Kodak sebenarnya menemukan kamera digital pada 1975. Tapi mereka menekannya karena mereka menghasilkan uang dari jual film dan bahan kimia. Mereka kurang Fleksibilitas Eksistensial. Mereka melindungi model bisnis terbatas mereka daripada memajukan Tujuan yang Layak. Akibatnya, mereka bangkrut.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Practice 5</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Courage to Lead</span>
+                            <span class="lang-id">Keberanian untuk Memimpin</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            It is hard to play the Infinite Game. The world (Wall Street, shareholders) pressures you to play finitely. It takes courage to ignore short-term gains for long-term health.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Sulit untuk memainkan Permainan Tak Terbatas. Dunia (Wall Street, pemegang saham) menekan Anda untuk bermain secara terbatas. Butuh keberanian untuk mengabaikan keuntungan jangka pendek demi kesehatan jangka panjang.
+                        </p>
+
+                        <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-200 shadow-sm">
+                            <h4 class="font-bold text-indigo-900 text-lg mb-3 lang-en">Case Study: CVS Health</h4>
+                            <h4 class="font-bold text-indigo-900 text-lg mb-3 lang-id">Studi Kasus: CVS Health</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-en">
+                                In 2014, CVS announced they would stop selling cigarettes. This was a huge decision. Cigarettes brought in <strong>$2 billion in annual revenue</strong>.
+                                <br><br>
+                                <strong>The Finite View:</strong> "This is suicide. Shareholders will revolt. Customers will go to Walgreens."
+                                <br><br>
+                                <strong>The Infinite View:</strong> CVS's Just Cause was "Helping people on their path to better health." You cannot sell health and poison in the same store. It was hypocrisy.
+                                <br><br>
+                                <strong>The Result:</strong> Their stock price dropped initially (short term). But over the next few years, their stock doubled. They secured partnerships with hospitals and insurance companies who now trusted them as a true health provider. By losing $2 billion, they gained a future.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-id">
+                                Pada 2014, CVS mengumumkan berhenti menjual rokok. Ini keputusan besar. Rokok menghasilkan <strong>$2 miliar pendapatan tahunan</strong>.
+                                <br><br>
+                                <strong>Pandangan Terbatas:</strong> "Ini bunuh diri. Pemegang saham akan memberontak. Pelanggan akan lari ke Walgreens."
+                                <br><br>
+                                <strong>Pandangan Tak Terbatas:</strong> Just Cause CVS adalah "Membantu orang menuju kesehatan yang lebih baik." Anda tidak bisa menjual kesehatan dan racun di toko yang sama. Itu kemunafikan.
+                                <br><br>
+                                <strong>Hasilnya:</strong> Harga saham mereka awalnya turun (jangka pendek). Tapi beberapa tahun kemudian, saham mereka naik dua kali lipat. Mereka mengamankan kemitraan dengan rumah sakit dan asuransi yang kini mempercayai mereka sebagai penyedia kesehatan sejati. Dengan kehilangan $2 miliar, mereka mendapatkan masa depan.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-900 p-6 rounded-xl text-white mt-4">
+                            <strong class="block text-violet-400 text-lg mb-2 lang-en">Final Thought</strong>
+                            <strong class="block text-violet-400 text-lg mb-2 lang-id">Pemikiran Akhir</strong>
+                            <p class="text-sm opacity-90 justified-text lang-en">
+                                "We can't choose the game. We can't choose the rules. We can only choose how we play."
+                                <br><br>
+                                Leaders who play with an infinite mindset build stronger, more innovative, and more inspiring organizations. They are the ones who are remembered long after they are gone.
+                            </p>
+                            <p class="text-sm opacity-90 justified-text lang-id">
+                                "Kita tidak bisa memilih permainannya. Kita tidak bisa memilih aturannya. Kita hanya bisa memilih cara kita bermain."
+                                <br><br>
+                                Pemimpin yang bermain dengan pola pikir tak terbatas membangun organisasi yang lebih kuat, inovatif, dan menginspirasi. Merekalah yang dikenang lama setelah mereka tiada.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#7c3aed'; // Violet
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#4338ca'; // Indigo
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-indigo-100');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-indigo-100');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
