@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sprint — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Blue/Yellow Theme for Google Ventures Style */
+        .active-tab { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #2563eb; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">S</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Sprint</h2>
+                    <p class="text-slate-400 text-sm">
+                        <span class="lang-en">Master Edition</span>
+                        <span class="lang-id">Edisi Master</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The 5 Days</span>
+                <span class="lang-id">5 Hari Sprint</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-xs font-bold">🚀</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">M</span>
+                        <div class="text-left">
+                            <div class="font-medium">Monday</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Map & Target</span>
+                                <span class="lang-id">Peta & Target</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-yellow-500 rounded-lg flex items-center justify-center text-xs font-bold">T</span>
+                        <div class="text-left">
+                            <div class="font-medium">Tuesday</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Sketching</span>
+                                <span class="lang-id">Sketsa Ide</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center text-xs font-bold">W</span>
+                        <div class="text-left">
+                            <div class="font-medium">Wednesday</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Decide</span>
+                                <span class="lang-id">Memutuskan</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center text-xs font-bold">T</span>
+                        <div class="text-left">
+                            <div class="font-medium">Thursday</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Prototype</span>
+                                <span class="lang-id">Prototipe</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-xs font-bold">F</span>
+                        <div class="text-left">
+                            <div class="font-medium">Friday</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Test & Learn</span>
+                                <span class="lang-id">Tes & Belajar</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© Jake Knapp</p>
+                <p class="text-slate-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    Sprint
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    <span class="lang-en">Solve Big Problems and Test New Ideas in Just Five Days</span>
+                    <span class="lang-id">Pecahkan Masalah Besar dan Uji Ide Baru Hanya dalam Lima Hari</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-yellow-400 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Concept</span>
+                            <span class="lang-id">Konsep Dasar</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Why Sprint?</span>
+                            <span class="lang-id">Mengapa Sprint?</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-blue-500 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"The longer it takes to develop an idea, the less likely it is to be successful. Sprint compresses months of work into a single week."</span>
+                            <span class="lang-id">"Semakin lama waktu yang dibutuhkan untuk mengembangkan ide, semakin kecil kemungkinannya untuk sukses. Sprint memadatkan pekerjaan berbulan-bulan menjadi satu minggu."</span>
+                        </div>
+                        
+                        <p class="mobile-text justified-text lang-en">
+                            Jake Knapp created the Sprint process at Google Ventures (GV) to solve a critical problem: teams waste too much time debating and building things nobody wants. The Sprint is a "Greatest Hits" of business strategy, behavioral science, and design thinking, packaged into a step-by-step process that any team can use. It is rigorous, fast, and remarkably effective.
+                        </p>
+                        <p class="mobile-text justified-text lang-id">
+                            Jake Knapp menciptakan proses Sprint di Google Ventures (GV) untuk memecahkan masalah kritis: tim membuang terlalu banyak waktu berdebat dan membangun hal yang tidak diinginkan siapa pun. Sprint adalah kumpulan "Lagu Terbaik" dari strategi bisnis, ilmu perilaku, dan pemikiran desain, dikemas dalam proses langkah-demi-langkah yang bisa digunakan tim mana pun. Proses ini ketat, cepat, dan sangat efektif.
+                        </p>
+
+                        <div class="bg-blue-50 p-6 rounded-xl border border-blue-200 shadow-sm">
+                            <h4 class="font-bold text-blue-900 text-lg mb-3 lang-en">The Rules of the Game</h4>
+                            <h4 class="font-bold text-blue-900 text-lg mb-3 lang-id">Aturan Main</h4>
+                            
+                            <ul class="list-none space-y-4 text-sm text-slate-700">
+                                <li>
+                                    <strong class="block text-slate-900 mb-1 lang-en">1. The Decider</strong>
+                                    <strong class="block text-slate-900 mb-1 lang-id">1. Sang Pemutus (The Decider)</strong>
+                                    <p class="justified-text lang-en">
+                                        Democracy fails in product design. You need one person (usually the CEO or Product Lead) who has the final authority to say "Yes" or "No." The team generates ideas, but the Decider makes the call. This eliminates endless debates.
+                                    </p>
+                                    <p class="justified-text lang-id">
+                                        Demokrasi gagal dalam desain produk. Anda butuh satu orang (biasanya CEO atau Product Lead) yang punya otoritas akhir untuk bilang "Ya" atau "Tidak." Tim menghasilkan ide, tapi Pemutus yang mengambil keputusan. Ini menghilangkan debat tanpa akhir.
+                                    </p>
+                                </li>
+                                <li>
+                                    <strong class="block text-slate-900 mb-1 lang-en">2. No Devices</strong>
+                                    <strong class="block text-slate-900 mb-1 lang-id">2. Tanpa Gadget</strong>
+                                    <p class="justified-text lang-en">
+                                        Laptops and phones are banned from the Sprint room. They are distraction machines. You need 100% brainpower focused on the problem. There are designated breaks for checking email.
+                                    </p>
+                                    <p class="justified-text lang-id">
+                                        Laptop dan ponsel dilarang di ruang Sprint. Mereka adalah mesin distraksi. Anda butuh 100% daya otak fokus pada masalah. Ada jam istirahat khusus untuk cek email.
+                                    </p>
+                                </li>
+                                <li>
+                                    <strong class="block text-slate-900 mb-1 lang-en">3. Get Real Surface Data</strong>
+                                    <strong class="block text-slate-900 mb-1 lang-id">3. Data Permukaan Nyata</strong>
+                                    <p class="justified-text lang-en">
+                                        Don't rely on abstract reports. The goal is to build a realistic prototype and test it with *real* humans by Friday. Seeing a customer react to a product beats any internal meeting.
+                                    </p>
+                                    <p class="justified-text lang-id">
+                                        Jangan andalkan laporan abstrak. Tujuannya adalah membangun prototipe realistis dan mengujinya dengan manusia *nyata* pada hari Jumat. Melihat pelanggan bereaksi terhadap produk mengalahkan rapat internal mana pun.
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Monday</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Map & Target</span>
+                            <span class="lang-id">Peta & Target</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Monday is about unloading information and creating a shared brain. You start at the end and work backward.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Senin adalah tentang membongkar informasi dan menciptakan "otak bersama". Anda mulai dari akhir dan bekerja mundur.
+                        </p>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">1. Start at the End (The Map)</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">1. Mulai dari Akhir (Peta)</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                Instead of diving into solutions, you must define the long-term goal. "Where do we want to be in 6 months?"
+                                <br><br>
+                                <strong>How to Draw the Map:</strong>
+                                <br>On the left side of the whiteboard, list the actors (customers, users). On the right side, list the final goal (purchase, sign-up). In the middle, draw a simple flowchart of how they get there. <strong>Keep it simple (5-15 steps max).</strong> This map anchors the team for the whole week.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Alih-alih langsung ke solusi, Anda harus mendefinisikan tujuan jangka panjang. "Di mana kita ingin berada dalam 6 bulan?"
+                                <br><br>
+                                <strong>Cara Menggambar Peta:</strong>
+                                <br>Di sisi kiri papan tulis, daftar aktornya (pelanggan, pengguna). Di sisi kanan, daftar tujuan akhir (pembelian, pendaftaran). Di tengah, gambar diagram alur sederhana bagaimana mereka sampai ke sana. <strong>Buat sederhana (maks 5-15 langkah).</strong> Peta ini menjadi jangkar tim sepanjang minggu.
+                            </p>
+                        </div>
+
+                        <div class="border-l-4 border-blue-500 pl-4 bg-blue-50 p-4 rounded-r-lg">
+                            <strong class="block text-blue-900 text-lg mb-2 lang-en">2. Ask the Experts & HMW</strong>
+                            <strong class="block text-blue-900 text-lg mb-2 lang-id">2. Tanya Ahli & HMW (Bagaimana Jika Kita)</strong>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                In the afternoon, you interview experts within the company (engineers, sales, customer support).
+                                <br><br>
+                                <strong>"How Might We" (HMW) Notes:</strong>
+                                <br>While listening, you don't take normal notes. You rephrase problems as opportunities. If an expert says "Users are confused by the menu," you write on a sticky note: <strong>"HMW make the menu intuitive?"</strong>
+                                <br><br>
+                                This small linguistic shift moves the brain from panic ("Oh no, a problem!") to creativity ("Let's solve this!").
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Di sore hari, Anda mewawancarai ahli di perusahaan (insinyur, sales, CS).
+                                <br><br>
+                                <strong>Catatan "How Might We" (HMW):</strong>
+                                <br>Saat mendengarkan, jangan catat biasa. Ubah masalah jadi peluang. Jika ahli bilang "Pengguna bingung dengan menunya," Anda tulis di sticky note: <strong>"HMW (Bagaimana jika kita) membuat menu intuitif?"</strong>
+                                <br><br>
+                                Perubahan bahasa kecil ini memindahkan otak dari panik ("Oh tidak, masalah!") ke kreativitas ("Ayo selesaikan ini!").
+                            </p>
+                        </div>
+
+                        <div class="bg-yellow-50 p-4 rounded-lg mt-4 border border-yellow-200">
+                            <strong class="block text-yellow-900 text-sm mb-1 lang-en">Case Study: Blue Bottle Coffee</strong>
+                            <strong class="block text-yellow-900 text-sm mb-1 lang-id">Studi Kasus: Blue Bottle Coffee</strong>
+                            <p class="text-xs text-slate-600 justified-text lang-en">
+                                They wanted to sell coffee online. Their map showed a confusing path for users to choose beans. The HMW notes revealed the core problem: "HMW make buying coffee online feel like talking to a barista?" This guided their entire target for the week.
+                            </p>
+                            <p class="text-xs text-slate-600 justified-text lang-id">
+                                Mereka ingin jual kopi online. Peta mereka menunjukkan jalur membingungkan bagi pengguna memilih biji kopi. Catatan HMW mengungkap masalah inti: "HMW membuat beli kopi online terasa seperti ngobrol dengan barista?" Ini memandu seluruh target minggu itu.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Tuesday</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Sketching Solutions</span>
+                            <span class="lang-id">Sketsa Solusi</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Tuesday is for solutions. But <strong>no group brainstorming</strong>. Group brainstorming is loud and favors extroverts, not the best ideas. Instead, everyone sketches alone.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Selasa adalah untuk solusi. Tapi <strong>dilarang brainstorming kelompok</strong>. Brainstorming kelompok itu berisik dan menguntungkan ekstrovert, bukan ide terbaik. Sebaliknya, semua orang membuat sketsa sendirian.
+                        </p>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">1. Remix and Improve</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">1. Remix dan Tingkatkan</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Start the morning by looking at existing solutions. Not just competitors, but other industries. If you are building a fitness app, look at how banking apps handle data visualization. This is called "Lightning Demos." It fills the brain with raw material.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Mulai pagi dengan melihat solusi yang ada. Bukan cuma pesaing, tapi industri lain. Jika Anda buat aplikasi kebugaran, lihat bagaimana aplikasi bank menangani visualisasi data. Ini disebut "Demo Kilat." Ini mengisi otak dengan bahan mentah.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-sm mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">2. The Four-Step Sketch</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">2. Sketsa Empat Langkah</h4>
+                            
+                            <ul class="list-none space-y-4 text-sm text-slate-700">
+                                <li>
+                                    <strong class="block text-blue-700 mb-1">Step 1: Notes (20 min)</strong>
+                                    <span>Walk around the room, look at the whiteboard, take notes. Gather your thoughts.</span>
+                                </li>
+                                <li>
+                                    <strong class="block text-blue-700 mb-1">Step 2: Ideas (20 min)</strong>
+                                    <span>Doodle rough ideas. No one will see these but you. It's about quantity.</span>
+                                </li>
+                                <li>
+                                    <strong class="block text-blue-700 mb-1">Step 3: Crazy 8s (8 min)</strong>
+                                    <p class="justified-text lang-en">
+                                        Fold a paper into 8 sections. Sketch 8 variations of your best idea in 8 minutes (1 minute per sketch). This forces you past your first "reasonable" idea and into innovative territory. It's fast and stressful, but effective.
+                                    </p>
+                                    <p class="justified-text lang-id">
+                                        Lipat kertas jadi 8 bagian. Sketsa 8 variasi dari ide terbaik Anda dalam 8 menit (1 menit per sketsa). Ini memaksa Anda melewati ide "masuk akal" pertama dan masuk ke wilayah inovatif. Cepat dan bikin stres, tapi efektif.
+                                    </p>
+                                </li>
+                                <li>
+                                    <strong class="block text-blue-700 mb-1">Step 4: Solution Sketch (30-90 min)</strong>
+                                    <p class="justified-text lang-en">
+                                        Create a fully formed concept. It must be self-explanatory (anonymous). No pitching allowed. The sketch must stand on its own merit.
+                                    </p>
+                                    <p class="justified-text lang-id">
+                                        Buat konsep utuh. Harus bisa menjelaskan dirinya sendiri (anonim). Dilarang pitching. Sketsa harus berdiri di atas kualitasnya sendiri.
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-orange-100 text-orange-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Wednesday</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Decide & Storyboard</span>
+                            <span class="lang-id">Putuskan & Storyboard</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Wednesday morning, you have a stack of anonymous sketches. You can't prototype them all. You must decide.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Rabu pagi, Anda punya tumpukan sketsa anonim. Anda tak bisa memprototipe semuanya. Anda harus memutuskan.
+                        </p>
+
+                        <div class="bg-orange-50 p-5 rounded-lg border border-orange-200">
+                            <h4 class="font-bold text-orange-900 text-lg mb-2 lang-en">The Sticky Decision</h4>
+                            <h4 class="font-bold text-orange-900 text-lg mb-2 lang-id">Keputusan Lengket</h4>
+                            <ol class="list-decimal ml-5 space-y-2 text-sm text-slate-700">
+                                <li><strong>Art Museum:</strong> Tape all sketches to the wall.</li>
+                                <li><strong>Heat Map:</strong> Everyone walks around silently with dot stickers. Put dots on parts you like (a headline, a button, a layout).</li>
+                                <li><strong>Speed Critique:</strong> The Facilitator talks through each sketch, highlighting the "Heat Map" areas. The author remains silent until the end.</li>
+                                <li><strong>Supervote:</strong> The Decider gets special big stickers. Whatever they vote for is what gets built. Period.</li>
+                            </ol>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">The Rumble (Conflict is Good)</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">The Rumble (Konflik itu Bagus)</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                If the Decider likes two conflicting ideas (e.g., Idea A is a mobile app, Idea B is a website), don't compromise. <strong>Compromises make bad products.</strong>
+                                <br><br>
+                                Instead, do a "Rumble." Build BOTH. You will test Prototype A against Prototype B on Friday. Let the best idea win in the real world.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Jika Pemutus suka dua ide bertentangan (misal: Ide A aplikasi seluler, Ide B situs web), jangan kompromi. <strong>Kompromi menghasilkan produk buruk.</strong>
+                                <br><br>
+                                Sebaliknya, lakukan "Rumble" (Pertarungan). Bangun KEDUANYA. Anda akan menguji Prototipe A lawan Prototipe B di hari Jumat. Biarkan ide terbaik menang di dunia nyata.
+                            </p>
+                        </div>
+
+                        <div class="border-l-4 border-slate-500 pl-4 mt-4">
+                            <strong class="block text-slate-900 text-sm mb-1 lang-en">The Storyboard</strong>
+                            <strong class="block text-slate-900 text-sm mb-1 lang-id">Storyboard</strong>
+                            <p class="text-xs text-slate-600 justified-text lang-en">
+                                In the afternoon, you draw a comic strip on the whiteboard. This is the blueprint for Thursday. It covers every click, every screen, and every text the user will see. No new ideas allowed here; just planning the build.
+                            </p>
+                            <p class="text-xs text-slate-600 justified-text lang-id">
+                                Sore harinya, Anda menggambar komik strip di papan tulis. Ini cetak biru untuk Kamis. Ini mencakup setiap klik, layar, dan teks yang akan dilihat pengguna. Ide baru dilarang di sini; hanya merencanakan pembuatan.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Thursday</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Fake It 'Til You Make It</span>
+                            <span class="lang-id">Palsukan Sampai Berhasil</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-indigo-50 p-5 rounded-lg border border-indigo-200">
+                            <h4 class="font-bold text-indigo-900 text-lg mb-2 lang-en">Goldilocks Quality</h4>
+                            <h4 class="font-bold text-indigo-900 text-lg mb-2 lang-id">Kualitas Goldilocks</h4>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                You only have one day to build. You cannot build a real product. You must build a <strong>Façade</strong>.
+                                <br><br>
+                                The quality must be "Just Right."
+                                <br>• <strong>Too Low Quality:</strong> Users won't believe it's real, and feedback will be about the messy design, not the idea.
+                                <br>• <strong>Too High Quality:</strong> You won't finish in time, and you'll be too attached to it emotionally to accept criticism.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Anda cuma punya satu hari. Anda tak bisa buat produk asli. Anda harus buat <strong>Fasad (Tampilan Luar)</strong>.
+                                <br><br>
+                                Kualitasnya harus "Pas."
+                                <br>• <strong>Kualitas Terlalu Rendah:</strong> Pengguna tak percaya itu nyata, umpan balik akan soal desain berantakan, bukan idenya.
+                                <br>• <strong>Kualitas Terlalu Tinggi:</strong> Anda takkan selesai tepat waktu, dan Anda akan terlalu terikat secara emosional untuk menerima kritik.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">Tools & Roles</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Alat & Peran</h4>
+                            <ul class="list-disc ml-5 text-sm text-slate-700 space-y-2">
+                                <li>
+                                    <span class="lang-en"><strong>Keynote/PowerPoint:</strong> Yes, really. Most apps can be faked using slides linked together. It looks real enough on a screen.</span>
+                                    <span class="lang-id"><strong>Keynote/PowerPoint:</strong> Ya, serius. Kebanyakan aplikasi bisa dipalsukan pakai slide yang di-link. Terlihat cukup nyata di layar.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Roles:</strong>
+                                    <br>- 2 Makers (Design/Build)
+                                    <br>- 1 Stitcher (Ensures consistency)
+                                    <br>- 1 Writer (Real text matters, no Lorem Ipsum!)
+                                    <br>- 1 Asset Collector (Photos/Icons)</span>
+                                    <span class="lang-id"><strong>Peran:</strong>
+                                    <br>- 2 Pembuat (Desain/Bangun)
+                                    <br>- 1 Penjahit (Memastikan konsistensi)
+                                    <br>- 1 Penulis (Teks asli itu penting, jangan Lorem Ipsum!)
+                                    <br>- 1 Pengumpul Aset (Foto/Ikon)</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="border-l-4 border-indigo-500 pl-4 mt-4">
+                            <strong class="block text-indigo-900 text-sm mb-1 lang-en">Case Study: Savioke Robot</strong>
+                            <strong class="block text-indigo-900 text-sm mb-1 lang-id">Studi Kasus: Robot Savioke</strong>
+                            <p class="text-xs text-slate-600 justified-text lang-en">
+                                Savioke built a robot to deliver items in hotels. They worried: Will guests be scared of it?
+                                <br><br>
+                                <strong>The Prototype:</strong> They didn't reprogram the robot. They used an old robot, put a screen on it, and controlled it with a joystick (Wizard of Oz style). They focused on the *face* and the *sound* (beeps and boops).
+                                <br><br>
+                                <strong>The Result:</strong> They learned guests weren't scared; they were charmed. They didn't need complex AI navigation yet; they just needed a friendly personality.
+                            </p>
+                            <p class="text-xs text-slate-600 justified-text lang-id">
+                                Savioke bikin robot pengantar barang di hotel. Mereka cemas: Apa tamu bakal takut?
+                                <br><br>
+                                <strong>Prototipe:</strong> Mereka tidak memprogram ulang. Mereka pakai robot tua, pasang layar, dan mengendalikannya dengan joystick (Gaya Wizard of Oz). Mereka fokus pada *wajah* dan *suara* (bip dan bop).
+                                <br><br>
+                                <strong>Hasil:</strong> Mereka belajar tamu tidak takut; mereka terpesona. Mereka belum butuh navigasi AI rumit; cuma butuh kepribadian ramah.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Friday</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Moment of Truth</span>
+                            <span class="lang-id">Momen Kebenaran</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-green-50 p-5 rounded-lg border border-green-200">
+                            <h4 class="font-bold text-green-900 text-lg mb-2 lang-en">The Magic Number: 5 Users</h4>
+                            <h4 class="font-bold text-green-900 text-lg mb-2 lang-id">Angka Ajaib: 5 Pengguna</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                You don't need 100 people. Jakob Nielsen's research shows that <strong>85% of usability problems are discovered by the first 5 people.</strong> After 5, the results repeat and you get diminishing returns.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Anda tidak butuh 100 orang. Riset Jakob Nielsen menunjukkan bahwa <strong>85% masalah kegunaan ditemukan oleh 5 orang pertama.</strong> Setelah 5, hasilnya berulang dan manfaatnya berkurang.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">The Interview Setup</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Pengaturan Wawancara</h4>
+                            
+                            <ul class="list-disc ml-5 text-sm text-slate-700 space-y-2">
+                                <li>
+                                    <span class="lang-en"><strong>Two Rooms:</strong> The "Interview Room" (Interviewer + User) and the "Sprint Room" (The rest of the team watching via video link).</span>
+                                    <span class="lang-id"><strong>Dua Ruangan:</strong> "Ruang Wawancara" (Pewawancara + Pengguna) dan "Ruang Sprint" (Sisa tim menonton via video).</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>The Interviewer:</strong> Be a friendly host. Don't teach them how to use it. Ask open questions: "What is this? What would you do next? What are you thinking right now?"</span>
+                                    <span class="lang-id"><strong>Pewawancara:</strong> Jadilah tuan rumah ramah. Jangan ajari mereka cara pakainya. Tanya pertanyaan terbuka: "Ini apa? Apa yang akan Anda lakukan selanjutnya? Apa yang Anda pikirkan sekarang?"</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>The Watchers:</strong> The team takes notes silently. Look for Patterns. If 3 out of 5 people struggle with a button, the button is broken. If 3 out of 5 love the pricing, you have a winner.</span>
+                                    <span class="lang-id"><strong>Penonton:</strong> Tim mencatat dalam diam. Cari Pola. Jika 3 dari 5 orang kesulitan dengan tombol, tombolnya rusak. Jika 3 dari 5 suka harganya, Anda menang.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="text-center mt-6 p-4 bg-slate-100 rounded-lg">
+                            <strong class="block text-slate-800 text-lg mb-2 lang-en">The Outcome</strong>
+                            <strong class="block text-slate-800 text-lg mb-2 lang-id">Hasil Akhir</strong>
+                            <p class="text-sm text-slate-600 justified-text lang-en">
+                                By Friday 5 PM, you don't just have a product; you have <strong>clarity</strong>. You know exactly what to fix, what to keep, or if you need to scrap the idea entirely—all without writing a single line of real code or spending months in development.
+                            </p>
+                            <p class="text-sm text-slate-600 justified-text lang-id">
+                                Pada Jumat jam 5 sore, Anda tidak hanya punya produk; Anda punya <strong>kejelasan</strong>. Anda tahu persis apa yang harus diperbaiki, dipertahankan, atau jika ide harus dibuang—semua tanpa menulis satu baris kode asli atau menghabiskan waktu berbulan-bulan pengembangan.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#2563eb'; // Blue
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#eab308'; // Yellow
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
