@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The One Minute Manager — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Teal/Rose Theme for Balance */
+        .active-tab { background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(20, 184, 166, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #0d9488; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-teal-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-teal-500 to-teal-700 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">1</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">One Minute Mgr</h2>
+                    <p class="text-slate-400 text-sm">
+                        <span class="lang-en">Master Edition</span>
+                        <span class="lang-id">Edisi Master</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The 3 Secrets</span>
+                <span class="lang-id">3 Rahasia</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center text-xs font-bold">⏱️</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Secret #1</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">One Minute Goals</span>
+                                <span class="lang-id">Tujuan Satu Menit</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Secret #2</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">One Minute Praisings</span>
+                                <span class="lang-id">Pujian Satu Menit</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-rose-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Secret #3</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">One Minute Reprimands</span>
+                                <span class="lang-id">Teguran Satu Menit</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Why it Works</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Behavioral Psychology</span>
+                                <span class="lang-id">Psikologi Perilaku</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© Blanchard & Johnson</p>
+                <p class="text-slate-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    The One Minute Manager
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    <span class="lang-en">Increase Productivity, Profits, and Prosperity</span>
+                    <span class="lang-id">Meningkatkan Produktivitas, Keuntungan, dan Kemakmuran</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-teal-500 to-slate-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-teal-100 text-teal-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Concept</span>
+                            <span class="lang-id">Konsep Dasar</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Autocratic vs. Democratic</span>
+                            <span class="lang-id">Otokratis vs. Demokratis</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-teal-500 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"People who feel good about themselves produce good results."</span>
+                            <span class="lang-id">"Orang yang merasa baik tentang diri mereka sendiri menghasilkan hasil yang baik."</span>
+                        </div>
+                        
+                        <p class="mobile-text justified-text lang-en">
+                            The story begins with a young man searching for an effective manager. He finds two types:
+                            <br>1. <strong>"Tough" Managers:</strong> Focused on results, but their people are unhappy. (Short-term win, long-term loss).
+                            <br>2. <strong>"Nice" Managers:</strong> Focused on people, but the results are poor. (Democratic but inefficient).
+                            <br><br>
+                            Then he meets the <strong>One Minute Manager</strong>. He realizes that you don't have to choose between people and results. They are connected.
+                        </p>
+                        <p class="mobile-text justified-text lang-id">
+                            Cerita dimulai dengan seorang pemuda yang mencari manajer efektif. Dia menemukan dua tipe:
+                            <br>1. <strong>Manajer "Keras":</strong> Fokus pada hasil, tapi orang-orangnya tidak bahagia. (Menang jangka pendek, rugi jangka panjang).
+                            <br>2. <strong>Manajer "Baik":</strong> Fokus pada orang, tapi hasilnya buruk. (Demokratis tapi tidak efisien).
+                            <br><br>
+                            Lalu dia bertemu <strong>Manajer Satu Menit</strong>. Dia sadar bahwa Anda tidak perlu memilih antara orang dan hasil. Keduanya saling terhubung.
+                        </p>
+
+                        <div class="bg-teal-50 p-6 rounded-xl border border-teal-200 shadow-sm">
+                            <h4 class="font-bold text-teal-900 text-lg mb-3 lang-en">The 80/20 Rule of Management</h4>
+                            <h4 class="font-bold text-teal-900 text-lg mb-3 lang-id">Aturan Manajemen 80/20</h4>
+                            <p class="text-sm text-teal-800 justified-text lang-en">
+                                80% of your really important results will come from 20% of your goals. The One Minute Manager focuses only on that 20%. This is why they have so much free time.
+                            </p>
+                            <p class="text-sm text-teal-800 justified-text lang-id">
+                                80% dari hasil Anda yang sangat penting akan datang dari 20% tujuan Anda. Manajer Satu Menit hanya fokus pada 20% itu. Inilah mengapa mereka punya banyak waktu luang.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Secret #1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">One Minute Goals</span>
+                            <span class="lang-id">Tujuan Satu Menit</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">The Problem: Silent Expectations</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Masalahnya: Harapan Bisu</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                In most companies, employees don't know what is expected of them. They only find out they did something wrong during the annual performance review. This is like bowling with a curtain in front of the pins. You roll the ball, and the boss says "You missed," but you don't know why.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Di kebanyakan perusahaan, karyawan tidak tahu apa yang diharapkan dari mereka. Mereka baru tahu kalau salah saat evaluasi kinerja tahunan. Ini seperti main bowling dengan tirai di depan pin. Anda lempar bola, dan bos bilang "Meleset," tapi Anda tidak tahu kenapa.
+                            </p>
+                        </div>
+
+                        <div class="border-l-4 border-teal-500 pl-4 bg-teal-50 p-4 rounded-r-lg">
+                            <strong class="block text-teal-900 text-lg mb-2 lang-en">How to Set One Minute Goals</strong>
+                            <strong class="block text-teal-900 text-lg mb-2 lang-id">Cara Menetapkan Tujuan Satu Menit</strong>
+                            <ol class="list-decimal ml-5 space-y-2 text-sm text-slate-700">
+                                <li>
+                                    <span class="lang-en"><strong>Agree on the Goal:</strong> Manager and employee agree on what needs to be done.</span>
+                                    <span class="lang-id"><strong>Sepakati Tujuan:</strong> Manajer dan karyawan sepakat tentang apa yang harus dilakukan.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Write it Down:</strong> Describe the goal in less than 250 words.</span>
+                                    <span class="lang-id"><strong>Tuliskan:</strong> Deskripsikan tujuan dalam kurang dari 250 kata.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>The 1-Minute Test:</strong> You must be able to read it in under one minute.</span>
+                                    <span class="lang-id"><strong>Tes 1 Menit:</strong> Anda harus bisa membacanya dalam waktu kurang dari satu menit.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Review Frequently:</strong> The employee looks at the goal daily to ensure their behavior matches the goal.</span>
+                                    <span class="lang-id"><strong>Tinjau Sering-Sering:</strong> Karyawan melihat tujuan setiap hari untuk memastikan perilaku mereka sesuai tujuan.</span>
+                                </li>
+                            </ol>
+                        </div>
+
+                        <div class="bg-slate-100 p-4 rounded-lg mt-4">
+                            <strong class="block text-slate-900 text-sm mb-1 lang-en">Why it works:</strong>
+                            <strong class="block text-slate-900 text-sm mb-1 lang-id">Mengapa ini berhasil:</strong>
+                            <p class="text-xs text-slate-600 justified-text lang-en">
+                                It removes the "guesswork." When people know exactly what the target is, they manage themselves. The manager doesn't need to hover.
+                            </p>
+                            <p class="text-xs text-slate-600 justified-text lang-id">
+                                Ini menghilangkan "tebak-tebakan." Saat orang tahu persis targetnya, mereka mengelola diri sendiri. Manajer tidak perlu mengawasi terus-menerus.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Secret #2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">One Minute Praisings</span>
+                            <span class="lang-id">Pujian Satu Menit</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Most managers practice "Leave Alone / Zap." They say nothing when things are good (Leave Alone), and punish when things go wrong (Zap). The One Minute Manager does the opposite: <strong>Catch them doing something right.</strong>
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Kebanyakan manajer mempraktikkan "Diam / Sentrum." Mereka diam saat semua baik, dan menghukum saat ada yang salah (Sentrum). Manajer Satu Menit melakukan sebaliknya: <strong>Tangkap basah mereka melakukan hal yang benar.</strong>
+                        </p>
+
+                        <div class="bg-green-50 p-6 rounded-xl border border-green-200 shadow-sm">
+                            <h4 class="font-bold text-green-900 text-lg mb-3 lang-en">Case Study: Training Shamu</h4>
+                            <h4 class="font-bold text-green-900 text-lg mb-3 lang-id">Studi Kasus: Melatih Shamu</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                How do you train a 5-ton killer whale to jump over a rope? You can't punish it (it will eat you).
+                                <br><br>
+                                <strong>Step 1:</strong> Put the rope at the bottom of the pool.
+                                <br><strong>Step 2:</strong> When the whale swims over it, feed it (Positive Reinforcement).
+                                <br><strong>Step 3:</strong> Raise the rope 1 inch. Repeat.
+                                <br><br>
+                                <strong>Lesson for Humans:</strong> In the beginning, you don't wait for "perfect" performance. You praise <strong>"Approximately Right"</strong> behavior. You help them build confidence until they can clear the high jump.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Bagaimana melatih paus pembunuh 5 ton melompati tali? Anda tidak bisa menghukumnya (dia akan memakan Anda).
+                                <br><br>
+                                <strong>Langkah 1:</strong> Taruh tali di dasar kolam.
+                                <br><strong>Langkah 2:</strong> Saat paus berenang di atasnya, beri makan (Penguatan Positif).
+                                <br><strong>Langkah 3:</strong> Naikkan tali 1 inci. Ulangi.
+                                <br><br>
+                                <strong>Pelajaran untuk Manusia:</strong> Di awal, jangan tunggu kinerja "sempurna". Pujilah perilaku yang <strong>"Kira-Kira Benar."</strong> Anda bantu mereka bangun percaya diri sampai mereka bisa melompati tali tinggi.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 mt-4">
+                            <strong class="block text-slate-900 text-lg mb-2 lang-en">The Praising Formula</strong>
+                            <strong class="block text-slate-900 text-lg mb-2 lang-id">Rumus Pujian</strong>
+                            <ul class="list-disc ml-5 text-sm text-slate-700 space-y-2">
+                                <li><strong>Immediate:</strong> Don't save it for a review. Do it now.</li>
+                                <li><strong>Specific:</strong> Don't say "Good job." Say "I liked how you handled that angry client by listening first." (Proves you were watching).</li>
+                                <li><strong>Share Feelings:</strong> Tell them how good it makes you feel (helps the company).</li>
+                                <li><strong>Pause:</strong> Silence for a few seconds to let them <em>feel</em> the praise.</li>
+                                <li><strong>Encourage:</strong> Shake hands, smile.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-rose-100 text-rose-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Secret #3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">One Minute Reprimands (Re-Directs)</span>
+                            <span class="lang-id">Teguran Satu Menit (Re-Directs)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            If goals are clear and the employee knows <em>how</em> to do the job but makes a mistake, a Reprimand is necessary. Note: If they don't know how, they need Training, not a Reprimand.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Jika tujuan sudah jelas dan karyawan tahu <em>cara</em> melakukan pekerjaan tapi membuat kesalahan, Teguran diperlukan. Catatan: Jika mereka tidak tahu caranya, mereka butuh Pelatihan, bukan Teguran.
+                        </p>
+
+                        <div class="bg-rose-50 p-6 rounded-xl border border-rose-200 shadow-sm">
+                            <h4 class="font-bold text-rose-900 text-lg mb-3 lang-en">The Reprimand Formula (Tough n' Nice)</h4>
+                            <h4 class="font-bold text-rose-900 text-lg mb-3 lang-id">Rumus Teguran (Tegas & Baik)</h4>
+                            
+                            <div class="space-y-4 text-sm text-slate-800">
+                                <div>
+                                    <strong class="block text-rose-800 mb-1">Part 1: The Behavior (Tough)</strong>
+                                    <ul class="list-disc ml-4 text-slate-700">
+                                        <li><strong>Immediate:</strong> Do it as soon as the mistake happens.</li>
+                                        <li><strong>Specific:</strong> "You were late to the meeting." (Fact). Not "You are lazy." (Opinion/Attack).</li>
+                                        <li><strong>Share Feelings:</strong> "I am frustrated because we need your input."</li>
+                                        <li><strong>Pause:</strong> Uncomfortable silence. Let it sink in.</li>
+                                    </ul>
+                                </div>
+                                <div class="border-t border-rose-200 pt-3">
+                                    <strong class="block text-green-800 mb-1">Part 2: The Person (Nice)</strong>
+                                    <ul class="list-disc ml-4 text-slate-700">
+                                        <li><strong>Re-affirm Worth:</strong> "You are one of my best people. This isn't like you."</li>
+                                        <li><strong>Separate:</strong> Attack the behavior, not the person. "You are good, but this behavior is unacceptable."</li>
+                                        <li><strong>It's Over:</strong> Once the reprimand is done, it is over. Never bring it up again. No grudges.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 mt-4">
+                            <strong class="block text-slate-900 text-lg mb-2 lang-en">Why the "Sandwich" Method Fails</strong>
+                            <strong class="block text-slate-900 text-lg mb-2 lang-id">Mengapa Metode "Sandwich" Gagal</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Traditional managers use the Sandwich: Praise -> Criticize -> Praise.
+                                <br>The One Minute Manager does NOT do this. Why? Because the employee waits for the "but..." and ignores the praise.
+                                <br><br>
+                                <strong>The One Minute Way:</strong> Be stern first (Correction). Then be supportive (Affirmation). It leaves the person thinking about their mistake but feeling valued as a person.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Manajer tradisional pakai Sandwich: Puji -> Kritik -> Puji.
+                                <br>Manajer Satu Menit TIDAK melakukan ini. Kenapa? Karena karyawan menunggu kata "tapi..." dan mengabaikan pujiannya.
+                                <br><br>
+                                <strong>Cara Satu Menit:</strong> Tegas dulu (Koreksi). Lalu mendukung (Afirmasi). Ini membuat orang memikirkan kesalahannya tapi tetap merasa dihargai sebagai pribadi.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Why it Works (Psychology)</span>
+                            <span class="lang-id">Mengapa Ini Berhasil (Psikologi)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-teal-50 p-5 rounded-lg border border-teal-200">
+                                <strong class="block text-teal-900 text-lg mb-2 lang-en">1. Feedback Loops</strong>
+                                <strong class="block text-teal-900 text-lg mb-2 lang-id">1. Putaran Umpan Balik</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Imagine playing video games with your eyes closed. It's boring. You need instant feedback (score) to stay engaged. One Minute Goals gives the target. Praisings/Reprimands provide the score.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Bayangkan main video game dengan mata tertutup. Membosankan. Anda butuh umpan balik instan (skor) agar tetap terlibat. Tujuan Satu Menit memberi target. Pujian/Teguran memberikan skornya.
+                                </p>
+                            </div>
+
+                            <div class="bg-rose-50 p-5 rounded-lg border border-rose-200">
+                                <strong class="block text-rose-900 text-lg mb-2 lang-en">2. Ego Defense</strong>
+                                <strong class="block text-rose-900 text-lg mb-2 lang-id">2. Pertahanan Ego</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    When you attack a person ("You are stupid"), their ego puts up a wall. They stop listening. When you attack the <em>behavior</em> but affirm the <em>person</em> ("You are smart, but this report is sloppy"), the ego stays down, and they can hear the feedback.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Saat Anda menyerang orang ("Kamu bodoh"), ego mereka membangun tembok. Mereka berhenti mendengar. Saat Anda menyerang <em>perilaku</em> tapi menegaskan <em>orangnya</em> ("Kamu pintar, tapi laporan ini ceroboh"), ego tetap turun, dan mereka bisa mendengar masukannya.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-6 p-4 bg-slate-50 rounded-lg">
+                            <p class="text-slate-600 italic lang-en">"Goals begin behaviors. Consequences maintain behaviors."</p>
+                            <p class="text-slate-600 italic lang-id">"Tujuan memulai perilaku. Konsekuensi mempertahankan perilaku."</p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#0d9488'; // Teal
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#be123c'; // Rose
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
