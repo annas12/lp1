@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grit — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Maroon/Gold Theme for Grit */
+        .active-tab { background: linear-gradient(135deg, #881337 0%, #be123c 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #271a1a 0%, #4a0404 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #9f1239 0%, #881337 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(136, 19, 55, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(136, 19, 55, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #be123c; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-rose-50 to-orange-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-rose-900">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-rose-600 to-rose-800 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">G</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Grit</h2>
+                    <p class="text-rose-200 text-sm">
+                        <span class="lang-en">The Power of Passion</span>
+                        <span class="lang-id">Kekuatan Gairah</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-rose-200 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The Core Principles</span>
+                <span class="lang-id">Prinsip Inti</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-rose-900 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-rose-700 rounded-lg flex items-center justify-center text-xs font-bold">💎</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-rose-900 text-rose-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">What is Grit?</div>
+                            <div class="text-xs text-rose-300">
+                                <span class="lang-en">Talent vs. Effort</span>
+                                <span class="lang-id">Bakat vs. Usaha</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-rose-900 text-rose-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-yellow-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Growing Grit</div>
+                            <div class="text-xs text-rose-300">
+                                <span class="lang-en">Inside-Out</span>
+                                <span class="lang-id">Dari Dalam ke Luar</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-rose-900 text-rose-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Practice</div>
+                            <div class="text-xs text-rose-300">
+                                <span class="lang-en">Deliberate Practice</span>
+                                <span class="lang-id">Latihan Terencana</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-rose-900 text-rose-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Purpose</div>
+                            <div class="text-xs text-rose-300">
+                                <span class="lang-en">Beyond Self</span>
+                                <span class="lang-id">Melampaui Diri</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-rose-900 text-rose-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Parenting & Culture</div>
+                            <div class="text-xs text-rose-300">
+                                <span class="lang-en">Creating Grit</span>
+                                <span class="lang-id">Menciptakan Grit</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-rose-900">
+            <div class="text-center">
+                <p class="text-rose-400 text-xs">© Angela Duckworth</p>
+                <p class="text-rose-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-rose-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    Grit
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-rose-700 font-medium px-2">
+                    <span class="lang-en">Why Passion and Perseverance Matter More Than Talent</span>
+                    <span class="lang-id">Mengapa Gairah dan Ketekunan Lebih Penting Daripada Bakat</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-rose-500 to-orange-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-rose-100 text-rose-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Concept</span>
+                            <span class="lang-id">Konsep Dasar</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The West Point Mystery</span>
+                            <span class="lang-id">Misteri West Point</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-rose-500 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"Our potential is one thing. What we do with it is quite another."</span>
+                            <span class="lang-id">"Potensi kita adalah satu hal. Apa yang kita lakukan dengannya adalah hal lain."</span>
+                        </div>
+                        
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">The Beast Barracks Case Study</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Studi Kasus Beast Barracks</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                Every year, thousands of applicants try to get into West Point (US Military Academy). The admissions process is brutal; only the top students and athletes get in. Yet, during the first 7 weeks of intensive training known as "Beast Barracks," many drop out.
+                                <br><br>
+                                Angela Duckworth wanted to know <strong>who survives?</strong>
+                                <br>She found that IQ scores, SAT scores, and leadership experience did not reliably predict who would stay. The only metric that predicted success was a score on a scale she developed called the <strong>Grit Scale</strong>. It wasn't about raw talent; it was about the stamina to keep going when things got hard.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Setiap tahun, ribuan pelamar mencoba masuk West Point (Akademi Militer AS). Proses penerimaannya brutal; hanya siswa dan atlet top yang diterima. Namun, selama 7 minggu pelatihan intensif yang dikenal sebagai "Beast Barracks," banyak yang keluar.
+                                <br><br>
+                                Angela Duckworth ingin tahu <strong>siapa yang bertahan?</strong>
+                                <br>Dia menemukan bahwa skor IQ, skor SAT, dan pengalaman kepemimpinan tidak memprediksi siapa yang akan bertahan. Satu-satunya metrik yang memprediksi kesuksesan adalah skor pada skala yang dia kembangkan bernama <strong>Skala Grit</strong>. Ini bukan tentang bakat mentah; ini tentang stamina untuk terus maju saat keadaan menjadi sulit.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Talent vs. Effort</span>
+                            <span class="lang-id">Bakat vs. Usaha</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            We have a "naturalness bias." We love to call people "naturals" because it lets us off the hook. If someone is a genius, we don't have to compare ourselves to them. Duckworth argues that effort counts <strong>twice</strong>.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Kita memiliki "bias kealamian." Kita suka menyebut orang "bakat alami" karena itu membebaskan kita dari tanggung jawab. Jika seseorang jenius, kita tidak perlu membandingkan diri kita dengan mereka. Duckworth berargumen bahwa usaha dihitung <strong>dua kali</strong>.
+                        </p>
+
+                        <div class="bg-rose-50 p-6 rounded-xl border border-rose-200">
+                            <h4 class="font-bold text-rose-900 text-lg mb-3 lang-en">The Achievement Equations</h4>
+                            <h4 class="font-bold text-rose-900 text-lg mb-3 lang-id">Persamaan Prestasi</h4>
+                            
+                            <div class="space-y-4">
+                                <div class="bg-white p-3 rounded shadow-sm border border-rose-100">
+                                    <strong class="block text-slate-900 mb-1">Equation 1:</strong>
+                                    <span class="text-lg font-mono text-rose-700 font-bold">Talent × Effort = Skill</span>
+                                    <p class="text-sm text-slate-600 mt-2 justified-text lang-en">
+                                        Talent is how fast you improve. Effort is how much time you put in. If you have talent but no effort, you have <strong>unmet potential</strong>.
+                                    </p>
+                                    <p class="text-sm text-slate-600 mt-2 justified-text lang-id">
+                                        Bakat adalah seberapa cepat Anda berkembang. Usaha adalah berapa banyak waktu yang Anda curahkan. Jika Anda punya bakat tanpa usaha, Anda punya <strong>potensi tak terpenuhi</strong>.
+                                    </p>
+                                </div>
+                                
+                                <div class="bg-white p-3 rounded shadow-sm border border-rose-100">
+                                    <strong class="block text-slate-900 mb-1">Equation 2:</strong>
+                                    <span class="text-lg font-mono text-rose-700 font-bold">Skill × Effort = Achievement</span>
+                                    <p class="text-sm text-slate-600 mt-2 justified-text lang-en">
+                                        This is where effort counts again. Skill is not enough. You must apply that skill consistently over time to achieve something great.
+                                        <br><strong>Conclusion:</strong> Without effort, talent is nothing. With effort, skill becomes achievement.
+                                    </p>
+                                    <p class="text-sm text-slate-600 mt-2 justified-text lang-id">
+                                        Di sinilah usaha dihitung lagi. Keahlian saja tidak cukup. Anda harus menerapkan keahlian itu secara konsisten dari waktu ke waktu untuk mencapai sesuatu yang hebat.
+                                        <br><strong>Kesimpulan:</strong> Tanpa usaha, bakat bukan apa-apa. Dengan usaha, keahlian menjadi prestasi.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-100 p-4 rounded-lg mt-4 border border-slate-200">
+                            <strong class="block text-slate-900 text-sm mb-1 lang-en">Case Study: Will Smith</strong>
+                            <strong class="block text-slate-900 text-sm mb-1 lang-id">Studi Kasus: Will Smith</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Will Smith admits he is not the most talented actor. He says: "The only thing that I see that is distinctly different about me is: I'm not afraid to die on a treadmill. You might have more talent than me... but if we get on the treadmill together, there's two things: You're getting off first, or I'm going to die."
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Will Smith mengakui dia bukan aktor paling berbakat. Dia bilang: "Satu-satunya hal yang saya lihat sangat berbeda tentang saya adalah: Saya tidak takut mati di treadmill. Anda mungkin lebih berbakat dari saya... tapi jika kita naik treadmill bersama, ada dua kemungkinan: Anda turun duluan, atau saya akan mati di situ."
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Growing Grit (Inside-Out)</span>
+                            <span class="lang-id">Menumbuhkan Grit (Dari Dalam ke Luar)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Can you learn to be gritty? Yes. Duckworth identifies four psychological assets that gritty people develop in order. You can cultivate these in yourself.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Bisakah Anda belajar menjadi tangguh (gritty)? Ya. Duckworth mengidentifikasi empat aset psikologis yang dikembangkan orang tangguh secara berurutan. Anda bisa menumbuhkannya dalam diri sendiri.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                                <strong class="text-rose-700 block mb-1">1. Interest (Minat)</strong>
+                                <p class="text-sm text-slate-600 justified-text lang-en">
+                                    Passion begins with enjoying what you do. You cannot grit your way through something you hate forever. You must foster a deep curiosity.
+                                </p>
+                                <p class="text-sm text-slate-600 justified-text lang-id">
+                                    Gairah dimulai dengan menikmati apa yang Anda lakukan. Anda tidak bisa bertahan selamanya dalam hal yang Anda benci. Anda harus memupuk rasa ingin tahu yang dalam.
+                                </p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                                <strong class="text-rose-700 block mb-1">2. Practice (Latihan)</strong>
+                                <p class="text-sm text-slate-600 justified-text lang-en">
+                                    Not just doing the thing, but trying to do it <em>better</em> every day. This is the discipline of "Kaizen" (continuous improvement).
+                                </p>
+                                <p class="text-sm text-slate-600 justified-text lang-id">
+                                    Bukan sekadar melakukan, tapi mencoba melakukannya <em>lebih baik</em> setiap hari. Ini adalah disiplin "Kaizen" (perbaikan berkelanjutan).
+                                </p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                                <strong class="text-rose-700 block mb-1">3. Purpose (Tujuan)</strong>
+                                <p class="text-sm text-slate-600 justified-text lang-en">
+                                    The conviction that your work matters to others. Interest is for yourself; Purpose is for others. Gritty people see their work as a calling.
+                                </p>
+                                <p class="text-sm text-slate-600 justified-text lang-id">
+                                    Keyakinan bahwa pekerjaan Anda penting bagi orang lain. Minat itu untuk diri sendiri; Tujuan itu untuk orang lain. Orang tangguh melihat pekerjaan mereka sebagai panggilan.
+                                </p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                                <strong class="text-rose-700 block mb-1">4. Hope (Harapan)</strong>
+                                <p class="text-sm text-slate-600 justified-text lang-en">
+                                    Not wishing things will get better, but the belief that <em>you</em> can make things better. A "Growth Mindset" that says failure is not permanent.
+                                </p>
+                                <p class="text-sm text-slate-600 justified-text lang-id">
+                                    Bukan berharap keadaan membaik, tapi keyakinan bahwa <em>Anda</em> bisa membuat keadaan membaik. "Growth Mindset" yang mengatakan kegagalan tidak permanen.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Deliberate Practice</span>
+                            <span class="lang-id">Latihan Terencana (Deliberate Practice)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Many people work hard for decades but never improve (e.g., driving a car for 20 years but still being an average driver). Why? Because they are just "doing," not "practicing."
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Banyak orang bekerja keras puluhan tahun tapi tidak pernah berkembang (misal: menyetir mobil 20 tahun tapi tetap jadi pengemudi rata-rata). Kenapa? Karena mereka hanya "melakukan", bukan "berlatih".
+                        </p>
+
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">The 4 Requirements of Deliberate Practice</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">4 Syarat Latihan Terencana</h4>
+                            
+                            <ul class="list-none space-y-4 text-sm text-slate-700">
+                                <li>
+                                    <strong class="block text-rose-700 mb-1 lang-en">1. A Clearly Defined Stretch Goal</strong>
+                                    <strong class="block text-rose-700 mb-1 lang-id">1. Tujuan Jangkauan yang Jelas</strong>
+                                    <span class="lang-en">Focus on one specific aspect of performance to improve. Not "get better at math," but "master quadratic equations without errors."</span>
+                                    <span class="lang-id">Fokus pada satu aspek kinerja spesifik untuk diperbaiki. Bukan "jadi lebih jago matematika," tapi "kuasai persamaan kuadrat tanpa kesalahan."</span>
+                                </li>
+                                <li>
+                                    <strong class="block text-rose-700 mb-1 lang-en">2. Full Concentration and Effort</strong>
+                                    <strong class="block text-rose-700 mb-1 lang-id">2. Konsentrasi dan Usaha Penuh</strong>
+                                    <span class="lang-en">It requires intense focus. It is often exhausting and not "fun" in the moment.</span>
+                                    <span class="lang-id">Ini membutuhkan fokus yang intens. Seringkali melelahkan dan tidak "menyenangkan" pada saat itu.</span>
+                                </li>
+                                <li>
+                                    <strong class="block text-rose-700 mb-1 lang-en">3. Immediate and Informative Feedback</strong>
+                                    <strong class="block text-rose-700 mb-1 lang-id">3. Umpan Balik Segera dan Informatif</strong>
+                                    <span class="lang-en">You need to know what you did wrong immediately so you can correct it.</span>
+                                    <span class="lang-id">Anda perlu tahu apa kesalahan Anda segera agar bisa memperbaikinya.</span>
+                                </li>
+                                <li>
+                                    <strong class="block text-rose-700 mb-1 lang-en">4. Repetition with Reflection and Refinement</strong>
+                                    <strong class="block text-rose-700 mb-1 lang-id">4. Pengulangan dengan Refleksi dan Perbaikan</strong>
+                                    <span class="lang-en">Do it again, but do it differently based on the feedback until it becomes automatic.</span>
+                                    <span class="lang-id">Lakukan lagi, tapi lakukan dengan berbeda berdasarkan umpan balik sampai menjadi otomatis.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-orange-50 p-4 rounded-lg mt-4 border border-orange-200">
+                            <strong class="block text-orange-900 text-sm mb-1 lang-en">The Definition of Flow vs. Practice</strong>
+                            <strong class="block text-orange-900 text-sm mb-1 lang-id">Definisi Flow vs. Latihan</strong>
+                            <p class="text-xs text-slate-600 justified-text lang-en">
+                                <strong>Deliberate Practice</strong> is for preparation (it's hard/painful). <strong>Flow</strong> is for performance (it's effortless/euphoric). Gritty people do more deliberate practice so they can experience more flow during performance.
+                            </p>
+                            <p class="text-xs text-slate-600 justified-text lang-id">
+                                <strong>Latihan Terencana</strong> adalah untuk persiapan (keras/menyakitkan). <strong>Flow</strong> adalah untuk pertunjukan (mudah/euforia). Orang tangguh melakukan lebih banyak latihan terencana agar mereka bisa mengalami lebih banyak flow saat tampil.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Purpose: The "Other-Centered" Why</span>
+                            <span class="lang-id">Tujuan: "Mengapa" yang Berpusat pada Orang Lain</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Duckworth found that the grittiest people are not just driven by pleasure or money. They are driven by a sense that their work contributes to the well-being of others.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Duckworth menemukan bahwa orang paling tangguh tidak hanya didorong oleh kesenangan atau uang. Mereka didorong oleh perasaan bahwa pekerjaan mereka berkontribusi pada kesejahteraan orang lain.
+                        </p>
+
+                        <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-200 shadow-sm">
+                            <h4 class="font-bold text-indigo-900 text-lg mb-3 lang-en">Case Study: The Bricklayers Parable</h4>
+                            <h4 class="font-bold text-indigo-900 text-lg mb-3 lang-id">Studi Kasus: Perumpamaan Tukang Batu</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-en">
+                                Three bricklayers are asked: "What are you doing?"
+                                <br><br>
+                                🧱 <strong>The First:</strong> "I am laying bricks." (It's a Job).
+                                <br>🏗️ <strong>The Second:</strong> "I am building a church." (It's a Career).
+                                <br>⛪ <strong>The Third:</strong> "I am building the house of God." (It's a Calling).
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-id">
+                                Tiga tukang batu ditanya: "Apa yang sedang kamu lakukan?"
+                                <br><br>
+                                🧱 <strong>Pertama:</strong> "Saya sedang memasang batu bata." (Ini Pekerjaan).
+                                <br>🏗️ <strong>Kedua:</strong> "Saya sedang membangun gereja." (Ini Karir).
+                                <br>⛪ <strong>Ketiga:</strong> "Saya sedang membangun rumah Tuhan." (Ini Panggilan).
+                            </p>
+                            
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                <strong>Insight:</strong> The third bricklayer has the most grit. When the work gets hard, he remembers the bigger picture. You can cultivate purpose by asking: "How does my work help others?"
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                <strong>Wawasan:</strong> Tukang batu ketiga memiliki grit paling tinggi. Saat pekerjaan menjadi sulit, dia mengingat gambaran besarnya. Anda bisa memupuk tujuan dengan bertanya: "Bagaimana pekerjaan saya membantu orang lain?"
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Parenting & Culture for Grit</span>
+                            <span class="lang-id">Pola Asuh & Budaya untuk Grit</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Grit can be cultivated from the outside in. This applies to parents raising children or leaders managing teams. The key is the balance of "Support" and "Demanding."
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Grit bisa ditumbuhkan dari luar ke dalam. Ini berlaku bagi orang tua yang membesarkan anak atau pemimpin yang mengelola tim. Kuncinya adalah keseimbangan antara "Dukungan" dan "Tuntutan."
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-red-50 p-4 rounded border border-red-200">
+                                <strong class="block text-red-900 text-sm mb-1 lang-en">Permissive Parenting</strong>
+                                <strong class="block text-red-900 text-sm mb-1 lang-id">Pola Asuh Permisif</strong>
+                                <span class="text-xs text-slate-600 lang-en">High Support, Low Demands. Result: Fragile children.</span>
+                                <span class="text-xs text-slate-600 lang-id">Dukungan Tinggi, Tuntutan Rendah. Hasil: Anak rapuh.</span>
+                            </div>
+                            <div class="bg-red-50 p-4 rounded border border-red-200">
+                                <strong class="block text-red-900 text-sm mb-1 lang-en">Authoritarian Parenting</strong>
+                                <strong class="block text-red-900 text-sm mb-1 lang-id">Pola Asuh Otoriter</strong>
+                                <span class="text-xs text-slate-600 lang-en">Low Support, High Demands. Result: Rebellious or anxious children.</span>
+                                <span class="text-xs text-slate-600 lang-id">Dukungan Rendah, Tuntutan Tinggi. Hasil: Anak pemberontak atau cemas.</span>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded border border-green-200 col-span-1 md:col-span-2">
+                                <strong class="block text-green-900 text-lg mb-1 lang-en">✅ Wise Parenting (Authoritative)</strong>
+                                <strong class="block text-green-900 text-lg mb-1 lang-id">✅ Pola Asuh Bijaksana (Otoritatif)</strong>
+                                <p class="text-sm text-slate-700 mt-2 justified-text lang-en">
+                                    <strong>High Support + High Demands.</strong>
+                                    <br>The parent says: "I have high expectations for you, and I know you can reach them, and I will help you get there." This combination creates Grit.
+                                </p>
+                                <p class="text-sm text-slate-700 mt-2 justified-text lang-id">
+                                    <strong>Dukungan Tinggi + Tuntutan Tinggi.</strong>
+                                    <br>Orang tua berkata: "Saya punya harapan tinggi padamu, dan saya tahu kamu bisa mencapainya, dan saya akan membantumu sampai di sana." Kombinasi ini menciptakan Grit.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-100 p-5 rounded-lg border border-slate-300 mt-4">
+                            <strong class="block text-slate-900 text-lg mb-2 lang-en">The "Hard Thing Rule" (Duckworth Family)</strong>
+                            <strong class="block text-slate-900 text-lg mb-2 lang-id">"Aturan Hal Sulit" (Keluarga Duckworth)</strong>
+                            <ul class="list-disc ml-5 text-sm text-slate-700 space-y-2">
+                                <li>
+                                    <span class="lang-en">Everyone in the family must do one "Hard Thing" (requires daily practice).</span>
+                                    <span class="lang-id">Setiap orang di keluarga harus melakukan satu "Hal Sulit" (butuh latihan harian).</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en">You can quit, but only after a set interval (e.g., the season is over, or tuition is paid). You cannot quit on a bad day.</span>
+                                    <span class="lang-id">Anda boleh berhenti, tapi hanya setelah interval yang ditentukan (misal: musim berakhir, atau uang les habis). Anda tidak boleh berhenti di hari yang buruk.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en">You get to pick your own Hard Thing (Autonomy).</span>
+                                    <span class="lang-id">Anda boleh memilih Hal Sulit Anda sendiri (Otonomi).</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#be123c'; // Maroon
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#ea580c'; // Orange-ish
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-rose-100');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-rose-100');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
