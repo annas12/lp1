@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovation & Entrepreneurship — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Midnight Blue/Amber Theme for Systematic Innovation */
+        .active-tab { background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #d97706; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-blue-900">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-800 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">D</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Innovation</h2>
+                    <p class="text-blue-200 text-sm">
+                        <span class="lang-en">Peter Drucker</span>
+                        <span class="lang-id">Peter Drucker</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-blue-200 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The 7 Sources</span>
+                <span class="lang-id">7 Sumber Inovasi</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-blue-900 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-700 rounded-lg flex items-center justify-center text-xs font-bold">💡</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-blue-900 text-blue-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Unexpected</div>
+                            <div class="text-xs text-blue-300">
+                                <span class="lang-en">Success & Failure</span>
+                                <span class="lang-id">Sukses & Gagal</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-blue-900 text-blue-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-amber-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Incongruities</div>
+                            <div class="text-xs text-blue-300">
+                                <span class="lang-en">Reality vs. Assumption</span>
+                                <span class="lang-id">Realita vs Asumsi</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-blue-900 text-blue-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Process Need</div>
+                            <div class="text-xs text-blue-300">
+                                <span class="lang-en">Weak Links</span>
+                                <span class="lang-id">Titik Lemah</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-blue-900 text-blue-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Market Change</div>
+                            <div class="text-xs text-blue-300">
+                                <span class="lang-en">Industry Structure</span>
+                                <span class="lang-id">Struktur Industri</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-blue-900 text-blue-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Strategies</div>
+                            <div class="text-xs text-blue-300">
+                                <span class="lang-en">Judor & Niches</span>
+                                <span class="lang-id">Judo & Niche</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-blue-900">
+            <div class="text-center">
+                <p class="text-blue-400 text-xs">© Peter Drucker</p>
+                <p class="text-blue-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-blue-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 mb-2 mobile-title">
+                    Innovation & Entrepreneurship
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-amber-600 font-medium px-2">
+                    <span class="lang-en">Practice and Principles</span>
+                    <span class="lang-id">Praktik dan Prinsip</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-blue-600 to-amber-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Core Thesis</span>
+                            <span class="lang-id">Tesis Utama</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Innovation is a Discipline</span>
+                            <span class="lang-id">Inovasi adalah Disiplin Ilmu</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-amber-500 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"Innovation is the specific instrument of entrepreneurship. It is the act that endows resources with a new capacity to create wealth."</span>
+                            <span class="lang-id">"Inovasi adalah instrumen khusus kewirausahaan. Ini adalah tindakan yang memberi sumber daya kapasitas baru untuk menciptakan kekayaan."</span>
+                        </div>
+                        
+                        <div class="mobile-text justified-text">
+                            <p class="lang-en mb-4">
+                                Peter Drucker argues that entrepreneurship is not a personality trait; it is a behavior. It is not about "risk-taking" (Drucker says successful entrepreneurs are actually risk-averse), but about <strong>systematic innovation</strong>. It involves purposeful searching for changes in the environment and systematically analyzing them as opportunities.
+                            </p>
+                            <p class="lang-id mb-4">
+                                Peter Drucker berargumen bahwa kewirausahaan bukanlah sifat kepribadian; itu adalah perilaku. Ini bukan tentang "mengambil risiko" (Drucker mengatakan pengusaha sukses justru menghindari risiko), tetapi tentang <strong>inovasi sistematis</strong>. Ini melibatkan pencarian perubahan lingkungan secara sengaja dan menganalisisnya secara sistematis sebagai peluang.
+                            </p>
+                            
+                            <p class="lang-en">
+                                He identifies <strong>7 Sources of Innovation</strong>. The first four exist <em>within</em> the organization (internal), and the last three exist <em>outside</em> (external). Successful entrepreneurs monitor these seven sources like a doctor monitors a patient's pulse.
+                            </p>
+                            <p class="lang-id">
+                                Dia mengidentifikasi <strong>7 Sumber Inovasi</strong>. Empat yang pertama ada <em>di dalam</em> organisasi (internal), dan tiga yang terakhir ada <em>di luar</em> (eksternal). Pengusaha sukses memantau ketujuh sumber ini seperti dokter memantau denyut nadi pasien.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Source 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Unexpected Occurrences</span>
+                            <span class="lang-id">Kejadian Tak Terduga</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            This is the easiest and simplest source of innovation, yet it is the most neglected. It comes in two forms: Unexpected Success and Unexpected Failure.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Ini adalah sumber inovasi yang paling mudah dan sederhana, namun paling sering diabaikan. Ini datang dalam dua bentuk: Sukses Tak Terduga dan Kegagalan Tak Terduga.
+                        </p>
+
+                        <div class="bg-blue-50 p-6 rounded-xl border border-blue-200">
+                            <h4 class="font-bold text-blue-900 text-lg mb-3 lang-en">The Unexpected Success (Case Study: IBM)</h4>
+                            <h4 class="font-bold text-blue-900 text-lg mb-3 lang-id">Sukses Tak Terduga (Studi Kasus: IBM)</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                <strong>Why managers hate it:</strong> Unexpected success is often seen as a nuisance because it forces managers to deviate from their carefully planned budgets and forecasts. They often say, "This product is distracting us from our main plan."
+                                <br><br>
+                                <strong>The Case:</strong> In the 1930s, IBM developed the first modern accounting machine for banks. But banks didn't buy it. It was a disaster. However, the New York Public Library wanted to buy one. IBM was confused (Why would a library want a bank machine?). It turned out librarians needed it to track books.
+                                <br><br>
+                                <strong>The Innovation:</strong> IBM redesigned the machine for libraries and general inventory control. This unexpected success saved the company during the Depression and pivoted them from "Bank Machines" to "Data Processing."
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                <strong>Kenapa manajer membencinya:</strong> Sukses tak terduga sering dianggap gangguan karena memaksa manajer menyimpang dari anggaran dan ramalan yang sudah direncanakan. Mereka sering berkata, "Produk ini mengalihkan kita dari rencana utama."
+                                <br><br>
+                                <strong>Kasusnya:</strong> Pada 1930-an, IBM mengembangkan mesin akuntansi modern untuk bank. Tapi bank tidak membelinya. Itu bencana. Namun, Perpustakaan Umum New York ingin membelinya. IBM bingung (Kenapa perpustakaan mau mesin bank?). Ternyata pustakawan butuh itu untuk melacak buku.
+                                <br><br>
+                                <strong>Inovasinya:</strong> IBM mendesain ulang mesin itu untuk perpustakaan dan kontrol inventaris umum. Sukses tak terduga ini menyelamatkan perusahaan selama Depresi dan memutar arah mereka dari "Mesin Bank" menjadi "Pemrosesan Data."
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">The Unexpected Failure (Case Study: Ford Edsel)</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Kegagalan Tak Terduga (Studi Kasus: Ford Edsel)</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                When a product fails despite careful planning and market research, it indicates a fundamental change in customer values.
+                                <br><br>
+                                The Ford Edsel was the most carefully planned car in history. It failed spectacularly. Why? Because the market had shifted from buying cars based on "Income Group" to "Lifestyle." The failure wasn't a technical error; it was a signal of a new market reality. Smart entrepreneurs investigate failure not to assign blame, but to find the new reality.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Ketika produk gagal meski sudah direncanakan dan diriset hati-hati, itu menandakan perubahan mendasar dalam nilai pelanggan.
+                                <br><br>
+                                Ford Edsel adalah mobil yang direncanakan paling hati-hati dalam sejarah. Gagal total. Kenapa? Karena pasar telah bergeser dari membeli mobil berdasarkan "Kelompok Pendapatan" menjadi "Gaya Hidup." Kegagalan itu bukan kesalahan teknis; itu sinyal realitas pasar baru. Pengusaha cerdas menyelidiki kegagalan bukan untuk menyalahkan, tapi untuk menemukan realitas baru.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Source 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Incongruities</span>
+                            <span class="lang-id">Ketidaksesuaian (Incongruities)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            An incongruity is a discrepancy between "what is" and "what ought to be," or between reality and assumption. It is a symptom of an opportunity.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Ketidaksesuaian adalah perbedaan antara "apa yang ada" dan "apa yang seharusnya," atau antara realitas dan asumsi. Ini adalah gejala peluang.
+                        </p>
+
+                        <div class="bg-amber-50 p-6 rounded-xl border border-amber-200">
+                            <h4 class="font-bold text-amber-900 text-lg mb-3 lang-en">Case Study: The Shipping Industry</h4>
+                            <h4 class="font-bold text-amber-900 text-lg mb-3 lang-id">Studi Kasus: Industri Pengiriman</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                <strong>The Incongruity:</strong> For 50 years, ocean freighters worked harder and faster to lower costs, yet shipping costs kept rising. "What is" (faster ships) contradicted "What ought to be" (lower costs).
+                                <br><br>
+                                <strong>The Blind Spot:</strong> Ship owners thought their business was "sailing ships." They focused on speed at sea.
+                                <br><br>
+                                <strong>The Innovation:</strong> The real cost wasn't at sea; it was at the port (loading/unloading took weeks). The innovation was the <strong>Container</strong>. By focusing on the idle time at port rather than the speed at sea, containerization revolutionized global trade. The business wasn't sailing; it was cargo handling.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                <strong>Ketidaksesuaian:</strong> Selama 50 tahun, kapal kargo bekerja lebih keras dan cepat untuk menurunkan biaya, tapi biaya pengiriman terus naik. "Apa yang ada" (kapal cepat) bertentangan dengan "apa yang seharusnya" (biaya turun).
+                                <br><br>
+                                <strong>Titik Buta:</strong> Pemilik kapal mengira bisnis mereka adalah "melayarkan kapal." Mereka fokus pada kecepatan di laut.
+                                <br><br>
+                                <strong>Inovasi:</strong> Biaya sebenarnya bukan di laut; tapi di pelabuhan (muat/bongkar butuh berminggu-minggu). Inovasinya adalah <strong>Kontainer</strong>. Dengan fokus pada waktu diam di pelabuhan alih-alih kecepatan di laut, kontainerisasi merevolusi perdagangan global. Bisnisnya bukan berlayar; tapi penanganan kargo.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-teal-100 text-teal-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Source 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Process Need</span>
+                            <span class="lang-id">Kebutuhan Proses</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            This is the classic "Necessity is the mother of invention." It starts with a specific weak link in an existing process. It’s not about creating something "new," but perfecting something "broken."
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Ini adalah klasik "Kebutuhan adalah ibu dari penemuan." Dimulai dengan titik lemah spesifik dalam proses yang ada. Ini bukan tentang menciptakan sesuatu yang "baru," tapi menyempurnakan sesuatu yang "rusak."
+                        </p>
+
+                        <div class="bg-teal-50 p-6 rounded-xl border border-teal-200">
+                            <h4 class="font-bold text-teal-900 text-lg mb-3 lang-en">Case Study: Mergenthaler Linotype</h4>
+                            <h4 class="font-bold text-teal-900 text-lg mb-3 lang-id">Studi Kasus: Mergenthaler Linotype</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                <strong>The Problem:</strong> In the 19th century, printing presses were fast, and paper making was fast. But typesetting (picking letters by hand) was incredibly slow. It was the bottleneck preventing mass newspapers.
+                                <br><br>
+                                <strong>The Need:</strong> A keyboard that could select letters automatically.
+                                <br><br>
+                                <strong>The Result:</strong> Ottmar Mergenthaler spent years designing the Linotype. He didn't invent printing; he just filled the "missing link" in the process. This enabled the explosion of literacy and mass media.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                <strong>Masalah:</strong> Di abad 19, mesin cetak sudah cepat, pembuatan kertas juga cepat. Tapi typesetting (memilih huruf dengan tangan) sangat lambat. Ini adalah leher botol yang mencegah koran massal.
+                                <br><br>
+                                <strong>Kebutuhan:</strong> Keyboard yang bisa memilih huruf secara otomatis.
+                                <br><br>
+                                <strong>Hasil:</strong> Ottmar Mergenthaler menghabiskan bertahun-tahun merancang Linotype. Dia tidak menemukan percetakan; dia hanya mengisi "mata rantai yang hilang" dalam prosesnya. Ini memungkinkan ledakan literasi dan media massa.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Source 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Industry Structure Changes</span>
+                            <span class="lang-id">Perubahan Struktur Industri</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Industry structures seem solid, but they are fragile. When they change, they change fast. The "Insiders" usually miss it because they are too busy defending the old way.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Struktur industri tampak kokoh, tapi rapuh. Saat berubah, perubahannya cepat. "Orang Dalam" biasanya melewatkannya karena terlalu sibuk mempertahankan cara lama.
+                        </p>
+
+                        <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-200">
+                            <h4 class="font-bold text-indigo-900 text-lg mb-3 lang-en">Indicator: Rapid Growth</h4>
+                            <h4 class="font-bold text-indigo-900 text-lg mb-3 lang-id">Indikator: Pertumbuhan Cepat</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                If an industry grows significantly faster than the economy or population, its structure *must* change.
+                                <br><br>
+                                <strong>Case Study: Automotive (early 1900s).</strong>
+                                <br>Early cars were "toys for the rich," sold like luxury carriages. But as the market grew, it became a mass-market utility. Rolls-Royce kept building for the rich (and stayed small). Henry Ford realized the structure had changed and built the Model T for the masses. He didn't just build a car; he innovated the business model to match the new structure.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Jika industri tumbuh jauh lebih cepat dari ekonomi atau populasi, strukturnya *pasti* berubah.
+                                <br><br>
+                                <strong>Studi Kasus: Otomotif (awal 1900-an).</strong>
+                                <br>Mobil awal adalah "mainan orang kaya," dijual seperti kereta mewah. Tapi saat pasar tumbuh, itu jadi utilitas pasar massal. Rolls-Royce tetap membuat untuk orang kaya (dan tetap kecil). Henry Ford sadar strukturnya berubah dan membuat Model T untuk massa. Dia tidak cuma membuat mobil; dia menginovasi model bisnis agar sesuai struktur baru.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Entrepreneurial Strategies</span>
+                            <span class="lang-id">Strategi Kewirausahaan</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-red-700 text-lg mb-2 lang-en">Entrepreneurial Judo</h4>
+                            <h4 class="font-bold text-red-700 text-lg mb-2 lang-id">Judo Wirausaha</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                This strategy uses the strength of the market leader against them. It exploits their arrogance and their "Bad Habits."
+                                <br><br>
+                                <strong>Bad Habit 1: NIH (Not Invented Here).</strong> Big companies reject ideas they didn't come up with.
+                                <br><strong>Bad Habit 2: Creaming the Market.</strong> Big companies focus only on the high-profit segment, leaving the mass market underserved.
+                                <br><br>
+                                <strong>Example:</strong> Sony licensed the transistor (which Americans invented but ignored) and used it to make small, portable radios for teenagers. The big US companies were busy making expensive living-room consoles. Sony used Judo to steal the market from below.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Strategi ini menggunakan kekuatan pemimpin pasar untuk melawan mereka. Ini mengeksploitasi arogansi dan "Kebiasaan Buruk" mereka.
+                                <br><br>
+                                <strong>Kebiasaan Buruk 1: NIH (Not Invented Here).</strong> Perusahaan besar menolak ide yang bukan dari mereka.
+                                <br><strong>Kebiasaan Buruk 2: Mengambil Krim Pasar.</strong> Perusahaan besar hanya fokus pada segmen profit tinggi, membiarkan pasar massal tidak terlayani.
+                                <br><br>
+                                <strong>Contoh:</strong> Sony melisensikan transistor (yang ditemukan Amerika tapi diabaikan) dan menggunakannya untuk membuat radio portabel kecil bagi remaja. Perusahaan besar AS sibuk membuat konsol ruang tamu yang mahal. Sony menggunakan Judo untuk mencuri pasar dari bawah.
+                            </p>
+                        </div>
+
+                        <div class="bg-red-50 p-5 rounded-lg border border-red-200 mt-4">
+                            <h4 class="font-bold text-red-900 text-lg mb-2 lang-en">Ecological Niche: The Toll Gate</h4>
+                            <h4 class="font-bold text-red-900 text-lg mb-2 lang-id">Niche Ekologis: Gerbang Tol</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                The aim here is to control a small but essential segment of a market. You become a "Toll Gate"—no one can pass without paying you.
+                                <br><br>
+                                <strong>Example:</strong> Alcon (a company making enzymes for eye surgery). Their product is a tiny fraction of the cost of surgery, but absolutely essential. Surgeons won't risk using a cheaper alternative because the risk is too high. Alcon has a monopoly in a tiny niche.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Tujuannya di sini adalah mengontrol segmen kecil tapi esensial dari pasar. Anda menjadi "Gerbang Tol"—tidak ada yang bisa lewat tanpa membayar Anda.
+                                <br><br>
+                                <strong>Contoh:</strong> Alcon (perusahaan pembuat enzim untuk bedah mata). Produk mereka hanya sebagian kecil dari biaya operasi, tapi mutlak diperlukan. Ahli bedah tidak akan ambil risiko pakai alternatif murah karena risikonya terlalu tinggi. Alcon punya monopoli di niche kecil.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#1d4ed8'; // Blue
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#d97706'; // Amber
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-blue-100');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-blue-100');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
