@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How To Get Rich — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Gold/Black Theme for Brutal Wealth Truths */
+        .active-tab { background: linear-gradient(135deg, #ca8a04 0%, #854d0e 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #000000 0%, #1c1917 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.7); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #eab308 0%, #a16207 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(234, 179, 8, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(234, 179, 8, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #404040 0%, #171717 100%); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #eab308; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(234, 179, 8, 0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-stone-900 to-black min-h-screen text-slate-200">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text" style="color:#171717">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-stone-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-yellow-500 to-yellow-700 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">FD</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">How To Get Rich</h2>
+                    <p class="text-yellow-500 text-sm">
+                        <span class="lang-en">The Uncomfortable Truth</span>
+                        <span class="lang-id">Kebenaran yang Tak Nyaman</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-stone-500 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The Philosophy</span>
+                <span class="lang-id">Filosofi</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-stone-800 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-yellow-600 rounded-lg flex items-center justify-center text-xs font-bold">☠️</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-stone-800 text-stone-400 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-stone-700 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Fallacy of Ideas</div>
+                            <div class="text-xs text-stone-500">
+                                <span class="lang-en">Execution is King</span>
+                                <span class="lang-id">Eksekusi adalah Raja</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-stone-800 text-stone-400 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-stone-700 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Ownership</div>
+                            <div class="text-xs text-stone-500">
+                                <span class="lang-en">The Cardinal Rule</span>
+                                <span class="lang-id">Aturan Kardinal</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-stone-800 text-stone-400 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-stone-700 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Search</div>
+                            <div class="text-xs text-stone-500">
+                                <span class="lang-en">Finding the Gap</span>
+                                <span class="lang-id">Menemukan Celah</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-stone-800 text-stone-400 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-stone-700 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Fear</div>
+                            <div class="text-xs text-stone-500">
+                                <span class="lang-en">Nothing to Lose</span>
+                                <span class="lang-id">Tak Ada yang Hilang</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-stone-800 text-stone-400 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-stone-700 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Case Study</div>
+                            <div class="text-xs text-stone-500">
+                                <span class="lang-en">Maxim Magazine</span>
+                                <span class="lang-id">Majalah Maxim</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-stone-800">
+            <div class="text-center">
+                <p class="text-stone-500 text-xs">© Felix Dennis</p>
+                <p class="text-yellow-600 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-black shadow-lg border-b border-stone-800">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white mb-2 mobile-title tracking-tight">
+                    How To Get Rich
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-yellow-500 font-medium px-2">
+                    <span class="lang-en">One of the World's Greatest Entrepreneurs Shares His Secrets</span>
+                    <span class="lang-id">Salah Satu Pengusaha Terhebat di Dunia Membagikan Rahasianya</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-300 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-stone-900 rounded-xl sm:rounded-2xl shadow-2xl border border-stone-800 overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-yellow-900 text-yellow-200 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4 border border-yellow-700">
+                            <span class="lang-en">Anti-Self-Help</span>
+                            <span class="lang-id">Anti-Self-Help</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Uncomfortable Truth</span>
+                            <span class="lang-id">Kebenaran yang Tak Nyaman</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-stone-300 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-yellow-400 font-medium border-l-4 border-yellow-600 pl-4 italic mobile-text justified-text bg-black/30 p-4 rounded-r-lg">
+                            <span class="lang-en">"If you want to be rich, you must make sacrifices that 99% of people are unwilling to make. You must have the stamina of a horse and the skin of a rhinoceros."</span>
+                            <span class="lang-id">"Jika Anda ingin kaya, Anda harus melakukan pengorbanan yang 99% orang tidak mau lakukan. Anda harus memiliki stamina seekor kuda dan kulit seekor badak."</span>
+                        </div>
+                        
+                        <div class="mobile-text justified-text">
+                            <p class="lang-en mb-4">
+                                Felix Dennis was not a "guru" selling courses. He was a legitimate tycoon worth nearly $1 billion who built a publishing empire (including <em>Maxim</em>, <em>The Week</em>, and <em>PC World</em>). He lived a life of excess, poetry, and relentless business warfare.
+                            </p>
+                            <p class="lang-id mb-4">
+                                Felix Dennis bukanlah seorang "guru" yang menjual kursus. Dia adalah taipan sah bernilai hampir $1 miliar yang membangun kerajaan penerbitan (termasuk <em>Maxim</em>, <em>The Week</em>, dan <em>PC World</em>). Dia menjalani hidup penuh kelebihan, puisi, dan peperangan bisnis tanpa henti.
+                            </p>
+                            
+                            <p class="lang-en">
+                                His core premise is stark: Most people say they want to be rich, but they don't. They want to be comfortable. They want to be liked. They want job security. To get truly rich, you must give up the desire for security and popularity. You must step into the "dark side" of obsession, risk, and ownership. This book is a warning as much as it is a guide.
+                            </p>
+                            <p class="lang-id">
+                                Premis utamanya sangat tegas: Kebanyakan orang bilang ingin kaya, tapi sebenarnya tidak. Mereka ingin nyaman. Mereka ingin disukai. Mereka ingin keamanan kerja. Untuk benar-benar kaya, Anda harus melepaskan keinginan akan keamanan dan popularitas. Anda harus melangkah ke "sisi gelap" obsesi, risiko, dan kepemilikan. Buku ini adalah peringatan sekaligus panduan.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-stone-800 text-stone-300 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4 border border-stone-700">Part 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Fallacy of the Great Idea</span>
+                            <span class="lang-id">Kekeliruan Ide Besar</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-stone-300 leading-relaxed space-y-6">
+                        <p class="text-base text-stone-300 justified-text lang-en">
+                            One of the biggest lies in business is that you need a "new" or "original" idea to get rich. Felix Dennis argues that original ideas are overrated and often dangerous (because you have to educate the market).
+                        </p>
+                        <p class="text-base text-stone-300 justified-text lang-id">
+                            Salah satu kebohongan terbesar dalam bisnis adalah bahwa Anda butuh ide "baru" atau "orisinal" untuk jadi kaya. Felix Dennis berpendapat bahwa ide orisinal itu berlebihan dan seringkali berbahaya (karena Anda harus mengedukasi pasar).
+                        </p>
+
+                        <div class="bg-black p-6 rounded-xl border border-stone-700 shadow-sm">
+                            <h4 class="font-bold text-yellow-500 text-lg mb-3 lang-en">Execution > Originality</h4>
+                            <h4 class="font-bold text-yellow-500 text-lg mb-3 lang-id">Eksekusi > Orisinalitas</h4>
+                            
+                            <p class="text-sm text-stone-400 justified-text mb-4 lang-en">
+                                You don't need to invent the wheel. You just need to make the wheel rounder, cheaper, or better marketed. Look at Microsoft; Bill Gates didn't invent the OS, he bought it and licensed it brilliantly. Look at Google; they weren't the first search engine, they were just the best execution of it.
+                                <br><br>
+                                <strong>The Strategy:</strong> Identify an existing market that is being served poorly or complacently. Enter that market with a product that is slightly better, faster, or cooler. Then, execute with ferocious intensity. "Ideas are ten a penny. Execution is what counts."
+                            </p>
+                            <p class="text-sm text-stone-400 justified-text mb-4 lang-id">
+                                Anda tidak perlu menemukan roda. Anda hanya perlu membuat roda itu lebih bulat, lebih murah, atau dipasarkan lebih baik. Lihat Microsoft; Bill Gates tidak menemukan OS, dia membelinya dan melisensikannya dengan brilian. Lihat Google; mereka bukan mesin pencari pertama, mereka hanya eksekusi terbaiknya.
+                                <br><br>
+                                <strong>Strategi:</strong> Identifikasi pasar yang sudah ada yang dilayani dengan buruk atau puas diri. Masuk ke pasar itu dengan produk yang sedikit lebih baik, lebih cepat, atau lebih keren. Lalu, eksekusi dengan intensitas yang ganas. "Ide itu murah. Eksekusi adalah yang terpenting."
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-stone-800 text-stone-300 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4 border border-stone-700">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Ownership: The Cardinal Rule</span>
+                            <span class="lang-id">Kepemilikan: Aturan Kardinal</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-stone-300 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-yellow-400 font-medium border-l-4 border-yellow-600 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"If you want to be rich, you must be an owner. You cannot get rich working for someone else, no matter how high your salary."</span>
+                            <span class="lang-id">"Jika Anda ingin kaya, Anda harus menjadi pemilik. Anda tidak bisa kaya bekerja untuk orang lain, tidak peduli seberapa tinggi gaji Anda."</span>
+                        </div>
+
+                        <div class="bg-stone-800 p-6 rounded-xl border border-stone-600">
+                            <h4 class="font-bold text-white text-lg mb-2 lang-en">The 51% Rule</h4>
+                            <h4 class="font-bold text-white text-lg mb-2 lang-id">Aturan 51%</h4>
+                            <p class="text-sm text-stone-300 justified-text lang-en">
+                                Felix Dennis is obsessive about this: <strong>Never, ever give up control.</strong>
+                                <br><br>
+                                Many entrepreneurs dilute their equity too early by taking Venture Capital (VC) money they don't need, or giving shares to partners who don't deserve them. Once you own less than 51%, you are an employee. You can be fired from your own company.
+                                <br><br>
+                                <strong>The Warning:</strong> VCs and investors are not your friends. They want to make money <em>from</em> you. Fight for every single percentage point of equity as if your life depends on it—because your financial freedom does. It is better to own 100% of a small pie than 1% of a big pie where you have no control.
+                            </p>
+                            <p class="text-sm text-stone-300 justified-text lang-id">
+                                Felix Dennis sangat obsesif tentang hal ini: <strong>Jangan pernah, sekalipun, melepaskan kendali.</strong>
+                                <br><br>
+                                Banyak pengusaha mendilusi ekuitas mereka terlalu dini dengan mengambil uang Venture Capital (VC) yang tidak mereka butuhkan, atau memberikan saham kepada mitra yang tidak pantas mendapatkannya. Begitu Anda memiliki kurang dari 51%, Anda adalah karyawan. Anda bisa dipecat dari perusahaan Anda sendiri.
+                                <br><br>
+                                <strong>Peringatan:</strong> VC dan investor bukan teman Anda. Mereka ingin menghasilkan uang <em>dari</em> Anda. Berjuanglah untuk setiap poin persentase ekuitas seolah-olah hidup Anda bergantung padanya—karena kebebasan finansial Anda memang bergantung padanya. Lebih baik memiliki 100% dari kue kecil daripada 1% dari kue besar di mana Anda tidak punya kendali.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-stone-800 text-stone-300 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4 border border-stone-700">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Search (Finding the Gap)</span>
+                            <span class="lang-id">Pencarian (Menemukan Celah)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-stone-300 leading-relaxed space-y-6">
+                        <p class="text-base text-stone-300 justified-text lang-en">
+                            How do you find the right mountain to climb? You look for "The Gap." This is the space where demand exceeds supply, or where the current players are lazy and incompetent.
+                        </p>
+                        <p class="text-base text-stone-300 justified-text lang-id">
+                            Bagaimana cara menemukan gunung yang tepat untuk didaki? Anda mencari "The Gap" (Celah). Ini adalah ruang di mana permintaan melebihi penawaran, atau di mana pemain saat ini malas dan tidak kompeten.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-black p-5 rounded-lg border border-stone-700">
+                                <strong class="block text-yellow-500 text-lg mb-2 lang-en">The Inclining Plane</strong>
+                                <strong class="block text-yellow-500 text-lg mb-2 lang-id">Bidang Miring (Inclining Plane)</strong>
+                                <p class="text-sm text-stone-400 justified-text lang-en">
+                                    Avoid industries that are shrinking (like print newspapers today). Look for industries that are growing naturally. Even if you are an average operator, an inclining plane (a growing market) will lift you up.
+                                </p>
+                                <p class="text-sm text-stone-400 justified-text lang-id">
+                                    Hindari industri yang menyusut (seperti koran cetak hari ini). Cari industri yang tumbuh secara alami. Bahkan jika Anda operator rata-rata, bidang miring (pasar yang tumbuh) akan mengangkat Anda ke atas.
+                                </p>
+                            </div>
+
+                            <div class="bg-stone-800 p-5 rounded-lg border border-stone-600">
+                                <strong class="block text-white text-lg mb-2 lang-en">The Blind Spot</strong>
+                                <strong class="block text-white text-lg mb-2 lang-id">Titik Buta</strong>
+                                <p class="text-sm text-stone-300 justified-text lang-en">
+                                    Look for what "experts" are ignoring. When Felix Dennis launched computer magazines, mainstream publishers laughed. "Who wants to read about geeky computers?" They were blind. Felix saw the gap and made millions before they woke up.
+                                </p>
+                                <p class="text-sm text-stone-300 justified-text lang-id">
+                                    Cari apa yang diabaikan "para ahli." Saat Felix Dennis meluncurkan majalah komputer, penerbit mainstream tertawa. "Siapa yang mau baca soal komputer aneh?" Mereka buta. Felix melihat celah dan menghasilkan jutaan sebelum mereka sadar.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-stone-800 text-stone-300 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4 border border-stone-700">Part 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Fear of Failure</span>
+                            <span class="lang-id">Ketakutan akan Kegagalan</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-stone-300 leading-relaxed space-y-6">
+                        <p class="text-base text-stone-300 justified-text lang-en">
+                            The primary reason people are not rich is <strong>Fear</strong>. Not lack of talent, not lack of capital, but fear of losing what they currently have (status, a steady paycheck, the respect of peers).
+                        </p>
+                        <p class="text-base text-stone-300 justified-text lang-id">
+                            Alasan utama orang tidak kaya adalah <strong>Ketakutan</strong>. Bukan kurang bakat, bukan kurang modal, tapi takut kehilangan apa yang mereka miliki saat ini (status, gaji tetap, rasa hormat teman sebaya).
+                        </p>
+
+                        <div class="bg-stone-900 p-6 rounded-xl border border-red-900 shadow-sm relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-20 h-20 bg-red-600 blur-3xl opacity-20"></div>
+                            <h4 class="font-bold text-white text-lg mb-3 lang-en">The "Nothing to Lose" Paradox</h4>
+                            <h4 class="font-bold text-white text-lg mb-3 lang-id">Paradoks "Tak Ada yang Hilang"</h4>
+                            
+                            <p class="text-sm text-stone-400 justified-text mb-4 lang-en">
+                                Dennis argues that the best time to get rich is when you are young and broke. You have nothing to lose.
+                                <br><br>
+                                However, as you get older and get a mortgage and a decent job, you become a coward. You become addicted to the "drug" of a regular salary.
+                                <br><br>
+                                <strong>The Mindset Shift:</strong> You must convince yourself that failure is temporary, but regret is permanent. If you fail, you can always get another job. But if you never try, you will die wondering "What if?" Embrace the possibility of public failure. It is the price of entry.
+                            </p>
+                            <p class="text-sm text-stone-400 justified-text mb-4 lang-id">
+                                Dennis berpendapat waktu terbaik untuk jadi kaya adalah saat Anda muda dan bokek. Anda tidak punya apa-apa untuk dipertaruhkan.
+                                <br><br>
+                                Namun, saat Anda menua dan punya cicilan serta pekerjaan layak, Anda jadi pengecut. Anda kecanduan "narkoba" berupa gaji rutin.
+                                <br><br>
+                                <strong>Pergeseran Pola Pikir:</strong> Anda harus yakinkan diri bahwa kegagalan itu sementara, tapi penyesalan itu permanen. Jika gagal, Anda selalu bisa cari kerja lagi. Tapi jika tidak pernah mencoba, Anda akan mati bertanya-tanya "Bagaimana jika?" Rangkul kemungkinan kegagalan publik. Itu harga tiket masuknya.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-stone-800 text-stone-300 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4 border border-stone-700">Part 5</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Case Study: Maxim Magazine</span>
+                            <span class="lang-id">Studi Kasus: Majalah Maxim</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-stone-300 leading-relaxed space-y-6">
+                        <div class="bg-black p-6 rounded-xl border border-yellow-700 shadow-lg">
+                            <strong class="block text-yellow-500 text-lg mb-2 lang-en">The Problem</strong>
+                            <strong class="block text-yellow-500 text-lg mb-2 lang-id">Masalahnya</strong>
+                            <p class="text-sm text-stone-400 justified-text mb-4 lang-en">
+                                In the mid-90s, men's magazines were boring (GQ, Esquire). They were pretentious and focused on expensive suits. Felix saw a gap: Young men didn't care about $2000 suits. They liked beer, gadgets, girls, and jokes.
+                            </p>
+                            <p class="text-sm text-stone-400 justified-text mb-4 lang-id">
+                                Di pertengahan 90-an, majalah pria membosankan (GQ, Esquire). Sok pintar dan fokus jas mahal. Felix lihat celah: Pria muda tidak peduli jas $2000. Mereka suka bir, gadget, wanita, dan lelucon.
+                            </p>
+
+                            <strong class="block text-yellow-500 text-lg mb-2 lang-en">The Execution (The Gamble)</strong>
+                            <strong class="block text-yellow-500 text-lg mb-2 lang-id">Eksekusi (Perjudian)</strong>
+                            <p class="text-sm text-stone-400 justified-text mb-4 lang-en">
+                                He launched <em>Maxim</em> in the US. Critics hated it. They called it "low brow" and "trash." Advertisers were skeptical.
+                                <br><br>
+                                Felix ignored the critics and focused on the <strong>Readers</strong>. He spent millions marketing it aggressively. He nearly bankrupted his company to keep it afloat. He trusted his gut that the "Lads Mag" genre would work in America.
+                            </p>
+                            <p class="text-sm text-stone-400 justified-text mb-4 lang-id">
+                                Dia meluncurkan <em>Maxim</em> di AS. Kritikus membencinya. Mereka menyebutnya "murahan" dan "sampah." Pengiklan skeptis.
+                                <br><br>
+                                Felix mengabaikan kritikus dan fokus pada <strong>Pembaca</strong>. Dia habiskan jutaan untuk pemasaran agresif. Dia hampir membangkrutkan perusahaannya untuk mempertahankannya. Dia percaya nalurinya bahwa genre "Lads Mag" akan berhasil di Amerika.
+                            </p>
+
+                            <strong class="block text-yellow-500 text-lg mb-2 lang-en">The Payoff</strong>
+                            <strong class="block text-yellow-500 text-lg mb-2 lang-id">Hasilnya</strong>
+                            <p class="text-sm text-stone-400 justified-text lang-en">
+                                <em>Maxim</em> became the biggest selling men's magazine in the world, destroying the competition. Felix eventually sold his US publishing interests for a reported <strong>$240 million</strong>. He kept 100% of the equity, so he kept 100% of the cash.
+                            </p>
+                            <p class="text-sm text-stone-400 justified-text lang-id">
+                                <em>Maxim</em> menjadi majalah pria terlaris di dunia, menghancurkan kompetisi. Felix akhirnya menjual kepentingan penerbitan AS-nya dengan nilai dilaporkan <strong>$240 juta</strong>. Dia memegang 100% ekuitas, jadi dia menyimpan 100% uangnya.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#eab308'; // Yellow
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#d6d3d1'; // Stone-300
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-stone-400');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-stone-400');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
