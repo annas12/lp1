@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grit — Master Edition</title>
+    <title>The Jelly Effect — Master Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -11,8 +11,8 @@
         .fade-in { animation: fadeIn 0.5s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Maroon/Gold Theme for Grit */
-        .active-tab { background: linear-gradient(135deg, #881337 0%, #be123c 100%); } 
+        /* Fuchsia/Slate Theme for Impact & Clarity */
+        .active-tab { background: linear-gradient(135deg, #a21caf 0%, #86198f 100%); } 
         .content-section { display: none; }
         .content-section.active { display: block; }
         
@@ -33,7 +33,7 @@
         
         .nav-drawer {
             position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
-            background: linear-gradient(180deg, #271a1a 0%, #4a0404 100%);
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
             transition: left 0.3s ease-in-out; z-index: 1000;
             box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
         }
@@ -48,11 +48,11 @@
         
         .drawer-toggle {
             position: fixed; top: 20px; left: 20px; z-index: 1001;
-            background: linear-gradient(135deg, #9f1239 0%, #881337 100%);
+            background: linear-gradient(135deg, #d946ef 0%, #a21caf 100%);
             border: none; border-radius: 12px; padding: 12px; cursor: pointer;
-            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(136, 19, 55, 0.3);
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(217, 70, 239, 0.3);
         }
-        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(136, 19, 55, 0.4); }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(217, 70, 239, 0.4); }
         .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
         
         /* Simple Language Button */
@@ -72,7 +72,7 @@
             display: flex; align-items: center; gap: 6px;
         }
         .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
-        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #be123c; }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #a21caf; }
 
         .hamburger { width: 24px; height: 18px; position: relative; }
         .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
@@ -91,7 +91,7 @@
         @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
     </style>
 </head>
-<body class="bg-gradient-to-br from-rose-50 to-orange-50 min-h-screen">
+<body class="bg-gradient-to-br from-slate-50 to-fuchsia-50 min-h-screen">
 
     <button class="lang-btn-simple" onclick="toggleLanguage()">
         <span class="lang-indicator"></span>
@@ -109,90 +109,90 @@
     <div class="nav-overlay" onclick="closeDrawer()"></div>
     
     <nav class="nav-drawer">
-        <div class="p-6 border-b border-rose-900">
+        <div class="p-6 border-b border-slate-700">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-gradient-to-br from-rose-600 to-rose-800 rounded-lg flex items-center justify-center">
-                    <span class="text-white font-bold text-lg">G</span>
+                <div class="w-10 h-10 bg-gradient-to-br from-fuchsia-600 to-purple-700 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">J</span>
                 </div>
                 <div>
-                    <h2 class="text-white font-semibold text-lg">Grit</h2>
-                    <p class="text-rose-200 text-sm">
-                        <span class="lang-en">The Power of Passion</span>
-                        <span class="lang-id">Kekuatan Gairah</span>
+                    <h2 class="text-white font-semibold text-lg">The Jelly Effect</h2>
+                    <p class="text-slate-400 text-sm">
+                        <span class="lang-en">Sticky Communication</span>
+                        <span class="lang-id">Komunikasi yang Menempel</span>
                     </p>
                 </div>
             </div>
         </div>
         
         <div class="p-4">
-            <h3 class="text-rose-200 text-sm font-medium uppercase tracking-wider mb-4 px-2">
-                <span class="lang-en">The Core Principles</span>
-                <span class="lang-id">Prinsip Inti</span>
+            <h3 class="text-slate-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">Communication Mastery</span>
+                <span class="lang-id">Penguasaan Komunikasi</span>
             </h3>
             <ul class="space-y-2">
                 <li class="nav-item">
-                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-rose-900 active-tab text-white flex items-center space-x-3">
-                        <span class="w-8 h-8 bg-rose-700 rounded-lg flex items-center justify-center text-xs font-bold">💎</span>
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-fuchsia-700 rounded-lg flex items-center justify-center text-xs font-bold">🍮</span>
                         <span class="lang-en">Introduction</span>
                         <span class="lang-id">Pendahuluan</span>
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-rose-900 text-rose-100 flex items-center space-x-3">
-                        <span class="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
                         <div class="text-left">
-                            <div class="font-medium">What is Grit?</div>
-                            <div class="text-xs text-rose-300">
-                                <span class="lang-en">Talent vs. Effort</span>
-                                <span class="lang-id">Bakat vs. Usaha</span>
+                            <div class="font-medium">The AFTERs</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">The Core Principle</span>
+                                <span class="lang-id">Prinsip Inti</span>
                             </div>
                         </div>
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-rose-900 text-rose-100 flex items-center space-x-3">
-                        <span class="w-8 h-8 bg-yellow-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
                         <div class="text-left">
-                            <div class="font-medium">Growing Grit</div>
-                            <div class="text-xs text-rose-300">
-                                <span class="lang-en">Inside-Out</span>
-                                <span class="lang-id">Dari Dalam ke Luar</span>
+                            <div class="font-medium">Networking</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Asking Better Questions</span>
+                                <span class="lang-id">Pertanyaan Lebih Baik</span>
                             </div>
                         </div>
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-rose-900 text-rose-100 flex items-center space-x-3">
-                        <span class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
                         <div class="text-left">
-                            <div class="font-medium">Practice</div>
-                            <div class="text-xs text-rose-300">
-                                <span class="lang-en">Deliberate Practice</span>
-                                <span class="lang-id">Latihan Terencana</span>
+                            <div class="font-medium">Selling (ABC)</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Sales Methodology</span>
+                                <span class="lang-id">Metodologi Penjualan</span>
                             </div>
                         </div>
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-rose-900 text-rose-100 flex items-center space-x-3">
-                        <span class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-pink-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
                         <div class="text-left">
-                            <div class="font-medium">Purpose</div>
-                            <div class="text-xs text-rose-300">
-                                <span class="lang-en">Beyond Self</span>
-                                <span class="lang-id">Melampaui Diri</span>
+                            <div class="font-medium">Presenting (RAP)</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Structure & Impact</span>
+                                <span class="lang-id">Struktur & Dampak</span>
                             </div>
                         </div>
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-rose-900 text-rose-100 flex items-center space-x-3">
-                        <span class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
                         <div class="text-left">
-                            <div class="font-medium">Parenting & Culture</div>
-                            <div class="text-xs text-rose-300">
-                                <span class="lang-en">Creating Grit</span>
-                                <span class="lang-id">Menciptakan Grit</span>
+                            <div class="font-medium">Case Studies</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Real World Wins</span>
+                                <span class="lang-id">Kemenangan Nyata</span>
                             </div>
                         </div>
                     </button>
@@ -200,25 +200,25 @@
             </ul>
         </div>
         
-        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-rose-900">
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
             <div class="text-center">
-                <p class="text-rose-400 text-xs">© Angela Duckworth</p>
-                <p class="text-rose-500 text-xs mt-1">Master Edition</p>
+                <p class="text-slate-400 text-xs">© Andy Bounds</p>
+                <p class="text-slate-500 text-xs mt-1">Master Edition</p>
             </div>
         </div>
     </nav>
 
-    <header class="bg-white shadow-sm border-b border-rose-100">
+    <header class="bg-white shadow-sm border-b border-slate-200">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
             <div class="text-center">
                 <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
-                    Grit
+                    The Jelly Effect
                 </h1>
-                <p class="text-sm sm:text-base md:text-lg text-rose-700 font-medium px-2">
-                    <span class="lang-en">Why Passion and Perseverance Matter More Than Talent</span>
-                    <span class="lang-id">Mengapa Gairah dan Ketekunan Lebih Penting Daripada Bakat</span>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    <span class="lang-en">How to Make Your Communication Stick</span>
+                    <span class="lang-id">Bagaimana Membuat Komunikasi Anda Menempel</span>
                 </p>
-                <div class="w-24 h-1 bg-gradient-to-r from-rose-500 to-orange-500 mx-auto mt-4 rounded-full"></div>
+                <div class="w-24 h-1 bg-gradient-to-r from-fuchsia-500 to-purple-600 mx-auto mt-4 rounded-full"></div>
             </div>
         </div>
     </header>
@@ -229,38 +229,50 @@
                     
                 <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-rose-100 text-rose-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
-                            <span class="lang-en">The Concept</span>
-                            <span class="lang-id">Konsep Dasar</span>
+                        <span class="inline-block px-3 py-1 bg-fuchsia-100 text-fuchsia-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Problem</span>
+                            <span class="lang-id">Masalahnya</span>
                         </span>
                         
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
-                            <span class="lang-en">The West Point Mystery</span>
-                            <span class="lang-id">Misteri West Point</span>
+                            <span class="lang-en">Stop Throwing Jelly</span>
+                            <span class="lang-id">Berhenti Melempar Jeli</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
-                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-rose-500 pl-4 italic mobile-text justified-text">
-                            <span class="lang-en">"Our potential is one thing. What we do with it is quite another."</span>
-                            <span class="lang-id">"Potensi kita adalah satu hal. Apa yang kita lakukan dengannya adalah hal lain."</span>
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-fuchsia-500 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"Most communication is like filling a bucket with jelly and throwing it at a wall. It makes a mess, and very little of it sticks."</span>
+                            <span class="lang-id">"Kebanyakan komunikasi itu seperti mengisi ember dengan jeli dan melemparnya ke dinding. Itu bikin berantakan, dan sangat sedikit yang menempel."</span>
                         </div>
                         
+                        <p class="mobile-text justified-text lang-en">
+                            We overload people with information. We talk about <em>ourselves</em>, our history, and our features. But audiences (clients, colleagues, bosses) are busy and bored. They don't care about the "Jelly" (excess info). They only care about what's in it for them.
+                        </p>
+                        <p class="mobile-text justified-text lang-id">
+                            Kita membebani orang dengan informasi. Kita bicara tentang <em>diri kita</em>, sejarah kita, dan fitur kita. Tapi audiens (klien, rekan, bos) itu sibuk dan bosan. Mereka tidak peduli dengan "Jeli" (info berlebih). Mereka hanya peduli apa untungnya bagi mereka.
+                        </p>
+
                         <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-sm">
-                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">The Beast Barracks Case Study</h4>
-                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Studi Kasus Beast Barracks</h4>
-                            
-                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
-                                Every year, thousands of applicants try to get into West Point (US Military Academy). The admissions process is brutal; only the top students and athletes get in. Yet, during the first 7 weeks of intensive training known as "Beast Barracks," many drop out.
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">The "So What?" Filter</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Filter "Lalu Kenapa?"</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                To remove the jelly, imagine your audience shouting "So What?" after every sentence you speak.
                                 <br><br>
-                                Angela Duckworth wanted to know <strong>who survives?</strong>
-                                <br>She found that IQ scores, SAT scores, and leadership experience did not reliably predict who would stay. The only metric that predicted success was a score on a scale she developed called the <strong>Grit Scale</strong>. It wasn't about raw talent; it was about the stamina to keep going when things got hard.
+                                <em>You:</em> "We were founded in 1995."
+                                <br><em>Audience:</em> "So what?"
+                                <br><em>You:</em> "So we have deep experience."
+                                <br><em>Audience:</em> "So what?"
+                                <br><em>You:</em> "So we won't make rookie mistakes with your account." (Ah! Now that sticks).
                             </p>
-                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
-                                Setiap tahun, ribuan pelamar mencoba masuk West Point (Akademi Militer AS). Proses penerimaannya brutal; hanya siswa dan atlet top yang diterima. Namun, selama 7 minggu pelatihan intensif yang dikenal sebagai "Beast Barracks," banyak yang keluar.
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Untuk membuang jeli, bayangkan audiens Anda berteriak "Lalu Kenapa?" setelah setiap kalimat Anda.
                                 <br><br>
-                                Angela Duckworth ingin tahu <strong>siapa yang bertahan?</strong>
-                                <br>Dia menemukan bahwa skor IQ, skor SAT, dan pengalaman kepemimpinan tidak memprediksi siapa yang akan bertahan. Satu-satunya metrik yang memprediksi kesuksesan adalah skor pada skala yang dia kembangkan bernama <strong>Skala Grit</strong>. Ini bukan tentang bakat mentah; ini tentang stamina untuk terus maju saat keadaan menjadi sulit.
+                                <em>Anda:</em> "Kami didirikan tahun 1995."
+                                <br><em>Audiens:</em> "Lalu kenapa?"
+                                <br><em>Anda:</em> "Jadi kami punya pengalaman mendalam."
+                                <br><em>Audiens:</em> "Lalu kenapa?"
+                                <br><em>Anda:</em> "Jadi kami tidak akan melakukan kesalahan pemula dengan akun Anda." (Nah! Baru itu menempel).
                             </p>
                         </div>
                     </div>
@@ -270,58 +282,59 @@
                     <div class="mb-4 sm:mb-6 mobile-margin">
                         <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
-                            <span class="lang-en">Talent vs. Effort</span>
-                            <span class="lang-id">Bakat vs. Usaha</span>
+                            <span class="lang-en">The AFTERs Concept</span>
+                            <span class="lang-id">Konsep "AFTERs"</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
                         <p class="text-base text-slate-600 justified-text lang-en">
-                            We have a "naturalness bias." We love to call people "naturals" because it lets us off the hook. If someone is a genius, we don't have to compare ourselves to them. Duckworth argues that effort counts <strong>twice</strong>.
+                            This is the most critical concept in the book. Most people communicate the "During" (the process). Great communicators communicate the "After" (the result).
                         </p>
                         <p class="text-base text-slate-600 justified-text lang-id">
-                            Kita memiliki "bias kealamian." Kita suka menyebut orang "bakat alami" karena itu membebaskan kita dari tanggung jawab. Jika seseorang jenius, kita tidak perlu membandingkan diri kita dengan mereka. Duckworth berargumen bahwa usaha dihitung <strong>dua kali</strong>.
+                            Ini adalah konsep paling kritis dalam buku ini. Kebanyakan orang mengkomunikasikan "Saat" (prosesnya). Komunikator hebat mengkomunikasikan "Setelah" (hasilnya).
                         </p>
 
-                        <div class="bg-rose-50 p-6 rounded-xl border border-rose-200">
-                            <h4 class="font-bold text-rose-900 text-lg mb-3 lang-en">The Achievement Equations</h4>
-                            <h4 class="font-bold text-rose-900 text-lg mb-3 lang-id">Persamaan Prestasi</h4>
-                            
-                            <div class="space-y-4">
-                                <div class="bg-white p-3 rounded shadow-sm border border-rose-100">
-                                    <strong class="block text-slate-900 mb-1">Equation 1:</strong>
-                                    <span class="text-lg font-mono text-rose-700 font-bold">Talent × Effort = Skill</span>
-                                    <p class="text-sm text-slate-600 mt-2 justified-text lang-en">
-                                        Talent is how fast you improve. Effort is how much time you put in. If you have talent but no effort, you have <strong>unmet potential</strong>.
-                                    </p>
-                                    <p class="text-sm text-slate-600 mt-2 justified-text lang-id">
-                                        Bakat adalah seberapa cepat Anda berkembang. Usaha adalah berapa banyak waktu yang Anda curahkan. Jika Anda punya bakat tanpa usaha, Anda punya <strong>potensi tak terpenuhi</strong>.
-                                    </p>
-                                </div>
-                                
-                                <div class="bg-white p-3 rounded shadow-sm border border-rose-100">
-                                    <strong class="block text-slate-900 mb-1">Equation 2:</strong>
-                                    <span class="text-lg font-mono text-rose-700 font-bold">Skill × Effort = Achievement</span>
-                                    <p class="text-sm text-slate-600 mt-2 justified-text lang-en">
-                                        This is where effort counts again. Skill is not enough. You must apply that skill consistently over time to achieve something great.
-                                        <br><strong>Conclusion:</strong> Without effort, talent is nothing. With effort, skill becomes achievement.
-                                    </p>
-                                    <p class="text-sm text-slate-600 mt-2 justified-text lang-id">
-                                        Di sinilah usaha dihitung lagi. Keahlian saja tidak cukup. Anda harus menerapkan keahlian itu secara konsisten dari waktu ke waktu untuk mencapai sesuatu yang hebat.
-                                        <br><strong>Kesimpulan:</strong> Tanpa usaha, bakat bukan apa-apa. Dengan usaha, keahlian menjadi prestasi.
-                                    </p>
-                                </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-red-50 p-5 rounded-lg border border-red-200">
+                                <strong class="block text-red-900 text-lg mb-2 lang-en">❌ Focusing on "During"</strong>
+                                <strong class="block text-red-900 text-lg mb-2 lang-id">❌ Fokus pada "Saat" (Proses)</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    "I am a web designer. I write code, design layouts, and optimize images."
+                                    <br><br>
+                                    <em>Problem:</em> This is boring. It sounds like hard work. The client doesn't care about code.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    "Saya desainer web. Saya nulis kode, desain tata letak, dan optimasi gambar."
+                                    <br><br>
+                                    <em>Masalah:</em> Ini membosankan. Terdengar seperti kerja keras. Klien tidak peduli soal kode.
+                                </p>
+                            </div>
+
+                            <div class="bg-fuchsia-50 p-5 rounded-lg border border-fuchsia-200">
+                                <strong class="block text-fuchsia-900 text-lg mb-2 lang-en">✅ Focusing on "AFTERs"</strong>
+                                <strong class="block text-fuchsia-900 text-lg mb-2 lang-id">✅ Fokus pada "Setelah" (Hasil)</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    "I help businesses get more customers online. <em>After</em> working with me, your website will generate twice as many leads."
+                                    <br><br>
+                                    <em>Benefit:</em> This is compelling. The client buys the <strong>future state</strong>, not the service.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    "Saya bantu bisnis dapat lebih banyak pelanggan online. <em>Setelah</em> kerja dengan saya, web Anda akan hasilkan lead dua kali lipat."
+                                    <br><br>
+                                    <em>Manfaat:</em> Ini menarik. Klien membeli <strong>keadaan masa depan</strong>, bukan layanannya.
+                                </p>
                             </div>
                         </div>
 
                         <div class="bg-slate-100 p-4 rounded-lg mt-4 border border-slate-200">
-                            <strong class="block text-slate-900 text-sm mb-1 lang-en">Case Study: Will Smith</strong>
-                            <strong class="block text-slate-900 text-sm mb-1 lang-id">Studi Kasus: Will Smith</strong>
-                            <p class="text-sm text-slate-700 justified-text lang-en">
-                                Will Smith admits he is not the most talented actor. He says: "The only thing that I see that is distinctly different about me is: I'm not afraid to die on a treadmill. You might have more talent than me... but if we get on the treadmill together, there's two things: You're getting off first, or I'm going to die."
+                            <strong class="block text-slate-900 text-sm mb-1 lang-en">Technique: Future-Based Questions</strong>
+                            <strong class="block text-slate-900 text-sm mb-1 lang-id">Teknik: Pertanyaan Berbasis Masa Depan</strong>
+                            <p class="text-xs text-slate-600 justified-text lang-en">
+                                To find out what a client wants, don't ask "What do you want?" Ask: "Imagine it's 6 months from now and this project was a huge success. What has happened <strong>after</strong> we finished that makes you so happy?".
                             </p>
-                            <p class="text-sm text-slate-700 justified-text lang-id">
-                                Will Smith mengakui dia bukan aktor paling berbakat. Dia bilang: "Satu-satunya hal yang saya lihat sangat berbeda tentang saya adalah: Saya tidak takut mati di treadmill. Anda mungkin lebih berbakat dari saya... tapi jika kita naik treadmill bersama, ada dua kemungkinan: Anda turun duluan, atau saya akan mati di situ."
+                            <p class="text-xs text-slate-600 justified-text lang-id">
+                                Untuk tahu apa yang klien mau, jangan tanya "Anda mau apa?". Tanya: "Bayangkan 6 bulan dari sekarang dan proyek ini sukses besar. Apa yang terjadi <strong>setelah</strong> kita selesai yang bikin Anda begitu senang?".
                             </p>
                         </div>
                     </div>
@@ -329,165 +342,170 @@
 
                 <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <span class="inline-block px-3 py-1 bg-purple-100 text-purple-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
-                            <span class="lang-en">Growing Grit (Inside-Out)</span>
-                            <span class="lang-id">Menumbuhkan Grit (Dari Dalam ke Luar)</span>
+                            <span class="lang-en">Networking Re-defined</span>
+                            <span class="lang-id">Definisi Ulang Networking</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
                         <p class="text-base text-slate-600 justified-text lang-en">
-                            Can you learn to be gritty? Yes. Duckworth identifies four psychological assets that gritty people develop in order. You can cultivate these in yourself.
+                            Most people hate networking because they think it's about "selling to strangers." Andy Bounds redefines it completely.
                         </p>
                         <p class="text-base text-slate-600 justified-text lang-id">
-                            Bisakah Anda belajar menjadi tangguh (gritty)? Ya. Duckworth mengidentifikasi empat aset psikologis yang dikembangkan orang tangguh secara berurutan. Anda bisa menumbuhkannya dalam diri sendiri.
+                            Kebanyakan orang benci networking karena mereka pikir itu soal "jualan ke orang asing." Andy Bounds mendefinisikan ulang sepenuhnya.
                         </p>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
-                                <strong class="text-rose-700 block mb-1">1. Interest (Minat)</strong>
-                                <p class="text-sm text-slate-600 justified-text lang-en">
-                                    Passion begins with enjoying what you do. You cannot grit your way through something you hate forever. You must foster a deep curiosity.
-                                </p>
-                                <p class="text-sm text-slate-600 justified-text lang-id">
-                                    Gairah dimulai dengan menikmati apa yang Anda lakukan. Anda tidak bisa bertahan selamanya dalam hal yang Anda benci. Anda harus memupuk rasa ingin tahu yang dalam.
-                                </p>
+                        <div class="bg-purple-50 p-6 rounded-xl border border-purple-200 shadow-sm">
+                            <h4 class="font-bold text-purple-900 text-lg mb-3 lang-en">The New Definition</h4>
+                            <h4 class="font-bold text-purple-900 text-lg mb-3 lang-id">Definisi Baru</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                <strong>"Networking is simply helping people achieve their AFTERs."</strong>
+                                <br><br>
+                                Don't go to a room to sell. Go to a room to help. When you ask someone, "What are you working on right now?" and they tell you a problem, your goal is to help them solve it—even if it has nothing to do with your product.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                <strong>"Networking hanyalah membantu orang mencapai AFTERs (tujuan akhir) mereka."</strong>
+                                <br><br>
+                                Jangan masuk ruangan untuk jualan. Masuklah untuk membantu. Saat Anda tanya, "Lagi ngerjain apa sekarang?" dan mereka cerita masalah, tujuan Anda adalah bantu menyelesaikannya—meski gak ada hubungannya dengan produk Anda.
+                            </p>
+                            
+                            <div class="bg-white p-3 rounded text-sm text-slate-600 border border-purple-100 italic">
+                                <span class="lang-en">Example: If someone needs a plumber, and you are a web designer, connect them with a good plumber. You become a trusted connector. They will remember you when they (or their friends) need a website.</span>
+                                <span class="lang-id">Contoh: Jika seseorang butuh tukang ledeng, dan Anda desainer web, hubungkan mereka dengan tukang ledeng bagus. Anda jadi penghubung terpercaya. Mereka akan ingat Anda saat mereka (atau teman mereka) butuh web.</span>
                             </div>
-                            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
-                                <strong class="text-rose-700 block mb-1">2. Practice (Latihan)</strong>
-                                <p class="text-sm text-slate-600 justified-text lang-en">
-                                    Not just doing the thing, but trying to do it <em>better</em> every day. This is the discipline of "Kaizen" (continuous improvement).
-                                </p>
-                                <p class="text-sm text-slate-600 justified-text lang-id">
-                                    Bukan sekadar melakukan, tapi mencoba melakukannya <em>lebih baik</em> setiap hari. Ini adalah disiplin "Kaizen" (perbaikan berkelanjutan).
-                                </p>
-                            </div>
-                            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
-                                <strong class="text-rose-700 block mb-1">3. Purpose (Tujuan)</strong>
-                                <p class="text-sm text-slate-600 justified-text lang-en">
-                                    The conviction that your work matters to others. Interest is for yourself; Purpose is for others. Gritty people see their work as a calling.
-                                </p>
-                                <p class="text-sm text-slate-600 justified-text lang-id">
-                                    Keyakinan bahwa pekerjaan Anda penting bagi orang lain. Minat itu untuk diri sendiri; Tujuan itu untuk orang lain. Orang tangguh melihat pekerjaan mereka sebagai panggilan.
-                                </p>
-                            </div>
-                            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
-                                <strong class="text-rose-700 block mb-1">4. Hope (Harapan)</strong>
-                                <p class="text-sm text-slate-600 justified-text lang-en">
-                                    Not wishing things will get better, but the belief that <em>you</em> can make things better. A "Growth Mindset" that says failure is not permanent.
-                                </p>
-                                <p class="text-sm text-slate-600 justified-text lang-id">
-                                    Bukan berharap keadaan membaik, tapi keyakinan bahwa <em>Anda</em> bisa membuat keadaan membaik. "Growth Mindset" yang mengatakan kegagalan tidak permanen.
-                                </p>
-                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 mt-4">
+                            <strong class="block text-slate-900 text-lg mb-2 lang-en">The "What do you do?" Trap</strong>
+                            <strong class="block text-slate-900 text-lg mb-2 lang-id">Perangkap "Kerja Apa?"</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Never answer with your job title ("I'm an accountant"). That's Jelly.
+                                <br>Answer with the AFTERs: "You know how small businesses struggle to pay tax on time? <strong>I ensure they never pay a fine again.</strong>"
+                                <br>This sparks curiosity ("Really? How?").
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Jangan pernah jawab dengan jabatan ("Saya akuntan"). Itu Jeli.
+                                <br>Jawab dengan AFTERs: "Tahu kan bisnis kecil susah bayar pajak tepat waktu? <strong>Saya pastikan mereka tidak pernah kena denda lagi.</strong>"
+                                <br>Ini memicu rasa ingin tahu ("Oya? Gimana caranya?").
+                            </p>
                         </div>
                     </div>
                 </section>
 
                 <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
-                            <span class="lang-en">Deliberate Practice</span>
-                            <span class="lang-id">Latihan Terencana (Deliberate Practice)</span>
+                            <span class="lang-en">The ABC Sales Method</span>
+                            <span class="lang-id">Metode Penjualan ABC</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
                         <p class="text-base text-slate-600 justified-text lang-en">
-                            Many people work hard for decades but never improve (e.g., driving a car for 20 years but still being an average driver). Why? Because they are just "doing," not "practicing."
+                            Forget "Always Be Closing." Andy's ABC is simpler and more effective.
                         </p>
                         <p class="text-base text-slate-600 justified-text lang-id">
-                            Banyak orang bekerja keras puluhan tahun tapi tidak pernah berkembang (misal: menyetir mobil 20 tahun tapi tetap jadi pengemudi rata-rata). Kenapa? Karena mereka hanya "melakukan", bukan "berlatih".
+                            Lupakan "Always Be Closing" (Selalu Menutup Penjualan). ABC versi Andy lebih simpel dan efektif.
                         </p>
 
-                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-sm">
-                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">The 4 Requirements of Deliberate Practice</h4>
-                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">4 Syarat Latihan Terencana</h4>
-                            
-                            <ul class="list-none space-y-4 text-sm text-slate-700">
-                                <li>
-                                    <strong class="block text-rose-700 mb-1 lang-en">1. A Clearly Defined Stretch Goal</strong>
-                                    <strong class="block text-rose-700 mb-1 lang-id">1. Tujuan Jangkauan yang Jelas</strong>
-                                    <span class="lang-en">Focus on one specific aspect of performance to improve. Not "get better at math," but "master quadratic equations without errors."</span>
-                                    <span class="lang-id">Fokus pada satu aspek kinerja spesifik untuk diperbaiki. Bukan "jadi lebih jago matematika," tapi "kuasai persamaan kuadrat tanpa kesalahan."</span>
-                                </li>
-                                <li>
-                                    <strong class="block text-rose-700 mb-1 lang-en">2. Full Concentration and Effort</strong>
-                                    <strong class="block text-rose-700 mb-1 lang-id">2. Konsentrasi dan Usaha Penuh</strong>
-                                    <span class="lang-en">It requires intense focus. It is often exhausting and not "fun" in the moment.</span>
-                                    <span class="lang-id">Ini membutuhkan fokus yang intens. Seringkali melelahkan dan tidak "menyenangkan" pada saat itu.</span>
-                                </li>
-                                <li>
-                                    <strong class="block text-rose-700 mb-1 lang-en">3. Immediate and Informative Feedback</strong>
-                                    <strong class="block text-rose-700 mb-1 lang-id">3. Umpan Balik Segera dan Informatif</strong>
-                                    <span class="lang-en">You need to know what you did wrong immediately so you can correct it.</span>
-                                    <span class="lang-id">Anda perlu tahu apa kesalahan Anda segera agar bisa memperbaikinya.</span>
-                                </li>
-                                <li>
-                                    <strong class="block text-rose-700 mb-1 lang-en">4. Repetition with Reflection and Refinement</strong>
-                                    <strong class="block text-rose-700 mb-1 lang-id">4. Pengulangan dengan Refleksi dan Perbaikan</strong>
-                                    <span class="lang-en">Do it again, but do it differently based on the feedback until it becomes automatic.</span>
-                                    <span class="lang-id">Lakukan lagi, tapi lakukan dengan berbeda berdasarkan umpan balik sampai menjadi otomatis.</span>
-                                </li>
-                            </ul>
-                        </div>
-                        
-                        <div class="bg-orange-50 p-4 rounded-lg mt-4 border border-orange-200">
-                            <strong class="block text-orange-900 text-sm mb-1 lang-en">The Definition of Flow vs. Practice</strong>
-                            <strong class="block text-orange-900 text-sm mb-1 lang-id">Definisi Flow vs. Latihan</strong>
-                            <p class="text-xs text-slate-600 justified-text lang-en">
-                                <strong>Deliberate Practice</strong> is for preparation (it's hard/painful). <strong>Flow</strong> is for performance (it's effortless/euphoric). Gritty people do more deliberate practice so they can experience more flow during performance.
-                            </p>
-                            <p class="text-xs text-slate-600 justified-text lang-id">
-                                <strong>Latihan Terencana</strong> adalah untuk persiapan (keras/menyakitkan). <strong>Flow</strong> adalah untuk pertunjukan (mudah/euforia). Orang tangguh melakukan lebih banyak latihan terencana agar mereka bisa mengalami lebih banyak flow saat tampil.
-                            </p>
+                        <div class="space-y-4">
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                <div class="flex items-center mb-2">
+                                    <span class="text-2xl mr-2">🎯</span>
+                                    <strong class="text-blue-900 text-lg">A = Agree the AFTERs</strong>
+                                </div>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Before you pitch anything, define success. "If we work together, what does the perfect result look like to you?" Don't move to step B until you agree on this.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Sebelum pitching apa pun, definisikan sukses. "Jika kita kerja sama, hasil sempurna menurut Anda seperti apa?" Jangan pindah ke langkah B sampai Anda menyepakati ini.
+                                </p>
+                            </div>
+
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                <div class="flex items-center mb-2">
+                                    <span class="text-2xl mr-2">🛡️</span>
+                                    <strong class="text-blue-900 text-lg">B = Build Certainty</strong>
+                                </div>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Prove you can deliver the AFTERs. Use case studies, testimonials, and logic. "We helped a similar client achieve exactly this result last month.".
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Buktikan Anda bisa memberikan AFTERs itu. Gunakan studi kasus, testimoni, dan logika. "Kami bantu klien serupa mencapai hasil persis seperti ini bulan lalu.".
+                                </p>
+                            </div>
+
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                <div class="flex items-center mb-2">
+                                    <span class="text-2xl mr-2">🤝</span>
+                                    <strong class="text-blue-900 text-lg">C = Close / Convenience</strong>
+                                </div>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Make it easy to say yes. "Since we agree on the goal (A) and you know we can do it (B), would you like to start next Monday?".
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Buat mudah untuk bilang ya. "Karena kita sepakat tujuannya (A) dan Anda tahu kami bisa melakukannya (B), mau mulai Senin depan?".
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </section>
 
                 <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
+                        <span class="inline-block px-3 py-1 bg-pink-100 text-pink-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
-                            <span class="lang-en">Purpose: The "Other-Centered" Why</span>
-                            <span class="lang-id">Tujuan: "Mengapa" yang Berpusat pada Orang Lain</span>
+                            <span class="lang-en">Presenting with RAP</span>
+                            <span class="lang-id">Presentasi dengan RAP</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
                         <p class="text-base text-slate-600 justified-text lang-en">
-                            Duckworth found that the grittiest people are not just driven by pleasure or money. They are driven by a sense that their work contributes to the well-being of others.
+                            Stop spending 90% of your time on slides. Use the RAP method to prepare presentations that actually convert.
                         </p>
                         <p class="text-base text-slate-600 justified-text lang-id">
-                            Duckworth menemukan bahwa orang paling tangguh tidak hanya didorong oleh kesenangan atau uang. Mereka didorong oleh perasaan bahwa pekerjaan mereka berkontribusi pada kesejahteraan orang lain.
+                            Berhenti habiskan 90% waktu Anda untuk slide. Gunakan metode RAP untuk menyiapkan presentasi yang benar-benar mengonversi.
                         </p>
 
-                        <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-200 shadow-sm">
-                            <h4 class="font-bold text-indigo-900 text-lg mb-3 lang-en">Case Study: The Bricklayers Parable</h4>
-                            <h4 class="font-bold text-indigo-900 text-lg mb-3 lang-id">Studi Kasus: Perumpamaan Tukang Batu</h4>
-                            
-                            <p class="text-sm text-slate-700 justified-text mb-4 lang-en">
-                                Three bricklayers are asked: "What are you doing?"
-                                <br><br>
-                                🧱 <strong>The First:</strong> "I am laying bricks." (It's a Job).
-                                <br>🏗️ <strong>The Second:</strong> "I am building a church." (It's a Career).
-                                <br>⛪ <strong>The Third:</strong> "I am building the house of God." (It's a Calling).
+                        <div class="bg-pink-50 p-6 rounded-xl border border-pink-200">
+                            <ul class="list-none space-y-4 text-sm text-slate-700">
+                                <li>
+                                    <strong class="block text-pink-900 text-lg mb-1">R = Results (The AFTERs)</strong>
+                                    <span class="lang-en">Start by defining exactly what you want the audience to DO after the presentation. If you don't know, don't present.</span>
+                                    <span class="lang-id">Mulai dengan mendefinisikan persis apa yang Anda ingin audiens LAKUKAN setelah presentasi. Jika tidak tahu, jangan presentasi.</span>
+                                </li>
+                                <li>
+                                    <strong class="block text-pink-900 text-lg mb-1">A = Audience</strong>
+                                    <span class="lang-en">Who are they? What are their problems? What questions will they ask? Tailor the content to <em>their</em> AFTERs, not your ego.</span>
+                                    <span class="lang-id">Siapa mereka? Apa masalah mereka? Pertanyaan apa yang akan mereka ajukan? Sesuaikan konten dengan AFTERs <em>mereka</em>, bukan ego Anda.</span>
+                                </li>
+                                <li>
+                                    <strong class="block text-pink-900 text-lg mb-1">P = Preparation</strong>
+                                    <span class="lang-en">Divide your prep time:
+                                    <br>• <strong>10%</strong> on Slides (Visuals).
+                                    <br>• <strong>45%</strong> on Script (What you say).
+                                    <br>• <strong>45%</strong> on Questions (What you ask them).</span>
+                                    <span class="lang-id">Bagi waktu persiapan Anda:
+                                    <br>• <strong>10%</strong> untuk Slide (Visual).
+                                    <br>• <strong>45%</strong> untuk Naskah (Apa yang Anda katakan).
+                                    <br>• <strong>45%</strong> untuk Pertanyaan (Apa yang Anda tanya ke mereka).</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-slate-100 p-4 rounded-lg mt-4 border border-slate-200">
+                            <strong class="block text-slate-900 text-sm mb-1 lang-en">Pro-Tip: Slide Titles</strong>
+                            <strong class="block text-slate-900 text-sm mb-1 lang-id">Tips Pro: Judul Slide</strong>
+                            <p class="text-xs text-slate-600 justified-text lang-en">
+                                Never use titles like "Agenda" or "Market Overview." Use benefit-driven titles. Change "Market Overview" to "Why this market is ripe for your growth." Put the AFTERs in the headline.
                             </p>
-                            <p class="text-sm text-slate-700 justified-text mb-4 lang-id">
-                                Tiga tukang batu ditanya: "Apa yang sedang kamu lakukan?"
-                                <br><br>
-                                🧱 <strong>Pertama:</strong> "Saya sedang memasang batu bata." (Ini Pekerjaan).
-                                <br>🏗️ <strong>Kedua:</strong> "Saya sedang membangun gereja." (Ini Karir).
-                                <br>⛪ <strong>Ketiga:</strong> "Saya sedang membangun rumah Tuhan." (Ini Panggilan).
-                            </p>
-                            
-                            <p class="text-sm text-slate-700 justified-text lang-en">
-                                <strong>Insight:</strong> The third bricklayer has the most grit. When the work gets hard, he remembers the bigger picture. You can cultivate purpose by asking: "How does my work help others?"
-                            </p>
-                            <p class="text-sm text-slate-700 justified-text lang-id">
-                                <strong>Wawasan:</strong> Tukang batu ketiga memiliki grit paling tinggi. Saat pekerjaan menjadi sulit, dia mengingat gambaran besarnya. Anda bisa memupuk tujuan dengan bertanya: "Bagaimana pekerjaan saya membantu orang lain?"
+                            <p class="text-xs text-slate-600 justified-text lang-id">
+                                Jangan pernah pakai judul seperti "Agenda" atau "Tinjauan Pasar." Gunakan judul berbasis manfaat. Ubah "Tinjauan Pasar" jadi "Mengapa pasar ini matang untuk pertumbuhan Anda." Taruh AFTERs di judul.
                             </p>
                         </div>
                     </div>
@@ -495,65 +513,49 @@
 
                 <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
                     <div class="mb-4 sm:mb-6 mobile-margin">
-                        <span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
+                        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
                         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
-                            <span class="lang-en">Parenting & Culture for Grit</span>
-                            <span class="lang-id">Pola Asuh & Budaya untuk Grit</span>
+                            <span class="lang-en">Real World Case Studies</span>
+                            <span class="lang-id">Studi Kasus Dunia Nyata</span>
                         </h2>
                     </div>
                     
                     <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
-                        <p class="text-base text-slate-600 justified-text lang-en">
-                            Grit can be cultivated from the outside in. This applies to parents raising children or leaders managing teams. The key is the balance of "Support" and "Demanding."
-                        </p>
-                        <p class="text-base text-slate-600 justified-text lang-id">
-                            Grit bisa ditumbuhkan dari luar ke dalam. Ini berlaku bagi orang tua yang membesarkan anak atau pemimpin yang mengelola tim. Kuncinya adalah keseimbangan antara "Dukungan" dan "Tuntutan."
-                        </p>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="bg-red-50 p-4 rounded border border-red-200">
-                                <strong class="block text-red-900 text-sm mb-1 lang-en">Permissive Parenting</strong>
-                                <strong class="block text-red-900 text-sm mb-1 lang-id">Pola Asuh Permisif</strong>
-                                <span class="text-xs text-slate-600 lang-en">High Support, Low Demands. Result: Fragile children.</span>
-                                <span class="text-xs text-slate-600 lang-id">Dukungan Tinggi, Tuntutan Rendah. Hasil: Anak rapuh.</span>
-                            </div>
-                            <div class="bg-red-50 p-4 rounded border border-red-200">
-                                <strong class="block text-red-900 text-sm mb-1 lang-en">Authoritarian Parenting</strong>
-                                <strong class="block text-red-900 text-sm mb-1 lang-id">Pola Asuh Otoriter</strong>
-                                <span class="text-xs text-slate-600 lang-en">Low Support, High Demands. Result: Rebellious or anxious children.</span>
-                                <span class="text-xs text-slate-600 lang-id">Dukungan Rendah, Tuntutan Tinggi. Hasil: Anak pemberontak atau cemas.</span>
-                            </div>
-                            <div class="bg-green-50 p-4 rounded border border-green-200 col-span-1 md:col-span-2">
-                                <strong class="block text-green-900 text-lg mb-1 lang-en">✅ Wise Parenting (Authoritative)</strong>
-                                <strong class="block text-green-900 text-lg mb-1 lang-id">✅ Pola Asuh Bijaksana (Otoritatif)</strong>
-                                <p class="text-sm text-slate-700 mt-2 justified-text lang-en">
-                                    <strong>High Support + High Demands.</strong>
-                                    <br>The parent says: "I have high expectations for you, and I know you can reach them, and I will help you get there." This combination creates Grit.
-                                </p>
-                                <p class="text-sm text-slate-700 mt-2 justified-text lang-id">
-                                    <strong>Dukungan Tinggi + Tuntutan Tinggi.</strong>
-                                    <br>Orang tua berkata: "Saya punya harapan tinggi padamu, dan saya tahu kamu bisa mencapainya, dan saya akan membantumu sampai di sana." Kombinasi ini menciptakan Grit.
-                                </p>
-                            </div>
+                        
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">1. The Major Bank (18/18 Wins)</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">1. Bank Besar (Menang 18/18)</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                A major bank was losing pitches. They typically started their presentations with 10 slides about <em>their</em> history, <em>their</em> offices, and <em>their</em> awards (Pure Jelly).
+                                <br><br>
+                                <strong>The Change:</strong> Andy helped them flip it. They started Slide 1 with the client's problem and the specific AFTERs (e.g., "How you can save £20 million"). They moved their company history to the Appendix (or bin).
+                                <br><br>
+                                <strong>The Result:</strong> They won 18 pitches in a row immediately after the change.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Sebuah bank besar sering kalah pitching. Mereka biasanya mulai presentasi dengan 10 slide tentang sejarah <em>mereka</em>, kantor <em>mereka</em>, dan penghargaan <em>mereka</em> (Murni Jeli).
+                                <br><br>
+                                <strong>Perubahannya:</strong> Andy bantu balik posisinya. Mereka mulai Slide 1 dengan masalah klien dan AFTERs spesifik (misal: "Cara Anda hemat £20 juta"). Mereka pindahkan sejarah perusahaan ke Lampiran (atau tong sampah).
+                                <br><br>
+                                <strong>Hasilnya:</strong> Mereka menang 18 pitching berturut-turut segera setelah perubahan itu.
+                            </p>
                         </div>
 
-                        <div class="bg-slate-100 p-5 rounded-lg border border-slate-300 mt-4">
-                            <strong class="block text-slate-900 text-lg mb-2 lang-en">The "Hard Thing Rule" (Duckworth Family)</strong>
-                            <strong class="block text-slate-900 text-lg mb-2 lang-id">"Aturan Hal Sulit" (Keluarga Duckworth)</strong>
-                            <ul class="list-disc ml-5 text-sm text-slate-700 space-y-2">
-                                <li>
-                                    <span class="lang-en">Everyone in the family must do one "Hard Thing" (requires daily practice).</span>
-                                    <span class="lang-id">Setiap orang di keluarga harus melakukan satu "Hal Sulit" (butuh latihan harian).</span>
-                                </li>
-                                <li>
-                                    <span class="lang-en">You can quit, but only after a set interval (e.g., the season is over, or tuition is paid). You cannot quit on a bad day.</span>
-                                    <span class="lang-id">Anda boleh berhenti, tapi hanya setelah interval yang ditentukan (misal: musim berakhir, atau uang les habis). Anda tidak boleh berhenti di hari yang buruk.</span>
-                                </li>
-                                <li>
-                                    <span class="lang-en">You get to pick your own Hard Thing (Autonomy).</span>
-                                    <span class="lang-id">Anda boleh memilih Hal Sulit Anda sendiri (Otonomi).</span>
-                                </li>
-                            </ul>
+                        <div class="bg-emerald-50 p-6 rounded-xl border border-emerald-200 mt-4">
+                            <h4 class="font-bold text-emerald-900 text-lg mb-3 lang-en">2. Barclays (£2.6 Billion Deal)</h4>
+                            <h4 class="font-bold text-emerald-900 text-lg mb-3 lang-id">2. Barclays (Kesepakatan £2,6 Miliar)</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Andy worked with Barclays on a critical pitch. The key was removing jargon and focusing entirely on the "Afters" for the client. Instead of listing banking features, they painted a picture of the client's future success.
+                                <br><br>
+                                <strong>The Result:</strong> They secured a £2.6 billion deal, one of their largest ever, by simply being the most relevant and least confusing option in the room.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Andy kerja bareng Barclays untuk pitching kritis. Kuncinya adalah membuang jargon dan fokus sepenuhnya pada "Afters" buat klien. Daripada daftar fitur perbankan, mereka melukiskan gambaran sukses masa depan klien.
+                                <br><br>
+                                <strong>Hasilnya:</strong> Mereka amankan kesepakatan £2,6 miliar, salah satu yang terbesar, hanya dengan menjadi opsi paling relevan dan paling tidak membingungkan di ruangan itu.
+                            </p>
                         </div>
                     </div>
                 </section>
@@ -579,11 +581,11 @@
             if (currentLang === 'en') {
                 enElements.forEach(el => el.style.display = 'block');
                 idElements.forEach(el => el.style.display = 'none');
-                indicator.style.backgroundColor = '#be123c'; // Maroon
+                indicator.style.backgroundColor = '#a21caf'; // Fuchsia
             } else {
                 enElements.forEach(el => el.style.display = 'none');
                 idElements.forEach(el => el.style.display = 'block');
-                indicator.style.backgroundColor = '#ea580c'; // Orange-ish
+                indicator.style.backgroundColor = '#0ea5e9'; // Blue/Sky
             }
         }
 
@@ -616,7 +618,7 @@
             const navButtons = document.querySelectorAll('.nav-btn');
             navButtons.forEach(btn => {
                 btn.classList.remove('active-tab', 'text-white');
-                btn.classList.add('text-rose-100');
+                btn.classList.add('text-slate-300');
             });
             
             const targetSection = document.getElementById(sectionId);
@@ -627,7 +629,7 @@
             const activeButton = event.target.closest('.nav-btn');
             if (activeButton) {
                 activeButton.classList.add('active-tab', 'text-white');
-                activeButton.classList.remove('text-rose-100');
+                activeButton.classList.remove('text-slate-300');
             }
             
             window.scrollTo({ top: 0, behavior: 'smooth' });
