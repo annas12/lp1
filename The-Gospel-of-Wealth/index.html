@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Gospel of Wealth — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Steel/Gold Theme for Industry & Philanthropy */
+        .active-tab { background: linear-gradient(135deg, #334155 0%, #1e293b 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(217, 119, 6, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #d97706; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-100 to-stone-200 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">W</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Gospel of Wealth</h2>
+                    <p class="text-slate-400 text-sm">
+                        <span class="lang-en">Andrew Carnegie</span>
+                        <span class="lang-id">Andrew Carnegie</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The Manifesto</span>
+                <span class="lang-id">Manifesto</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">🏭</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-amber-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Problem</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Wealth Inequality</span>
+                                <span class="lang-id">Ketimpangan Kekayaan</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-stone-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">The 3 Choices</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Disposing of Wealth</span>
+                                <span class="lang-id">Cara Membuang Harta</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Duty</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Trusteeship</span>
+                                <span class="lang-id">Wali Amanat</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-sky-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Case Studies</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Libraries & Ladders</span>
+                                <span class="lang-id">Perpustakaan & Tangga</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© Andrew Carnegie</p>
+                <p class="text-slate-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    The Gospel of Wealth
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-amber-700 font-medium px-2">
+                    <span class="lang-en">The Responsibility of the Rich to the Poor</span>
+                    <span class="lang-id">Tanggung Jawab Orang Kaya kepada Orang Miskin</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-slate-600 to-amber-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Core Thesis</span>
+                            <span class="lang-id">Tesis Utama</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">"The man who dies rich dies disgraced."</span>
+                            <span class="lang-id">"Orang yang mati kaya, mati dalam kehinaan."</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-slate-600 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"This, then, is held to be the duty of the man of Wealth: To consider all surplus revenues which come to him simply as trust funds, which he is called upon to administer... in the manner which, in his judgment, is best calculated to produce the most beneficial results for the community."</span>
+                            <span class="lang-id">"Maka, inilah yang dianggap sebagai kewajiban orang Kaya: Menganggap semua surplus pendapatan yang datang kepadanya semata-mata sebagai dana amanat, yang dia panggil untuk dikelola... dengan cara yang, menurut penilaiannya, paling diperhitungkan untuk menghasilkan hasil yang paling bermanfaat bagi masyarakat."</span>
+                        </div>
+                        
+                        <div class="mobile-text justified-text">
+                            <p class="lang-en mb-4">
+                                Andrew Carnegie (1835–1919) was a Scottish-American industrialist who led the enormous expansion of the American steel industry. He became one of the richest Americans in history. In 1889, he wrote this essay to address a growing crisis: the widening gap between the rich and the poor during the Industrial Revolution.
+                            </p>
+                            <p class="lang-id mb-4">
+                                Andrew Carnegie (1835–1919) adalah industrialis Skotlandia-Amerika yang memimpin ekspansi besar-besaran industri baja Amerika. Dia menjadi salah satu orang Amerika terkaya dalam sejarah. Pada tahun 1889, dia menulis esai ini untuk mengatasi krisis yang berkembang: kesenjangan yang melebar antara kaya dan miskin selama Revolusi Industri.
+                            </p>
+                            
+                            <p class="lang-en">
+                                His argument was revolutionary: Wealth is not private property to be hoarded. It is a tool given to the capable few to be distributed for the betterment of the many. He argued that the wealthy have a moral obligation to give away their fortunes during their lifetimes, not leave it to heirs or wait until death.
+                            </p>
+                            <p class="lang-id">
+                                Argumennya revolusioner: Kekayaan bukanlah properti pribadi untuk ditimbun. Itu adalah alat yang diberikan kepada segelintir orang yang mampu untuk didistribusikan demi kemajuan banyak orang. Dia berargumen bahwa orang kaya memiliki kewajiban moral untuk memberikan kekayaan mereka selama masa hidup mereka, bukan mewariskannya kepada ahli waris atau menunggu sampai mati.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Price of Civilization</span>
+                            <span class="lang-id">Harga Peradaban</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Carnegie acknowledges that the contrast between the palace of the millionaire and the cottage of the laborer is extreme. However, he argues this is essential for the progress of the race.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Carnegie mengakui bahwa kontras antara istana jutawan dan pondok buruh sangat ekstrem. Namun, dia berargumen ini penting bagi kemajuan ras manusia.
+                        </p>
+
+                        <div class="bg-amber-50 p-6 rounded-xl border border-amber-200">
+                            <h4 class="font-bold text-amber-900 text-lg mb-3 lang-en">The Law of Competition</h4>
+                            <h4 class="font-bold text-amber-900 text-lg mb-3 lang-id">Hukum Kompetisi</h4>
+                            
+                            <p class="text-sm text-amber-800 justified-text mb-3 lang-en">
+                                Carnegie argues that while the law of competition creates inequality, it is also what drives civilization forward. It ensures the survival of the fittest in every department.
+                                <br><br>
+                                "The poor enjoy what the rich could not before. We have better food, shelter, and clothing."
+                                <br><br>
+                                Therefore, we should accept great inequality as the inevitable price of progress. The question then becomes: <strong>What do we do with the enormous surplus wealth that concentrates in the hands of the few?</strong>
+                            </p>
+                            <p class="text-sm text-amber-800 justified-text mb-3 lang-id">
+                                Carnegie berargumen bahwa meskipun hukum kompetisi menciptakan ketimpangan, itulah yang mendorong peradaban maju. Ini memastikan kelangsungan hidup yang paling fit di setiap departemen.
+                                <br><br>
+                                "Orang miskin menikmati apa yang orang kaya tidak bisa sebelumnya. Kita punya makanan, tempat tinggal, dan pakaian yang lebih baik."
+                                <br><br>
+                                Oleh karena itu, kita harus menerima ketimpangan besar sebagai harga kemajuan yang tak terelakkan. Pertanyaannya kemudian menjadi: <strong>Apa yang kita lakukan dengan surplus kekayaan besar yang terkonsentrasi di tangan segelintir orang?</strong>
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-stone-100 text-stone-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The 3 Modes of Disposal</span>
+                            <span class="lang-id">3 Cara Pembuangan Harta</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Carnegie outlines three ways surplus wealth can be disposed of. He rejects the first two and champions the third.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Carnegie menguraikan tiga cara surplus kekayaan bisa dibuang. Dia menolak dua yang pertama dan memperjuangkan yang ketiga.
+                        </p>
+
+                        <div class="space-y-4">
+                            <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                <strong class="block text-red-900 text-lg mb-1 lang-en">1. Leaving it to Families (The Curse)</strong>
+                                <strong class="block text-red-900 text-lg mb-1 lang-id">1. Mewariskannya ke Keluarga (Kutukan)</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Leaving vast fortunes to children is a burden, not a blessing. It deadens their talents and energies. It encourages a life of idleness. Carnegie believes a man should provide for his children moderately, but leaving millions is "misguided affection."
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Meninggalkan kekayaan besar untuk anak-anak adalah beban, bukan berkah. Itu mematikan bakat dan energi mereka. Itu mendorong hidup bermalas-malasan. Carnegie percaya seseorang harus menafkahi anaknya secara moderat, tapi meninggalkan jutaan adalah "kasih sayang yang salah arah."
+                                </p>
+                            </div>
+
+                            <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                                <strong class="block text-orange-900 text-lg mb-1 lang-en">2. Bequeathed at Death (The Tax)</strong>
+                                <strong class="block text-orange-900 text-lg mb-1 lang-id">2. Diwasiatkan saat Mati (Pajak)</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Giving money away only after you die shows no true generosity. It means you would have taken it with you if you could. Also, there is no guarantee the money will be used wisely by others. Carnegie supports high inheritance taxes to punish this selfishness.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Memberikan uang hanya setelah Anda mati tidak menunjukkan kemurahan hati sejati. Itu berarti Anda akan membawanya jika bisa. Juga, tidak ada jaminan uang itu akan digunakan dengan bijak oleh orang lain. Carnegie mendukung pajak warisan tinggi untuk menghukum keegoisan ini.
+                                </p>
+                            </div>
+
+                            <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+                                <strong class="block text-emerald-900 text-lg mb-1 lang-en">3. Administered During Life (The Ideal)</strong>
+                                <strong class="block text-emerald-900 text-lg mb-1 lang-id">3. Dikelola Selama Hidup (Ideal)</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    This is the true Gospel. The wealthy man should live modestly, avoid display, and act as a <strong>Trustee</strong> for his poorer brethren. He should bring his superior administrative wisdom to ensure the money produces the greatest good for the community.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Ini adalah Injil sejati. Orang kaya harus hidup sederhana, menghindari pamer, dan bertindak sebagai <strong>Wali Amanat</strong> bagi saudaranya yang lebih miskin. Dia harus membawa kebijaksanaan administratifnya yang unggul untuk memastikan uang itu menghasilkan kebaikan terbesar bagi masyarakat.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Ladders, Not Handouts</span>
+                            <span class="lang-id">Tangga, Bukan Sedekah</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <strong class="block text-slate-900 text-lg mb-2 lang-en">The Danger of Indiscriminate Charity</strong>
+                            <strong class="block text-slate-900 text-lg mb-2 lang-id">Bahaya Amal Sembarangan</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Carnegie famously said: <strong>"Of every thousand dollars spent in so-called charity today, it is probable that $950 is unwisely spent."</strong>
+                                <br><br>
+                                Giving money to a drunkard or a sluggard only encourages vice. Almsgiving creates dependency. The wealthy man must be careful not to pauperize the community he intends to help.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Carnegie terkenal berkata: <strong>"Dari setiap seribu dolar yang dihabiskan untuk apa yang disebut amal hari ini, kemungkinan $950 dihabiskan dengan tidak bijak."</strong>
+                                <br><br>
+                                Memberi uang kepada pemabuk atau pemalas hanya mendorong kejahatan. Sedekah menciptakan ketergantungan. Orang kaya harus berhati-hati untuk tidak memiskinkan komunitas yang ingin dibantunya.
+                            </p>
+                        </div>
+
+                        <div class="bg-emerald-50 p-5 rounded-lg border border-emerald-200 mt-4">
+                            <strong class="block text-emerald-900 text-lg mb-2 lang-en">Philanthropy: Helping Those Who Help Themselves</strong>
+                            <strong class="block text-emerald-900 text-lg mb-2 lang-id">Filantropi: Membantu Mereka yang Membantu Diri Sendiri</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                The best use of wealth is to place <strong>ladders</strong> upon which the aspiring can rise. You do not carry people up the ladder; you provide the ladder.
+                                <br><br>
+                                <strong>Examples of Ladders:</strong>
+                                <br>• Universities and Schools.
+                                <br>• Free Libraries.
+                                <br>• Hospitals.
+                                <br>• Parks.
+                                <br>• Public Halls and Swimming Baths.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Penggunaan kekayaan terbaik adalah menempatkan <strong>tangga</strong> di mana mereka yang berambisi bisa naik. Anda tidak menggendong orang naik tangga; Anda menyediakan tangganya.
+                                <br><br>
+                                <strong>Contoh Tangga:</strong>
+                                <br>• Universitas dan Sekolah.
+                                <br>• Perpustakaan Gratis.
+                                <br>• Rumah Sakit.
+                                <br>• Taman.
+                                <br>• Aula Publik dan Pemandian Umum.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-sky-100 text-sky-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Case Study: The Carnegie Libraries</span>
+                            <span class="lang-id">Studi Kasus: Perpustakaan Carnegie</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-sky-50 p-6 rounded-xl border border-sky-200 shadow-sm">
+                            <strong class="block text-sky-900 text-lg mb-2 lang-en">The Model of Partnership</strong>
+                            <strong class="block text-sky-900 text-lg mb-2 lang-id">Model Kemitraan</strong>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-en">
+                                Carnegie didn't just build libraries and walk away. He required the community to participate. This is a perfect example of his philosophy.
+                                <br><br>
+                                <strong>The Deal:</strong> Carnegie would pay for the construction of the building, BUT the town council had to provide the land and pledge tax money for the ongoing maintenance and books (10% of the construction cost annually).
+                                <br><br>
+                                <strong>The Result:</strong> This ensured the community was invested in the library's success. It wasn't charity; it was a partnership. Carnegie eventually funded 2,509 libraries worldwide. He successfully gave away over $350 million (roughly $5 billion today) before he died.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-id">
+                                Carnegie tidak hanya membangun perpustakaan lalu pergi. Dia mengharuskan komunitas berpartisipasi. Ini contoh sempurna filosofinya.
+                                <br><br>
+                                <strong>Kesepakatannya:</strong> Carnegie akan membayar konstruksi bangunan, TAPI dewan kota harus menyediakan tanah dan menjanjikan uang pajak untuk pemeliharaan berkelanjutan dan buku (10% dari biaya konstruksi per tahun).
+                                <br><br>
+                                <strong>Hasilnya:</strong> Ini memastikan komunitas berinvestasi dalam kesuksesan perpustakaan. Itu bukan sedekah; itu kemitraan. Carnegie akhirnya mendanai 2.509 perpustakaan di seluruh dunia. Dia berhasil memberikan lebih dari $350 juta (sekitar $5 miliar hari ini) sebelum dia meninggal.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-800 p-6 rounded-xl text-white mt-4">
+                            <h4 class="font-bold text-lg mb-2 lang-en">The Final Verdict</h4>
+                            <h4 class="font-bold text-lg mb-2 lang-id">Vonis Akhir</h4>
+                            <p class="text-sm opacity-90 justified-text lang-en">
+                                Carnegie's Gospel is a challenge to the wealthy. It declares that accumulating wealth is only the first half of the game. The second, and more noble half, is the intelligent distribution of that wealth.
+                                <br><br>
+                                "The man who dies leaving behind him millions of available wealth, which was his to administer during life, will pass away 'unwept, unhonored, and unsung.'"
+                            </p>
+                            <p class="text-sm opacity-90 justified-text lang-id">
+                                Injil Carnegie adalah tantangan bagi orang kaya. Ini menyatakan bahwa mengumpulkan kekayaan hanyalah paruh pertama permainan. Paruh kedua, dan yang lebih mulia, adalah distribusi cerdas dari kekayaan itu.
+                                <br><br>
+                                "Orang yang mati meninggalkan jutaan kekayaan yang tersedia, yang seharusnya dia kelola selama hidup, akan meninggal 'tanpa ditangisi, tanpa dihormati, dan tanpa dinyanyikan.'"
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#d97706'; // Amber
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#475569'; // Slate
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
