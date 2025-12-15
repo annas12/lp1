@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Essays of Warren Buffett — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Berkshire Green & Cream Theme */
+        .active-tab { background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #022c22 0%, #14532d 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #047857; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-stone-50 to-emerald-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-emerald-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-emerald-600 to-green-700 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">$</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Buffett Essays</h2>
+                    <p class="text-emerald-200 text-sm">
+                        <span class="lang-en">Master Edition</span>
+                        <span class="lang-id">Edisi Master</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-emerald-200 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">Oracle's Wisdom</span>
+                <span class="lang-id">Kebijaksanaan Oracle</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-900 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-emerald-700 rounded-lg flex items-center justify-center text-xs font-bold">🏛️</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-900 text-emerald-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Governance</div>
+                            <div class="text-xs text-emerald-300">
+                                <span class="lang-en">Owners vs Managers</span>
+                                <span class="lang-id">Pemilik vs Manajer</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-900 text-emerald-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-amber-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Investing</div>
+                            <div class="text-xs text-emerald-300">
+                                <span class="lang-en">Mr. Market & Value</span>
+                                <span class="lang-id">Mr. Market & Nilai</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-900 text-emerald-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Alternatives</div>
+                            <div class="text-xs text-emerald-300">
+                                <span class="lang-en">Junk Bonds & Derivatives</span>
+                                <span class="lang-id">Obligasi Sampah & Derivatif</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-900 text-emerald-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-red-700 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Accounting</div>
+                            <div class="text-xs text-emerald-300">
+                                <span class="lang-en">EBITDA & Owner Earnings</span>
+                                <span class="lang-id">EBITDA & Laba Pemilik</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-900 text-emerald-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Case Studies</div>
+                            <div class="text-xs text-emerald-300">
+                                <span class="lang-en">See's & GEICO</span>
+                                <span class="lang-id">See's & GEICO</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-emerald-900">
+            <div class="text-center">
+                <p class="text-emerald-400 text-xs">© Warren Buffett</p>
+                <p class="text-emerald-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-emerald-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 mb-2 mobile-title">
+                    The Essays of Warren Buffett
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-emerald-700 font-medium px-2">
+                    <span class="lang-en">Lessons for Corporate America (Edited by Cunningham)</span>
+                    <span class="lang-id">Pelajaran untuk Korporasi Amerika (Diedit oleh Cunningham)</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-emerald-600 to-amber-400 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Philosophy</span>
+                            <span class="lang-id">Filosofi</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Thinking Like an Owner</span>
+                            <span class="lang-id">Berpikir Seperti Pemilik</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-emerald-600 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"We are not stock pickers; we are business pickers."</span>
+                            <span class="lang-id">"Kami bukan pemilih saham; kami adalah pemilih bisnis."</span>
+                        </div>
+                        
+                        <div class="mobile-text justified-text">
+                            <p class="lang-en mb-4">
+                                This book is a collection of Warren Buffett's annual letters to Berkshire Hathaway shareholders. Unlike typical dry corporate reports, Buffett uses these letters to educate. He rejects the short-termism of Wall Street and preaches a philosophy of long-term ownership. He treats shareholders not as faceless investors, but as <strong>partners</strong>.
+                            </p>
+                            <p class="lang-id mb-4">
+                                Buku ini adalah kumpulan surat tahunan Warren Buffett kepada pemegang saham Berkshire Hathaway. Tidak seperti laporan perusahaan yang kering dan membosankan, Buffett menggunakan surat-surat ini untuk mengedukasi. Dia menolak pandangan jangka pendek Wall Street dan mengkhotbahkan filosofi kepemilikan jangka panjang. Dia memperlakukan pemegang saham bukan sebagai investor tanpa wajah, tetapi sebagai <strong>mitra</strong>.
+                            </p>
+                            
+                            <div class="bg-emerald-50 p-5 rounded-lg border border-emerald-200 mt-4">
+                                <strong class="block text-emerald-900 text-lg mb-2">The "Partnership" Concept</strong>
+                                <p class="lang-en text-sm">
+                                    Buffett begins by stating: "Although our form is corporate, our attitude is partnership." He pledges to treat your money exactly as he would want his money treated if roles were reversed. This implies extreme transparency, admitting mistakes, and never risking the firm's reputation for a quick profit.
+                                </p>
+                                <p class="lang-id text-sm">
+                                    Buffett memulai dengan menyatakan: "Meskipun bentuk kami adalah korporasi, sikap kami adalah kemitraan." Dia berjanji untuk memperlakukan uang Anda persis seperti dia ingin uangnya diperlakukan jika peran dibalik. Ini menyiratkan transparansi ekstrem, mengakui kesalahan, dan tidak pernah mempertaruhkan reputasi perusahaan demi keuntungan cepat.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Corporate Governance</span>
+                            <span class="lang-id">Tata Kelola Perusahaan</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Buffett is critical of modern corporate boards. He argues that most directors are "Cocker Spaniels"—they just want to please the CEO and keep their high-paying fees.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Buffett sangat kritis terhadap dewan direksi modern. Dia berpendapat bahwa kebanyakan direktur adalah "Anjing Cocker Spaniel"—mereka hanya ingin menyenangkan CEO dan mempertahankan bayaran tinggi mereka.
+                        </p>
+
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">Eat Your Own Cooking</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Makan Masakan Sendiri</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-en">
+                                Buffett insists that directors should have true "skin in the game." They should buy shares with their own money, not just receive them as grants. When directors have their own net worth at risk, they stop making reckless acquisitions and start thinking about long-term value preservation.
+                                <br><br>
+                                <strong>Stock Options Criticism:</strong> Buffett famously dislikes stock options for management. Options have an upside but no downside (a "free lottery ticket"). If the stock goes up, they win. If it goes down, they lose nothing. True ownership requires sharing the downside risk.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-id">
+                                Buffett bersikeras bahwa direktur harus memiliki "pertaruhan nyata" (skin in the game). Mereka harus membeli saham dengan uang sendiri, bukan hanya menerimanya sebagai hibah. Ketika kekayaan bersih direktur dipertaruhkan, mereka berhenti melakukan akuisisi sembrono dan mulai memikirkan pelestarian nilai jangka panjang.
+                                <br><br>
+                                <strong>Kritik Opsi Saham:</strong> Buffett terkenal tidak menyukai opsi saham untuk manajemen. Opsi memiliki sisi positif tapi tanpa sisi negatif ("tiket lotere gratis"). Jika saham naik, mereka menang. Jika turun, mereka tidak rugi apa-apa. Kepemilikan sejati mengharuskan berbagi risiko kerugian.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Finance & Investing</span>
+                            <span class="lang-id">Keuangan & Investasi</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Buffett borrows heavily from his mentor, Ben Graham. The core distinction is between <strong>Price</strong> (what you pay) and <strong>Value</strong> (what you get).
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Buffett meminjam banyak dari mentornya, Ben Graham. Perbedaan intinya adalah antara <strong>Harga</strong> (apa yang Anda bayar) dan <strong>Nilai</strong> (apa yang Anda dapatkan).
+                        </p>
+
+                        <div class="bg-amber-50 p-6 rounded-xl border border-amber-200">
+                            <h4 class="font-bold text-amber-900 text-lg mb-3 lang-en">The Parable of Mr. Market</h4>
+                            <h4 class="font-bold text-amber-900 text-lg mb-3 lang-id">Perumpamaan Mr. Market</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Imagine you are in business with a partner named Mr. Market. Every day, he offers to buy your share or sell you his share. However, Mr. Market is manic-depressive.
+                                <br><br>
+                                Some days, he is euphoric and offers a very high price. Other days, he is depressed and offers a very low price.
+                                <br><br>
+                                <strong>The Lesson:</strong> The market is there to serve you, not to instruct you. You should be happy when he is depressed (so you can buy cheap) and cautious when he is euphoric (so you can sell). Do not let his moods dictate your valuation of the business.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Bayangkan Anda berbisnis dengan mitra bernama Mr. Market. Setiap hari, dia menawarkan untuk membeli saham Anda atau menjual sahamnya kepada Anda. Namun, Mr. Market mengidap manik-depresif.
+                                <br><br>
+                                Kadang, dia euforia dan menawar harga sangat tinggi. Di hari lain, dia depresi dan menawar harga sangat rendah.
+                                <br><br>
+                                <strong>Pelajaran:</strong> Pasar ada untuk melayani Anda, bukan untuk menginstruksikan Anda. Anda harus senang saat dia depresi (agar bisa beli murah) dan waspada saat dia euforia (agar bisa jual). Jangan biarkan suasana hatinya mendikte penilaian Anda terhadap bisnis.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 mt-4 shadow-sm">
+                            <strong class="block text-slate-900 text-lg mb-2 lang-en">Circle of Competence</strong>
+                            <strong class="block text-slate-900 text-lg mb-2 lang-id">Lingkaran Kompetensi</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                You don't need to be an expert on every company. You just need to be able to evaluate companies within your "Circle of Competence." The size of the circle is not important; knowing its boundaries is vital. If you don't understand tech, don't invest in tech just because others are doing it. Stick to what you know (e.g., Chewing Gum, Bricks, Insurance).
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Anda tidak perlu jadi ahli di setiap perusahaan. Anda hanya perlu mampu mengevaluasi perusahaan dalam "Lingkaran Kompetensi" Anda. Ukuran lingkaran tidak penting; mengetahui batas-batasnya itu vital. Jika Anda tidak paham teknologi, jangan investasi di teknologi hanya karena orang lain melakukannya. Tetap pada apa yang Anda tahu (misal: Permen Karet, Batu Bata, Asuransi).
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-teal-100 text-teal-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Alternatives to Common Stock</span>
+                            <span class="lang-id">Alternatif Saham Biasa</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-teal-50 p-5 rounded-lg border border-teal-200">
+                            <h4 class="font-bold text-teal-900 text-lg mb-2 lang-en">The Danger of Junk Bonds</h4>
+                            <h4 class="font-bold text-teal-900 text-lg mb-2 lang-id">Bahaya Obligasi Sampah</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Buffett warns against high-yield "Junk Bonds." He argues that defaults are not random; they are correlated. In a recession, many junk bonds fail at once.
+                                <br><br>
+                                He famously called derivatives <strong>"Financial Weapons of Mass Destruction."</strong> They create a web of risk where if one institution falls, it drags everyone else down (Systemic Risk). He avoids complex financial instruments he cannot fully understand or value.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Buffett memperingatkan tentang "Obligasi Sampah" (Junk Bonds) berimbal hasil tinggi. Dia berargumen bahwa gagal bayar itu tidak acak; mereka berkorelasi. Dalam resesi, banyak obligasi sampah gagal bersamaan.
+                                <br><br>
+                                Dia terkenal menyebut derivatif sebagai <strong>"Senjata Pemusnah Massal Finansial."</strong> Mereka menciptakan jaring risiko di mana jika satu institusi jatuh, ia menyeret yang lain (Risiko Sistemik). Dia menghindari instrumen keuangan rumit yang tidak bisa dia pahami atau nilai sepenuhnya.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Accounting Shenanigans</span>
+                            <span class="lang-id">Kecurangan Akuntansi</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Buffett despises "Creative Accounting." He believes standard GAAP accounting often hides the true economic reality of a business.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Buffett membenci "Akuntansi Kreatif." Dia percaya standar akuntansi GAAP sering menyembunyikan realitas ekonomi bisnis yang sebenarnya.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                <strong class="block text-red-900 text-lg mb-2 lang-en">Why EBITDA is a Lie</strong>
+                                <strong class="block text-red-900 text-lg mb-2 lang-id">Kenapa EBITDA itu Bohong</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    EBITDA stands for Earnings Before Interest, Taxes, Depreciation, and Amortization.
+                                    <br><br>
+                                    Buffett hates it because it ignores <strong>Depreciation</strong>. He asks: "Does management think the Tooth Fairy pays for capital expenditures?" Machines wear out and need replacement. That is a real cost. Ignoring it inflates earnings artificially.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    EBITDA adalah Pendapatan Sebelum Bunga, Pajak, Depresiasi, dan Amortisasi.
+                                    <br><br>
+                                    Buffett membencinya karena mengabaikan <strong>Depresiasi</strong>. Dia bertanya: "Apa manajemen pikir Peri Gigi yang bayar belanja modal?" Mesin aus dan perlu diganti. Itu biaya nyata. Mengabaikannya menggelembungkan pendapatan secara artifisial.
+                                </p>
+                            </div>
+
+                            <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+                                <strong class="block text-emerald-900 text-lg mb-2 lang-en">Owner Earnings</strong>
+                                <strong class="block text-emerald-900 text-lg mb-2 lang-id">Laba Pemilik (Owner Earnings)</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    This is Buffett's preferred metric.
+                                    <br><br>
+                                    <strong>Formula:</strong> Reported Earnings + Depreciation/Amortization - Capital Expenditures (needed to maintain position).
+                                    <br><br>
+                                    This tells you the actual cash the business generates that can be taken out by the owner without hurting the business.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Ini metrik pilihan Buffett.
+                                    <br><br>
+                                    <strong>Rumus:</strong> Pendapatan Dilaporkan + Depresiasi/Amortisasi - Belanja Modal (yang dibutuhkan untuk mempertahankan posisi).
+                                    <br><br>
+                                    Ini memberi tahu Anda uang tunai aktual yang dihasilkan bisnis yang bisa diambil pemilik tanpa merusak bisnis.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Legendary Case Studies</span>
+                            <span class="lang-id">Studi Kasus Legendaris</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        
+                        <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg text-white">
+                            <h4 class="font-bold text-amber-400 text-lg mb-3 lang-en">Case Study: See's Candies (Pricing Power)</h4>
+                            <h4 class="font-bold text-amber-400 text-lg mb-3 lang-id">Studi Kasus: See's Candies (Kekuatan Harga)</h4>
+                            
+                            <p class="text-sm opacity-90 justified-text mb-3 lang-en">
+                                Berkshire bought See's Candies in 1972 for $25 million. It was a turning point for Buffett away from "cheap" stocks to "quality" stocks.
+                                <br><br>
+                                <strong>The Lesson:</strong> See's had an "Economic Moat"—Brand Loyalty. People gave See's boxes as gifts. They wouldn't buy a cheaper brand because if the chocolate was bad, the gift failed.
+                                <br><br>
+                                This allowed See's to raise prices every year (Pricing Power) without losing customers. This requires very little new capital, making it a cash-generating machine.
+                            </p>
+                            <p class="text-sm opacity-90 justified-text mb-3 lang-id">
+                                Berkshire membeli See's Candies tahun 1972 seharga $25 juta. Ini titik balik Buffett dari saham "murah" ke saham "berkualitas".
+                                <br><br>
+                                <strong>Pelajaran:</strong> See's punya "Parit Ekonomi"—Loyalitas Merek. Orang memberi kotak See's sebagai hadiah. Mereka tidak mau beli merek murah karena jika cokelatnya tidak enak, hadiahnya gagal.
+                                <br><br>
+                                Ini memungkinkan See's menaikkan harga tiap tahun (Kekuatan Harga) tanpa kehilangan pelanggan. Ini butuh sedikit modal baru, menjadikannya mesin pencetak uang.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 mt-4">
+                            <strong class="block text-slate-900 text-lg mb-2 lang-en">Case Study: GEICO & The Float</strong>
+                            <strong class="block text-slate-900 text-lg mb-2 lang-id">Studi Kasus: GEICO & Float</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Buffett loves insurance business because of <strong>"Float."</strong>
+                                <br><br>
+                                Customers pay premiums upfront (money comes in). Claims are paid later (money goes out). In the meantime, Berkshire holds billions of dollars of "other people's money" for free.
+                                <br><br>
+                                Unlike a bank loan which charges interest, Float is often cost-free (if the insurance underwriting is disciplined). Buffett uses this massive pool of free money to invest in stocks, supercharging returns.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Buffett suka bisnis asuransi karena <strong>"Float" (Dana Mengambang).</strong>
+                                <br><br>
+                                Pelanggan bayar premi di muka (uang masuk). Klaim dibayar nanti (uang keluar). Sementara itu, Berkshire memegang miliaran dolar "uang orang lain" secara gratis.
+                                <br><br>
+                                Beda dengan pinjaman bank yang kena bunga, Float seringkali bebas biaya (jika penjaminan asuransinya disiplin). Buffett menggunakan kolam uang gratis yang masif ini untuk investasi saham, melipatgandakan keuntungan.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#047857'; // Emerald
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#475569'; // Slate
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-emerald-100');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-emerald-100');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
