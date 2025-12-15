@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Millionaire Mind — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Purple/Gold Theme for Wealth & Mindset */
+        .active-tab { background: linear-gradient(135deg, #581c87 0%, #3b0764 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #2e1065 0%, #0f172a 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #7e22ce; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-purple-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-purple-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">$</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Millionaire Mind</h2>
+                    <p class="text-purple-200 text-sm">
+                        <span class="lang-en">Master Edition</span>
+                        <span class="lang-id">Edisi Master</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-purple-200 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The Blueprint</span>
+                <span class="lang-id">Cetak Biru</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-purple-900 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-xs font-bold">🧠</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-purple-900 text-purple-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Money Blueprint</div>
+                            <div class="text-xs text-purple-300">
+                                <span class="lang-en">Your Thermostat</span>
+                                <span class="lang-id">Termostat Anda</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-purple-900 text-purple-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Rich vs. Poor</div>
+                            <div class="text-xs text-purple-300">
+                                <span class="lang-en">Thinking Patterns</span>
+                                <span class="lang-id">Pola Pikir</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-purple-900 text-purple-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-pink-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Wealth Files</div>
+                            <div class="text-xs text-purple-300">
+                                <span class="lang-en">Victim vs. Creator</span>
+                                <span class="lang-id">Korban vs. Pencipta</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-purple-900 text-purple-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Money Management</div>
+                            <div class="text-xs text-purple-300">
+                                <span class="lang-en">The Jar System</span>
+                                <span class="lang-id">Sistem Toples</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-purple-900 text-purple-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Action Steps</div>
+                            <div class="text-xs text-purple-300">
+                                <span class="lang-en">Declarations</span>
+                                <span class="lang-id">Deklarasi</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-purple-800">
+            <div class="text-center">
+                <p class="text-purple-400 text-xs">© T. Harv Eker</p>
+                <p class="text-purple-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-purple-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 mb-2 mobile-title">
+                    Secrets of the Millionaire Mind
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-purple-700 font-medium px-2">
+                    <span class="lang-en">Mastering the Inner Game of Wealth</span>
+                    <span class="lang-id">Menguasai Permainan Batin Kekayaan</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-purple-600 to-amber-400 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-purple-100 text-purple-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Core Concept</span>
+                            <span class="lang-id">Konsep Inti</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">It's Not What You Know</span>
+                            <span class="lang-id">Bukan Apa yang Anda Tahu</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-purple-600 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"Give me five minutes, and I can predict your financial future for the rest of your life."</span>
+                            <span class="lang-id">"Beri saya waktu lima menit, dan saya bisa memprediksi masa depan finansial Anda seumur hidup."</span>
+                        </div>
+                        
+                        <div class="mobile-text justified-text">
+                            <p class="lang-en mb-4">
+                                T. Harv Eker begins with a bold premise: Your financial success has almost nothing to do with the economy, the stock market, or real estate. It has everything to do with your subconscious <strong>Money Blueprint</strong>.
+                            </p>
+                            <p class="lang-id mb-4">
+                                T. Harv Eker memulai dengan premis berani: Kesuksesan finansial Anda hampir tidak ada hubungannya dengan ekonomi, pasar saham, atau real estat. Itu sepenuhnya berhubungan dengan <strong>Cetak Biru Uang</strong> bawah sadar Anda.
+                            </p>
+                            
+                            <p class="lang-en">
+                                Think of it like a thermostat. If a room's thermostat is set to 72 degrees (22°C), and you open the windows in winter, the temperature may drop temporarily. But eventually, the thermostat will kick in and bring the temperature back to 72. Similarly, if you win the lottery (sudden heat), your thermostat will force you to "cool down" (lose the money) to return to your set point. To change your wealth, you must reset the thermostat.
+                            </p>
+                            <p class="lang-id">
+                                Bayangkan seperti termostat. Jika termostat ruangan disetel ke 22°C, dan Anda membuka jendela di musim dingin, suhu mungkin turun sementara. Tapi akhirnya, termostat akan bekerja dan mengembalikan suhu ke 22°C. Sama halnya, jika Anda menang lotere (panas mendadak), termostat Anda akan memaksa Anda untuk "mendingin" (kehilangan uang) agar kembali ke titik setel Anda. Untuk mengubah kekayaan, Anda harus mengatur ulang termostatnya.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Process of Manifestation</span>
+                            <span class="lang-id">Proses Manifestasi</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            How is your blueprint formed? Eker introduces the formula that dictates every result in your life.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Bagaimana cetak biru Anda terbentuk? Eker memperkenalkan rumus yang menentukan setiap hasil dalam hidup Anda.
+                        </p>
+
+                        <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-200 flex flex-col items-center justify-center space-y-4">
+                            <div class="flex flex-wrap justify-center items-center gap-2 md:gap-4 text-lg md:text-2xl font-bold text-indigo-900">
+                                <span>T</span>
+                                <span>→</span>
+                                <span>F</span>
+                                <span>→</span>
+                                <span>A</span>
+                                <span>=</span>
+                                <span>R</span>
+                            </div>
+                            <div class="text-center text-sm md:text-base text-indigo-800">
+                                <span class="lang-en">Thoughts → Feelings → Actions = Results</span>
+                                <span class="lang-id">Pikiran → Perasaan → Tindakan = Hasil</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 mt-4 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">The 3 Sources of Programming</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">3 Sumber Pemrograman</h4>
+                            <ul class="list-disc ml-5 space-y-3 text-sm text-slate-700">
+                                <li>
+                                    <strong class="lang-en">Verbal Programming:</strong>
+                                    <span class="lang-en">What did you hear as a child? ("Money is the root of all evil," "We can't afford it"). These phrases become your subconscious reality.</span>
+                                    <strong class="lang-id">Pemrograman Verbal:</strong>
+                                    <span class="lang-id">Apa yang Anda dengar saat kecil? ("Uang akar segala kejahatan," "Kita tak mampu membelinya"). Frasa ini jadi realitas bawah sadar Anda.</span>
+                                </li>
+                                <li>
+                                    <strong class="lang-en">Modeling:</strong>
+                                    <span class="lang-en">What did you see? Were your parents spenders or savers? Did they fight about money? You likely mimic one of your parents or rebel against them.</span>
+                                    <strong class="lang-id">Pemodelan:</strong>
+                                    <span class="lang-id">Apa yang Anda lihat? Orang tua Anda boros atau hemat? Apa mereka bertengkar soal uang? Anda kemungkinan meniru salah satu atau memberontak melawannya.</span>
+                                </li>
+                                <li>
+                                    <strong class="lang-en">Specific Incidents:</strong>
+                                    <span class="lang-en">Emotional experiences related to money. (e.g., Seeing your mom cry because she couldn't buy dinner). These create trauma-based financial habits.</span>
+                                    <strong class="lang-id">Insiden Spesifik:</strong>
+                                    <span class="lang-id">Pengalaman emosional terkait uang. (misal: Melihat ibu menangis karena tak bisa beli makan malam). Ini menciptakan kebiasaan finansial berbasis trauma.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Wealth File #1</span>
+                            <span class="lang-id">Berkas Kekayaan #1</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            This is the most fundamental difference between rich and poor thinking.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Ini adalah perbedaan paling mendasar antara pemikiran kaya dan miskin.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-amber-50 p-5 rounded-lg border border-amber-200">
+                                <strong class="block text-amber-900 text-lg mb-2 lang-en">Rich People Believe:</strong>
+                                <strong class="block text-amber-900 text-lg mb-2 lang-id">Orang Kaya Percaya:</strong>
+                                <div class="text-xl font-bold text-amber-800 mb-2">"I Create My Life"</div>
+                                <div class="text-xl font-bold text-amber-800 mb-2 lang-id">"Saya Menciptakan Hidup Saya"</div>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    They take 100% responsibility. If they are broke, they admit it's their fault. Because they are responsible, they have the power to change it.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Mereka ambil tanggung jawab 100%. Jika mereka bangkrut, mereka akui itu salah mereka. Karena bertanggung jawab, mereka punya kekuatan untuk mengubahnya.
+                                </p>
+                            </div>
+
+                            <div class="bg-slate-100 p-5 rounded-lg border border-slate-300">
+                                <strong class="block text-slate-900 text-lg mb-2 lang-en">Poor People Believe:</strong>
+                                <strong class="block text-slate-900 text-lg mb-2 lang-id">Orang Miskin Percaya:</strong>
+                                <div class="text-xl font-bold text-slate-800 mb-2">"Life Happens to Me"</div>
+                                <div class="text-xl font-bold text-slate-800 mb-2 lang-id">"Hidup Terjadi Pada Saya"</div>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    They play the role of the victim. Eker identifies 3 clues of a victim:
+                                    <br>1. <strong>Blame:</strong> (The economy, the boss, the spouse).
+                                    <br>2. <strong>Justify:</strong> ("Money isn't important anyway").
+                                    <br>3. <strong>Complain:</strong> complaining is a "crap magnet." What you focus on expands.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Mereka memainkan peran korban. Eker mengidentifikasi 3 ciri korban:
+                                    <br>1. <strong>Menyalahkan:</strong> (Ekonomi, bos, pasangan).
+                                    <br>2. <strong>Membenarkan:</strong> ("Uang tidak penting kok").
+                                    <br>3. <strong>Mengeluh:</strong> Mengeluh adalah "magnet kotoran." Apa yang Anda fokuskan akan membesar.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-pink-100 text-pink-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Key Wealth Files</span>
+                            <span class="lang-id">Berkas Kekayaan Kunci</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Eker lists 17 Wealth Files. Here are two of the most impactful ones regarding attitude and ambition.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Eker mencantumkan 17 Berkas Kekayaan. Berikut adalah dua yang paling berdampak mengenai sikap dan ambisi.
+                        </p>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-purple-700 text-lg mb-2 lang-en">File #6: Admire vs. Resent</h4>
+                            <h4 class="font-bold text-purple-700 text-lg mb-2 lang-id">Berkas #6: Mengagumi vs. Membenci</h4>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                <strong>Rich people admire other rich and successful people. Poor people resent them.</strong>
+                                <br><br>
+                                It is impossible to become something you despise. If you think rich people are "greedy crooks," you will never become rich, because you don't want to be a greedy crook.
+                                <br><br>
+                                <strong>Huna Wisdom:</strong> "Bless that which you want." If you see a beautiful house, bless the house and bless the owner. Don't throw a stone at it.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                <strong>Orang kaya mengagumi orang kaya dan sukses lainnya. Orang miskin membenci mereka.</strong>
+                                <br><br>
+                                Mustahil menjadi sesuatu yang Anda benci. Jika Anda pikir orang kaya itu "penipu serakah," Anda takkan pernah kaya, karena Anda tidak mau jadi penipu serakah.
+                                <br><br>
+                                <strong>Bijak Huna:</strong> "Berkati apa yang Anda inginkan." Jika lihat rumah indah, berkati rumahnya dan pemiliknya. Jangan lempar batu.
+                            </p>
+                        </div>
+
+                        <div class="bg-purple-50 p-5 rounded-lg border border-purple-200 mt-4">
+                            <h4 class="font-bold text-purple-900 text-lg mb-2 lang-en">File #4: Think Big</h4>
+                            <h4 class="font-bold text-purple-900 text-lg mb-2 lang-id">Berkas #4: Berpikir Besar</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                <strong>Rich people think big. Poor people think small.</strong>
+                                <br><br>
+                                The Law of Income states: "You will be paid in direct proportion to the value you deliver according to the marketplace."
+                                <br>Thinking small (playing it safe) leads to being broke and miserable. Thinking big leads to influence and wealth. Ask yourself: "How can I solve this problem for 1,000 people instead of 1?"
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                <strong>Orang kaya berpikir besar. Orang miskin berpikir kecil.</strong>
+                                <br><br>
+                                Hukum Pendapatan menyatakan: "Anda akan dibayar berbanding lurus dengan nilai yang Anda berikan menurut pasar."
+                                <br>Berpikir kecil (main aman) mengarah pada kebangkrutan dan kesengsaraan. Berpikir besar mengarah pada pengaruh dan kekayaan. Tanya diri sendiri: "Gimana saya bisa memecahkan masalah ini untuk 1.000 orang, bukan cuma 1?"
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Jar System</span>
+                            <span class="lang-id">Sistem Toples (Jar System)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            "The single biggest difference between financial success and financial failure is how well you manage your money." Eker introduces the <strong>6 Jars System</strong>.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            "Perbedaan terbesar antara sukses finansial dan kegagalan finansial adalah seberapa baik Anda mengelola uang." Eker memperkenalkan <strong>Sistem 6 Toples</strong>.
+                        </p>
+
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
+                            <div class="bg-slate-100 p-4 rounded border border-slate-200">
+                                <div class="text-xl font-bold text-slate-800">55%</div>
+                                <div class="text-xs text-slate-500 uppercase tracking-wide mt-1">Necessities</div>
+                                <div class="text-xs text-slate-500 uppercase tracking-wide mt-1 lang-id">Kebutuhan</div>
+                            </div>
+                            <div class="bg-amber-100 p-4 rounded border border-amber-200">
+                                <div class="text-xl font-bold text-amber-800">10%</div>
+                                <div class="text-xs text-amber-700 uppercase tracking-wide mt-1">Play (FFA)</div>
+                                <div class="text-xs text-amber-700 uppercase tracking-wide mt-1 lang-id">Main (Bersenang2)</div>
+                            </div>
+                            <div class="bg-green-100 p-4 rounded border border-green-200">
+                                <div class="text-xl font-bold text-green-800">10%</div>
+                                <div class="text-xs text-green-700 uppercase tracking-wide mt-1">Long Term Saving</div>
+                                <div class="text-xs text-green-700 uppercase tracking-wide mt-1 lang-id">Tabungan Jangka Panjang</div>
+                            </div>
+                            <div class="bg-blue-100 p-4 rounded border border-blue-200">
+                                <div class="text-xl font-bold text-blue-800">10%</div>
+                                <div class="text-xs text-blue-700 uppercase tracking-wide mt-1">Education</div>
+                                <div class="text-xs text-blue-700 uppercase tracking-wide mt-1 lang-id">Edukasi</div>
+                            </div>
+                            <div class="bg-pink-100 p-4 rounded border border-pink-200">
+                                <div class="text-xl font-bold text-pink-800">5%</div>
+                                <div class="text-xs text-pink-700 uppercase tracking-wide mt-1">Give</div>
+                                <div class="text-xs text-pink-700 uppercase tracking-wide mt-1 lang-id">Sedekah</div>
+                            </div>
+                            <div class="bg-purple-100 p-4 rounded border border-purple-200">
+                                <div class="text-xl font-bold text-purple-800">10%</div>
+                                <div class="text-xs text-purple-700 uppercase tracking-wide mt-1">Financial Freedom</div>
+                                <div class="text-xs text-purple-700 uppercase tracking-wide mt-1 lang-id">Kebebasan Finansial</div>
+                            </div>
+                        </div>
+
+                        <div class="border-l-4 border-amber-500 pl-4 mt-4">
+                            <strong class="block text-slate-900 text-sm mb-1 lang-en">The Importance of the "Play" Jar</strong>
+                            <strong class="block text-slate-900 text-sm mb-1 lang-id">Pentingnya Toples "Main"</strong>
+                            <p class="text-xs text-slate-600 justified-text lang-en">
+                                You MUST blow this 10% every month on things that make you feel rich (massage, expensive dinner, VIP treatment). Why? To satisfy your inner spirit. If you only save, your spirit will rebel and sabotage you later. It balances the discipline.
+                            </p>
+                            <p class="text-xs text-slate-600 justified-text lang-id">
+                                Anda HARUS menghabiskan 10% ini setiap bulan untuk hal-hal yang membuat Anda merasa kaya (pijat, makan mahal, layanan VIP). Kenapa? Untuk memuaskan batin Anda. Jika Anda hanya menabung, batin Anda akan memberontak dan menyabotase Anda nanti. Ini menyeimbangkan disiplin.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Power of Declarations</span>
+                            <span class="lang-id">Kekuatan Deklarasi</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            An affirmation states that a goal is already happening. A <strong>Declaration</strong> isn't saying something is true, it's stating an intention to do something or be someone. Eker suggests touching your head and saying these daily:
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Afirmasi menyatakan bahwa tujuan sudah terjadi. <strong>Deklarasi</strong> tidak mengatakan sesuatu itu benar, tapi menyatakan niat untuk melakukan atau menjadi sesuatu. Eker menyarankan menyentuh kepala dan mengatakan ini setiap hari:
+                        </p>
+
+                        <div class="bg-gradient-to-r from-purple-600 to-indigo-600 p-6 rounded-xl text-white shadow-lg text-center">
+                            <p class="text-lg md:text-xl font-bold mb-4 lang-en">"My inner world creates my outer world."</p>
+                            <p class="text-lg md:text-xl font-bold mb-4 lang-id">"Dunia batinku menciptakan dunia luarku."</p>
+                            <hr class="border-purple-400 opacity-50 my-4">
+                            <p class="text-lg md:text-xl font-bold mb-4 lang-en">"I have a Millionaire Mind!"</p>
+                            <p class="text-lg md:text-xl font-bold mb-4 lang-id">"Saya punya Pikiran Jutawan!"</p>
+                        </div>
+
+                        <div class="text-center mt-6 p-4 bg-slate-50 rounded-lg">
+                            <p class="text-slate-600 italic lang-en">"If you want to move to a higher level of life, you have to be willing to let go of some of your old ways of thinking and being and adopt new ones."</p>
+                            <p class="text-slate-600 italic lang-id">"Jika Anda ingin pindah ke tingkat kehidupan yang lebih tinggi, Anda harus rela melepaskan beberapa cara berpikir dan cara hidup lama Anda dan mengadopsi yang baru."</p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#7e22ce'; // Purple
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#d97706'; // Amber
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-purple-100');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-purple-100');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+                          </html>
