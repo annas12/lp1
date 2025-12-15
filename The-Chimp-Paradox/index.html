@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Chimp Paradox — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Orange/Blue Theme: Chimp vs Human */
+        .active-tab { background: linear-gradient(135deg, #f97316 0%, #c2410c 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(234, 88, 12, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #ea580c; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-orange-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">🦍</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Chimp Paradox</h2>
+                    <p class="text-slate-400 text-sm">
+                        <span class="lang-en">Mind Management</span>
+                        <span class="lang-id">Manajemen Pikiran</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The Brain Model</span>
+                <span class="lang-id">Model Otak</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center text-xs font-bold">🧠</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">The 3 Teams</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Human, Chimp, Computer</span>
+                                <span class="lang-id">Manusia, Simpanse, Komputer</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Struggle</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Hijacked by Emotion</span>
+                                <span class="lang-id">Dibajak oleh Emosi</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-yellow-500 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Managing the Chimp</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Exercise, Box, Banana</span>
+                                <span class="lang-id">Olahraga, Kotak, Pisang</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Computer</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Goblins & Gremlins</span>
+                                <span class="lang-id">Goblin & Gremlin</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Stone of Life</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Values & Truths</span>
+                                <span class="lang-id">Nilai & Kebenaran</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© Prof. Steve Peters</p>
+                <p class="text-slate-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    The Chimp Paradox
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    <span class="lang-en">The Mind Management Program for Confidence and Success</span>
+                    <span class="lang-id">Program Manajemen Pikiran untuk Kepercayaan Diri dan Sukses</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-orange-500 to-blue-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-orange-100 text-orange-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Metaphor</span>
+                            <span class="lang-id">Metafora</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">You Are Not Your Chimp</span>
+                            <span class="lang-id">Anda Bukanlah Simpanse Anda</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-orange-500 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"The Chimp is an emotional machine that we all possess. It thinks independently from us and can make decisions. It offers emotional thoughts and feelings that can be either very constructive or very destructive."</span>
+                            <span class="lang-id">"Simpanse adalah mesin emosional yang kita semua miliki. Ia berpikir secara independen dari kita dan dapat membuat keputusan. Ia menawarkan pikiran dan perasaan emosional yang bisa sangat konstruktif atau sangat destruktif."</span>
+                        </div>
+                        
+                        <p class="mobile-text justified-text lang-en">
+                            Have you ever done something irrational (like yelling at a driver or eating an entire cake) and later thought, "Why did I do that? That wasn't like me."?
+                            <br><br>
+                            Prof. Steve Peters explains that this is because you have two brains working inside your head. You (The Human) and your inner emotional center (The Chimp). The Chimp is 5 times stronger than you. If you fight it, you will lose. You must learn to <strong>manage</strong> it.
+                        </p>
+                        <p class="mobile-text justified-text lang-id">
+                            Pernahkah Anda melakukan sesuatu yang irasional (seperti meneriaki pengemudi atau memakan kue utuh) dan kemudian berpikir, "Kenapa saya lakukan itu? Itu bukan saya banget."?
+                            <br><br>
+                            Prof. Steve Peters menjelaskan bahwa ini karena Anda memiliki dua otak yang bekerja di kepala Anda. Anda (Si Manusia) dan pusat emosi batin Anda (Si Simpanse). Simpanse 5 kali lebih kuat dari Anda. Jika Anda melawannya, Anda akan kalah. Anda harus belajar <strong>mengelolanya</strong>.
+                        </p>
+
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">The Core Insight</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Wawasan Inti</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                You are not responsible for the nature of your Chimp (it was given to you at birth). BUT, you are responsible for <strong>managing</strong> it.
+                                <br><br>
+                                <em>"Having a Chimp is like owning a dog. You are not responsible for the nature of the dog, but you are responsible for keeping it under control and well-behaved."</em>
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Anda tidak bertanggung jawab atas sifat Simpanse Anda (itu diberikan sejak lahir). TAPI, Anda bertanggung jawab untuk <strong>mengelolanya</strong>.
+                                <br><br>
+                                <em>"Memiliki Simpanse seperti memiliki anjing. Anda tidak bertanggung jawab atas sifat anjing itu, tetapi Anda bertanggung jawab menjaganya agar terkendali dan berperilaku baik."</em>
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Psychological Universe</span>
+                            <span class="lang-id">Alam Semesta Psikologis</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">1. The Human (Frontal Lobe)</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">1. Si Manusia (Lobus Frontal)</h4>
+                            <ul class="list-disc ml-5 space-y-2 text-sm text-slate-700">
+                                <li>
+                                    <span class="lang-en"><strong>Location:</strong> Forehead.</span>
+                                    <span class="lang-id"><strong>Lokasi:</strong> Dahi.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Drive:</strong> Logic, Reason, Facts, Truth.</span>
+                                    <span class="lang-id"><strong>Dorongan:</strong> Logika, Nalar, Fakta, Kebenaran.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Modus Operandi:</strong> Thinks slowly, considers consequences, wants self-fulfillment and societal purpose.</span>
+                                    <span class="lang-id"><strong>Modus Operandi:</strong> Berpikir lambat, mempertimbangkan konsekuensi, menginginkan pemenuhan diri dan tujuan sosial.</span>
+                                </li>
+                                <li>
+                                    <strong class="text-blue-600 lang-en">"YOU" live here.</strong>
+                                    <strong class="text-blue-600 lang-id">"ANDA" tinggal di sini.</strong>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-orange-50 p-5 rounded-lg border border-orange-200 shadow-sm mt-4">
+                            <h4 class="font-bold text-orange-900 text-lg mb-2 lang-en">2. The Chimp (Limbic System)</h4>
+                            <h4 class="font-bold text-orange-900 text-lg mb-2 lang-id">2. Si Simpanse (Sistem Limbik)</h4>
+                            <ul class="list-disc ml-5 space-y-2 text-sm text-slate-700">
+                                <li>
+                                    <span class="lang-en"><strong>Location:</strong> Center of Brain.</span>
+                                    <span class="lang-id"><strong>Lokasi:</strong> Pusat Otak.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Drive:</strong> Survival, Feelings, Impressions, Instincts.</span>
+                                    <span class="lang-id"><strong>Dorongan:</strong> Kelangsungan Hidup, Perasaan, Kesan, Insting.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Modus Operandi:</strong> Thinks fast, jumps to conclusions, paranoid, catastrophic thinking.</span>
+                                    <span class="lang-id"><strong>Modus Operandi:</strong> Berpikir cepat, melompat pada kesimpulan, paranoid, berpikir bencana.</span>
+                                </li>
+                                <li>
+                                    <strong class="text-orange-600 lang-en">This is NOT you. It is a machine.</strong>
+                                    <strong class="text-orange-600 lang-id">Ini BUKAN Anda. Ini adalah mesin.</strong>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-teal-50 p-5 rounded-lg border border-teal-200 shadow-sm mt-4">
+                            <h4 class="font-bold text-teal-900 text-lg mb-2 lang-en">3. The Computer (Parietal Lobe)</h4>
+                            <h4 class="font-bold text-teal-900 text-lg mb-2 lang-id">3. Si Komputer (Lobus Parietal)</h4>
+                            <ul class="list-disc ml-5 space-y-2 text-sm text-slate-700">
+                                <li>
+                                    <span class="lang-en"><strong>Location:</strong> Back/Top of Brain.</span>
+                                    <span class="lang-id"><strong>Lokasi:</strong> Belakang/Atas Otak.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Function:</strong> Storage bank for beliefs, memories, and automatic programs.</span>
+                                    <span class="lang-id"><strong>Fungsi:</strong> Bank penyimpanan untuk keyakinan, ingatan, dan program otomatis.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Modus Operandi:</strong> It runs whatever program the Chimp or Human puts into it. It is 4x faster than the Chimp.</span>
+                                    <span class="lang-id"><strong>Modus Operandi:</strong> Menjalankan program apa pun yang dimasukkan Simpanse atau Manusia. Ia 4x lebih cepat dari Simpanse.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Struggle (Hijack)</span>
+                            <span class="lang-id">Pergulatan (Pembajakan)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            When information enters your brain, it goes to the Chimp <strong>FIRST</strong>. The Chimp decides if it's dangerous. If yes, it hijacks the blood supply and reacts. If no, it passes it to the Human.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Saat informasi masuk ke otak, ia pergi ke Simpanse <strong>PERTAMA KALI</strong>. Simpanse memutuskan apakah itu berbahaya. Jika ya, ia membajak suplai darah dan bereaksi. Jika tidak, ia oper ke Manusia.
+                        </p>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">Case Study: The Supermarket Aisle</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">Studi Kasus: Lorong Supermarket</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-en">
+                                <strong>Scenario:</strong> Someone bumps into you with their cart and doesn't apologize.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-id">
+                                <strong>Skenario:</strong> Seseorang menabrak Anda dengan troli mereka dan tidak minta maaf.
+                            </p>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-orange-50 p-3 rounded border border-orange-200">
+                                    <strong class="block text-orange-900 mb-1 lang-en">Chimp Reaction</strong>
+                                    <strong class="block text-orange-900 mb-1 lang-id">Reaksi Simpanse</strong>
+                                    <p class="text-xs text-slate-600 italic lang-en">
+                                        "How dare they! They are disrespecting me. I must attack to maintain status. Shout at them!"
+                                    </p>
+                                    <p class="text-xs text-slate-600 italic lang-id">
+                                        "Beraninya mereka! Mereka tidak menghormatiku. Aku harus serang untuk jaga status. Teriak pada mereka!"
+                                    </p>
+                                </div>
+                                <div class="bg-blue-50 p-3 rounded border border-blue-200">
+                                    <strong class="block text-blue-900 mb-1 lang-en">Human Reaction</strong>
+                                    <strong class="block text-blue-900 mb-1 lang-id">Reaksi Manusia</strong>
+                                    <p class="text-xs text-slate-600 italic lang-en">
+                                        "It was probably an accident. They look stressed. Getting angry won't help. Just ignore it."
+                                    </p>
+                                    <p class="text-xs text-slate-600 italic lang-id">
+                                        "Mungkin kecelakaan. Mereka kelihatan stres. Marah tidak akan membantu. Abaikan saja."
+                                    </p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-700 mt-4 justified-text lang-en">
+                                <strong>The Problem:</strong> The Chimp reacts in 0.02 seconds. The Human takes longer. If you act immediately, the Chimp wins.
+                            </p>
+                            <p class="text-sm text-slate-700 mt-4 justified-text lang-id">
+                                <strong>Masalahnya:</strong> Simpanse bereaksi dalam 0,02 detik. Manusia butuh waktu lebih lama. Jika Anda bertindak segera, Simpanse menang.
+                            </p>
+                        </div>
+
+                        <div class="border-l-4 border-slate-500 pl-4 bg-slate-50 p-4 rounded-r-lg">
+                            <strong class="block text-slate-900 text-lg mb-2 lang-en">Jungle Thinking vs. Computer Thinking</strong>
+                            <strong class="block text-slate-900 text-lg mb-2 lang-id">Pemikiran Hutan vs. Pemikiran Komputer</strong>
+                            <ul class="list-disc ml-5 space-y-2 text-sm text-slate-700">
+                                <li>
+                                    <span class="lang-en"><strong>Jungle:</strong> "Black and White." Friend or Foe. Safe or Dangerous. Intense Judgment.</span>
+                                    <span class="lang-id"><strong>Hutan:</strong> "Hitam dan Putih." Teman atau Lawan. Aman atau Bahaya. Penilaian Intens.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Computer (Human):</strong> "Shades of Grey." Context matters. Evidence based.</span>
+                                    <span class="lang-id"><strong>Komputer (Manusia):</strong> "Nuansa Abu-abu." Konteks penting. Berbasis bukti.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Managing Your Chimp</span>
+                            <span class="lang-id">Mengelola Simpanse Anda</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            You cannot fight the Chimp with willpower (it is stronger). You must nurture it. Dr. Peters suggests three main ways to manage it:
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Anda tidak bisa melawan Simpanse dengan tekad (ia lebih kuat). Anda harus merawatnya. Dr. Peters menyarankan tiga cara utama untuk mengelolanya:
+                        </p>
+
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                                <strong class="block text-slate-900 text-lg mb-2 lang-en">1. Exercise the Chimp (Let it Vent)</strong>
+                                <strong class="block text-slate-900 text-lg mb-2 lang-id">1. Olahraga Simpanse (Biarkan Curhat)</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    If the Chimp is agitated, let it scream. Find a safe place (alone or with a trusted friend) and say everything irrational. "I hate them! It's unfair! I want to quit!"
+                                    <br><br>
+                                    <strong>Rule:</strong> Do not interrupt. Do not use logic yet. Let the Chimp tire itself out. It usually takes 10 minutes. Once it stops, ask: "Are you done?"
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Jika Simpanse gelisah, biarkan dia teriak. Cari tempat aman (sendiri atau dengan teman terpercaya) dan katakan semua hal irasional. "Aku benci mereka! Gak adil! Aku mau keluar!"
+                                    <br><br>
+                                    <strong>Aturan:</strong> Jangan potong. Jangan pakai logika dulu. Biarkan Simpanse lelah sendiri. Biasanya butuh 10 menit. Setelah berhenti, tanya: "Sudah selesai?"
+                                </p>
+                            </div>
+
+                            <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                <strong class="block text-yellow-900 text-lg mb-2 lang-en">2. Box the Chimp (Logic)</strong>
+                                <strong class="block text-yellow-900 text-lg mb-2 lang-id">2. Kotakkan Simpanse (Logika)</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Once the Chimp is tired, use the Human to present facts (Truths).
+                                    <br><br>
+                                    <em>Chimp:</em> "Everyone hates me!"
+                                    <br><em>Human:</em> "That is not true. John invited you to lunch yesterday. You have a loving family. This is just one incident."
+                                    <br><br>
+                                    Boxing means putting the fears into perspective using the <strong>Truths of Life</strong>.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Setelah Simpanse lelah, gunakan Manusia untuk menyajikan fakta (Kebenaran).
+                                    <br><br>
+                                    <em>Simpanse:</em> "Semua orang benci aku!"
+                                    <br><em>Manusia:</em> "Itu tidak benar. John ajak kamu makan siang kemarin. Kamu punya keluarga penyayang. Ini cuma satu insiden."
+                                    <br><br>
+                                    Mengotakkan berarti menempatkan ketakutan dalam perspektif menggunakan <strong>Kebenaran Hidup</strong>.
+                                </p>
+                            </div>
+
+                            <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                                <strong class="block text-orange-900 text-lg mb-2 lang-en">3. Feed it Bananas (Distraction/Reward)</strong>
+                                <strong class="block text-orange-900 text-lg mb-2 lang-id">3. Beri Pisang (Distraksi/Hadiah)</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Distract the Chimp or offer a reward to keep it calm.
+                                    <br><br>
+                                    <em>Example:</em> You have a boring report to write. The Chimp hates boring things.
+                                    <br><em>Solution:</em> "If we finish this report in 1 hour, we can watch Netflix and eat pizza." The Chimp likes pizza. It will calm down.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Alihkan perhatian Simpanse atau tawarkan hadiah agar tenang.
+                                    <br><br>
+                                    <em>Contoh:</em> Anda harus tulis laporan membosankan. Simpanse benci hal membosankan.
+                                    <br><em>Solusi:</em> "Kalau kita selesaikan laporan ini dalam 1 jam, kita bisa nonton Netflix dan makan pizza." Simpanse suka pizza. Dia akan tenang.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-teal-100 text-teal-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Computer: Goblins & Gremlins</span>
+                            <span class="lang-id">Komputer: Goblin & Gremlin</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            The Computer runs automatic programs (Habits). It is 4x faster than the Chimp and 20x faster than the Human. When the Chimp gets scared, it looks into the Computer for reference.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Komputer menjalankan program otomatis (Kebiasaan). Ia 4x lebih cepat dari Simpanse dan 20x lebih cepat dari Manusia. Saat Simpanse takut, ia melihat ke Komputer untuk referensi.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                <strong class="block text-red-900 text-lg mb-2 lang-en">👹 Goblins (Bad Beliefs)</strong>
+                                <strong class="block text-red-900 text-lg mb-2 lang-id">👹 Goblin (Keyakinan Buruk)</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Hard-wired negative beliefs introduced in childhood. They are very hard to remove.
+                                    <br><em>Examples:</em> "I am not good enough," "I am unlovable," "I must be perfect to be accepted."
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Keyakinan negatif yang tertanam kuat sejak masa kanak-kanak. Sangat sulit dihapus.
+                                    <br><em>Contoh:</em> "Aku tidak cukup baik," "Aku tidak layak dicintai," "Aku harus sempurna agar diterima."
+                                </p>
+                            </div>
+
+                            <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                                <strong class="block text-orange-900 text-lg mb-2 lang-en">👾 Gremlins (Soft Beliefs)</strong>
+                                <strong class="block text-orange-900 text-lg mb-2 lang-id">👾 Gremlin (Keyakinan Lunak)</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Negative beliefs acquired later in life. Easier to remove.
+                                    <br><em>Examples:</em> "I can't learn technology," "I am bad at math."
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Keyakinan negatif yang didapat di kemudian hari. Lebih mudah dihapus.
+                                    <br><em>Contoh:</em> "Aku gak bisa belajar teknologi," "Aku payah di matematika."
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-teal-50 p-5 rounded-lg border border-teal-200 mt-4">
+                            <strong class="block text-teal-900 text-lg mb-2 lang-en">Autopilots (Good Beliefs)</strong>
+                            <strong class="block text-teal-900 text-lg mb-2 lang-id">Autopilot (Keyakinan Baik)</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Constructive beliefs. "I can handle this," "Mistakes are learning opportunities."
+                                <br><br>
+                                <strong>Strategy:</strong> You must identify your Goblins and replace them with Autopilots. When the Chimp looks into the Computer and sees a Goblin ("I can't do this"), it panics. If it sees an Autopilot ("I've done this before"), it calms down.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Keyakinan konstruktif. "Aku bisa atasi ini," "Kesalahan adalah peluang belajar."
+                                <br><br>
+                                <strong>Strategi:</strong> Anda harus identifikasi Goblin Anda dan ganti dengan Autopilot. Saat Simpanse melihat ke Komputer dan melihat Goblin ("Aku gak bisa"), dia panik. Jika lihat Autopilot ("Aku pernah lakukan ini"), dia tenang.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Stone of Life</span>
+                            <span class="lang-id">Batu Kehidupan</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            This is the ultimate reference point for your Computer. It contains your core truths. When the Chimp is freaking out, referring to the Stone of Life can settle it immediately.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Ini adalah titik referensi utama bagi Komputer Anda. Berisi kebenaran inti Anda. Saat Simpanse panik, merujuk ke Batu Kehidupan bisa langsung menenangkannya.
+                        </p>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">Truths of Life (Examples)</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Kebenaran Hidup (Contoh)</h4>
+                            <ul class="list-disc ml-5 space-y-2 text-sm text-slate-700">
+                                <li>
+                                    <span class="lang-en">"Life is not fair." (Accepting this stops the Chimp from screaming "It's unfair!")</span>
+                                    <span class="lang-id">"Hidup itu tidak adil." (Menerima ini menghentikan Simpanse berteriak "Gak adil!")</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en">"The goalpost will move." (Accepting change).</span>
+                                    <span class="lang-id">"Tiang gawang akan berpindah." (Menerima perubahan).</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en">"I cannot control others' opinions."</span>
+                                    <span class="lang-id">"Aku tak bisa kontrol opini orang lain."</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-slate-800 p-6 rounded-xl text-white mt-4">
+                            <h4 class="font-bold text-lg mb-2 lang-en">The Snow White Syndrome</h4>
+                            <h4 class="font-bold text-lg mb-2 lang-id">Sindrom Putri Salju</h4>
+                            <p class="text-sm opacity-90 justified-text lang-en">
+                                Many people are unhappy because they want the world to be like a fairy tale (Virtuous, Fair, Safe). When it isn't, their Chimp gets distressed.
+                                <br><br>
+                                <strong>The Solution:</strong> Accept the world as it is (The Wolf exists). Don't expect the Wolf to be nice. Deal with the Wolf logically (Human) rather than emotionally (Chimp).
+                            </p>
+                            <p class="text-sm opacity-90 justified-text lang-id">
+                                Banyak orang tidak bahagia karena ingin dunia seperti dongeng (Bajik, Adil, Aman). Saat tidak begitu, Simpanse mereka tertekan.
+                                <br><br>
+                                <strong>Solusinya:</strong> Terima dunia apa adanya (Serigala itu ada). Jangan harap Serigala jadi baik. Hadapi Serigala secara logis (Manusia) bukan emosional (Simpanse).
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#ea580c'; // Orange
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#0f766e'; // Teal/Blueish
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
