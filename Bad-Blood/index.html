@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bad Blood — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Blood Red/Charcoal Theme for Medical Fraud */
+        .active-tab { background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #000000 0%, #1c1917 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.7); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(185, 28, 28, 0.4);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(185, 28, 28, 0.6); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #404040 0%, #171717 100%); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #991b1b; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,0,0,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-stone-100 to-red-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-red-900">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-red-600 to-red-900 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">🩸</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Bad Blood</h2>
+                    <p class="text-red-200 text-sm">
+                        <span class="lang-en">Secrets & Lies</span>
+                        <span class="lang-id">Rahasia & Kebohongan</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-stone-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The Rise & Fall</span>
+                <span class="lang-id">Bangkit & Jatuh</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-red-900 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-red-700 rounded-lg flex items-center justify-center text-xs font-bold">🦄</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-red-900 text-stone-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-stone-700 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Deception</div>
+                            <div class="text-xs text-stone-400">
+                                <span class="lang-en">The Edison Machine</span>
+                                <span class="lang-id">Mesin Edison</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-red-900 text-stone-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-red-800 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Culture of Fear</div>
+                            <div class="text-xs text-stone-400">
+                                <span class="lang-en">Sunny & Secrecy</span>
+                                <span class="lang-id">Sunny & Kerahasiaan</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-red-900 text-stone-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-orange-700 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Whistleblowers</div>
+                            <div class="text-xs text-stone-400">
+                                <span class="lang-en">Tyler & Erika</span>
+                                <span class="lang-id">Tyler & Erika</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-red-900 text-stone-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-700 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Investigation</div>
+                            <div class="text-xs text-stone-400">
+                                <span class="lang-en">John Carreyrou</span>
+                                <span class="lang-id">John Carreyrou</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-red-900 text-stone-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-stone-500 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Fall</div>
+                            <div class="text-xs text-stone-400">
+                                <span class="lang-en">Lessons Learned</span>
+                                <span class="lang-id">Pelajaran Berharga</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-stone-800">
+            <div class="text-center">
+                <p class="text-stone-500 text-xs">© John Carreyrou</p>
+                <p class="text-stone-600 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-red-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-stone-900 mb-2 mobile-title">
+                    Bad Blood
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-red-700 font-medium px-2">
+                    <span class="lang-en">Secrets and Lies in a Silicon Valley Startup</span>
+                    <span class="lang-id">Rahasia dan Kebohongan di Startup Silicon Valley</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-red-700 to-black mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Myth</span>
+                            <span class="lang-id">Mitos</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-stone-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The $9 Billion Illusion</span>
+                            <span class="lang-id">Ilusi $9 Miliar</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-stone-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-stone-600 font-medium border-l-4 border-red-600 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"Elizabeth Holmes was the youngest self-made female billionaire. She wore black turtlenecks like Steve Jobs. She promised to change the world with a single drop of blood. It was all a lie."</span>
+                            <span class="lang-id">"Elizabeth Holmes adalah miliarder wanita termuda yang sukses karena usaha sendiri. Dia mengenakan turtleneck hitam seperti Steve Jobs. Dia berjanji mengubah dunia dengan satu tetes darah. Semuanya bohong."</span>
+                        </div>
+                        
+                        <p class="mobile-text justified-text lang-en">
+                            Theranos promised a medical revolution: over 200 blood tests (cholesterol, cancer, HIV) from a finger-prick, run on a magical box called "The Edison." They raised nearly $1 billion from investors like Rupert Murdoch and Larry Ellison. They partnered with Walgreens.
+                            <br><br>
+                            However, the technology never worked. Not even close. The story is a cautionary tale about the Silicon Valley mantra "Fake it 'til you make it" applied to healthcare, where lives are at stake.
+                        </p>
+                        <p class="mobile-text justified-text lang-id">
+                            Theranos menjanjikan revolusi medis: lebih dari 200 tes darah (kolesterol, kanker, HIV) dari tusukan jari, dijalankan pada kotak ajaib bernama "The Edison." Mereka mengumpulkan hampir $1 miliar dari investor seperti Rupert Murdoch dan Larry Ellison. Mereka bermitra dengan Walgreens.
+                            <br><br>
+                            Namun, teknologi itu tidak pernah berhasil. Bahkan tidak mendekati. Kisah ini adalah peringatan tentang mantra Silicon Valley "Palsukan sampai kau berhasil" yang diterapkan pada layanan kesehatan, di mana nyawa menjadi taruhannya.
+                        </p>
+
+                        <div class="bg-stone-900 p-6 rounded-xl border border-stone-700 shadow-sm text-white">
+                            <h4 class="font-bold text-red-500 text-lg mb-3 lang-en">The Board of Directors (The Shield)</h4>
+                            <h4 class="font-bold text-red-500 text-lg mb-3 lang-id">Dewan Direksi (Sang Perisai)</h4>
+                            <p class="text-sm opacity-90 justified-text lang-en">
+                                Elizabeth surrounded herself with old, powerful men to gain credibility. Her board included <strong>Henry Kissinger</strong> (former Secretary of State), <strong>George Shultz</strong> (former Secretary of State), and <strong>James Mattis</strong> (General).
+                                <br><br>
+                                <strong>Why it mattered:</strong> Their reputations shielded Theranos from scrutiny. Investors assumed, "If Kissinger trusts her, it must be real."
+                            </p>
+                            <p class="text-sm opacity-90 justified-text lang-id">
+                                Elizabeth mengelilingi dirinya dengan pria tua yang berkuasa untuk mendapatkan kredibilitas. Dewannya termasuk <strong>Henry Kissinger</strong> (mantan Menlu AS), <strong>George Shultz</strong> (mantan Menlu AS), dan <strong>James Mattis</strong> (Jenderal).
+                                <br><br>
+                                <strong>Mengapa ini penting:</strong> Reputasi mereka melindungi Theranos dari pengawasan. Investor berasumsi, "Jika Kissinger mempercayainya, itu pasti nyata."
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-stone-100 text-stone-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-stone-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Tech Deception</span>
+                            <span class="lang-id">Penipuan Teknologi</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-stone-700 leading-relaxed space-y-6">
+                        <p class="text-base text-stone-600 justified-text lang-en">
+                            Elizabeth envisioned a device (The Edison) that could run extensive tests on a "nanotainer" (a tiny vial) of blood. But physics and chemistry stood in the way.
+                        </p>
+                        <p class="text-base text-stone-600 justified-text lang-id">
+                            Elizabeth membayangkan perangkat (The Edison) yang bisa menjalankan tes ekstensif pada "nanotainer" (botol kecil) darah. Tapi fisika dan kimia menjadi penghalang.
+                        </p>
+
+                        <div class="bg-red-50 p-5 rounded-lg border border-red-200 shadow-sm">
+                            <h4 class="font-bold text-red-900 text-lg mb-2 lang-en">Why The Edison Failed</h4>
+                            <h4 class="font-bold text-red-900 text-lg mb-2 lang-id">Mengapa Edison Gagal</h4>
+                            <ul class="list-disc ml-5 space-y-2 text-sm text-stone-800">
+                                <li>
+                                    <strong class="lang-en">Volume Problem:</strong> There simply wasn't enough blood in a finger-prick to run multiple tests reliably.
+                                </li>
+                                <li>
+                                    <strong class="lang-id">Masalah Volume:</strong> Tidak cukup darah dalam tusukan jari untuk menjalankan banyak tes secara andal.
+                                </li>
+                                <li>
+                                    <strong class="lang-en">Hemolysis:</strong> Squeezing blood from a finger bursts red blood cells, contaminating the plasma and ruining potassium readings.
+                                </li>
+                                <li>
+                                    <strong class="lang-id">Hemolisis:</strong> Memeras darah dari jari memecahkan sel darah merah, mengkontaminasi plasma dan merusak pembacaan kalium.
+                                </li>
+                                <li>
+                                    <strong class="lang-en">Temperature:</strong> The machine components heated up, cooking the blood samples inside.
+                                </li>
+                                <li>
+                                    <strong class="lang-id">Suhu:</strong> Komponen mesin memanas, "memasak" sampel darah di dalamnya.
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="border-l-4 border-stone-800 pl-4 bg-stone-50 p-4 rounded-r-lg">
+                            <strong class="block text-stone-900 text-lg mb-2 lang-en">The "Hack" (The Lie)</strong>
+                            <strong class="block text-stone-900 text-lg mb-2 lang-id">"Retasan" (Kebohongan)</strong>
+                            <p class="text-sm text-stone-700 justified-text lang-en">
+                                Since the Edison didn't work, Theranos secretly bought commercial analyzers from <strong>Siemens</strong> (competitors).
+                                <br><br>
+                                <strong>The Dilution Scheme:</strong> They took the tiny finger-prick samples and <em>diluted</em> them with saline to make enough volume for the Siemens machines. This violated medical protocols. Diluting blood alters the concentration of analytes, making the results wildly inaccurate.
+                                <br><br>
+                                Patients were given results that were potentially life-threatening (e.g., false positives for cancer, false negatives for dangerous blood clots).
+                            </p>
+                            <p class="text-sm text-stone-700 justified-text lang-id">
+                                Karena Edison tidak berfungsi, Theranos diam-diam membeli alat analisis komersial dari <strong>Siemens</strong> (pesaing).
+                                <br><br>
+                                <strong>Skema Pengenceran:</strong> Mereka mengambil sampel tusukan jari kecil dan <em>mengencerkannya</em> dengan garam agar volumenya cukup untuk mesin Siemens. Ini melanggar protokol medis. Mengencerkan darah mengubah konsentrasi analit, membuat hasilnya sangat tidak akurat.
+                                <br><br>
+                                Pasien diberi hasil yang berpotensi mengancam jiwa (misal: positif palsu untuk kanker, negatif palsu untuk pembekuan darah berbahaya).
+                            </p>
+                        </div>
+
+                        <div class="bg-red-900 p-4 rounded-lg text-white mt-4">
+                            <strong class="block text-sm mb-1 lang-en">Case Study: The Novartis Demo</strong>
+                            <strong class="block text-sm mb-1 lang-id">Studi Kasus: Demo Novartis</strong>
+                            <p class="text-xs opacity-80 justified-text lang-en">
+                                When demoing for Novartis (Swiss Pharma giant), the Edison machines beamed results to a computer. The execs were impressed.
+                                <br><strong>The Reality:</strong> The machines were rigged. They ran a "null protocol." The results displayed on the screen were pre-recorded or faked. The machine didn't actually test the blood during the demo.
+                            </p>
+                            <p class="text-xs opacity-80 justified-text lang-id">
+                                Saat demo untuk Novartis (raksasa Farmasi Swiss), mesin Edison memancarkan hasil ke komputer. Eksekutif terkesan.
+                                <br><strong>Kenyataannya:</strong> Mesin itu direkayasa. Mereka menjalankan "protokol nol." Hasil di layar sudah direkam sebelumnya atau dipalsukan. Mesin tidak benar-benar menguji darah selama demo.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-stone-100 text-stone-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-stone-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Culture of Fear</span>
+                            <span class="lang-id">Budaya Ketakutan</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-stone-700 leading-relaxed space-y-6">
+                        <p class="text-base text-stone-600 justified-text lang-en">
+                            Theranos was run like a dictatorship by Elizabeth Holmes and her secret boyfriend/COO, <strong>Sunny Balwani</strong>.
+                        </p>
+                        <p class="text-base text-stone-600 justified-text lang-id">
+                            Theranos dijalankan seperti kediktatoran oleh Elizabeth Holmes dan pacar rahasianya/COO, <strong>Sunny Balwani</strong>.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-stone-50 p-4 rounded-lg border border-stone-200">
+                                <strong class="block text-stone-900 text-lg mb-2 lang-en">The Enforcer: Sunny</strong>
+                                <strong class="block text-stone-900 text-lg mb-2 lang-id">Sang Penegak: Sunny</strong>
+                                <ul class="list-disc ml-4 text-sm text-stone-700 space-y-2">
+                                    <li>He monitored employees' badge swipes to track hours.</li>
+                                    <li>He monitored emails and internet usage.</li>
+                                    <li>He fired people on the spot for questioning the technology ("I fixed the glitch").</li>
+                                    <li>He lacked any medical or scientific background (Software background).</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                <strong class="block text-red-900 text-lg mb-2 lang-en">Siloing (Compartmentalization)</strong>
+                                <strong class="block text-red-900 text-lg mb-2 lang-id">Siloing (Kompartementalisasi)</strong>
+                                <p class="text-sm text-stone-700 justified-text lang-en">
+                                    Teams were strictly separated. Engineers couldn't talk to Chemists.
+                                    <br><strong>"Carpeted World" vs "Tile World"</strong>: The admin/execs (Carpet) were treated like royalty. The lab workers (Tile) were treated like suspects.
+                                    <br>This prevented anyone from seeing the whole picture: the device didn't work.
+                                </p>
+                                <p class="text-sm text-stone-700 justified-text lang-id">
+                                    Tim dipisahkan secara ketat. Insinyur tidak boleh bicara dengan Kimiawan.
+                                    <br><strong>"Dunia Karpet" vs "Dunia Ubin"</strong>: Admin/eksekutif (Karpet) diperlakukan seperti bangsawan. Pekerja lab (Ubin) diperlakukan seperti tersangka.
+                                    <br>Ini mencegah siapa pun melihat gambaran utuh: perangkat itu tidak berfungsi.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-stone-900 p-5 rounded-xl border border-stone-700 shadow-lg text-white mt-4">
+                            <h4 class="font-bold text-red-500 text-lg mb-3 lang-en">Tragedy: Ian Gibbons</h4>
+                            <h4 class="font-bold text-red-500 text-lg mb-3 lang-id">Tragedi: Ian Gibbons</h4>
+                            <p class="text-sm opacity-90 justified-text lang-en">
+                                Ian was the Chief Scientist, a brilliant Cambridge chemist. He knew the tech was fake. He was subpoenaed in a patent lawsuit.
+                                <br><br>
+                                <strong>The Dilemma:</strong> If he told the truth, he would be fired and sued by Theranos (ruining his career/retirement). If he lied, he would commit perjury.
+                                <br><br>
+                                <strong>The Outcome:</strong> Crushed by the pressure and fear of Elizabeth/Sunny, Ian committed suicide the night before his deposition.
+                                <br>When Elizabeth heard the news, her reaction was to ask Ian's grieving widow to return his company laptop immediately.
+                            </p>
+                            <p class="text-sm opacity-90 justified-text lang-id">
+                                Ian adalah Kepala Ilmuwan, kimiawan Cambridge yang brilian. Dia tahu teknologinya palsu. Dia dipanggil pengadilan dalam gugatan paten.
+                                <br><br>
+                                <strong>Dilemanya:</strong> Jika dia jujur, dia akan dipecat dan digugat Theranos (menghancurkan karir/pensiunnya). Jika dia bohong, dia melakukan sumpah palsu.
+                                <br><br>
+                                <strong>Hasilnya:</strong> Hancur karena tekanan dan ketakutan pada Elizabeth/Sunny, Ian bunuh diri malam sebelum kesaksiannya.
+                                <br>Saat Elizabeth mendengar beritanya, reaksinya adalah meminta janda Ian yang berduka untuk segera mengembalikan laptop perusahaan.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-stone-100 text-stone-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-stone-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Whistleblowers</span>
+                            <span class="lang-id">Para Penipup Peluit (Whistleblowers)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-stone-700 leading-relaxed space-y-6">
+                        <p class="text-base text-stone-600 justified-text lang-en">
+                            The fraud was unraveled by young employees who had a conscience.
+                        </p>
+                        <p class="text-base text-stone-600 justified-text lang-id">
+                            Penipuan ini terungkap oleh karyawan muda yang memiliki hati nurani.
+                        </p>
+
+                        <div class="bg-white p-5 rounded-lg border border-red-200 shadow-sm">
+                            <h4 class="font-bold text-stone-900 text-lg mb-2">Tyler Shultz</h4>
+                            <p class="text-sm text-stone-700 justified-text mb-3 lang-en">
+                                The grandson of George Shultz (Board Member). Tyler worked in the lab and saw the Quality Control (QC) data was being manipulated.
+                                <br><br>
+                                <strong>The Conflict:</strong> When Tyler raised concerns, Elizabeth ignored him. Sunny berated him. Worst of all, his own grandfather (George) refused to believe him, choosing to believe Elizabeth instead.
+                                <br><br>
+                                Tyler contacted the state regulators anonymously using a burner phone. He eventually spoke to John Carreyrou. His family spent $400,000 in legal fees defending him against Theranos's lawyers.
+                            </p>
+                            <p class="text-sm text-stone-700 justified-text mb-3 lang-id">
+                                Cucu George Shultz (Anggota Dewan). Tyler bekerja di lab dan melihat data Kontrol Kualitas (QC) dimanipulasi.
+                                <br><br>
+                                <strong>Konfliknya:</strong> Saat Tyler menyampaikan kekhawatiran, Elizabeth mengabaikannya. Sunny memarahinya. Yang terburuk, kakeknya sendiri (George) menolak mempercayainya, memilih percaya pada Elizabeth.
+                                <br><br>
+                                Tyler menghubungi regulator negara bagian secara anonim menggunakan ponsel sekali pakai. Dia akhirnya bicara dengan John Carreyrou. Keluarganya menghabiskan $400.000 biaya hukum untuk membelanya dari pengacara Theranos.
+                            </p>
+                        </div>
+
+                        <div class="bg-stone-50 p-5 rounded-lg border border-stone-200 mt-4">
+                            <h4 class="font-bold text-stone-900 text-lg mb-2">Erika Cheung</h4>
+                            <p class="text-sm text-stone-700 justified-text lang-en">
+                                A lab associate who realized the machines failed QC constantly. Lab techs were forced to delete "outlier" data points until the machine passed. This is scientific fraud.
+                                <br><br>
+                                She quit and later sent a formal complaint to the CMS (Centers for Medicare & Medicaid Services), which triggered the surprise inspection that ultimately shut down the lab.
+                            </p>
+                            <p class="text-sm text-stone-700 justified-text lang-id">
+                                Rekan lab yang menyadari mesin-mesin itu terus-menerus gagal QC. Teknisi lab dipaksa menghapus titik data "outlier" sampai mesin lolos. Ini penipuan ilmiah.
+                                <br><br>
+                                Dia keluar dan kemudian mengirim keluhan resmi ke CMS (Pusat Layanan Medicare & Medicaid), yang memicu inspeksi mendadak yang akhirnya menutup lab tersebut.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-stone-100 text-stone-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-stone-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Unraveling</span>
+                            <span class="lang-id">Terungkapnya Fakta</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-stone-700 leading-relaxed space-y-6">
+                        <div class="bg-stone-900 p-5 rounded-lg text-white">
+                            <strong class="block text-red-500 text-lg mb-2">John Carreyrou (WSJ)</strong>
+                            <p class="text-sm opacity-90 justified-text lang-en">
+                                A two-time Pulitzer winner. He got a tip from Adam Clapper (a pathology blogger) that Theranos' claims sounded impossible.
+                                <br><br>
+                                Carreyrou interviewed ex-employees, doctors, and patients. He built a damning case.
+                            </p>
+                            <p class="text-sm opacity-90 justified-text lang-id">
+                                Pemenang Pulitzer dua kali. Dia dapat info dari Adam Clapper (blogger patologi) bahwa klaim Theranos terdengar mustahil.
+                                <br><br>
+                                Carreyrou mewawancarai mantan karyawan, dokter, dan pasien. Dia membangun kasus yang memberatkan.
+                            </p>
+                        </div>
+
+                        <div class="border-l-4 border-red-600 pl-4 bg-red-50 p-4 rounded-r-lg">
+                            <strong class="block text-red-900 text-lg mb-2 lang-en">The Ambush (David Boies)</strong>
+                            <strong class="block text-red-900 text-lg mb-2 lang-id">Penyergapan (David Boies)</strong>
+                            <p class="text-sm text-stone-700 justified-text lang-en">
+                                Elizabeth hired David Boies, one of the most feared lawyers in America.
+                                <br><br>
+                                Before the article was published, Boies and his team went to the Wall Street Journal office for a 5-hour meeting. They threatened, bullied, and lied to kill the story. They claimed "trade secrets."
+                                <br><br>
+                                Carreyrou stood firm. The WSJ published the article in October 2015. It was the beginning of the end.
+                            </p>
+                            <p class="text-sm text-stone-700 justified-text lang-id">
+                                Elizabeth menyewa David Boies, salah satu pengacara paling ditakuti di Amerika.
+                                <br><br>
+                                Sebelum artikel terbit, Boies dan timnya mendatangi kantor Wall Street Journal untuk rapat 5 jam. Mereka mengancam, menggertak, dan berbohong untuk mematikan berita itu. Mereka mengklaim "rahasia dagang."
+                                <br><br>
+                                Carreyrou bertahan. WSJ menerbitkan artikel itu pada Oktober 2015. Itu adalah awal dari kehancuran.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-stone-100 text-stone-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-stone-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Aftermath</span>
+                            <span class="lang-id">Dampak Akhir</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-stone-700 leading-relaxed space-y-6">
+                        <div class="bg-stone-50 p-6 rounded-xl border border-stone-200">
+                            <ul class="list-disc ml-5 space-y-3 text-sm text-stone-700">
+                                <li>
+                                    <span class="lang-en"><strong>Value:</strong> Theranos went from $9 Billion to $0.</span>
+                                    <span class="lang-id"><strong>Nilai:</strong> Theranos jatuh dari $9 Miliar menjadi $0.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Criminal Charges:</strong> Elizabeth Holmes and Sunny Balwani were indicted on federal fraud charges. Both were convicted and sentenced to prison (Elizabeth: 11+ years).</span>
+                                    <span class="lang-id"><strong>Tuntutan Pidana:</strong> Elizabeth Holmes dan Sunny Balwani didakwa atas penipuan federal. Keduanya dihukum penjara (Elizabeth: 11+ tahun).</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>The Lesson:</strong> "Move fast and break things" works for software. It does not work for medicine. When you break things in healthcare, you break people.</span>
+                                    <span class="lang-id"><strong>Pelajaran:</strong> "Bergerak cepat dan hancurkan hal-hal" (Move fast and break things) berhasil untuk software. Tidak untuk kedokteran. Saat Anda menghancurkan hal-hal di layanan kesehatan, Anda menghancurkan manusia.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="text-center mt-6 p-4 bg-stone-900 rounded-lg text-red-500 italic text-sm">
+                            "A sociopath is often described as someone with no conscience. I think Elizabeth had a conscience, but she had the ability to turn it off when it suited her."
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#b91c1c'; // Blood Red
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#404040'; // Charcoal
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-stone-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-stone-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
