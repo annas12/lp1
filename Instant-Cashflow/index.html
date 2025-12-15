@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instant Cashflow — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Emerald/Navy Theme for Money & Business */
+        .active-tab { background: linear-gradient(135deg, #059669 0%, #047857 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #022c22 0%, #064e3b 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #059669; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-emerald-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-emerald-900">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">$</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Instant Cashflow</h2>
+                    <p class="text-emerald-200 text-sm">
+                        <span class="lang-en">The Action Guide</span>
+                        <span class="lang-id">Panduan Aksi</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-emerald-200 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The Business Chassis</span>
+                <span class="lang-id">Rangka Bisnis</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-800 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center text-xs font-bold">💎</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-800 text-emerald-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">The 5 Ways Formula</div>
+                            <div class="text-xs text-emerald-300">
+                                <span class="lang-en">The Math of Growth</span>
+                                <span class="lang-id">Matematika Pertumbuhan</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-800 text-emerald-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Leads & Conversion</div>
+                            <div class="text-xs text-emerald-300">
+                                <span class="lang-en">Acquisition Strategy</span>
+                                <span class="lang-id">Strategi Akuisisi</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-800 text-emerald-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-yellow-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Value & Frequency</div>
+                            <div class="text-xs text-emerald-300">
+                                <span class="lang-en">Avg Sale & Transactions</span>
+                                <span class="lang-id">Rata-rata Penjualan & Transaksi</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-800 text-emerald-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Margins</div>
+                            <div class="text-xs text-emerald-300">
+                                <span class="lang-en">Keep the Money</span>
+                                <span class="lang-id">Simpan Uangnya</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-800 text-emerald-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Case Studies</div>
+                            <div class="text-xs text-emerald-300">
+                                <span class="lang-en">Real Application</span>
+                                <span class="lang-id">Penerapan Nyata</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-emerald-900">
+            <div class="text-center">
+                <p class="text-emerald-400 text-xs">© Brad Sugars</p>
+                <p class="text-emerald-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-emerald-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    Instant Cashflow
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-emerald-700 font-medium px-2">
+                    <span class="lang-en">Hundreds of Proven Strategies to Win Customers and Make More Money</span>
+                    <span class="lang-id">Ratusan Strategi Terbukti untuk Memenangkan Pelanggan dan Menghasilkan Lebih Banyak Uang</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-emerald-500 to-slate-800 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">Core Philosophy</span>
+                            <span class="lang-id">Filosofi Inti</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Cashflow is King</span>
+                            <span class="lang-id">Arus Kas adalah Raja</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-emerald-600 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"Turnover is vanity, profit is sanity, but cash is king."</span>
+                            <span class="lang-id">"Omzet adalah kesombongan, profit adalah kewarasan, tapi uang tunai adalah raja."</span>
+                        </div>
+                        
+                        <p class="mobile-text justified-text lang-en">
+                            Brad Sugars emphasizes that most business owners work <em>in</em> their business, not <em>on</em> their business. They are technicians suffering from an "entrepreneurial seizure." To fix this, you must treat your business as a profitable enterprise that works without you. The lifeblood of this enterprise is <strong>Cashflow</strong>.
+                        </p>
+                        <p class="mobile-text justified-text lang-id">
+                            Brad Sugars menekankan bahwa sebagian besar pemilik bisnis bekerja <em>di dalam</em> bisnis mereka, bukan <em>pada</em> bisnis mereka. Mereka adalah teknisi yang menderita "serangan kewirausahaan." Untuk memperbaikinya, Anda harus memperlakukan bisnis Anda sebagai perusahaan yang menguntungkan yang bekerja tanpa Anda. Darah kehidupan perusahaan ini adalah <strong>Arus Kas</strong>.
+                        </p>
+
+                        <div class="bg-emerald-50 p-6 rounded-xl border border-emerald-200 shadow-sm">
+                            <h4 class="font-bold text-emerald-900 text-lg mb-3 lang-en">The Cash Gap</h4>
+                            <h4 class="font-bold text-emerald-900 text-lg mb-3 lang-id">Celah Kas (Cash Gap)</h4>
+                            
+                            <p class="text-sm text-emerald-800 justified-text lang-en">
+                                Many profitable businesses go bankrupt. Why? Because of the <strong>Cash Gap</strong>.
+                                <br><br>
+                                If you pay your suppliers on Day 1, but your customers pay you on Day 60, you have a 60-day cash gap. You must fund operations for 60 days from your own pocket.
+                                <br><br>
+                                <strong>The Goal:</strong> Narrow the gap. Get paid faster (upfront deposits) and pay suppliers slower (negotiate terms).
+                            </p>
+                            <p class="text-sm text-emerald-800 justified-text lang-id">
+                                Banyak bisnis yang untung (di atas kertas) tapi bangkrut. Kenapa? Karena <strong>Celah Kas</strong>.
+                                <br><br>
+                                Jika Anda membayar pemasok di Hari 1, tapi pelanggan membayar Anda di Hari 60, Anda punya celah kas 60 hari. Anda harus membiayai operasi selama 60 hari dari kantong sendiri.
+                                <br><br>
+                                <strong>Tujuannya:</strong> Persempit celah itu. Minta bayaran lebih cepat (deposit di muka) dan bayar pemasok lebih lambat (negosiasi termin).
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The "5 Ways" Formula</span>
+                            <span class="lang-id">Rumus "5 Cara"</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            This is the core of the book. Most owners want "More Customers" or "More Revenue." But you cannot improve those directly because they are <strong>Results</strong>. You can only improve the <strong>Inputs</strong>.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Ini adalah inti buku ini. Kebanyakan pemilik ingin "Lebih Banyak Pelanggan" atau "Lebih Banyak Omzet." Tapi Anda tidak bisa meningkatkan itu secara langsung karena itu adalah <strong>Hasil</strong>. Anda hanya bisa meningkatkan <strong>Input</strong>.
+                        </p>
+
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-lg">
+                            <div class="font-mono text-sm md:text-base space-y-2 text-slate-800">
+                                <div class="flex flex-wrap items-center">
+                                    <span class="bg-blue-100 px-2 py-1 rounded text-blue-800 font-bold">1. Leads</span>
+                                    <span class="mx-2">x</span>
+                                    <span class="bg-blue-100 px-2 py-1 rounded text-blue-800 font-bold">2. Conversion Rate</span>
+                                    <span class="mx-2">=</span>
+                                    <span class="text-slate-500 font-bold">Customers</span>
+                                </div>
+                                <div class="flex flex-wrap items-center">
+                                    <span class="mx-2">x</span>
+                                    <span class="bg-yellow-100 px-2 py-1 rounded text-yellow-800 font-bold">3. No. of Transactions</span>
+                                    <span class="mx-2">x</span>
+                                    <span class="bg-yellow-100 px-2 py-1 rounded text-yellow-800 font-bold">4. Avg. Dollar Sale</span>
+                                    <span class="mx-2">=</span>
+                                    <span class="text-slate-500 font-bold">Revenue</span>
+                                </div>
+                                <div class="flex flex-wrap items-center">
+                                    <span class="mx-2">x</span>
+                                    <span class="bg-emerald-100 px-2 py-1 rounded text-emerald-800 font-bold">5. Profit Margins</span>
+                                    <span class="mx-2">=</span>
+                                    <span class="text-emerald-700 font-bold text-xl">PROFITS</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">The Power of 10%</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Kekuatan 10%</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                If you increase each of the 5 variables by just 10%, you don't get a 10% increase in profit. You get a massive compound effect.
+                                <br><br>
+                                <strong>The Math:</strong> 1.1 x 1.1 x 1.1 x 1.1 x 1.1 = 1.61
+                                <br><br>
+                                <strong>Result:</strong> A 10% increase in the 5 areas leads to a <strong>61% increase in Profits</strong>.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Jika Anda meningkatkan masing-masing dari 5 variabel hanya sebesar 10%, Anda tidak mendapatkan kenaikan profit 10%. Anda mendapatkan efek majemuk yang masif.
+                                <br><br>
+                                <strong>Matematikanya:</strong> 1.1 x 1.1 x 1.1 x 1.1 x 1.1 = 1.61
+                                <br><br>
+                                <strong>Hasil:</strong> Kenaikan 10% di 5 area menghasilkan <strong>kenaikan 61% dalam Profit</strong>.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Getting Customers</span>
+                            <span class="lang-id">Mendapatkan Pelanggan</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        
+                        <div class="bg-blue-50 p-5 rounded-lg border border-blue-200 shadow-sm">
+                            <h4 class="font-bold text-blue-900 text-lg mb-2 lang-en">1. Number of Leads</h4>
+                            <h4 class="font-bold text-blue-900 text-lg mb-2 lang-id">1. Jumlah Leads (Prospek)</h4>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                A lead is anyone who has contacted you or whom you have contacted. Stop thinking about "Advertising"; think about "Buying Customers."
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Lead adalah siapa saja yang menghubungi Anda atau yang Anda hubungi. Berhenti berpikir tentang "Iklan"; berpikirlah tentang "Membeli Pelanggan."
+                            </p>
+                            
+                            <div class="space-y-3">
+                                <div class="bg-white p-3 rounded border border-blue-100">
+                                    <strong class="text-blue-800 text-sm block mb-1">Strategy: The USP</strong>
+                                    <p class="text-xs text-slate-600 justified-text lang-en">
+                                        Unique Selling Proposition. Why should I buy from you? If you don't have a USP, you compete on price.
+                                        <br><em>Example:</em> Domino's Pizza: "Fresh, hot pizza in 30 minutes or it's free."
+                                    </p>
+                                    <p class="text-xs text-slate-600 justified-text lang-id">
+                                        Proposisi Penjualan Unik. Kenapa saya harus beli dari Anda? Jika tidak punya USP, Anda bersaing harga.
+                                        <br><em>Contoh:</em> Domino's Pizza: "Pizza segar dan panas dalam 30 menit atau gratis."
+                                    </p>
+                                </div>
+                                <div class="bg-white p-3 rounded border border-blue-100">
+                                    <strong class="text-blue-800 text-sm block mb-1">Strategy: The Guarantee</strong>
+                                    <p class="text-xs text-slate-600 justified-text lang-en">
+                                        Remove the risk. If you are good, a guarantee costs you nothing. If you are bad, fix your product.
+                                        <br><em>Example:</em> "100% money back, no questions asked."
+                                    </p>
+                                    <p class="text-xs text-slate-600 justified-text lang-id">
+                                        Hapus risikonya. Jika Anda bagus, garansi tidak memakan biaya. Jika Anda buruk, perbaiki produknya.
+                                        <br><em>Contoh:</em> "100% uang kembali, tanpa pertanyaan."
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">2. Conversion Rate</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">2. Tingkat Konversi</h4>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                How many leads actually buy? If 10 people call and 2 buy, your rate is 20%.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Berapa banyak lead yang benar-benar beli? Jika 10 orang telepon dan 2 beli, tingkat Anda 20%.
+                            </p>
+                            
+                            <ul class="list-disc ml-5 text-sm text-slate-700 space-y-2">
+                                <li>
+                                    <span class="lang-en"><strong>Scripts:</strong> Don't let salespeople wing it. Use proven scripts.</span>
+                                    <span class="lang-id"><strong>Skrip:</strong> Jangan biarkan penjual ngasal. Gunakan skrip teruji.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Benefits, not Features:</strong> Don't sell the drill (feature); sell the hole (benefit).</span>
+                                    <span class="lang-id"><strong>Manfaat, bukan Fitur:</strong> Jangan jual bornya (fitur); jual lubangnya (manfaat).</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Maximizing Value</span>
+                            <span class="lang-id">Memaksimalkan Nilai</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            It is 6x cheaper to sell to an existing customer than to find a new one. This section focuses on mining the gold you already have.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            6x lebih murah menjual ke pelanggan lama daripada mencari pelanggan baru. Bagian ini fokus pada menggali emas yang sudah Anda miliki.
+                        </p>
+
+                        <div class="bg-yellow-50 p-5 rounded-lg border border-yellow-200">
+                            <h4 class="font-bold text-yellow-900 text-lg mb-2 lang-en">3. Average Dollar Sale</h4>
+                            <h4 class="font-bold text-yellow-900 text-lg mb-2 lang-id">3. Rata-rata Nilai Penjualan</h4>
+                            
+                            <div class="space-y-3">
+                                <div class="bg-white p-3 rounded border border-yellow-100">
+                                    <strong class="text-yellow-800 text-sm block mb-1">Add-ons (McDonald's)</strong>
+                                    <p class="text-xs text-slate-600 justified-text lang-en">
+                                        "Do you want fries with that?" This question makes McDonald's millions daily.
+                                        <br><strong>Strategy:</strong> Checklist. "You bought the suit, do you need the tie, the shirt, and the belt?" Never assume they don't want it.
+                                    </p>
+                                    <p class="text-xs text-slate-600 justified-text lang-id">
+                                        "Mau tambah kentang goreng?" Pertanyaan ini menghasilkan jutaan bagi McDonald's setiap hari.
+                                        <br><strong>Strategi:</strong> Daftar periksa. "Anda beli jasnya, apa butuh dasi, kemeja, dan ikat pinggangnya?" Jangan berasumsi mereka tidak mau.
+                                    </p>
+                                </div>
+                                <div class="bg-white p-3 rounded border border-yellow-100">
+                                    <strong class="text-yellow-800 text-sm block mb-1">Price Increases</strong>
+                                    <p class="text-xs text-slate-600 justified-text lang-en">
+                                        Most owners are terrified to raise prices.
+                                        <br><strong>Reality:</strong> If you raise prices by 10%, you might lose 5% of customers, but your profit usually goes UP because you do less work for more money.
+                                    </p>
+                                    <p class="text-xs text-slate-600 justified-text lang-id">
+                                        Kebanyakan pemilik takut menaikkan harga.
+                                        <br><strong>Realita:</strong> Jika Anda naikkan harga 10%, mungkin hilang 5% pelanggan, tapi profit biasanya NAIK karena kerja lebih sedikit untuk uang lebih banyak.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">4. Number of Transactions</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">4. Jumlah Transaksi</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                How often do they come back? Once a year? Twice?
+                                <br><br>
+                                <strong>Strategy: Database Marketing.</strong> You must keep a database of all customers (Email/Phone). Send them offers, newsletters, and birthday cards. 
+                                <br><em>"Out of sight, out of mind."</em> If you don't contact them, they forget you.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Seberapa sering mereka kembali? Setahun sekali? Dua kali?
+                                <br><br>
+                                <strong>Strategi: Pemasaran Database.</strong> Anda harus punya database semua pelanggan (Email/HP). Kirim penawaran, buletin, kartu ulang tahun.
+                                <br><em>"Jauh di mata, jauh di hati."</em> Jika Anda tidak menghubungi mereka, mereka lupa Anda.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Margins</span>
+                            <span class="lang-id">Margin (Keuntungan Bersih)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-emerald-50 p-5 rounded-lg border border-emerald-200">
+                            <h4 class="font-bold text-emerald-900 text-lg mb-2 lang-en">5. Profit Margins</h4>
+                            <h4 class="font-bold text-emerald-900 text-lg mb-2 lang-id">5. Margin Keuntungan</h4>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                Revenue is vanity. Margin is sanity. If you sell $1M but it costs $999k to make, you are broke.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Omzet adalah kesombongan. Margin adalah kewarasan. Jika Anda jual $1 Juta tapi biayanya $999rb, Anda bangkrut.
+                            </p>
+                            
+                            <ul class="list-disc ml-5 text-sm text-emerald-800 space-y-2">
+                                <li>
+                                    <span class="lang-en"><strong>No Discounts:</strong> Discounting kills margins fast. Instead of 10% off, give a "Value Add" (e.g., Free Bonus Gift). It has high perceived value but low cost to you.</span>
+                                    <span class="lang-id"><strong>Jangan Diskon:</strong> Diskon membunuh margin dengan cepat. Daripada diskon 10%, beri "Nilai Tambah" (misal: Hadiah Bonus). Nilainya terlihat tinggi tapi biayanya rendah buat Anda.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>Fire D-Grade Customers:</strong> The customers who complain the most usually pay the least. Fire them. It frees up time to serve the A-Grade customers who pay full price.</span>
+                                    <span class="lang-id"><strong>Pecat Pelanggan Kelas D:</strong> Pelanggan yang paling banyak komplain biasanya bayar paling sedikit. Pecat mereka. Ini membebaskan waktu untuk melayani pelanggan Kelas A yang bayar penuh.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Real World Application</span>
+                            <span class="lang-id">Penerapan Dunia Nyata</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">Case Study: The Hairdresser</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Studi Kasus: Penata Rambut</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                <strong>Problem:</strong> Working 60 hours/week, barely breaking even.
+                                <br><br>
+                                <strong>Action 1 (Avg Sale):</strong> She started suggesting premium shampoos to every client.
+                                <br><strong>Action 2 (Transactions):</strong> She started booking the <em>next</em> appointment before the client left the salon (increasing frequency from 8 weeks to 6 weeks).
+                                <br><strong>Action 3 (Leads):</strong> She created a referral program: "Bring a friend, you get a free treatment."
+                                <br><br>
+                                <strong>Result:</strong> Revenue doubled in 6 months without working extra hours.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                <strong>Masalah:</strong> Kerja 60 jam/minggu, pas-pasan.
+                                <br><br>
+                                <strong>Aksi 1 (Rata2 Jual):</strong> Dia mulai menyarankan sampo premium ke setiap klien.
+                                <br><strong>Aksi 2 (Transaksi):</strong> Dia mulai menjadwalkan janji temu <em>berikutnya</em> sebelum klien keluar salon (meningkatkan frekuensi dari 8 minggu jadi 6 minggu).
+                                <br><strong>Aksi 3 (Leads):</strong> Dia buat program referensi: "Bawa teman, dapat perawatan gratis."
+                                <br><br>
+                                <strong>Hasil:</strong> Omzet naik dua kali lipat dalam 6 bulan tanpa tambah jam kerja.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">Case Study: The Retail Store (Bundling)</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Studi Kasus: Toko Ritel (Bundling)</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                <strong>Problem:</strong> Competition from big box stores on price.
+                                <br><br>
+                                <strong>Action (Margin/Avg Sale):</strong> Instead of discounting individual items, the owner created "Packages."
+                                <br>Instead of selling a camera for $500 (low margin), he sold a "Photographer Starter Kit" (Camera + Bag + Tripod + Memory Card + Cleaning Cloth) for $650.
+                                <br><br>
+                                <strong>Result:</strong> Competitors couldn't compare prices directly because the bundle was unique. The margin on accessories (Bag/Tripod) was huge (70%), masking the low margin on the camera. Profits soared.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                <strong>Masalah:</strong> Persaingan harga dengan toko raksasa.
+                                <br><br>
+                                <strong>Aksi (Margin/Rata2 Jual):</strong> Daripada diskon barang satuan, pemilik membuat "Paket."
+                                <br>Daripada jual kamera $500 (margin rendah), dia jual "Paket Pemula Fotografer" (Kamera + Tas + Tripod + Kartu Memori + Kain Lap) seharga $650.
+                                <br><br>
+                                <strong>Hasil:</strong> Pesaing tidak bisa membandingkan harga langsung karena paketnya unik. Margin aksesoris (Tas/Tripod) sangat besar (70%), menutupi margin rendah kamera. Profit melonjak.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#059669'; // Emerald
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#1e3a8a'; // Navy
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-emerald-100');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-emerald-100');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
