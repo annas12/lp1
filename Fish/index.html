@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fish! — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Cyan/Orange Theme for Ocean & Energy */
+        .active-tab { background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #06b6d4; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-cyan-50 to-blue-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-cyan-900">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">🐟</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Fish!</h2>
+                    <p class="text-cyan-200 text-sm">
+                        <span class="lang-en">The Philosophy</span>
+                        <span class="lang-id">Filosofi</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-cyan-200 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The 4 Principles</span>
+                <span class="lang-id">4 Prinsip</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-cyan-800 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-cyan-600 rounded-lg flex items-center justify-center text-xs font-bold">🗑️</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-cyan-800 text-cyan-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Choose Your Attitude</div>
+                            <div class="text-xs text-cyan-300">
+                                <span class="lang-en">The Foundation</span>
+                                <span class="lang-id">Fondasi Dasar</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-cyan-800 text-cyan-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-yellow-500 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Play</div>
+                            <div class="text-xs text-cyan-300">
+                                <span class="lang-en">Fun & Creativity</span>
+                                <span class="lang-id">Kesenangan & Kreativitas</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-cyan-800 text-cyan-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Make Their Day</div>
+                            <div class="text-xs text-cyan-300">
+                                <span class="lang-en">Engage Customers</span>
+                                <span class="lang-id">Libatkan Pelanggan</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-cyan-800 text-cyan-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Be There</div>
+                            <div class="text-xs text-cyan-300">
+                                <span class="lang-en">Present Moment</span>
+                                <span class="lang-id">Momen Saat Ini</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-cyan-800 text-cyan-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Transformation</div>
+                            <div class="text-xs text-cyan-300">
+                                <span class="lang-en">The Toxic Dump</span>
+                                <span class="lang-id">Tempat Pembuangan Racun</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-cyan-900">
+            <div class="text-center">
+                <p class="text-cyan-400 text-xs">© Lundin, Paul, Christensen</p>
+                <p class="text-cyan-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-cyan-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    Fish!
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-cyan-700 font-medium px-2">
+                    <span class="lang-en">A Proven Way to Boost Morale and Improve Results</span>
+                    <span class="lang-id">Cara Terbukti untuk Meningkatkan Semangat dan Memperbaiki Hasil</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-cyan-500 to-orange-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-cyan-100 text-cyan-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Story</span>
+                            <span class="lang-id">Ceritanya</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Mary Jane & The Toxic Energy Dump</span>
+                            <span class="lang-id">Mary Jane & Tempat Pembuangan Energi Beracun</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-cyan-500 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"They call this floor the Toxic Energy Dump. It sucks the life out of anyone who enters."</span>
+                            <span class="lang-id">"Mereka menyebut lantai ini Tempat Pembuangan Energi Beracun. Ini menyedot kehidupan dari siapa pun yang masuk."</span>
+                        </div>
+                        
+                        <p class="mobile-text justified-text lang-en">
+                            <strong>The Problem:</strong> Mary Jane Ramirez is a manager at "First Guarantee Financial." She has just been promoted to lead the Operations Department on the 3rd floor. The problem? The 3rd floor is infamous. It's quiet, lifeless, and the employees are slow, uninspired, and cynical. It's where careers go to die.
+                            <br><br>
+                            Mary Jane is stressed. She has a loving husband (Dan) who died recently, two kids, and a job she can't afford to lose. She needs a miracle to turn this "Toxic Dump" around.
+                        </p>
+                        <p class="mobile-text justified-text lang-id">
+                            <strong>Masalahnya:</strong> Mary Jane Ramirez adalah manajer di "First Guarantee Financial." Dia baru saja dipromosikan untuk memimpin Departemen Operasi di lantai 3. Masalahnya? Lantai 3 itu terkenal buruk. Sepi, tak bernyawa, dan karyawannya lamban, tidak terinspirasi, dan sinis. Di situlah karir pergi untuk mati.
+                            <br><br>
+                            Mary Jane stres. Dia punya suami tercinta (Dan) yang baru meninggal, dua anak, dan pekerjaan yang tidak boleh hilang. Dia butuh keajaiban untuk mengubah "Tempat Sampah Beracun" ini.
+                        </p>
+
+                        <div class="bg-cyan-50 p-6 rounded-xl border border-cyan-200 shadow-sm">
+                            <h4 class="font-bold text-cyan-900 text-lg mb-3 lang-en">The Discovery: Pike Place Market</h4>
+                            <h4 class="font-bold text-cyan-900 text-lg mb-3 lang-id">Penemuan: Pasar Pike Place</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                On her lunch break, Mary Jane wanders down to the famous Pike Place Fish Market in Seattle. She sees something impossible:
+                                <br><br>
+                                Fishermen are covered in slime, working in freezing cold, smelling like dead fish, and standing for 10 hours. <strong>Yet, they are the happiest people she has ever seen.</strong> They are shouting, throwing fish, laughing with customers, and creating energy.
+                                <br><br>
+                                She meets <strong>Lonnie</strong>, a fishmonger, who agrees to teach her the 4 secrets of their success.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Saat istirahat makan siang, Mary Jane berjalan-jalan ke Pasar Ikan Pike Place yang terkenal di Seattle. Dia melihat sesuatu yang mustahil:
+                                <br><br>
+                                Nelayan berlumuran lendir, bekerja di tempat sangat dingin, bau ikan mati, dan berdiri selama 10 jam. <strong>Namun, mereka adalah orang paling bahagia yang pernah dia lihat.</strong> Mereka berteriak, melempar ikan, tertawa dengan pelanggan, dan menciptakan energi.
+                                <br><br>
+                                Dia bertemu <strong>Lonnie</strong>, seorang penjual ikan, yang setuju untuk mengajarinya 4 rahasia kesuksesan mereka.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-orange-100 text-orange-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Principle 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Choose Your Attitude</span>
+                            <span class="lang-id">Pilih Sikap Anda</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-orange-50 p-5 rounded-lg border border-orange-200">
+                            <strong class="block text-orange-900 text-lg mb-2 lang-en">The Core Lesson</strong>
+                            <strong class="block text-orange-900 text-lg mb-2 lang-id">Pelajaran Inti</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Even if you cannot choose the job itself, you can always choose how you do it.
+                                <br><br>
+                                Lonnie explains: "We realized we were going to be here anyway. We could either be miserable and bored, or we could be world-famous. We chose to be world-famous."
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Bahkan jika Anda tidak bisa memilih pekerjaannya, Anda selalu bisa memilih bagaimana Anda melakukannya.
+                                <br><br>
+                                Lonnie menjelaskan: "Kami sadar kami tetap akan berada di sini. Kami bisa menderita dan bosan, atau kami bisa jadi terkenal di dunia. Kami memilih untuk jadi terkenal di dunia."
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">Application: The "Good Morning" Test</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">Penerapan: Tes "Selamat Pagi"</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Many people bring their "home problems" to work, or their "traffic anger" to the desk. This infects the team.
+                                <br><br>
+                                <strong>The Strategy:</strong> Before you enter the office door, pause. Check your attitude. Are you bringing poison or passion? You have the power to "reset" your brain. Choosing your attitude is a moment-to-moment decision, not a permanent state.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Banyak orang membawa "masalah rumah" ke tempat kerja, atau "kemarahan macet" ke meja kerja. Ini menulari tim.
+                                <br><br>
+                                <strong>Strategi:</strong> Sebelum masuk pintu kantor, berhenti sejenak. Cek sikap Anda. Apakah Anda membawa racun atau gairah? Anda punya kekuatan untuk "reset" otak Anda. Memilih sikap adalah keputusan dari momen ke momen, bukan keadaan permanen.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Principle 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Play</span>
+                            <span class="lang-id">Bermain (Play)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Play does not mean avoiding work. It means approaching work with a light heart. It invites creativity and camaraderie.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Bermain bukan berarti menghindari kerja. Itu berarti mendekati pekerjaan dengan hati yang ringan. Ini mengundang kreativitas dan persahabatan.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-cyan-50 p-4 rounded-lg border border-cyan-200">
+                                <strong class="block text-cyan-900 text-lg mb-2 lang-en">The Flying Fish</strong>
+                                <strong class="block text-cyan-900 text-lg mb-2 lang-id">Ikan Terbang</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    At the market, when a customer orders a salmon, the fishmongers throw the fish 15 feet through the air to the counter, yelling the order in unison.
+                                    <br><br>
+                                    <strong>Why?</strong> It's efficient, but mainly it's FUN. It turns a transaction into a show. It makes the time pass faster for workers and delights customers.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Di pasar, saat pelanggan pesan salmon, penjual melempar ikan itu sejauh 5 meter di udara ke meja kasir, meneriakkan pesanan serempak.
+                                    <br><br>
+                                    <strong>Kenapa?</strong> Itu efisien, tapi utamanya itu SERU. Itu mengubah transaksi jadi pertunjukan. Itu membuat waktu terasa cepat bagi pekerja dan menyenangkan pelanggan.
+                                </p>
+                            </div>
+
+                            <div class="bg-slate-100 p-4 rounded-lg border border-slate-300">
+                                <strong class="block text-slate-900 text-lg mb-2 lang-en">Office Application</strong>
+                                <strong class="block text-slate-900 text-lg mb-2 lang-id">Penerapan di Kantor</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    You don't have to throw staplers. But you can gamify tasks.
+                                    <br><br>
+                                    Mary Jane's team started giving out funny awards ("The Rodent Award" for navigating the rat race). They put up posters. They allowed laughter in meetings. <strong>Serious business can be done with a smile.</strong>
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Anda tidak perlu melempar stepler. Tapi Anda bisa gamifikasi tugas.
+                                    <br><br>
+                                    Tim Mary Jane mulai memberikan penghargaan lucu ("The Rodent Award" untuk navigasi di perlombaan tikus). Mereka pasang poster. Mereka izinkan tawa dalam rapat. <strong>Bisnis serius bisa dilakukan dengan senyum.</strong>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Principle 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Make Their Day</span>
+                            <span class="lang-id">Buat Hari Mereka Indah (Make Their Day)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-blue-50 p-5 rounded-lg border border-blue-200 shadow-sm">
+                            <h4 class="font-bold text-blue-900 text-lg mb-2 lang-en">Focus Outward</h4>
+                            <h4 class="font-bold text-blue-900 text-lg mb-2 lang-id">Fokus Keluar</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                When you are depressed or bored, you are usually focused on <em>yourself</em> ("I am tired, I hate this").
+                                <br><br>
+                                The antidote is to focus on making someone else happy. When you engage a customer or colleague in a way that lifts their spirits, you inadvertently lift your own.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Saat Anda depresi atau bosan, biasanya Anda fokus pada <em>diri sendiri</em> ("Aku lelah, aku benci ini").
+                                <br><br>
+                                Penawarnya adalah fokus membuat orang lain bahagia. Saat Anda melibatkan pelanggan atau rekan kerja dengan cara yang mengangkat semangat mereka, Anda secara tidak sengaja mengangkat semangat Anda sendiri.
+                            </p>
+                        </div>
+
+                        <div class="border-l-4 border-orange-500 pl-4 mt-4">
+                            <strong class="block text-slate-900 text-lg mb-2 lang-en">Small Gestures</strong>
+                            <strong class="block text-slate-900 text-lg mb-2 lang-id">Gestur Kecil</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                It doesn't require money. It requires attention.
+                                <br>• Asking a customer about their day and <em>meaning</em> it.
+                                <br>• Playing a prank (like the "monkfish" scare at the market) that makes them laugh.
+                                <br>• Remembering a name.
+                                <br><br>
+                                <strong>The Goal:</strong> Create a memory, not just a transaction.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Tidak butuh uang. Butuh perhatian.
+                                <br>• Tanya pelanggan tentang hari mereka dan <em>bersungguh-sungguh</em>.
+                                <br>• Melakukan lelucon (seperti menakut-nakuti dengan "monkfish" di pasar) yang membuat mereka tertawa.
+                                <br>• Mengingat nama.
+                                <br><br>
+                                <strong>Tujuan:</strong> Ciptakan kenangan, bukan sekadar transaksi.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Principle 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Be There</span>
+                            <span class="lang-id">Hadir Sepenuhnya (Be There)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            In a world of multitasking, "being present" is a rare gift. It means giving 100% of your attention to the person in front of you.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Di dunia multitasking, "hadir" adalah hadiah langka. Artinya memberikan 100% perhatian Anda kepada orang di depan Anda.
+                        </p>
+
+                        <div class="bg-indigo-50 p-5 rounded-lg border border-indigo-200">
+                            <h4 class="font-bold text-indigo-900 text-lg mb-2 lang-en">The Look of Presence</h4>
+                            <h4 class="font-bold text-indigo-900 text-lg mb-2 lang-id">Tampilan Kehadiran</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                The fishmongers are busy, but when they talk to a customer, they lock eyes. They ignore the crowd for a moment.
+                                <br><br>
+                                <strong>In the Office:</strong>
+                                <br>• Turn away from the computer when someone speaks.
+                                <br>• Put the phone down.
+                                <br>• Listen to understand, not just to reply.
+                                <br><br>
+                                Being there tells the other person: <strong>"You are important."</strong> This builds trust instantly.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Penjual ikan sibuk, tapi saat bicara dengan pelanggan, mereka menatap mata. Mereka mengabaikan keramaian sesaat.
+                                <br><br>
+                                <strong>Di Kantor:</strong>
+                                <br>• Berpaling dari komputer saat orang bicara.
+                                <br>• Letakkan ponsel.
+                                <br>• Mendengar untuk mengerti, bukan cuma untuk membalas.
+                                <br><br>
+                                Hadir memberitahu orang lain: <strong>"Anda penting."</strong> Ini membangun kepercayaan seketika.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Transformation</span>
+                            <span class="lang-id">Transformasi</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                            <strong class="block text-slate-900 text-lg mb-3 lang-en">Cleaning the Toxic Dump</strong>
+                            <strong class="block text-slate-900 text-lg mb-3 lang-id">Membersihkan Tempat Pembuangan Racun</strong>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-en">
+                                Mary Jane brought these principles back to the 3rd floor. It didn't happen overnight.
+                                <br><br>
+                                1. She shared the vision (Choose Your Attitude).
+                                <br>2. She found a "Play" committee to make work fun.
+                                <br>3. They started rewarding people who "Made Their Day."
+                                <br><br>
+                                <strong>The Result:</strong> Within a year, the "Toxic Energy Dump" became the most requested floor to work on. Productivity soared, turnover dropped, and Mary Jane got a promotion.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-4 lang-id">
+                                Mary Jane membawa prinsip ini kembali ke lantai 3. Tidak terjadi dalam semalam.
+                                <br><br>
+                                1. Dia membagikan visi (Pilih Sikap Anda).
+                                <br>2. Dia membentuk komite "Bermain" agar kerja jadi seru.
+                                <br>3. Mereka mulai memberi hadiah pada orang yang "Membuat Hari Orang Lain Indah."
+                                <br><br>
+                                <strong>Hasilnya:</strong> Dalam setahun, "Tempat Sampah Energi Beracun" menjadi lantai yang paling diminati untuk bekerja. Produktivitas melonjak, turnover turun, dan Mary Jane dapat promosi.
+                            </p>
+                        </div>
+                        
+                        <div class="text-center mt-6 p-4 bg-cyan-100 rounded-lg text-cyan-900 italic font-medium">
+                            <span class="lang-en">"As you enter this place of work please choose to make today a great day. Your colleagues, customers, team members, and you yourself will be thankful."</span>
+                            <span class="lang-id">"Saat Anda memasuki tempat kerja ini, silakan pilih untuk menjadikan hari ini hari yang hebat. Rekan kerja, pelanggan, anggota tim, dan Anda sendiri akan berterima kasih."</span>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#06b6d4'; // Cyan
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#f97316'; // Orange
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-cyan-100');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-cyan-100');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
