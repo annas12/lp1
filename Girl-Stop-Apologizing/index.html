@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Girl, Stop Apologizing — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Hot Pink/Slate Theme for Bold Empowerment */
+        .active-tab { background: linear-gradient(135deg, #db2777 0%, #be185d 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(236, 72, 153, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #be185d; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-pink-50 to-slate-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-pink-500 to-rose-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">R</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Stop Apologizing</h2>
+                    <p class="text-slate-400 text-sm">
+                        <span class="lang-en">Master Edition</span>
+                        <span class="lang-id">Edisi Master</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">The Framework</span>
+                <span class="lang-id">Kerangka Kerja</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-800 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-pink-600 rounded-lg flex items-center justify-center text-xs font-bold">🚫</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-800 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-rose-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Excuses</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Letting Go</span>
+                                <span class="lang-id">Melepaskan Alasan</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-800 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Behaviors</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Habits to Adopt</span>
+                                <span class="lang-id">Kebiasaan Baru</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-800 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Skills</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Tools for Success</span>
+                                <span class="lang-id">Alat Sukses</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-800 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">10-10-1 Plan</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">The Roadmap</span>
+                                <span class="lang-id">Peta Jalan</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© Rachel Hollis</p>
+                <p class="text-slate-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 mb-2 mobile-title">
+                    Girl, Stop Apologizing
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-pink-600 font-medium px-2">
+                    <span class="lang-en">A Shame-Free Plan for Embracing and Achieving Your Goals</span>
+                    <span class="lang-id">Rencana Bebas Rasa Malu untuk Merangkul dan Mencapai Tujuan Anda</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-pink-500 to-slate-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-pink-100 text-pink-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Wake-Up Call</span>
+                            <span class="lang-id">Panggilan Bangun</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Stop Asking for Permission</span>
+                            <span class="lang-id">Berhenti Meminta Izin</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-pink-500 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"You are the only one who can make your dreams a reality. Stop waiting for someone else to give you the green light."</span>
+                            <span class="lang-id">"Hanya kamu satu-satunya yang bisa mewujudkan mimpimu. Berhenti menunggu orang lain memberimu lampu hijau."</span>
+                        </div>
+                        
+                        <div class="mobile-text justified-text">
+                            <p class="lang-en mb-4">
+                                Rachel Hollis begins by addressing a pervasive problem among women: the tendency to apologize for having dreams, for wanting more, or for being ambitious. Society often conditions women to believe that their value lies in how well they serve others—as mothers, wives, or employees—often at the expense of their own identity.
+                            </p>
+                            <p class="lang-id mb-4">
+                                Rachel Hollis memulai dengan membahas masalah yang merajalela di kalangan wanita: kecenderungan untuk meminta maaf karena memiliki mimpi, karena menginginkan lebih, atau karena ambisius. Masyarakat sering mengkondisikan wanita untuk percaya bahwa nilai mereka terletak pada seberapa baik mereka melayani orang lain—sebagai ibu, istri, atau karyawan—seringkali dengan mengorbankan identitas mereka sendiri.
+                            </p>
+                            
+                            <p class="lang-en">
+                                The central thesis is that you do not need permission to pursue a goal. Your dream does not need to "make sense" to your partner, your parents, or your friends. It is <em>your</em> dream. Apologizing for it signals that you feel unworthy of it. To achieve greatness, you must first stop feeling guilty for wanting it.
+                            </p>
+                            <p class="lang-id">
+                                Tesis utamanya adalah bahwa Anda tidak memerlukan izin untuk mengejar tujuan. Mimpi Anda tidak harus "masuk akal" bagi pasangan, orang tua, atau teman Anda. Itu adalah mimpi <em>Anda</em>. Meminta maaf untuk itu menandakan bahwa Anda merasa tidak layak mendapatkannya. Untuk mencapai kehebatan, Anda harus terlebih dahulu berhenti merasa bersalah karena menginginkannya.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-pink-700 text-lg mb-3 lang-en">The "Good Girl" Syndrome</h4>
+                            <h4 class="font-bold text-pink-700 text-lg mb-3 lang-id">Sindrom "Gadis Baik"</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Many women suffer from the desire to be seen as a "Good Girl." This means being polite, accommodating, and making everyone else comfortable. Hollis argues that you cannot change the world (or your life) while trying to keep everyone comfortable. Growth is inherently uncomfortable. If you are worried about what people will think, you will never launch that business, write that book, or lose that weight.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Banyak wanita menderita keinginan untuk dilihat sebagai "Gadis Baik." Artinya sopan, akomodatif, dan membuat orang lain nyaman. Hollis berargumen bahwa Anda tidak bisa mengubah dunia (atau hidup Anda) sambil berusaha menjaga kenyamanan semua orang. Pertumbuhan pada dasarnya tidak nyaman. Jika Anda khawatir tentang apa yang orang pikirkan, Anda tidak akan pernah memulai bisnis itu, menulis buku itu, atau menurunkan berat badan itu.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Excuses to Let Go</span>
+                            <span class="lang-id">Alasan untuk Dilepaskan</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Before you can build new habits, you must dismantle the lies you tell yourself. These excuses are safety mechanisms designed to keep you small.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Sebelum Anda bisa membangun kebiasaan baru, Anda harus membongkar kebohongan yang Anda ceritakan pada diri sendiri. Alasan-alasan ini adalah mekanisme keamanan yang dirancang untuk membuat Anda tetap kerdil.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-pink-50 p-5 rounded-lg border border-pink-200">
+                                <strong class="block text-pink-900 text-lg mb-2 lang-en">"I'm Not Enough"</strong>
+                                <strong class="block text-pink-900 text-lg mb-2 lang-id">"Saya Tidak Cukup Baik"</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    This is the root of Imposter Syndrome. Women often feel they need to be experts before they even start. Hollis explains that no one feels "ready" when they begin. Competence comes <em>after</em> you start, not before. You gain confidence by doing the thing, failing, and realizing you survived.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Ini adalah akar dari Imposter Syndrome. Wanita sering merasa mereka harus jadi ahli sebelum memulai. Hollis menjelaskan bahwa tidak ada yang merasa "siap" saat mulai. Kompetensi datang <em>setelah</em> Anda mulai, bukan sebelumnya. Anda dapat percaya diri dengan melakukan sesuatu, gagal, dan menyadari Anda selamat.
+                                </p>
+                            </div>
+
+                            <div class="bg-slate-50 p-5 rounded-lg border border-slate-200">
+                                <strong class="block text-slate-900 text-lg mb-2 lang-en">"I Don't Have Time"</strong>
+                                <strong class="block text-slate-900 text-lg mb-2 lang-id">"Saya Tidak Punya Waktu"</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    This is a lie about priorities. You have the same amount of hours as Beyoncé. If you say you don't have time, you are saying it's not a priority. You must be willing to trade leisure (Netflix, scrolling) for your dream. You have to steal moments—wake up an hour early, work during lunch breaks.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Ini adalah kebohongan tentang prioritas. Anda punya jumlah jam yang sama dengan Beyoncé. Jika Anda bilang tidak punya waktu, Anda bilang itu bukan prioritas. Anda harus rela menukar waktu santai (Netflix, scrolling) demi mimpi Anda. Anda harus mencuri momen—bangun sejam lebih awal, kerja saat jam makan siang.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="border-l-4 border-pink-600 pl-4 mt-4">
+                            <strong class="block text-slate-900 text-lg mb-2 lang-en">"What Will They Think?"</strong>
+                            <strong class="block text-slate-900 text-lg mb-2 lang-id">"Apa Kata Orang Nanti?"</strong>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                The fear of judgment is actually the fear of being unloved. We evolved to stay in the tribe for safety. But in modern life, "they" (the critics) don't pay your bills.
+                                <br><br>
+                                <strong>Reality Check:</strong> Other people's opinions of you are none of your business. If someone judges your ambition, it is a reflection of <em>their</em> insecurities, not your capability. You must cultivate selective hearing.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Ketakutan akan penghakiman sebenarnya adalah ketakutan tidak dicintai. Kita berevolusi untuk tetap dalam suku demi keamanan. Tapi di kehidupan modern, "mereka" (kritikus) tidak membayar tagihan Anda.
+                                <br><br>
+                                <strong>Cek Realita:</strong> Pendapat orang lain tentang Anda bukan urusan Anda. Jika seseorang menghakimi ambisi Anda, itu adalah cerminan dari rasa tidak aman <em>mereka</em>, bukan kemampuan Anda. Anda harus melatih pendengaran selektif.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-purple-100 text-purple-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Behaviors to Adopt</span>
+                            <span class="lang-id">Perilaku untuk Diadopsi</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Once you stop making excuses, you need to install new operating software. These are the habits of successful women.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Setelah Anda berhenti membuat alasan, Anda perlu menginstal perangkat lunak operasi baru. Ini adalah kebiasaan wanita sukses.
+                        </p>
+
+                        <div class="bg-purple-50 p-6 rounded-xl border border-purple-200">
+                            <h4 class="font-bold text-purple-900 text-lg mb-3 lang-en">1. Choose One Dream</h4>
+                            <h4 class="font-bold text-purple-900 text-lg mb-3 lang-id">1. Pilih Satu Mimpi</h4>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                Women are often excellent multitaskers, but this kills big dreams. If you try to start a business, run a marathon, and write a book all at once, you will fail at all three.
+                                <br><br>
+                                <strong>The Strategy:</strong> Pick ONE goal. Focus all your spare energy on that single point until you achieve traction. It's about depth, not width. You can have it all, just not all at once.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Wanita seringkali hebat dalam multitasking, tapi ini membunuh mimpi besar. Jika Anda mencoba memulai bisnis, lari maraton, dan menulis buku sekaligus, Anda akan gagal di ketiganya.
+                                <br><br>
+                                <strong>Strategi:</strong> Pilih SATU tujuan. Fokuskan semua energi cadangan Anda pada satu titik itu sampai Anda mendapatkan traksi. Ini soal kedalaman, bukan keluasan. Anda bisa memiliki semuanya, hanya tidak sekaligus.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 mt-4 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-en">2. Embrace Ambition</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-3 lang-id">2. Merangkul Ambisi</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                "Ambition" is often a dirty word for women (implying selfishness or bossiness). Hollis reclaims it. Ambition is simply the drive to live up to your God-given potential.
+                                <br><br>
+                                If you deny your ambition, you become bitter and resentful. Embracing it allows you to serve others from a place of abundance rather than depletion. Being ambitious makes you a better role model for your children, showing them that women can be leaders.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                "Ambisi" seringkali jadi kata kotor bagi wanita (menyiratkan keegoisan atau suka memerintah). Hollis merebutnya kembali. Ambisi hanyalah dorongan untuk hidup sesuai potensi pemberian Tuhan.
+                                <br><br>
+                                Jika Anda menyangkal ambisi, Anda menjadi pahit dan penuh kebencian. Merangkulnya memungkinkan Anda melayani orang lain dari kelimpahan, bukan kekurangan. Menjadi ambisius membuat Anda jadi panutan yang lebih baik bagi anak-anak, menunjukkan bahwa wanita bisa jadi pemimpin.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Skills to Acquire</span>
+                            <span class="lang-id">Keterampilan untuk Dikuasai</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            You aren't born knowing how to be a CEO or an author. You learn.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Anda tidak lahir langsung tahu cara jadi CEO atau penulis. Anda belajar.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-indigo-50 p-5 rounded-lg border border-indigo-200">
+                                <strong class="block text-indigo-900 text-lg mb-2 lang-en">Planning</strong>
+                                <strong class="block text-indigo-900 text-lg mb-2 lang-id">Perencanaan</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    A goal without a plan is just a wish. Planning means breaking the big dream down into daily, actionable steps. If you want to write a book, the plan isn't "write a book." It's "write 500 words every morning at 6 AM."
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Tujuan tanpa rencana hanyalah harapan. Perencanaan berarti memecah mimpi besar menjadi langkah harian yang bisa dilakukan. Jika ingin menulis buku, rencananya bukan "tulis buku." Tapi "tulis 500 kata setiap pagi jam 6."
+                                </p>
+                            </div>
+
+                            <div class="bg-slate-100 p-5 rounded-lg border border-slate-300">
+                                <strong class="block text-slate-900 text-lg mb-2 lang-en">Confidence</strong>
+                                <strong class="block text-slate-900 text-lg mb-2 lang-id">Kepercayaan Diri</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Confidence is a skill, not a trait. You build it by keeping promises to yourself. Every time you say you will go to the gym and you do, you deposit a coin in your confidence bank. If you flake, you withdraw. Build a track record of keeping your word.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Percaya diri adalah keterampilan, bukan sifat. Anda membangunnya dengan menepati janji pada diri sendiri. Setiap kali Anda bilang mau ke gym dan Anda pergi, Anda menabung koin di bank kepercayaan diri. Jika Anda batal, Anda menariknya. Bangun rekam jejak menepati kata-kata.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-teal-100 text-teal-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">The Roadmap</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The 10-10-1 Plan</span>
+                            <span class="lang-id">Rencana 10-10-1</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-white p-6 rounded-xl border border-teal-200 shadow-lg">
+                            <p class="text-sm text-slate-600 justified-text mb-4 lang-en">
+                                This is the practical exercise Hollis uses to achieve her massive goals. It forces clarity and focus.
+                            </p>
+                            <p class="text-sm text-slate-600 justified-text mb-4 lang-id">
+                                Ini adalah latihan praktis yang digunakan Hollis untuk mencapai tujuan besarnya. Ini memaksa kejelasan dan fokus.
+                            </p>
+
+                            <ol class="list-decimal ml-5 space-y-4 text-sm text-slate-800">
+                                <li>
+                                    <strong class="block text-teal-700 text-lg mb-1">10 Years (The Vision)</strong>
+                                    <p class="justified-text lang-en">
+                                        Imagine your best life in 10 years. Be extremely specific. How much money do you make? How do you dress? What does your house look like? Write it down in detail. This establishes the destination.
+                                    </p>
+                                    <p class="justified-text lang-id">
+                                        Bayangkan kehidupan terbaik Anda dalam 10 tahun. Sangat spesifik. Berapa penghasilan Anda? Bagaimana pakaian Anda? Seperti apa rumah Anda? Tulis dengan detail. Ini menetapkan tujuan akhir.
+                                    </p>
+                                </li>
+                                <li>
+                                    <strong class="block text-teal-700 text-lg mb-1">10 Dreams (The Criteria)</strong>
+                                    <p class="justified-text lang-en">
+                                        Write down 10 dreams that would need to happen to make that 10-Year vision real. Write them as if they have already happened. (e.g., "I am a New York Times Bestseller," not "I want to be...").
+                                    </p>
+                                    <p class="justified-text lang-id">
+                                        Tulis 10 mimpi yang harus terjadi untuk mewujudkan visi 10 tahun itu. Tulis seolah-olah sudah terjadi. (misal: "Saya adalah Penulis Terlaris NYT," bukan "Saya ingin menjadi...").
+                                    </p>
+                                </li>
+                                <li>
+                                    <strong class="block text-teal-700 text-lg mb-1">1 Goal (The Focus)</strong>
+                                    <p class="justified-text lang-en">
+                                        Look at your list of 10 dreams. Pick the ONE goal that, if achieved first, would make the others easier or possible (The Domino Effect). Focus 100% on this goal for the next year.
+                                    </p>
+                                    <p class="justified-text lang-id">
+                                        Lihat daftar 10 mimpi Anda. Pilih SATU tujuan yang, jika tercapai duluan, akan membuat yang lain lebih mudah atau mungkin (Efek Domino). Fokus 100% pada tujuan ini untuk tahun depan.
+                                    </p>
+                                </li>
+                            </ol>
+                        </div>
+
+                        <div class="text-center mt-6 p-4 bg-pink-50 rounded-lg text-pink-900 italic font-medium">
+                            <span class="lang-en">"Someone else's opinion of you is none of your business. Go get your dream."</span>
+                            <span class="lang-id">"Pendapat orang lain tentang kamu bukan urusanmu. Pergi raih mimpimu."</span>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#be185d'; // Pink
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#475569'; // Slate
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
