@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Little Red Book of Selling — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Red/Gold Theme - Bold & Classic */
+        .active-tab { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #450a0a 0%, #7f1d1d 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #7f1d1d 0%, #450a0a 100%); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #dc2626; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-red-50 to-orange-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-red-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-red-700 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">G</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">Little Red Book</h2>
+                    <p class="text-red-200 text-sm">
+                        <span class="lang-en">Sales Mastery</span>
+                        <span class="lang-id">Penguasaan Penjualan</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-red-200 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">12.5 Principles</span>
+                <span class="lang-id">12.5 Prinsip</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-red-800 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center text-xs font-bold">📕</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-red-800 text-red-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">Preparation</div>
+                            <div class="text-xs text-red-300">
+                                <span class="lang-en">Kick Your Own Ass</span>
+                                <span class="lang-id">Pecut Diri Sendiri</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-red-800 text-red-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-yellow-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Value & Brand</div>
+                            <div class="text-xs text-red-300">
+                                <span class="lang-en">It's Not Price</span>
+                                <span class="lang-id">Bukan Soal Harga</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-red-800 text-red-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Engagement</div>
+                            <div class="text-xs text-red-300">
+                                <span class="lang-en">Humor & Creativity</span>
+                                <span class="lang-id">Humor & Kreativitas</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-red-800 text-red-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Closing & Risk</div>
+                            <div class="text-xs text-red-300">
+                                <span class="lang-en">The Decision Maker</span>
+                                <span class="lang-id">Pengambil Keputusan</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-red-800 text-red-100 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">Referrals (12.5)</div>
+                            <div class="text-xs text-red-300">
+                                <span class="lang-en">The Gold Mine</span>
+                                <span class="lang-id">Tambang Emas</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-red-900">
+            <div class="text-center">
+                <p class="text-red-400 text-xs">© Jeffrey Gitomer</p>
+                <p class="text-red-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-red-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-red-700 mb-2 mobile-title">
+                    Little Red Book of Selling
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    <span class="lang-en">12.5 Principles of Sales Greatness</span>
+                    <span class="lang-id">12.5 Prinsip Kehebatan Penjualan</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-red-600 to-yellow-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Philosophy</span>
+                            <span class="lang-id">Filosofi</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Why People Buy</span>
+                            <span class="lang-id">Mengapa Orang Membeli</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-red-700 font-bold border-l-4 border-red-600 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"People don't like to be sold, but they love to buy."</span>
+                            <span class="lang-id">"Orang tidak suka dijual (dipaksa beli), tapi mereka suka membeli."</span>
+                        </div>
+                        
+                        <p class="mobile-text justified-text lang-en">
+                            Jeffrey Gitomer strips away the complexity of sales. He argues that most salespeople fail because they focus on *their* product, *their* quota, and *their* commission. But the customer only cares about one thing: <strong>Themselves</strong>.
+                            <br><br>
+                            If you try to "sell," you create resistance. If you help them "buy" (solve a problem, feel good, gain value), you create a customer for life. This book is about becoming a resource, not a nuisance.
+                        </p>
+                        <p class="mobile-text justified-text lang-id">
+                            Jeffrey Gitomer menelanjangi kompleksitas penjualan. Dia berargumen bahwa kebanyakan penjual gagal karena mereka fokus pada produk *mereka*, kuota *mereka*, dan komisi *mereka*. Tapi pelanggan hanya peduli satu hal: <strong>Diri Mereka Sendiri</strong>.
+                            <br><br>
+                            Jika Anda mencoba "menjual", Anda menciptakan penolakan. Jika Anda membantu mereka "membeli" (memecahkan masalah, merasa senang, mendapatkan nilai), Anda menciptakan pelanggan seumur hidup. Buku ini tentang menjadi sumber daya, bukan pengganggu.
+                        </p>
+
+                        <div class="bg-yellow-50 p-6 rounded-xl border border-yellow-200 shadow-sm">
+                            <h4 class="font-bold text-yellow-900 text-lg mb-3 lang-en">The "Why" vs. The "How"</h4>
+                            <h4 class="font-bold text-yellow-900 text-lg mb-3 lang-id">"Mengapa" vs. "Bagaimana"</h4>
+                            
+                            <p class="text-sm text-yellow-800 justified-text lang-en">
+                                Sales training usually teaches you <strong>HOW</strong> to sell (closing techniques, overcoming objections).
+                                <br><br>
+                                Gitomer teaches you <strong>WHY</strong> they buy. If you understand the "Why" (they like you, they trust you, it solves a pain), the "How" becomes easy. The "Why" is the DNA of success.
+                            </p>
+                            <p class="text-sm text-yellow-800 justified-text lang-id">
+                                Pelatihan penjualan biasanya mengajarkan Anda <strong>BAGAIMANA</strong> cara menjual (teknik closing, mengatasi keberatan).
+                                <br><br>
+                                Gitomer mengajarkan Anda <strong>MENGAPA</strong> mereka membeli. Jika Anda mengerti "Mengapa"-nya (mereka suka Anda, percaya Anda, itu solusi masalah), "Bagaimana"-nya jadi mudah. "Mengapa" adalah DNA kesuksesan.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Preparation & Attitude</span>
+                            <span class="lang-id">Persiapan & Sikap</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-red-700 text-lg mb-2 lang-en">1. Kick Your Own Ass</h4>
+                            <h4 class="font-bold text-red-700 text-lg mb-2 lang-id">1. Pecut Diri Sendiri (Kick Your Own Ass)</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Nobody will do it for you. If you are having a bad sales month, look in the mirror. You are the problem, and you are the solution.
+                                <br><br>
+                                <strong>Action:</strong> Stop blaming the economy, the marketing department, or the price. Take 100% responsibility. Work while others sleep. Read while others watch TV.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Tidak ada yang akan melakukannya untuk Anda. Jika bulan penjualan Anda buruk, lihat cermin. Anda masalahnya, dan Anda solusinya.
+                                <br><br>
+                                <strong>Aksi:</strong> Berhenti menyalahkan ekonomi, departemen pemasaran, atau harga. Ambil tanggung jawab 100%. Bekerja saat orang lain tidur. Membaca saat orang lain nonton TV.
+                            </p>
+                        </div>
+
+                        <div class="bg-red-50 p-5 rounded-lg border border-red-200 mt-4">
+                            <h4 class="font-bold text-red-900 text-lg mb-2 lang-en">2. Prepare to Win (Or Lose to Someone Who Is)</h4>
+                            <h4 class="font-bold text-red-900 text-lg mb-2 lang-id">2. Bersiaplah untuk Menang (Atau Kalah dari yang Siap)</h4>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                Most salespeople prepare by getting their brochures ready. That is NOT preparation.
+                                <br><br>
+                                <strong>Real Preparation means knowing:</strong>
+                                <br>• Where did the prospect grow up?
+                                <br>• What did their company earn last year?
+                                <br>• What are their competitors doing?
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Kebanyakan penjual bersiap dengan merapikan brosur. Itu BUKAN persiapan.
+                                <br><br>
+                                <strong>Persiapan Sejati berarti tahu:</strong>
+                                <br>• Di mana prospek dibesarkan?
+                                <br>• Berapa pendapatan perusahaan mereka tahun lalu?
+                                <br>• Apa yang dilakukan pesaing mereka?
+                            </p>
+                            <div class="bg-white p-3 rounded text-xs text-red-800 border border-red-100 font-bold italic lang-en">
+                                "The workday starts the night before. If you are writing your to-do list at 9 AM, you are already late."
+                            </div>
+                            <div class="bg-white p-3 rounded text-xs text-red-800 border border-red-100 font-bold italic lang-id">
+                                "Hari kerja dimulai malam sebelumnya. Jika Anda baru menulis daftar tugas jam 9 pagi, Anda sudah terlambat."
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">3. Personal Branding</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">3. Personal Branding</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                "It's not who you know, it's who knows YOU."
+                                <br><br>
+                                If people can't find you on Google, you don't exist. Build a reputation as an expert, not a salesperson. Write articles, give speeches, be visible. Make people call YOU.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                "Bukan siapa yang Anda kenal, tapi siapa yang kenal ANDA."
+                                <br><br>
+                                Jika orang tidak bisa menemukan Anda di Google, Anda tidak ada. Bangun reputasi sebagai ahli, bukan penjual. Tulis artikel, beri pidato, jadilah terlihat. Buat orang menelepon ANDA.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Value & Networking</span>
+                            <span class="lang-id">Nilai & Networking</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        
+                        <div class="bg-yellow-50 p-5 rounded-lg border border-yellow-200">
+                            <h4 class="font-bold text-yellow-900 text-lg mb-2 lang-en">4. It's All About Value, Not Price</h4>
+                            <h4 class="font-bold text-yellow-900 text-lg mb-2 lang-id">4. Semua Tentang Nilai, Bukan Harga</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                If you lose a sale on price, it’s not because your price is too high. It’s because your <strong>value</strong> was too low.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Jika Anda kehilangan penjualan karena harga, itu bukan karena harga Anda terlalu tinggi. Itu karena <strong>nilai</strong> Anda terlalu rendah.
+                            </p>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-white p-3 rounded border border-yellow-100">
+                                    <strong class="text-red-700 text-xs block mb-1">Customer says:</strong>
+                                    <span class="text-sm text-slate-600 italic">"Your price is too high."</span>
+                                </div>
+                                <div class="bg-white p-3 rounded border border-yellow-100">
+                                    <strong class="text-green-700 text-xs block mb-1">Gitomer says:</strong>
+                                    <span class="text-sm text-slate-600 italic lang-en">"Are you looking for the lowest price or the best cost over time? Cheap products break. My product creates profit."</span>
+                                    <span class="text-sm text-slate-600 italic lang-id">"Anda cari harga terendah atau biaya terbaik jangka panjang? Produk murah gampang rusak. Produk saya hasilkan profit."</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">5. Networking is Mandatory</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">5. Networking itu Wajib</h4>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                Face-to-face selling beats everything else. You must be where your customers are.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Penjualan tatap muka mengalahkan segalanya. Anda harus berada di tempat pelanggan Anda berada.
+                            </p>
+                            
+                            <div class="border-l-4 border-red-500 pl-4">
+                                <strong class="block text-slate-900 text-sm mb-1 lang-en">Case Study: The Baseball Game</strong>
+                                <strong class="block text-slate-900 text-sm mb-1 lang-id">Studi Kasus: Pertandingan Bisbol</strong>
+                                <p class="text-xs text-slate-600 justified-text lang-en">
+                                    Don't network at "Networking Events" (full of salespeople trying to sell). Network at a baseball game, a charity event, or a country club.
+                                    <br><strong>Tactics:</strong> Don't pitch. Ask questions. "What do you do?" "How's business?" "Who is your ideal customer?" Be interested, not interesting.
+                                </p>
+                                <p class="text-xs text-slate-600 justified-text lang-id">
+                                    Jangan networking di "Acara Networking" (isinya penjual semua). Networking-lah di pertandingan bisbol, acara amal, atau country club.
+                                    <br><strong>Taktik:</strong> Jangan pitching. Bertanyalah. "Kerja apa?" "Gimana bisnis?" "Siapa pelanggan ideal Anda?" Jadilah tertarik, bukan menarik.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Engagement & Creativity</span>
+                            <span class="lang-id">Keterlibatan & Kreativitas</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        
+                        <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+                            <div class="flex items-center mb-2">
+                                <span class="text-2xl mr-2">😂</span>
+                                <strong class="text-blue-900 text-lg">8. If You Make Them Laugh, You Can Make Them Buy</strong>
+                            </div>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                Humor is the highest form of language mastery. It relaxes the prospect and builds rapport instantly.
+                                <br><br>
+                                <strong>Rule:</strong> Don't tell jokes (too risky). Use stories. Make fun of <em>yourself</em>, never the customer. If the customer laughs, the barrier goes down.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Humor adalah bentuk tertinggi penguasaan bahasa. Ini menenangkan prospek dan membangun hubungan seketika.
+                                <br><br>
+                                <strong>Aturan:</strong> Jangan cerita lelucon (terlalu berisiko). Gunakan cerita. Tertawakan <em>diri sendiri</em>, jangan pernah pelanggan. Jika pelanggan tertawa, tembok pertahanan turun.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm mt-4">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">9. Use Creativity to Differentiate</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">9. Gunakan Kreativitas untuk Membedakan Diri</h4>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                If you sound like every other salesperson ("Just checking in..."), you will be treated like every other salesperson (ignored).
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Jika Anda terdengar seperti penjual lain ("Cuma mau ngecek..."), Anda akan diperlakukan seperti penjual lain (diabaikan).
+                            </p>
+                            
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                <strong class="text-red-700 text-sm block mb-1 lang-en">Case Study: The Voicemail</strong>
+                                <strong class="text-red-700 text-sm block mb-1 lang-id">Studi Kasus: Pesan Suara</strong>
+                                <p class="text-xs text-slate-600 justified-text lang-en">
+                                    <strong>Boring:</strong> "Hi, this is Jeff calling to see if you got my proposal." (Delete).
+                                    <br><strong>Creative:</strong> "Hi Dave. I figured out a way to save you $5,000 on that project we discussed. Call me by 5 PM if you want to know how." (Call back guaranteed).
+                                </p>
+                                <p class="text-xs text-slate-600 justified-text lang-id">
+                                    <strong>Membosankan:</strong> "Halo, ini Jeff mau tanya apa proposal saya sudah sampai." (Hapus).
+                                    <br><strong>Kreatif:</strong> "Halo Dave. Saya nemu cara buat hemat $5.000 di proyek yang kita bahas. Telepon saya sebelum jam 5 sore kalau mau tahu caranya." (Dijamin telepon balik).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Closing & Reducing Risk</span>
+                            <span class="lang-id">Closing & Mengurangi Risiko</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-en">6. The Real Decision Maker</h4>
+                            <h4 class="font-bold text-slate-900 text-lg mb-2 lang-id">6. Pengambil Keputusan Asli</h4>
+                            <p class="text-sm text-slate-700 justified-text lang-en">
+                                If you are pitching to someone who has to say "I need to ask my boss," you are pitching to the wrong person. You are wasting your time.
+                                <br><br>
+                                <strong>Tactic:</strong> Don't ask "Are you the decision maker?" (They will lie and say yes due to ego).
+                                <br>Ask: "How is the decision made?" or "Who else needs to weigh in on this?" Then, insist on being present when the real boss sees the proposal.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text lang-id">
+                                Jika Anda pitching ke orang yang harus bilang "Saya tanya bos dulu," Anda pitching ke orang yang salah. Buang waktu.
+                                <br><br>
+                                <strong>Taktik:</strong> Jangan tanya "Anda pengambil keputusan?" (Mereka akan bohong bilang ya karena ego).
+                                <br>Tanya: "Bagaimana keputusan dibuat?" atau "Siapa lagi yang perlu pertimbangkan ini?" Lalu, bersikeraslah untuk hadir saat bos asli melihat proposalnya.
+                            </p>
+                        </div>
+
+                        <div class="bg-red-50 p-5 rounded-lg border border-red-200 mt-4">
+                            <h4 class="font-bold text-red-900 text-lg mb-2 lang-en">10. Reduce Their Risk</h4>
+                            <h4 class="font-bold text-red-900 text-lg mb-2 lang-id">10. Kurangi Risiko Mereka</h4>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                Customers don't buy because they are afraid. Afraid of making a mistake, afraid of losing money, afraid of looking stupid to their boss.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Pelanggan tidak beli karena mereka takut. Takut salah, takut rugi, takut terlihat bodoh di depan bos.
+                            </p>
+                            
+                            <ul class="list-disc ml-5 text-sm text-slate-700 space-y-2">
+                                <li><strong>Identify the Risk:</strong> Ask "What is your biggest concern?"</li>
+                                <li><strong>Eliminate it:</strong> Offer a guarantee, a trial period, or show overwhelming testimonials. Replace risk with comfort.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-purple-100 text-purple-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Gold Mine (Referrals)</span>
+                            <span class="lang-id">Tambang Emas (Referral)</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            A referral is 100 times more valuable than a cold call. Why? Because the trust is transferred.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Satu referral (rujukan) 100 kali lebih berharga daripada cold call. Kenapa? Karena kepercayaan ditransfer.
+                        </p>
+
+                        <div class="bg-purple-50 p-5 rounded-lg border border-purple-200">
+                            <strong class="block text-purple-900 text-lg mb-2 lang-en">Why Salespeople Don't Get Referrals</strong>
+                            <strong class="block text-purple-900 text-lg mb-2 lang-id">Kenapa Penjual Gak Dapat Referral</strong>
+                            <ol class="list-decimal ml-5 space-y-2 text-sm text-slate-700">
+                                <li>They forget to ask.</li>
+                                <li>They ask too late (after the relationship is cold).</li>
+                                <li>They don't deserve them (Service was average, not great).</li>
+                            </ol>
+                            <p class="text-sm text-slate-700 mt-3 italic justified-text lang-en">
+                                <strong>Gitomer's Law:</strong> "Provide service so memorable that they talk about you." When you do that, referrals happen naturally. But you still have to ask: "Who do you know that could benefit from this just like you did?"
+                            </p>
+                            <p class="text-sm text-slate-700 mt-3 italic justified-text lang-id">
+                                <strong>Hukum Gitomer:</strong> "Berikan layanan yang begitu berkesan hingga mereka membicarakan Anda." Saat Anda lakukan itu, referral terjadi alami. Tapi Anda tetap harus tanya: "Siapa kenalan Anda yang bisa dapat manfaat dari ini seperti Anda?"
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-800 p-6 rounded-xl text-white mt-4 shadow-lg">
+                            <h4 class="font-bold text-red-400 text-lg mb-2 lang-en">Principle 12.5: Resign Your Position as General Manager of the Universe</h4>
+                            <h4 class="font-bold text-red-400 text-lg mb-2 lang-id">Prinsip 12.5: Mengundurkan Diri sebagai Manajer Umum Alam Semesta</h4>
+                            <p class="text-sm opacity-90 justified-text lang-en">
+                                Stop worrying about things you cannot control (Politics, Weather, Competitors). Focus 100% of your energy on what you CAN control: Your attitude, your preparation, and your actions.
+                                <br><br>
+                                <strong>"If you make a sale, you can earn a commission. If you make a friend, you can earn a fortune."</strong>
+                            </p>
+                            <p class="text-sm opacity-90 justified-text lang-id">
+                                Berhenti mengkhawatirkan hal yang tak bisa Anda kontrol (Politik, Cuaca, Pesaing). Fokuskan 100% energi Anda pada apa yang BISA Anda kontrol: Sikap, persiapan, dan tindakan Anda.
+                                <br><br>
+                                <strong>"Jika Anda membuat penjualan, Anda dapat komisi. Jika Anda mencari teman, Anda dapat kekayaan."</strong>
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#dc2626'; // Red
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#475569'; // Slate
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-red-100');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-red-100');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
