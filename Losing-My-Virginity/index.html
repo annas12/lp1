@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Losing My Virginity: The Masterclass</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* --- TYPOGRAPHY: BOLD, ENERGETIC, & READABLE --- */
+        /* Montserrat untuk headline yang kuat, Lora untuk body text yang nyaman */
+        @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;600;800&family=Fira+Code:wght@500&display=swap');
+        
+        /* --- THEME PALETTE: THE VIRGIN BRAND (Bold Red, Crisp White, Deep Black) --- */
+        :root {
+            --bg-paper: #FFFFFF; /* Pure White */
+            --text-ink: #1A1A1A; /* Almost Black */
+            --accent-red: #E10A17; /* The iconic Virgin Red */
+            --drawer-bg: #E10A17; /* Red drawer for impact */
+            --drawer-text: #FFFFFF; /* White text on red background */
+            --header-bg: rgba(255, 255, 255, 0.98);
+        }
+
+        body { 
+            font-family: 'Lora', serif; 
+            background-color: var(--bg-paper); 
+            color: var(--text-ink); 
+            line-height: 1.8; 
+            font-size: 18px; 
+            -webkit-font-smoothing: antialiased;
+            padding-top: 80px;
+        }
+        
+        h1, h2, h3, h4 { 
+            font-family: 'Montserrat', sans-serif; 
+            text-transform: uppercase; 
+            letter-spacing: -0.02em;
+            font-weight: 800;
+            color: var(--text-ink);
+        }
+        
+        /* Monospace for specific business tactics */
+        .mono-font { 
+            font-family: 'Fira Code', monospace; 
+            font-size: 0.85em; 
+            letter-spacing: 0.05em;
+            color: var(--accent-red);
+            font-weight: 600;
+        }
+        
+        /* DROP CAP - The "Virgin Red" Splash */
+        .drop-cap::first-letter {
+            float: left;
+            font-size: 4.5rem;
+            line-height: 0.8;
+            margin-right: 0.15em;
+            margin-top: 0.05em;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--accent-red);
+            font-weight: 800;
+        }
+
+        /* --- ANIMATIONS --- */
+        .fade-in { animation: fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .content-section { display: none; padding-bottom: 120px; max-width: 760px; margin: 0 auto; }
+        .content-section.active { display: block; }
+        
+        /* --- LANGUAGE UTILS --- */
+        .lang-id { display: none; }
+        .lang-en { display: block; }
+        .justified-text { text-align: justify; }
+        
+        /* --- CLEAN HEADER BAR --- */
+        .header-bar {
+            position: fixed; top: 0; left: 0; width: 100%; height: 70px;
+            background: var(--header-bg); backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--accent-red);
+            z-index: 3000; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px; transition: top 0.3s;
+        }
+
+        .menu-btn {
+            width: 40px; height: 40px; display: flex; align-items: center; justify-content: flex-start;
+            cursor: pointer; color: var(--text-ink); transition: color 0.3s;
+        }
+        .menu-btn:hover { color: var(--accent-red); }
+
+        .right-controls { display: flex; align-items: center; gap: 24px; }
+
+        .back-link {
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-ink); transition: transform 0.2s, color 0.2s;
+        }
+        .back-link:hover { transform: translateX(-3px); color: var(--accent-red); }
+
+        /* LANGUAGE TOGGLE */
+        .lang-toggle-container {
+            font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; gap: 6px; user-select: none;
+        }
+        .lang-opt { color: #999; transition: color 0.3s; padding: 2px 0; }
+        .lang-opt.active { color: var(--accent-red); border-bottom: 2px solid var(--accent-red); }
+        
+        /* --- NAVIGATION DRAWER (RED THEME) --- */
+        .nav-drawer {
+            position: fixed; top: 0; left: -380px; width: 380px; height: 100vh;
+            background: var(--drawer-bg); /* Solid Red Drawer */
+            transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 4000;
+            box-shadow: 5px 0 30px rgba(0,0,0,0.3);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.5s; z-index: 3999; backdrop-filter: blur(4px);
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .nav-btn {
+            font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600;
+            letter-spacing: -0.01em; text-transform: uppercase;
+            border-left: 4px solid transparent; transition: all 0.3s;
+            color: rgba(255,255,255,0.7); /* Semi-transparent white */
+            padding: 18px 24px;
+        }
+        .active-tab { 
+            border-left: 4px solid #FFF; color: #FFF !important;
+            background: rgba(0,0,0,0.1); padding-left: 32px !important;
+        }
+
+        /* --- CONTENT STYLES --- */
+        /* Concept Box: Bold and disruptive */
+        .concept-box {
+            margin: 3rem 0; padding: 2.5rem; 
+            border: 3px solid var(--accent-red);
+            background-color: #FFF; 
+            position: relative;
+            box-shadow: 10px 10px 0px rgba(225, 10, 23, 0.1); /* Hard shadow */
+        }
+        .concept-label {
+            position: absolute; top: -18px; left: 2rem;
+            background: var(--accent-red); color: #FFF; padding: 6px 20px;
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.1em;
+        }
+
+        blockquote {
+            border-left: 6px solid var(--accent-red); padding: 1rem 0 1rem 2rem;
+            margin: 3rem 0; font-family: 'Montserrat', sans-serif; font-weight: 600;
+            font-size: 1.4rem; color: var(--text-ink); line-height: 1.3;
+        }
+
+        .divider {
+            width: 100%; height: 2px; background: #eee; margin: 4rem 0;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .divider::after {
+            content: 'V'; color: var(--accent-red); font-family: 'Montserrat', sans-serif;
+            font-weight: 800; font-size: 1.5rem; background: var(--bg-paper); padding: 0 1rem;
+        }
+
+        @media (max-width: 640px) {
+            body { font-size: 17px; line-height: 1.7; }
+            .content-section { padding: 40px 24px; }
+            .nav-drawer { width: 85%; }
+            h2 { font-size: 2.5rem; }
+            .header-bar { padding: 0 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-bar">
+        <button class="menu-btn" onclick="toggleDrawer()" aria-label="Menu">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+
+        <div class="right-controls">
+            <a href="https://lp1.affiliateid.my.id/" class="back-link" aria-label="Back to Home">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            </a>
+            <div class="lang-toggle-container" onclick="toggleLanguage()">
+                <span class="lang-opt lang-id-btn">ID</span>
+                <span style="color: #ccc;">|</span>
+                <span class="lang-opt lang-en-btn active">EN</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    <nav class="nav-drawer flex flex-col h-full">
+        <div class="px-8 py-12">
+            <h2 class="text-white text-5xl leading-none mb-2 font-black tracking-tighter">LOSING MY <span class="block text-black" style="text-shadow: 1px 1px 0 #fff;">VIRGINITY</span></h2>
+            <p class="text-white text-[12px] uppercase tracking-[0.25em] font-mono mt-4 font-bold">
+                Richard Branson
+            </p>
+            <div class="w-24 h-1 bg-white mt-6"></div>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto py-8">
+            <ul class="space-y-2">
+                 <li>
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left active-tab">
+                        <span class="lang-en">00. Screw It, Let's Do It</span>
+                        <span class="lang-id">00. Masa Bodoh, Lakukan Saja</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="lang-en">01. The Student & The Hustle</span>
+                        <span class="lang-id">01. Sang Pelajar & Kerja Keras</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="lang-en">02. Tubular Bells & The Big Risk</span>
+                        <span class="lang-id">02. Tubular Bells & Risiko Besar</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="lang-en">03. David vs. Goliath (Airlines)</span>
+                        <span class="lang-id">03. David vs. Goliath (Maskapai)</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="lang-en">04. The Virgin Brand Philosophy</span>
+                        <span class="lang-id">04. Filosofi Merek Virgin</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="p-8 text-white text-[10px] font-mono tracking-widest uppercase border-t border-white/20">
+            The Autobiography
+        </div>
+    </nav>
+
+    <main>
+        
+        <section id="intro" class="content-section active fade-in">
+            <div class="mono-font mb-4">INTRODUCTION</div>
+            <h2 class="text-5xl sm:text-6xl mb-10 leading-none tracking-tight">
+                <span class="lang-en">Screw It, Let's Do It</span>
+                <span class="lang-id">Masa Bodoh, Lakukan Saja</span>
+            </h2>
+            
+            <div class="justified-text">
+                <p class="drop-cap">
+                    <span class="lang-en">This book is not a traditional business manual; it is an adventure story. Richard Branson did not learn business at Harvard; he learned it on the streets, running a student magazine from a basement. His life is defined by a refusal to follow rules and an almost reckless willingness to take risks when others said "impossible."</span>
+                    <span class="lang-id">Buku ini bukanlah manual bisnis tradisional; ini adalah kisah petualangan. Richard Branson tidak belajar bisnis di Harvard; dia mempelajarinya di jalanan, menjalankan majalah mahasiswa dari ruang bawah tanah. Hidupnya didefinisikan oleh penolakan untuk mengikuti aturan dan kemauan yang hampir nekat untuk mengambil risiko ketika orang lain berkata "tidak mungkin."</span>
+                </p>
+
+                <p>
+                    <span class="lang-en">Central to Branson's philosophy is the idea that business should be fun, and it should disrupt established players who have become complacent. If you can't do it better than the competition, don't do it at all.</span>
+                    <span class="lang-id">Pusat dari filosofi Branson adalah gagasan bahwa bisnis harus menyenangkan, dan harus mengganggu pemain mapan yang sudah berpuas diri. Jika Anda tidak bisa melakukannya lebih baik dari pesaing, jangan lakukan sama sekali.</span>
+                </p>
+
+                 <blockquote>
+                    <span class="lang-en">"My interest in life comes from setting myself huge, apparently unachievable challenges and trying to rise above them."</span>
+                    <span class="lang-id">"Ketertarikan saya dalam hidup berasal dari menetapkan tantangan yang sangat besar dan tampaknya tak terjangkau bagi diri saya sendiri, dan mencoba untuk mengatasinya."</span>
+                </blockquote>
+            </div>
+        </section>
+
+        <section id="part1" class="content-section fade-in">
+            <div class="mono-font mb-4">CHAPTER 01</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">The Student & The Hustle</span>
+                <span class="lang-id">Sang Pelajar & Kerja Keras</span>
+            </h2>
+
+            <div class="justified-text">
+                <p>
+                    <span class="lang-en">Branson, dyslexic and struggling in traditional school, found his voice launching *Student* magazine. It was here he learned the art of the bluff. He would call enormous corporations (like Coca-Cola) from a payphone, pretending to have massive circulation, to secure advertising.</span>
+                    <span class="lang-id">Branson, yang disleksia dan kesulitan di sekolah tradisional, menemukan suaranya saat meluncurkan majalah *Student*. Di sinilah dia belajar seni menggertak. Dia akan menelepon perusahaan besar (seperti Coca-Cola) dari telepon umum, berpura-pura memiliki sirkulasi besar, untuk mendapatkan iklan.</span>
+                </p>
+
+                <div class="concept-box">
+                    <div class="concept-label">THE FIRST PIVOT</div>
+                    <p>
+                        <span class="lang-en">The magazine wasn't highly profitable, but Branson noticed readers couldn't afford expensive records. He started selling records by mail order at a discount, undercutting established stores.</span>
+                        <span class="lang-id">Majalah itu tidak terlalu menguntungkan, tetapi Branson menyadari pembaca tidak mampu membeli piringan hitam mahal. Dia mulai menjual piringan hitam melalui pesanan pos dengan diskon, memotong harga toko-toko mapan.</span>
+                    </p>
+                    <br>
+                    <p>
+                        <span class="lang-en">When a postal strike hit, he opened a physical shop on Oxford Street. He chose the name "Virgin" because they were complete virgins at business. The shop became a hangout, not just a retail space—an early lesson in <strong>brand experience</strong> over mere transaction.</span>
+                        <span class="lang-id">Ketika pemogokan pos terjadi, dia membuka toko fisik di Oxford Street. Dia memilih nama "Virgin" karena mereka benar-benar perawan dalam bisnis. Toko itu menjadi tempat nongkrong, bukan sekadar ruang ritel—pelajaran awal tentang <strong>pengalaman merek</strong> di atas sekadar transaksi.</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="part2" class="content-section fade-in">
+            <div class="mono-font mb-4">CHAPTER 02</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">Tubular Bells & The Big Risk</span>
+                <span class="lang-id">Tubular Bells & Risiko Besar</span>
+            </h2>
+
+            <div class="justified-text">
+                <p>
+                    <span class="lang-en">Branson used the profits from the record shops to buy a dilapidated manor house and convert it into a residential recording studio. The goal was to create an environment where artists could relax and create, unlike the sterile corporate studios in London.</span>
+                    <span class="lang-id">Branson menggunakan keuntungan dari toko piringan hitam untuk membeli sebuah rumah bangsawan bobrok dan mengubahnya menjadi studio rekaman residensial. Tujuannya adalah menciptakan lingkungan di mana seniman bisa bersantai dan berkreasi, tidak seperti studio korporat yang steril di London.</span>
+                </p>
+
+                <h3 class="text-2xl mt-8 mb-4 font-bold">Mike Oldfield's Masterpiece</h3>
+                <p>
+                    <span class="lang-en">A shy, unknown musician named Mike Oldfield presented a demo that was entirely instrumental, long, and weird. Every major label rejected it. It had no lyrics and no obvious "hit single."</span>
+                    <span class="lang-id">Seorang musisi pemalu dan tak dikenal bernama Mike Oldfield menyajikan demo yang sepenuhnya instrumental, panjang, dan aneh. Setiap label besar menolaknya. Tidak ada lirik dan tidak ada "single hits" yang jelas.</span>
+                </p>
+
+                <div class="concept-box">
+                    <div class="concept-label">THE BET THE COMPANY MOMENT</div>
+                    <p>
+                        <span class="lang-en">Branson loved it. He launched Virgin Records just to release this album, *Tubular Bells*. It was a massive financial risk. The album became a global phenomenon (helped by its use in *The Exorcist*), selling millions and establishing Virgin as a major player that backed unique talent.</span>
+                        <span class="lang-id">Branson menyukainya. Dia meluncurkan Virgin Records hanya untuk merilis album ini, *Tubular Bells*. Itu adalah risiko finansial yang sangat besar. Album ini menjadi fenomena global (dibantu oleh penggunaannya dalam film *The Exorcist*), terjual jutaan kopi dan menetapkan Virgin sebagai pemain utama yang mendukung bakat unik.</span>
+                    </p>
+                </div>
+                <p class="mono-font text-sm mt-4">
+                    <span class="lang-en">Later, Branson signed the Sex Pistols when EMI dropped them, solidifying Virgin's reputation as the rebellious, anti-establishment label.</span>
+                    <span class="lang-id">Kemudian, Branson mengontrak Sex Pistols ketika EMI memutus mereka, memperkuat reputasi Virgin sebagai label pemberontak dan anti-kemapanan.</span>
+                </p>
+            </div>
+        </section>
+
+        <section id="part3" class="content-section fade-in">
+            <div class="mono-font mb-4">CHAPTER 03</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">David vs. Goliath (Airlines)</span>
+                <span class="lang-id">David vs. Goliath (Maskapai)</span>
+            </h2>
+
+            <div class="justified-text">
+                <p class="drop-cap">
+                    <span class="lang-en">The launch of Virgin Atlantic is the defining case study of the Branson method. He knew nothing about airlines. He started it because he was frustrated with British Airways' terrible service and high prices.</span>
+                    <span class="lang-id">Peluncuran Virgin Atlantic adalah studi kasus yang mendefinisikan metode Branson. Dia tidak tahu apa-apa tentang maskapai penerbangan. Dia memulainya karena frustrasi dengan layanan buruk dan harga tinggi British Airways.</span>
+                </p>
+
+                <p>
+                    <span class="lang-en">His advisors told him he was crazy. He leased a single Boeing 747. The strategy was simple: offer a vastly better experience (limos to the airport, seatback entertainment, fun staff) at a competitive price.</span>
+                    <span class="lang-id">Penasihatnya mengatakan dia gila. Dia menyewa satu Boeing 747. Strateginya sederhana: tawarkan pengalaman yang jauh lebih baik (limusin ke bandara, hiburan di kursi, staf yang menyenangkan) dengan harga yang kompetitif.</span>
+                </p>
+
+                <div class="concept-box">
+                    <div class="concept-label">THE DIRTY TRICKS CAMPAIGN</div>
+                    <p>
+                        <span class="lang-en">British Airways (the Goliath) viewed Virgin as an existential threat. They launched the infamous "Dirty Tricks" campaign. BA agents would call Virgin passengers, pretend Virgin's flights were cancelled, and rebook them on BA. They hacked Virgin's computer systems and spread rumors to the press.</span>
+                        <span class="lang-id">British Airways (sang Goliath) memandang Virgin sebagai ancaman eksistensial. Mereka meluncurkan kampanye "Trik Kotor" yang terkenal kejam. Agen BA akan menelepon penumpang Virgin, berpura-pura penerbangan Virgin dibatalkan, dan memesan ulang mereka di BA. Mereka meretas sistem komputer Virgin dan menyebarkan rumor ke pers.</span>
+                    </p>
+                    <br>
+                    <p>
+                        <span class="lang-en"><strong>The Response:</strong> Instead of folding, Branson sued BA for libel. It was a massive gamble that could have bankrupted Virgin. He won the historic court case, securing the airline's future and public sympathy.</span>
+                        <span class="lang-id"><strong>Tanggapan:</strong> Alih-alih menyerah, Branson menuntut BA atas pencemaran nama baik. Itu adalah perjudian besar yang bisa membuat Virgin bangkrut. Dia memenangkan kasus pengadilan bersejarah itu, mengamankan masa depan maskapai dan simpati publik.</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="part4" class="content-section fade-in">
+            <div class="mono-font mb-4">CHAPTER 04</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">The Virgin Brand Philosophy</span>
+                <span class="lang-id">Filosofi Merek Virgin</span>
+            </h2>
+
+            <div class="justified-text">
+                <p>
+                    <span class="lang-en">How can one brand sell records, flights, cola, trains, and mobile phones? Conventional business wisdom says focus on one core competence. Branson broke this rule completely. Virgin is a "Way of Life" brand, not a product brand.</span>
+                    <span class="lang-id">Bagaimana satu merek bisa menjual rekaman, penerbangan, cola, kereta api, dan ponsel? Kebijaksanaan bisnis konvensional mengatakan fokus pada satu kompetensi inti. Branson melanggar aturan ini sepenuhnya. Virgin adalah merek "Gaya Hidup", bukan merek produk.</span>
+                </p>
+
+                <blockquote>
+                    <span class="lang-en">"The brand is the consumer's guarantee of value and quality... Virgin enters industries where the customers are being ripped off or served poorly, and we shake things up."</span>
+                    <span class="lang-id">"Merek adalah jaminan nilai dan kualitas bagi konsumen... Virgin memasuki industri di mana pelanggan ditipu atau dilayani dengan buruk, dan kami mengguncang segalanya."</span>
+                </blockquote>
+
+                <div class="concept-box">
+                    <div class="concept-label">THE VIRGIN FORMULA</div>
+                    <ul class="list-disc pl-6 space-y-4 font-bold">
+                        <li>
+                            <span class="lang-en">Be the consumer's champion.</span>
+                            <span class="lang-id">Jadilah juara bagi konsumen.</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Enter as the underdog/disruptor.</span>
+                            <span class="lang-id">Masuk sebagai pihak yang tidak diunggulkan/pengganggu.</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Use Branson's personal charisma for free PR.</span>
+                            <span class="lang-id">Gunakan karisma pribadi Branson untuk PR gratis.</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">If it's not fun, move on.</span>
+                            <span class="lang-id">Jika tidak menyenangkan, tinggalkan.</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="divider"></div>
+                <p class="text-center mono-font">"Whatever your goal is you will never succeed unless you let go of your fears and fly."</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- LOGIC ---
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateContent();
+        }
+
+        function updateContent() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const langEnBtn = document.querySelector('.lang-en-btn');
+            const langIdBtn = document.querySelector('.lang-id-btn');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                langEnBtn.classList.add('active');
+                langIdBtn.classList.remove('active');
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                langIdBtn.classList.add('active');
+                langEnBtn.classList.remove('active');
+            }
+        }
+
+        // Navigation Drawer Logic
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            if(drawer.classList.contains('open')) document.body.style.overflow = 'hidden';
+            else document.body.style.overflow = '';
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(sec => {
+                sec.classList.remove('active');
+                sec.classList.remove('fade-in');
+            });
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active-tab');
+            });
+            const target = document.getElementById(sectionId);
+            target.classList.add('active');
+            void target.offsetWidth; 
+            target.classList.add('fade-in');
+            event.currentTarget.classList.add('active-tab');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+                      </html>
