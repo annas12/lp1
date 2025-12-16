@@ -2,133 +2,96 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>The Visible Hand — Alfred Chandler (Mobile Optimized)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Visible Hand — Alfred Chandler Summary</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
         
-        /* Base Settings */
-        html { scroll-behavior: smooth; }
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: #f8fafc; 
-            color: #334155; 
-            transition: all 0.3s ease;
-            overflow-x: hidden; /* Mencegah scroll horizontal di HP */
-            -webkit-tap-highlight-color: transparent; /* Menghilangkan highlight biru saat tap di Android/iOS */
-        }
-        
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #334155; transition: all 0.3s ease; }
         h1, h2, h3, h4 { font-family: 'Merriweather', serif; }
         
-        /* Animations */
         .fade-in { animation: fadeIn 0.8s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Theme Classes */
+        /* Steel & Bronze Theme */
         .theme-steel { background: linear-gradient(135deg, #475569 0%, #1e293b 100%); }
         .theme-bronze { color: #b45309; }
         
-        /* Typography optimized for reading on small screens */
-        .prose-text { 
-            font-size: 1rem; /* 16px default mobile */
-            line-height: 1.75; 
-            text-align: left; /* Justify seringkali berantakan di HP, Left lebih aman */
-            color: #475569; 
-        }
-        @media (min-width: 768px) {
-            .prose-text { font-size: 1.1rem; line-height: 1.9; text-align: justify; }
-        }
-
+        /* Typography */
+        .prose-text { font-size: 1.05rem; line-height: 1.9; text-align: justify; color: #475569; }
         .prose-highlight { background-color: #fff7ed; padding: 2px 4px; border-radius: 4px; color: #9a3412; font-weight: 600; }
         
         /* Navigation Drawer */
         .nav-drawer {
-            position: fixed; top: 0; left: -100%; width: 85%; max-width: 350px; height: 100vh;
-            background: #0f172a; transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2000;
+            position: fixed; top: 0; left: -350px; width: 350px; height: 100vh;
+            background: #0f172a; transition: left 0.3s ease-in-out; z-index: 1000;
             box-shadow: 5px 0 25px rgba(0,0,0,0.5); overflow-y: auto;
         }
         .nav-drawer.open { left: 0; }
-        
         .nav-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(0, 0, 0, 0.7); opacity: 0; visibility: hidden;
-            transition: 0.3s; z-index: 1999;
-            backdrop-filter: blur(2px);
+            transition: 0.3s; z-index: 999;
         }
         .nav-overlay.active { opacity: 1; visibility: visible; }
         
         .chapter-btn {
-            display: flex; align-items: center; width: 100%; padding: 18px 20px; /* Touch target lebih besar */
+            display: flex; align-items: center; width: 100%; padding: 15px 20px;
             text-align: left; color: #cbd5e1; border-bottom: 1px solid #334155;
-            transition: all 0.2s; font-size: 1rem;
+            transition: all 0.2s; font-size: 0.95rem;
         }
-        .chapter-btn:active { background-color: #1e293b; color: #fbbf24; }
-        @media(hover: hover) {
-            .chapter-btn:hover { background-color: #1e293b; color: #fbbf24; padding-left: 25px; }
-        }
-        .chapter-btn span.icon { margin-right: 12px; font-size: 1.3rem; }
+        .chapter-btn:hover { background-color: #1e293b; color: #fbbf24; padding-left: 25px; }
+        .chapter-btn span.icon { margin-right: 12px; font-size: 1.2rem; }
 
-        /* Floating Controls */
-        .controls-container {
-            position: fixed; top: 0; left: 0; right: 0; 
-            padding: 15px 20px; z-index: 1001;
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(248, 250, 252, 0.85); /* Semi transparan agar teks di belakang terbaca */
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+        /* Buttons */
+        .drawer-toggle {
+            position: fixed; top: 25px; left: 25px; z-index: 1001;
+            background: linear-gradient(135deg, #d97706 0%, #92400e 100%);
+            color: white; border: none; border-radius: 50%; width: 50px; height: 50px;
+            cursor: pointer; box-shadow: 0 4px 15px rgba(217, 119, 6, 0.4);
+            display: flex; align-items: center; justify-content: center;
             transition: transform 0.3s;
         }
-
-        /* Hide controls on scroll down could be added here, but keep simple for now */
-
-        .drawer-toggle {
-            background: linear-gradient(135deg, #d97706 0%, #92400e 100%);
-            color: white; border: none; border-radius: 50%; width: 45px; height: 45px;
-            cursor: pointer; box-shadow: 0 4px 10px rgba(217, 119, 6, 0.3);
-            display: flex; align-items: center; justify-content: center;
-        }
+        .drawer-toggle:hover { transform: scale(1.1) rotate(90deg); }
 
         .lang-toggle {
-            background: white; border: 1px solid #cbd5e1;
-            color: #334155; border-radius: 25px; padding: 8px 16px;
-            cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            font-weight: 600; font-size: 0.85rem; font-family: 'Inter', sans-serif;
-            display: flex; align-items: center; gap: 6px;
+            position: fixed; top: 25px; right: 25px; z-index: 1001;
+            background: white; border: 2px solid #cbd5e1;
+            color: #334155; border-radius: 30px; padding: 10px 20px;
+            cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-weight: bold; font-family: 'Inter', sans-serif;
+            transition: all 0.3s; display: flex; align-items: center; gap: 8px;
         }
+        .lang-toggle:hover { background: #f1f5f9; border-color: #94a3b8; }
         
-        /* Content Visibility */
-        .content-section { display: none; padding-bottom: 60px; }
+        .content-section { display: none; padding-bottom: 80px; }
         .content-section.active { display: block; }
-        
-        .hidden-lang { display: none !important; }
 
-        /* Custom Scrollbar for Drawer */
-        .nav-drawer::-webkit-scrollbar { width: 6px; }
-        .nav-drawer::-webkit-scrollbar-thumb { background: #334155; }
+        /* Utility for Language Switching */
+        .hidden-lang { display: none !important; }
     </style>
 </head>
 <body>
 
-    <header class="controls-container">
-        <button class="drawer-toggle" onclick="toggleDrawer()" aria-label="Menu">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-        </button>
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+    </button>
 
-        <button class="lang-toggle" onclick="switchLanguage()" aria-label="Switch Language">
-            <span class="text-lg">🌐</span>
-            <span id="lang-label">English</span>
-        </button>
-    </header>
+    <button class="lang-toggle" onclick="switchLanguage()">
+        <span class="text-xl">🌐</span>
+        <span id="lang-label">English</span>
+    </button>
 
     <div class="nav-overlay" onclick="closeDrawer()"></div>
     <nav class="nav-drawer">
-        <div class="p-8 border-b border-slate-700 bg-slate-950 pt-12"> <h2 class="text-white font-bold text-xl font-serif">The Visible Hand</h2>
-            <p class="text-slate-400 text-[10px] mt-2 uppercase tracking-widest">Alfred D. Chandler Jr.</p>
+        <div class="p-8 border-b border-slate-700 bg-slate-950">
+            <h2 class="text-white font-bold text-2xl font-serif">The Visible Hand</h2>
+            <p class="text-slate-400 text-xs mt-2 uppercase tracking-widest">Alfred D. Chandler Jr.</p>
         </div>
-        <div class="flex flex-col pb-20">
+        <div class="flex flex-col">
             <button onclick="showSection('intro'); closeDrawer();" class="chapter-btn">
                 <span class="icon">📖</span> 
                 <span class="lang-id">Pendahuluan</span>
@@ -160,269 +123,295 @@
                 <span class="lang-en hidden-lang">Part 5: Prof. Managers</span>
             </button>
         </div>
+        <div class="p-6 mt-auto text-slate-500 text-xs text-center">
+            Ultimate Extended Edition
+        </div>
     </nav>
 
-    <div class="max-w-5xl mx-auto px-5 md:px-12 pt-24 pb-12">
+    <div class="max-w-5xl mx-auto px-6 md:px-12 py-12 md:py-20">
 
         <section id="intro" class="content-section active fade-in">
-            <div class="theme-steel text-white p-6 md:p-10 rounded-2xl shadow-xl mb-8 relative overflow-hidden">
+            <div class="theme-steel text-white p-10 rounded-2xl shadow-2xl mb-10 relative overflow-hidden">
                 <div class="relative z-10">
-                    <span class="lang-id inline-block px-3 py-1 mb-4 text-[10px] font-bold tracking-wider uppercase bg-amber-600 rounded text-white">Sejarah Bisnis</span>
-                    <span class="lang-en hidden-lang inline-block px-3 py-1 mb-4 text-[10px] font-bold tracking-wider uppercase bg-amber-600 rounded text-white">Business History</span>
+                    <span class="lang-id inline-block px-3 py-1 mb-4 text-xs font-bold tracking-wider uppercase bg-amber-600 rounded text-white">Sejarah Bisnis</span>
+                    <span class="lang-en hidden-lang inline-block px-3 py-1 mb-4 text-xs font-bold tracking-wider uppercase bg-amber-600 rounded text-white">Business History</span>
                     
-                    <h1 class="text-3xl md:text-6xl font-bold mb-4 md:mb-6 leading-tight">The Visible Hand</h1>
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">The Visible Hand</h1>
                     
-                    <p class="lang-id text-lg md:text-2xl text-slate-300 font-light italic">"Revolusi Manajerial dalam Bisnis Amerika"</p>
-                    <p class="lang-en hidden-lang text-lg md:text-2xl text-slate-300 font-light italic">"The Managerial Revolution in American Business"</p>
+                    <p class="lang-id text-xl md:text-2xl text-slate-300 font-light italic">"Revolusi Manajerial dalam Bisnis Amerika"</p>
+                    <p class="lang-en hidden-lang text-xl md:text-2xl text-slate-300 font-light italic">"The Managerial Revolution in American Business"</p>
                 </div>
-                <div class="absolute top-0 right-0 w-48 h-48 md:w-64 md:h-64 bg-white opacity-5 rounded-full -mr-10 -mt-10 blur-3xl"></div>
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-16 -mt-16 blur-3xl"></div>
             </div>
 
-            <div class="bg-white p-6 md:p-12 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="lang-id text-2xl md:text-3xl font-bold text-slate-800 mb-6 border-b pb-4">Tesis Utama: Runtuhnya Mitos Adam Smith</h3>
-                <h3 class="lang-en hidden-lang text-2xl md:text-3xl font-bold text-slate-800 mb-6 border-b pb-4">Core Thesis: The Fall of Adam Smith's Myth</h3>
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200">
+                <h3 class="lang-id text-3xl font-bold text-slate-800 mb-6 border-b pb-4">Tesis Utama: Runtuhnya Mitos Adam Smith</h3>
+                <h3 class="lang-en hidden-lang text-3xl font-bold text-slate-800 mb-6 border-b pb-4">Core Thesis: The Fall of Adam Smith's Myth</h3>
                 
                 <div class="prose-text space-y-6">
                     <p class="lang-id">
-                        Karya Alfred Chandler ini adalah serangan langsung namun akademis terhadap konsep ekonomi klasik: <strong>"The Invisible Hand"</strong> (Tangan Tak Terlihat) milik Adam Smith. Smith berargumen bahwa dalam ekonomi sempurna, kekuatan pasar akan mengalokasikan sumber daya secara efisien tanpa campur tangan pusat.
+                        Karya Alfred Chandler ini adalah serangan langsung namun akademis terhadap konsep ekonomi klasik yang mendominasi pemikiran Barat: <strong>"The Invisible Hand"</strong> (Tangan Tak Terlihat) milik Adam Smith. Smith berargumen bahwa dalam ekonomi sempurna, kekuatan pasar—interaksi penawaran dan permintaan—akan mengalokasikan sumber daya secara efisien tanpa campur tangan pusat.
                     </p>
                     <p class="lang-en hidden-lang">
-                        Alfred Chandler's work is a direct yet academic assault on the classical economic concept: Adam Smith's <strong>"The Invisible Hand"</strong>. Smith argued that in a perfect economy, market forces would efficiently allocate resources without central intervention.
+                        Alfred Chandler's work is a direct yet academic assault on the classical economic concept that dominated Western thought: Adam Smith's <strong>"The Invisible Hand"</strong>. Smith argued that in a perfect economy, market forces—the interaction of supply and demand—would efficiently allocate resources without central intervention.
                     </p>
 
                     <p class="lang-id">
-                        Namun, Chandler mengajukan argumen sejarah. Pada pertengahan abad ke-19, teknologi baru—mesin uap, rel kereta api, dan telegraf—menciptakan pasar yang begitu luas dan cepat sehingga mekanisme pasar tradisional menjadi terlalu lambat.
+                        Namun, Chandler mengajukan argumen sejarah. Pada pertengahan abad ke-19, teknologi baru—mesin uap, rel kereta api, dan telegraf—menciptakan pasar yang begitu luas dan cepat sehingga mekanisme pasar tradisional menjadi terlalu lambat dan tidak efisien.
                     </p>
                     <p class="lang-en hidden-lang">
-                        However, Chandler presents a historical counter-argument. In the mid-19th century, new technologies—steam engines, railroads, and the telegraph—created markets so vast and fast that traditional market mechanisms became too slow.
+                        However, Chandler presents a historical counter-argument. In the mid-19th century, new technologies—steam engines, railroads, and the telegraph—created markets so vast and fast that traditional market mechanisms became too slow and inefficient.
                     </p>
 
                     <p class="lang-id">
-                        Sebagai gantinya, muncullah <span class="prose-highlight">The Visible Hand</span> (Tangan Terlihat) dari manajemen. Koordinasi administratif internal oleh manajer bergaji menjadi lebih produktif daripada koordinasi pasar. Ini melahirkan: <strong>Perusahaan Bisnis Multi-Unit</strong>.
+                        Sebagai gantinya, muncullah <span class="prose-highlight">The Visible Hand</span> (Tangan Terlihat) dari manajemen. Chandler membuktikan bahwa koordinasi administratif internal (keputusan oleh manajer bergaji) menjadi lebih produktif daripada koordinasi pasar. Ini melahirkan institusi modern: <strong>Perusahaan Bisnis Multi-Unit</strong>.
                     </p>
                     <p class="lang-en hidden-lang">
-                        In its place emerged <span class="prose-highlight">The Visible Hand</span> of management. Internal administrative coordination by salaried managers became far more productive than market coordination. This gave birth to: the <strong>Multi-Unit Business Enterprise</strong>.
+                        In its place emerged <span class="prose-highlight">The Visible Hand</span> of management. Chandler proved that internal administrative coordination (decisions made by salaried managers) became far more productive than market coordination. This gave birth to the modern institution: the <strong>Multi-Unit Business Enterprise</strong>.
                     </p>
                 </div>
                 
-                <div class="mt-8 bg-slate-50 p-5 md:p-6 rounded-xl border-l-4 border-slate-600">
-                    <h4 class="lang-id font-bold text-slate-800 text-lg mb-2">3 Proposisi Inti:</h4>
-                    <h4 class="lang-en hidden-lang font-bold text-slate-800 text-lg mb-2">3 Core Propositions:</h4>
+                <div class="mt-8 bg-slate-50 p-6 rounded-xl border-l-4 border-slate-600">
+                    <h4 class="lang-id font-bold text-slate-800 text-lg mb-2">3 Proposisi Inti Chandler:</h4>
+                    <h4 class="lang-en hidden-lang font-bold text-slate-800 text-lg mb-2">Chandler's 3 Core Propositions:</h4>
                     
-                    <ol class="lang-id list-decimal ml-5 space-y-3 text-slate-700 text-sm md:text-base">
-                        <li>Perusahaan multi-unit menggantikan perusahaan kecil ketika koordinasi administratif lebih produktif daripada mekanisme pasar.</li>
-                        <li>Keuntungan internalisasi ini butuh penciptaan <strong>hierarki manajerial</strong>.</li>
-                        <li>Begitu terbentuk, hierarki manajerial menjadi sumber permanensi dan kekuatan.</li>
+                    <ol class="lang-id list-decimal ml-5 space-y-3 text-slate-700">
+                        <li>Perusahaan multi-unit menggantikan perusahaan kecil ketika koordinasi administratif memungkinkan produktivitas lebih besar daripada mekanisme pasar.</li>
+                        <li>Keuntungan internalisasi aktivitas ini tidak dapat direalisasikan sampai sebuah <strong>hierarki manajerial</strong> diciptakan.</li>
+                        <li>Begitu terbentuk, hierarki manajerial menjadi sumber permanensi, kekuatan, dan pertumbuhan berkelanjutan.</li>
                     </ol>
-                    <ol class="lang-en hidden-lang list-decimal ml-5 space-y-3 text-slate-700 text-sm md:text-base">
-                        <li>Multi-unit enterprises replaced small firms when administrative coordination was more productive than market mechanisms.</li>
-                        <li>The advantages required the creation of a <strong>managerial hierarchy</strong>.</li>
-                        <li>Once formed, the hierarchy became the source of permanence and power.</li>
+                    <ol class="lang-en hidden-lang list-decimal ml-5 space-y-3 text-slate-700">
+                        <li>Multi-unit business enterprises replaced small traditional firms when administrative coordination permitted greater productivity than market mechanisms.</li>
+                        <li>The advantages of internalizing these activities could not be realized until a <strong>managerial hierarchy</strong> was created.</li>
+                        <li>Once formed, the managerial hierarchy itself became the source of permanence, power, and continued growth.</li>
                     </ol>
                 </div>
             </div>
         </section>
 
         <section id="part1" class="content-section fade-in">
-            <div class="flex items-start md:items-center gap-4 mb-6 md:mb-8">
-                <span class="text-3xl md:text-4xl mt-1 md:mt-0">🚂</span>
+            <div class="flex items-center gap-4 mb-8">
+                <span class="text-4xl">🚂</span>
                 <div>
-                    <h2 class="lang-id text-2xl md:text-4xl font-bold text-slate-900">Bagian 1: Kereta Api</h2>
-                    <h2 class="lang-en hidden-lang text-2xl md:text-4xl font-bold text-slate-900">Part 1: The Railroads</h2>
+                    <h2 class="lang-id text-3xl md:text-4xl font-bold text-slate-900">Bagian 1: Kereta Api</h2>
+                    <h2 class="lang-en hidden-lang text-3xl md:text-4xl font-bold text-slate-900">Part 1: The Railroads</h2>
                     
-                    <p class="lang-id text-amber-700 text-sm md:text-base font-medium">Kelahiran Manajemen Modern</p>
-                    <p class="lang-en hidden-lang text-amber-700 text-sm md:text-base font-medium">Birth of Modern Management</p>
+                    <p class="lang-id text-amber-700 font-medium">Kelahiran Manajemen Modern & Struktur Korporasi</p>
+                    <p class="lang-en hidden-lang text-amber-700 font-medium">Birth of Modern Management & Corporate Structure</p>
                 </div>
             </div>
 
-            <div class="bg-white p-6 md:p-12 rounded-2xl shadow-sm border border-slate-200 mb-8">
-                <h3 class="lang-id text-xl md:text-2xl font-bold text-slate-800 mb-4 md:mb-6">Mengapa Kereta Api?</h3>
-                <h3 class="lang-en hidden-lang text-xl md:text-2xl font-bold text-slate-800 mb-4 md:mb-6">Why Railroads?</h3>
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200 mb-8">
+                <h3 class="lang-id text-2xl font-bold text-slate-800 mb-6">Mengapa Kereta Api Mengubah Segalanya?</h3>
+                <h3 class="lang-en hidden-lang text-2xl font-bold text-slate-800 mb-6">Why Railroads Changed Everything</h3>
                 
-                <div class="prose-text space-y-4 md:space-y-6">
+                <div class="prose-text space-y-6">
                     <p class="lang-id">
-                        Kereta api beroperasi 24 jam melintasi ribuan mil. Tanpa koordinasi presisi, risikonya adalah <span class="prose-highlight">kematian</span> (tabrakan). Kompleksitas ini memaksa penciptaan struktur organisasi formal pertama.
+                        Sebelum 1840-an, bisnis adalah milik keluarga kecil. Namun, kereta api beroperasi 24 jam melintasi ribuan mil. Tanpa koordinasi presisi, risikonya bukan hanya inefisiensi, tapi <span class="prose-highlight">kematian</span> (tabrakan kereta). Kompleksitas ini memaksa penciptaan struktur organisasi formal pertama.
                     </p>
                     <p class="lang-en hidden-lang">
-                        Railroads operated 24 hours a day across thousands of miles. Without precise coordination, the result was <span class="prose-highlight">death</span> (collisions). This complexity forced the creation of the first formal organizational structures.
+                        Before the 1840s, businesses were small family affairs. However, railroads operated 24 hours a day across thousands of miles. Without precise coordination, the result wasn't just inefficiency, but <span class="prose-highlight">death</span> (train collisions). This complexity forced the creation of history's first formal organizational structures.
                     </p>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div class="bg-slate-100 p-6 rounded-xl border-t-4 border-amber-600">
-                    <strong class="lang-id block text-lg md:text-xl text-slate-800 mb-2">1. Manajer Lini</strong>
-                    <strong class="lang-en hidden-lang block text-lg md:text-xl text-slate-800 mb-2">1. Line Managers</strong>
-                    <p class="lang-id text-sm text-slate-600">Otoritas absolut di lapangan. Fokus: <strong>Eksekusi Harian</strong>.</p>
-                    <p class="lang-en hidden-lang text-sm text-slate-600">Absolute authority in the field. Focus: <strong>Daily Execution</strong>.</p>
+                    <strong class="lang-id block text-xl text-slate-800 mb-2">1. Manajer Lini</strong>
+                    <strong class="lang-en hidden-lang block text-xl text-slate-800 mb-2">1. Line Managers</strong>
+                    
+                    <p class="lang-id text-sm text-slate-600 leading-relaxed text-justify">
+                        Bertanggung jawab atas pergerakan fisik dan keselamatan di divisi geografis. Otoritas absolut di lapangan. Fokus: <strong>Eksekusi Harian</strong>.
+                    </p>
+                    <p class="lang-en hidden-lang text-sm text-slate-600 leading-relaxed text-justify">
+                        Responsible for physical movement and safety in geographic divisions. Absolute authority in the field. Focus: <strong>Daily Execution</strong>.
+                    </p>
                 </div>
                 <div class="bg-slate-100 p-6 rounded-xl border-t-4 border-slate-500">
-                    <strong class="lang-id block text-lg md:text-xl text-slate-800 mb-2">2. Manajer Menengah</strong>
-                    <strong class="lang-en hidden-lang block text-lg md:text-xl text-slate-800 mb-2">2. Middle Managers</strong>
-                    <p class="lang-id text-sm text-slate-600">Inovasi terbesar. Mengelola arus informasi. Fokus: <strong>Efisiensi</strong>.</p>
-                    <p class="lang-en hidden-lang text-sm text-slate-600">The biggest innovation. Managing information. Focus: <strong>Efficiency</strong>.</p>
+                    <strong class="lang-id block text-xl text-slate-800 mb-2">2. Manajer Menengah</strong>
+                    <strong class="lang-en hidden-lang block text-xl text-slate-800 mb-2">2. Middle Managers</strong>
+                    
+                    <p class="lang-id text-sm text-slate-600 leading-relaxed text-justify">
+                        Inovasi terbesar. Mengelola arus informasi, mengaudit laporan, dan koordinasi antar divisi. Fokus: <strong>Efisiensi & Koordinasi</strong>.
+                    </p>
+                    <p class="lang-en hidden-lang text-sm text-slate-600 leading-relaxed text-justify">
+                        The biggest innovation. Managing information flow, auditing reports, and coordinating between divisions. Focus: <strong>Efficiency & Coordination</strong>.
+                    </p>
                 </div>
                 <div class="bg-slate-100 p-6 rounded-xl border-t-4 border-slate-800">
-                    <strong class="lang-id block text-lg md:text-xl text-slate-800 mb-2">3. Manajemen Puncak</strong>
-                    <strong class="lang-en hidden-lang block text-lg md:text-xl text-slate-800 mb-2">3. Top Management</strong>
-                    <p class="lang-id text-sm text-slate-600">Alokasi modal dan strategi. Fokus: <strong>Masa Depan</strong>.</p>
-                    <p class="lang-en hidden-lang text-sm text-slate-600">Capital allocation and strategy. Focus: <strong>The Future</strong>.</p>
+                    <strong class="lang-id block text-xl text-slate-800 mb-2">3. Manajemen Puncak</strong>
+                    <strong class="lang-en hidden-lang block text-xl text-slate-800 mb-2">3. Top Management</strong>
+                    
+                    <p class="lang-id text-sm text-slate-600 leading-relaxed text-justify">
+                        Terpisah dari operasi harian. Tugas mereka adalah alokasi modal, merger, dan strategi. Fokus: <strong>Masa Depan Perusahaan</strong>.
+                    </p>
+                    <p class="lang-en hidden-lang text-sm text-slate-600 leading-relaxed text-justify">
+                        Detached from daily operations. Their task is capital allocation, mergers, and strategy. Focus: <strong>The Future of the Firm</strong>.
+                    </p>
                 </div>
             </div>
 
-            <div class="bg-slate-900 text-white p-6 md:p-10 rounded-2xl shadow-xl border-l-8 border-amber-500">
-                <h4 class="lang-id text-xl md:text-2xl font-bold text-amber-400 mb-3 md:mb-4">🏛️ Studi Kasus: Western Railroad</h4>
-                <h4 class="lang-en hidden-lang text-xl md:text-2xl font-bold text-amber-400 mb-3 md:mb-4">🏛️ Case Study: Western Railroad</h4>
-                <div class="text-slate-300 leading-relaxed text-sm md:text-base">
+            <div class="bg-slate-900 text-white p-8 md:p-10 rounded-2xl shadow-xl border-l-8 border-amber-500">
+                <h4 class="lang-id text-2xl font-bold text-amber-400 mb-4">🏛️ Studi Kasus: Western Railroad (1841)</h4>
+                <h4 class="lang-en hidden-lang text-2xl font-bold text-amber-400 mb-4">🏛️ Case Study: Western Railroad (1841)</h4>
+                
+                <div class="space-y-4 text-slate-300 text-justify leading-relaxed">
                     <p class="lang-id">
-                        Setelah tabrakan fatal tahun 1841, mereka menyusun bagan organisasi formal pertama. Ini membuktikan bahwa hanya birokrasi manajerial (Tangan Terlihat) yang bisa menjamin keselamatan teknologi skala besar, bukan pasar.
+                        Setelah serangkaian tabrakan fatal, penyelidikan mengungkapkan masalah struktural: tidak ada rantai komando yang jelas. Solusinya adalah <strong>Inovasi Organisasi</strong>. Mereka menyusun bagan organisasi formal pertama dengan definisi wewenang yang kaku. Ini membuktikan bahwa "Tangan Tak Terlihat" pasar tidak bisa menjamin keselamatan; hanya birokrasi manajerial yang bisa.
                     </p>
                     <p class="lang-en hidden-lang">
-                        After fatal collisions in 1841, they drafted the first formal organizational chart. This proved that only managerial bureaucracy (The Visible Hand) could guarantee the safety of large-scale technology, not the market.
+                        After a series of fatal collisions, investigations revealed a structural problem: no clear chain of command. The solution was <strong>Organizational Innovation</strong>. They drafted the first formal organizational chart with rigid definitions of authority. This proved that the market's "Invisible Hand" could not guarantee safety; only managerial bureaucracy could.
                     </p>
                 </div>
             </div>
         </section>
 
         <section id="part2" class="content-section fade-in">
-            <div class="flex items-start md:items-center gap-4 mb-6 md:mb-8">
-                <span class="text-3xl md:text-4xl mt-1 md:mt-0">📦</span>
+            <div class="flex items-center gap-4 mb-8">
+                <span class="text-4xl">📦</span>
                 <div>
-                    <h2 class="lang-id text-2xl md:text-4xl font-bold text-slate-900">Bagian 2: Distribusi</h2>
-                    <h2 class="lang-en hidden-lang text-2xl md:text-4xl font-bold text-slate-900">Part 2: Distribution</h2>
-                    <p class="lang-id text-amber-700 text-sm md:text-base font-medium">Revolusi Ritel & Matinya Perantara</p>
-                    <p class="lang-en hidden-lang text-amber-700 text-sm md:text-base font-medium">Retail Revolution & The Death of Middlemen</p>
+                    <h2 class="lang-id text-3xl md:text-4xl font-bold text-slate-900">Bagian 2: Distribusi Massal</h2>
+                    <h2 class="lang-en hidden-lang text-3xl md:text-4xl font-bold text-slate-900">Part 2: Mass Distribution</h2>
+                    <p class="lang-id text-amber-700 font-medium">Revolusi Ritel & Matinya Perantara</p>
+                    <p class="lang-en hidden-lang text-amber-700 font-medium">Retail Revolution & The Death of Middlemen</p>
                 </div>
             </div>
 
-            <div class="bg-white p-6 md:p-12 rounded-2xl shadow-sm border border-slate-200 mb-8">
-                <h3 class="lang-id text-xl md:text-2xl font-bold text-slate-800 mb-4 md:mb-6">Pedagang Modern</h3>
-                <h3 class="lang-en hidden-lang text-xl md:text-2xl font-bold text-slate-800 mb-4 md:mb-6">Modern Marketers</h3>
-                <div class="prose-text space-y-4">
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200 mb-8">
+                <h3 class="lang-id text-2xl font-bold text-slate-800 mb-6">Munculnya Pedagang Modern</h3>
+                <h3 class="lang-en hidden-lang text-2xl font-bold text-slate-800 mb-6">Rise of the Modern Marketers</h3>
+                <div class="prose-text space-y-6">
                     <p class="lang-id">
-                        Telegraf dan kereta api memungkinkan <strong>Pemasar Massal</strong> (Department Store & Mail Order). Mereka memotong perantara, membeli langsung dari pabrik, dan menjual murah.
+                        Telegraf dan kereta api memungkinkan jenis pedagang baru: <strong>Pemasar Massal</strong> (seperti Department Store dan Mail Order). Mereka memotong rantai panjang perantara, membeli langsung dari pabrik, dan menjual ke konsumen dengan harga murah.
                     </p>
                     <p class="lang-en hidden-lang">
-                        Telegraph and railroads enabled <strong>Mass Marketers</strong> (Department Stores & Mail Order). They cut out middlemen, buying directly from factories and selling cheap.
+                        The telegraph and railroad enabled a new breed of merchant: the <strong>Mass Marketer</strong> (like Department Stores and Mail Order houses). They cut out the long chain of middlemen, buying directly from factories and selling to consumers at low prices.
                     </p>
                 </div>
             </div>
 
-            <div class="bg-amber-50 p-6 md:p-8 rounded-2xl border border-amber-200 mb-8">
-                <h4 class="lang-id text-lg md:text-xl font-bold text-amber-900 mb-3">Kecepatan "Stock Turn"</h4>
-                <h4 class="lang-en hidden-lang text-lg md:text-xl font-bold text-amber-900 mb-3">Velocity of "Stock Turn"</h4>
-                <p class="lang-id text-slate-700 leading-relaxed text-sm md:text-base">
-                    Kekayaan sejati ada pada <strong>Kecepatan Perputaran Stok</strong>. Volume dan Kecepatan mengalahkan Margin Tinggi. Tapi kecepatan ini butuh manajemen logistik canggih.
+            <div class="bg-amber-50 p-8 rounded-2xl border border-amber-200 mb-8">
+                <h4 class="lang-id text-xl font-bold text-amber-900 mb-3">Konsep Kunci: Kecepatan "Stock Turn"</h4>
+                <h4 class="lang-en hidden-lang text-xl font-bold text-amber-900 mb-3">Key Concept: Velocity of "Stock Turn"</h4>
+                
+                <p class="lang-id text-slate-700 text-justify leading-relaxed">
+                    Pedagang modern menemukan bahwa kekayaan sejati ada pada <strong>Kecepatan Perputaran Stok</strong>. Volume dan Kecepatan mengalahkan Margin Tinggi. Tapi kecepatan ini membutuhkan manajemen inventaris dan logistik yang sangat canggih.
                 </p>
-                <p class="lang-en hidden-lang text-slate-700 leading-relaxed text-sm md:text-base">
-                    True wealth lay in the <strong>Velocity of Stock Turn</strong>. Volume and Speed beat High Margins. But this speed required sophisticated logistics management.
+                <p class="lang-en hidden-lang text-slate-700 text-justify leading-relaxed">
+                    Modern merchants discovered that true wealth lay in the <strong>Velocity of Stock Turn</strong>. Volume and Speed beat High Margins. But this speed required incredibly sophisticated inventory management and logistics.
                 </p>
             </div>
 
-            <div class="bg-slate-900 text-white p-6 md:p-10 rounded-2xl shadow-xl border-l-8 border-slate-500">
-                <h4 class="lang-id text-xl md:text-2xl font-bold text-slate-200 mb-4">📦 Studi Kasus: Sears</h4>
-                <h4 class="lang-en hidden-lang text-xl md:text-2xl font-bold text-slate-200 mb-4">📦 Case Study: Sears</h4>
-                <div class="text-slate-300 leading-relaxed text-sm md:text-base">
+            <div class="bg-slate-900 text-white p-8 md:p-10 rounded-2xl shadow-xl border-l-8 border-slate-500">
+                <h4 class="lang-id text-2xl font-bold text-slate-200 mb-4">📦 Studi Kasus: Sears, Roebuck & Co.</h4>
+                <h4 class="lang-en hidden-lang text-2xl font-bold text-slate-200 mb-4">📦 Case Study: Sears, Roebuck & Co.</h4>
+                <div class="space-y-4 text-slate-300 text-justify leading-relaxed">
                     <p class="lang-id">
-                        Sears hampir hancur karena pesanan membanjir. Julius Rosenwald menciptakan sistem "pabrik pesanan" dengan jadwal waktu ketat. Manajemen logistik inilah kuncinya.
+                        Sears hampir hancur karena kesuksesannya sendiri; pesanan membanjir hingga gudang kacau. Solusinya datang dari manajer Julius Rosenwald. Dia menciptakan sistem "pabrik pesanan" dengan jadwal waktu yang ketat. Manajemen logistik inilah yang memungkinkan Sears mendominasi ritel Amerika.
                     </p>
                     <p class="lang-en hidden-lang">
-                        Sears was nearly destroyed by flooding orders. Julius Rosenwald created an "order factory" system with rigid scheduling. This logistics management was the key.
+                        Sears was nearly destroyed by its own success; orders flooded in until warehouses were in chaos. The solution came from manager Julius Rosenwald. He created an "order factory" system with rigid scheduling. It was this logistics management that allowed Sears to dominate American retail.
                     </p>
                 </div>
             </div>
         </section>
 
         <section id="part3" class="content-section fade-in">
-            <div class="flex items-start md:items-center gap-4 mb-6 md:mb-8">
-                <span class="text-3xl md:text-4xl mt-1 md:mt-0">🏭</span>
+            <div class="flex items-center gap-4 mb-8">
+                <span class="text-4xl">🏭</span>
                 <div>
-                    <h2 class="lang-id text-2xl md:text-4xl font-bold text-slate-900">Bagian 3: Produksi</h2>
-                    <h2 class="lang-en hidden-lang text-2xl md:text-4xl font-bold text-slate-900">Part 3: Production</h2>
-                    <p class="lang-id text-amber-700 text-sm md:text-base font-medium">Revolusi Throughput</p>
-                    <p class="lang-en hidden-lang text-amber-700 text-sm md:text-base font-medium">Throughput Revolution</p>
+                    <h2 class="lang-id text-3xl md:text-4xl font-bold text-slate-900">Bagian 3: Produksi Massal</h2>
+                    <h2 class="lang-en hidden-lang text-3xl md:text-4xl font-bold text-slate-900">Part 3: Mass Production</h2>
+                    <p class="lang-id text-amber-700 font-medium">Revolusi Throughput & Teknologi</p>
+                    <p class="lang-en hidden-lang text-amber-700 font-medium">Throughput Revolution & Technology</p>
                 </div>
             </div>
 
-            <div class="bg-white p-6 md:p-12 rounded-2xl shadow-sm border border-slate-200 mb-8">
-                <div class="prose-text space-y-4">
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200 mb-8">
+                <h3 class="lang-id text-2xl font-bold text-slate-800 mb-6">Lebih dari Sekadar Mesin</h3>
+                <h3 class="lang-en hidden-lang text-2xl font-bold text-slate-800 mb-6">More Than Just Machines</h3>
+                <div class="prose-text space-y-6">
                     <p class="lang-id">
-                        Revolusi industri adalah tentang mengorganisir pabrik untuk <strong>Throughput</strong> (aliran material) berkecepatan tinggi. Jika bahan baku telat, mesin mahal berhenti. Manajemen bergeser dari "mengawasi orang" ke "mengelola aliran".
+                        Revolusi industri bukan hanya tentang mesin, tapi tentang organisasi pabrik untuk memungkinkan <strong>Throughput</strong> (aliran material) berkecepatan tinggi. Jika bahan baku terlambat, mesin mahal harus berhenti. Manajemen bergeser dari "mengawasi buruh" menjadi "mengelola aliran material."
                     </p>
                     <p class="lang-en hidden-lang">
-                        The industrial revolution was about organizing factories for high-speed <strong>Throughput</strong>. If materials were late, expensive machines stopped. Management shifted from "watching people" to "managing flow".
+                        The industrial revolution wasn't just about machines, but organizing factories to enable high-speed <strong>Throughput</strong> (flow of materials). If raw materials were late, expensive machines had to stop. Management shifted from "overseeing labor" to "managing material flow."
                     </p>
                 </div>
             </div>
 
-            <div class="bg-slate-900 text-white p-6 md:p-10 rounded-2xl shadow-xl border-l-8 border-amber-600">
-                <h4 class="lang-id text-xl md:text-2xl font-bold text-amber-400 mb-4">🚬 Studi Kasus: Bonsack (Rokok)</h4>
-                <h4 class="lang-en hidden-lang text-xl md:text-2xl font-bold text-amber-400 mb-4">🚬 Case Study: Bonsack (Cigs)</h4>
-                <div class="text-slate-300 leading-relaxed text-sm md:text-base">
+            <div class="bg-slate-900 text-white p-8 md:p-10 rounded-2xl shadow-xl border-l-8 border-amber-600">
+                <h4 class="lang-id text-2xl font-bold text-amber-400 mb-4">🚬 Studi Kasus: James Bonsack (Tembakau)</h4>
+                <h4 class="lang-en hidden-lang text-2xl font-bold text-amber-400 mb-4">🚬 Case Study: James Bonsack (Tobacco)</h4>
+                <div class="space-y-4 text-slate-300 text-justify leading-relaxed">
                     <p class="lang-id">
-                        Mesin rokok Bonsack (1881) memproduksi 120.000 batang/hari. James Duke menyadari satu mesin bisa membanjiri pasar. Dia membangun organisasi global untuk menyerap output tersebut.
+                        Mesin rokok otomatis Bonsack (1881) bisa memproduksi 120.000 batang/hari, setara dengan 40 pekerja ahli. James Duke menyadari bahwa satu mesin bisa membanjiri pasar. Dia membangun organisasi global untuk pembelian bahan baku dan pemasaran agresif guna menyerap output mesin tersebut.
                     </p>
                     <p class="lang-en hidden-lang">
-                        Bonsack's machine (1881) produced 120,000 sticks/day. James Duke realized one machine could flood the market. He built a global organization to absorb that output.
+                        Bonsack's automatic cigarette machine (1881) could produce 120,000 sticks/day, equal to 40 skilled workers. James Duke realized one machine could flood the market. He built a global organization for raw material purchasing and aggressive marketing to absorb the machine's output.
                     </p>
                 </div>
             </div>
         </section>
 
         <section id="part4" class="content-section fade-in">
-            <div class="flex items-start md:items-center gap-4 mb-6 md:mb-8">
-                <span class="text-3xl md:text-4xl mt-1 md:mt-0">🔗</span>
+            <div class="flex items-center gap-4 mb-8">
+                <span class="text-4xl">🔗</span>
                 <div>
-                    <h2 class="lang-id text-2xl md:text-4xl font-bold text-slate-900">Bagian 4: Integrasi</h2>
-                    <h2 class="lang-en hidden-lang text-2xl md:text-4xl font-bold text-slate-900">Part 4: Integration</h2>
-                    <p class="lang-id text-amber-700 text-sm md:text-base font-medium">Korporasi Raksasa</p>
-                    <p class="lang-en hidden-lang text-amber-700 text-sm md:text-base font-medium">The Giant Corporation</p>
+                    <h2 class="lang-id text-3xl md:text-4xl font-bold text-slate-900">Bagian 4: Integrasi Vertikal</h2>
+                    <h2 class="lang-en hidden-lang text-3xl md:text-4xl font-bold text-slate-900">Part 4: Vertical Integration</h2>
+                    <p class="lang-id text-amber-700 font-medium">Lahirnya Korporasi Raksasa</p>
+                    <p class="lang-en hidden-lang text-amber-700 font-medium">Birth of the Giant Corporation</p>
                 </div>
             </div>
 
-            <div class="bg-white p-6 md:p-12 rounded-2xl shadow-sm border border-slate-200 mb-8">
-                <div class="prose-text space-y-4">
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200 mb-8">
+                <h3 class="lang-id text-2xl font-bold text-slate-800 mb-6">Menggabungkan Produksi & Distribusi</h3>
+                <h3 class="lang-en hidden-lang text-2xl font-bold text-slate-800 mb-6">Merging Production & Distribution</h3>
+                <div class="prose-text space-y-6">
                     <p class="lang-id">
-                        Strategi kuncinya adalah <strong>Integrasi Vertikal</strong>. Untuk produksi cepat, perusahaan harus memiliki segalanya: dari tambang bahan baku, pabrik, hingga jaringan penjualan.
+                        Strategi terpenting adalah <strong>Integrasi Vertikal</strong>. Perusahaan perintis menyadari mereka tidak bisa bergantung pada pemasok luar jika ingin memproduksi dengan kecepatan tinggi. Mereka harus memiliki segalanya: dari tambang, pabrik, hingga penjualan.
                     </p>
                     <p class="lang-en hidden-lang">
-                        The key strategy was <strong>Vertical Integration</strong>. For high-speed production, firms had to own everything: from raw material mines, to factories, to sales networks.
+                        The most critical strategy was <strong>Vertical Integration</strong>. Pioneering firms realized they couldn't rely on outside suppliers if they wanted high-speed production. They had to own everything: from mines, to factories, to sales.
                     </p>
                 </div>
             </div>
 
-            <div class="bg-slate-900 text-white p-6 md:p-10 rounded-2xl shadow-xl border-l-8 border-slate-400">
-                <h4 class="lang-id text-xl md:text-2xl font-bold text-slate-200 mb-4">🥩 Studi Kasus: Swift (Daging)</h4>
-                <h4 class="lang-en hidden-lang text-xl md:text-2xl font-bold text-slate-200 mb-4">🥩 Case Study: Swift (Meat)</h4>
-                <div class="text-slate-300 leading-relaxed text-sm md:text-base">
+            <div class="bg-slate-900 text-white p-8 md:p-10 rounded-2xl shadow-xl border-l-8 border-slate-400">
+                <h4 class="lang-id text-2xl font-bold text-slate-200 mb-4">🥩 Studi Kasus: Gustavus Swift (Daging)</h4>
+                <h4 class="lang-en hidden-lang text-2xl font-bold text-slate-200 mb-4">🥩 Case Study: Gustavus Swift (Meat)</h4>
+                <div class="space-y-4 text-slate-300 text-justify leading-relaxed">
                     <p class="lang-id">
-                        Gustavus Swift menciptakan gerbong berpendingin untuk mengirim daging potong (bukan sapi hidup). Ketika diboikot distributor, dia membangun jaringan gudang dan penjualan sendiri. Dia mengintegrasikan industri daging.
+                        Swift menemukan cara mengirim daging potong beku menggunakan gerbong berpendingin, yang jauh lebih efisien daripada mengirim sapi hidup. Ketika distributor lokal memboikotnya, Swift membangun jaringan distribusinya sendiri (gudang pendingin & tenaga penjualan). Dia mengubah industri daging yang terfragmentasi menjadi satu mesin perusahaan raksasa yang terintegrasi.
                     </p>
                     <p class="lang-en hidden-lang">
-                        Gustavus Swift created refrigerated cars to ship butchered meat (not live cattle). When boycotted by distributors, he built his own warehouses and sales network. He integrated the meat industry.
+                        Swift figured out how to ship butchered meat using refrigerated rail cars, far more efficient than shipping live cattle. When local distributors boycotted him, Swift built his own distribution network (warehouses & sales force). He turned the fragmented meat industry into one giant integrated corporate machine.
                     </p>
                 </div>
             </div>
         </section>
 
         <section id="part5" class="content-section fade-in">
-            <div class="flex items-start md:items-center gap-4 mb-6 md:mb-8">
-                <span class="text-3xl md:text-4xl mt-1 md:mt-0">👔</span>
+            <div class="flex items-center gap-4 mb-8">
+                <span class="text-4xl">👔</span>
                 <div>
-                    <h2 class="lang-id text-2xl md:text-4xl font-bold text-slate-900">Bagian 5: Manajer</h2>
-                    <h2 class="lang-en hidden-lang text-2xl md:text-4xl font-bold text-slate-900">Part 5: Managers</h2>
-                    <p class="lang-id text-amber-700 text-sm md:text-base font-medium">Pemisahan Kepemilikan & Kontrol</p>
-                    <p class="lang-en hidden-lang text-amber-700 text-sm md:text-base font-medium">Ownership vs Control</p>
+                    <h2 class="lang-id text-3xl md:text-4xl font-bold text-slate-900">Bagian 5: Manajer Profesional</h2>
+                    <h2 class="lang-en hidden-lang text-3xl md:text-4xl font-bold text-slate-900">Part 5: Professional Managers</h2>
+                    <p class="lang-id text-amber-700 font-medium">Pemisahan Kepemilikan dan Kontrol</p>
+                    <p class="lang-en hidden-lang text-amber-700 font-medium">Separation of Ownership and Control</p>
                 </div>
             </div>
 
-            <div class="bg-white p-6 md:p-12 rounded-2xl shadow-sm border border-slate-200">
-                <div class="prose-text space-y-4">
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200">
+                <h3 class="lang-id text-2xl font-bold text-slate-800 mb-6">Lahirnya Kelas Baru</h3>
+                <h3 class="lang-en hidden-lang text-2xl font-bold text-slate-800 mb-6">Birth of a New Class</h3>
+                <div class="prose-text space-y-6">
                     <p class="lang-id">
-                        Puncaknya adalah munculnya <strong>Manajer Karir Bergaji</strong>. Keluarga pendiri tidak lagi sanggup mengelola kompleksitas raksasa korporasi. Ekonomi dijalankan oleh birokrat korporat ahli, bukan pemilik modal.
+                        Puncaknya adalah munculnya <strong>Manajer Karir Bergaji</strong>. Keluarga pendiri tidak lagi sanggup mengelola kompleksitas raksasa korporasi. Terjadilah "Pemisahan Kepemilikan dan Kontrol". Ekonomi dijalankan bukan oleh pemilik modal, tetapi oleh birokrat korporat yang ahli—<strong>The Visible Hand</strong>.
                     </p>
                     <p class="lang-en hidden-lang">
-                        The culmination was the rise of the <strong>Salaried Career Manager</strong>. Founding families could no longer manage the complexity. The economy was run by expert corporate bureaucrats, not capital owners.
+                        The culmination was the rise of the <strong>Salaried Career Manager</strong>. Founding families could no longer manage the complexity of corporate giants. The "Separation of Ownership and Control" occurred. The economy was run not by capital owners, but by expert corporate bureaucrats—<strong>The Visible Hand</strong>.
                     </p>
                 </div>
             </div>
@@ -432,7 +421,7 @@
 
     <script>
         // Language Toggle Logic
-        let currentLang = 'id';
+        let currentLang = 'id'; // Default language
 
         function switchLanguage() {
             currentLang = currentLang === 'id' ? 'en' : 'id';
@@ -447,7 +436,7 @@
             if (currentLang === 'id') {
                 idElements.forEach(el => el.classList.remove('hidden-lang'));
                 enElements.forEach(el => el.classList.add('hidden-lang'));
-                btnLabel.innerText = "English"; 
+                btnLabel.innerText = "English"; // Tombol menawarkan bahasa tujuan
             } else {
                 idElements.forEach(el => el.classList.add('hidden-lang'));
                 enElements.forEach(el => el.classList.remove('hidden-lang'));
@@ -461,8 +450,6 @@
             const overlay = document.querySelector('.nav-overlay');
             drawer.classList.toggle('open');
             overlay.classList.toggle('active');
-            // Prevent scrolling background when menu is open
-            document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : 'auto';
         }
         
         function closeDrawer() {
@@ -470,7 +457,6 @@
             const overlay = document.querySelector('.nav-overlay');
             drawer.classList.remove('open');
             overlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
         }
         
         // Navigation Logic
