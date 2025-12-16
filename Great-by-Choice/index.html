@@ -9,13 +9,12 @@
         /* Import Premium Fonts - Strong, Disciplined, Empirical Feel */
         @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Oswald:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap');
         
-        /* --- THEME SETTINGS (Book Cover Palette: Bright Turquoise, Orange-Red, Deep Teal) --- */
+        /* --- THEME SETTINGS (Updated Palette: Cloudy White BG, Deep Teal Drawer) --- */
         :root {
-            --bg-paper: #00A8C5; /* Bright Turquoise from cover */
-            --text-ink: #0C2F3B; /* Very dark blue/teal for readability */
-            --accent-red: #FF4C3B; /* Orange-Red from "GREAT BY" and author names */
-            --secondary-slate: #0F4C5C; /* Subtitle color */
-            --drawer-bg: #003B46; /* Deep dark teal for navigation */
+            --bg-paper: #F8FAFC; /* A very light, cloudy white/blue-grey */
+            --text-ink: #0C2F3B; /* Very dark blue/teal for readability against white */
+            --accent-red: #FF4C3B; /* Orange-Red accent */
+            --drawer-bg: #003B46; /* Deep dark teal for navigation (Book color) */
             --text-white: #FFFFFF; /* White text for contrast on dark backgrounds */
         }
 
@@ -26,6 +25,8 @@
             line-height: 2.0; /* Generous spacing for deep reading */
             font-size: 18px; 
             -webkit-font-smoothing: antialiased;
+            /* Subtle gradient texture for cloudy feel */
+            background-image: linear-gradient(to bottom, #F0F9FF, #F8FAFC);
         }
         
         /* Typography */
@@ -34,6 +35,7 @@
             text-transform: uppercase; 
             letter-spacing: 0.02em;
             font-weight: 700;
+            color: var(--text-ink); /* Ensure titles are dark on white bg */
         }
         /* Monospace for data/empirical concepts */
         .mono-font { font-family: 'Roboto Mono', monospace; font-size: 0.9em; letter-spacing: 0.05em; }
@@ -100,12 +102,13 @@
         /* --- FLOATING CONTROLS --- */
         .float-btn {
             position: fixed; z-index: 2001; cursor: pointer;
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            background: var(--drawer-bg);
-            border: 2px solid var(--accent-red);
-            color: var(--text-white);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: var(--bg-paper);
+            border: 2px solid var(--text-ink);
+            color: var(--text-ink);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
-        .float-btn:hover { transform: translateY(-3px); background: var(--accent-red); color: var(--text-white); }
+        .float-btn:hover { transform: translateY(-3px); background: var(--accent-red); border-color: var(--accent-red); color: var(--text-white); }
 
         .drawer-toggle { 
             top: 30px; left: 30px; 
@@ -123,14 +126,24 @@
             border-radius: 4px;
         }
 
+        /* New Home Button styling */
+        .home-btn {
+            top: 90px; /* Positioned below the language switch */
+            right: 30px;
+            width: 48px; height: 48px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+        }
+
         /* --- DECORATIVE ELEMENTS --- */
-        /* Concept Box: Structured, empirical feel */
+        /* Concept Box: Adjusted for white background */
         .concept-box {
             margin: 3.5rem 0;
             padding: 2.5rem;
-            background-color: rgba(255, 255, 255, 0.15); /* Translucent box */
-            border: 2px solid var(--accent-red);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+            background-color: #FFFFFF; /* Solid white */
+            border: 1px solid #E2E8F0; /* Light border */
+            border-top: 3px solid var(--accent-red);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
             position: relative;
         }
         .concept-label {
@@ -157,16 +170,16 @@
             text-transform: uppercase;
         }
 
-        /* Robust divider */
+        /* Robust divider adapted for white bg */
         .divider {
-            width: 100%; height: 2px; background: rgba(255, 255, 255, 0.3); margin: 4rem 0; position: relative;
+            width: 100%; height: 1px; background: #CBD5E1; margin: 4rem 0; position: relative;
         }
         .divider::after {
             content: ''; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-            width: 60px; height: 4px; background: var(--accent-red);
+            width: 60px; height: 3px; background: var(--accent-red);
         }
 
-        /* Quote style - stoic */
+        /* Quote style - adapted for white bg */
         blockquote {
             border-left: 6px solid var(--accent-red);
             padding-left: 24px;
@@ -177,20 +190,9 @@
             color: var(--text-ink);
             line-height: 1.4;
             text-transform: uppercase;
-            background: rgba(255, 255, 255, 0.1);
+            background: #F1F5F9; /* Light gray background for contrast */
             padding-top: 1rem;
             padding-bottom: 1rem;
-        }
-
-        /* Title style */
-        .content-title {
-            color: var(--text-white);
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-        }
-        
-        /* Subtitle style */
-        .content-subtitle {
-             color: var(--text-white);
         }
 
         @media (max-width: 640px) {
@@ -199,6 +201,7 @@
             .nav-drawer { width: 85%; }
             .drop-cap::first-letter { font-size: 3.5rem; }
             h2 { font-size: 2.5rem; }
+            .home-btn { top: 80px; right: 30px; } /* Adjust mobile position */
         }
         
         @media (min-width: 641px) {
@@ -211,6 +214,10 @@
     <button class="float-btn lang-switch" onclick="toggleLanguage()">
         <span class="lang-text">INDONESIA</span>
     </button>
+
+    <a href="https://lp1.affiliateid.my.id/" class="float-btn home-btn" aria-label="Home">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </a>
 
     <button class="float-btn drawer-toggle" onclick="toggleDrawer()">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -285,7 +292,7 @@
         
         <section id="intro" class="content-section active fade-in">
             <span class="section-kicker">Introduction</span>
-            <h2 class="text-5xl sm:text-6xl mb-12 leading-none content-title">
+            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
                 <span class="lang-en">Thriving in Chaos</span>
                 <span class="lang-id">Berkembang dalam Kekacauan</span>
             </h2>
@@ -310,13 +317,13 @@
 
         <section id="part1" class="content-section fade-in">
             <span class="section-kicker">Chapter 01</span>
-            <h2 class="text-5xl sm:text-6xl mb-12 leading-none content-title">
+            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
                 <span class="lang-en">The 10Xers & The Triad</span>
                 <span class="lang-id">Para 10Xers & Tiga Serangkai</span>
             </h2>
 
             <div class="space-y-8 justified-text font-serif">
-                <h3 class="text-3xl mt-16 mb-6 font-bold content-subtitle">
+                <h3 class="text-3xl mt-16 mb-6 font-bold">
                     <span class="lang-en">The Definitive Case Study: Amundsen vs. Scott</span>
                     <span class="lang-id">Studi Kasus Definitif: Amundsen vs. Scott</span>
                 </h3>
@@ -335,15 +342,15 @@
                     <div class="concept-label">THE 10X TRIAD</div>
                     <div class="space-y-6">
                         <div>
-                            <h4 class="text-xl content-subtitle mb-1">1. Fanatic Discipline</h4>
+                            <h4 class="text-xl mb-1">1. Fanatic Discipline</h4>
                             <p>Consistency of action. Adhering to values and performance standards regardless of the weather—good or bad.</p>
                         </div>
                         <div>
-                            <h4 class="text-xl content-subtitle mb-1">2. Empirical Creativity</h4>
+                            <h4 class="text-xl mb-1">2. Empirical Creativity</h4>
                             <p>Don't follow the herd. Look at the evidence (Empirical). Be bold in your solutions based on that evidence (Creative).</p>
                         </div>
                         <div>
-                            <h4 class="text-xl content-subtitle mb-1">3. Productive Paranoia</h4>
+                            <h4 class="text-xl mb-1">3. Productive Paranoia</h4>
                             <p>Hyper-vigilance. Assuming the worst will happen and preparing massive buffers before the storm hits.</p>
                         </div>
                     </div>
@@ -353,7 +360,7 @@
 
         <section id="part2" class="content-section fade-in">
             <span class="section-kicker">Chapter 02</span>
-            <h2 class="text-5xl sm:text-6xl mb-12 leading-none content-title">
+            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
                 <span class="lang-en">20 Mile March</span>
                 <span class="lang-id">Mars 20 Mil</span>
             </h2>
@@ -389,7 +396,7 @@
 
         <section id="part3" class="content-section fade-in">
             <span class="section-kicker">Chapter 03</span>
-            <h2 class="text-5xl sm:text-6xl mb-12 leading-none content-title">
+            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
                 <span class="lang-en">Fire Bullets, Then Cannonballs</span>
                 <span class="lang-id">Tembakkan Peluru, Lalu Meriam</span>
             </h2>
@@ -408,7 +415,7 @@
                     </p>
                 </div>
 
-                <h3 class="text-3xl mt-16 mb-6 font-bold content-subtitle">
+                <h3 class="text-3xl mt-16 mb-6 font-bold">
                     <span class="lang-en">Case Study: Apple's iPod</span>
                     <span class="lang-id">Studi Kasus: iPod Apple</span>
                 </h3>
@@ -425,7 +432,7 @@
 
         <section id="part4" class="content-section fade-in">
             <span class="section-kicker">Chapter 04</span>
-            <h2 class="text-5xl sm:text-6xl mb-12 leading-none content-title">
+            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
                 <span class="lang-en">Leading Above the Death Line</span>
                 <span class="lang-id">Memimpin di Atas Garis Kematian</span>
             </h2>
@@ -436,7 +443,7 @@
                     <span class="lang-id">10Xers beroperasi dengan <strong>Paranoia Produktif</strong>. Mereka tahu bahwa peristiwa "Black Swan"—bencana tak terduga yang berdampak tinggi—akan terjadi. Satu-satunya pertanyaan adalah apakah Anda memiliki penyangga untuk bertahan ketika peristiwa itu datang.</span>
                 </p>
 
-                <h3 class="text-3xl mt-16 mb-6 font-bold content-subtitle">
+                <h3 class="text-3xl mt-16 mb-6 font-bold">
                     <span class="lang-en">Cash is Oxygen</span>
                     <span class="lang-id">Uang Tunai adalah Oksigen</span>
                 </h3>
@@ -469,7 +476,7 @@
 
         <section id="part5" class="content-section fade-in">
             <span class="section-kicker">Chapter 05</span>
-            <h2 class="text-5xl sm:text-6xl mb-12 leading-none content-title">
+            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
                 <span class="lang-en">SMaC Recipe</span>
                 <span class="lang-id">Resep SMaC</span>
             </h2>
@@ -500,7 +507,7 @@
 
         <section id="part6" class="content-section fade-in">
             <span class="section-kicker">Chapter 06</span>
-            <h2 class="text-5xl sm:text-6xl mb-12 leading-none content-title">
+            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
                 <span class="lang-en">Return on Luck (ROL)</span>
                 <span class="lang-id">Pengembalian atas Keberuntungan (ROL)</span>
             </h2>
