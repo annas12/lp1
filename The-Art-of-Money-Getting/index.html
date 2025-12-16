@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Art of Money Getting: The Masterclass</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* --- TYPOGRAPHY: VINTAGE & ELEGANT --- */
+        /* Playfair Display untuk judul klasik, Lora untuk teks bacaan, Cinzel untuk kesan "Golden Rules" */
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+        
+        /* --- THEME PALETTE: OLD MONEY & GOLDEN RULES --- */
+        :root {
+            --bg-paper: #FDFCF5; /* Creamy Old Paper */
+            --text-ink: #2C3325; /* Dark Olive/Charcoal (Softer than black) */
+            --accent-gold: #C5A059; /* Antique Gold */
+            --accent-green: #1F4E3D; /* Deep Bank Green */
+            --drawer-bg: #1F4E3D; /* Green Drawer */
+            --header-bg: rgba(253, 252, 245, 0.95);
+        }
+
+        body { 
+            font-family: 'Lora', serif; 
+            background-color: var(--bg-paper); 
+            color: var(--text-ink); 
+            line-height: 1.9; 
+            font-size: 19px; 
+            -webkit-font-smoothing: antialiased;
+            padding-top: 80px;
+            background-image: radial-gradient(#C5A059 0.5px, transparent 0.5px);
+            background-size: 20px 20px; /* Subtle dot pattern */
+        }
+        
+        h1, h2, h3, h4 { 
+            font-family: 'Playfair Display', serif; 
+            text-transform: capitalize; 
+            font-weight: 700;
+            color: var(--text-ink);
+        }
+
+        /* Decorative "Golden Rule" text */
+        .gold-font { 
+            font-family: 'Cinzel', serif; 
+            font-size: 0.85em; 
+            letter-spacing: 0.1em;
+            color: var(--accent-gold);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        /* DROP CAP - Vintage Style */
+        .drop-cap::first-letter {
+            float: left;
+            font-size: 4.8rem;
+            line-height: 0.8;
+            margin-right: 0.15em;
+            margin-top: 0.05em;
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-green);
+            text-shadow: 2px 2px 0px var(--accent-gold); /* 3D Effect */
+        }
+
+        /* --- ANIMATIONS --- */
+        .fade-in { animation: fadeIn 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .content-section { display: none; padding-bottom: 120px; max-width: 780px; margin: 0 auto; }
+        .content-section.active { display: block; }
+        
+        /* --- LANGUAGE UTILS --- */
+        .lang-id { display: none; }
+        .lang-en { display: block; }
+        .justified-text { text-align: justify; }
+        
+        /* --- CLEAN HEADER BAR (Vintage Style) --- */
+        .header-bar {
+            position: fixed; top: 0; left: 0; width: 100%; height: 75px;
+            background: var(--header-bg); 
+            backdrop-filter: blur(8px);
+            border-bottom: 3px double var(--accent-gold); /* Double border for vintage feel */
+            z-index: 3000; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px; transition: top 0.3s;
+        }
+
+        .menu-btn {
+            width: 40px; height: 40px; display: flex; align-items: center; justify-content: flex-start;
+            cursor: pointer; color: var(--accent-green); transition: color 0.3s;
+        }
+        .menu-btn:hover { color: var(--accent-gold); }
+
+        .right-controls { display: flex; align-items: center; gap: 24px; }
+
+        .back-link {
+            display: flex; align-items: center; justify-content: center;
+            color: var(--accent-green); transition: transform 0.2s, color 0.2s;
+        }
+        .back-link:hover { transform: translateX(-3px); color: var(--accent-gold); }
+
+        /* LANGUAGE TOGGLE */
+        .lang-toggle-container {
+            font-family: 'Cinzel', serif; font-size: 14px; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; gap: 8px; user-select: none;
+        }
+        .lang-opt { color: #BBB; transition: color 0.3s; }
+        .lang-opt.active { color: var(--accent-green); text-decoration: underline; text-decoration-color: var(--accent-gold); text-decoration-thickness: 2px; }
+        
+        /* --- NAVIGATION DRAWER (Green & Gold) --- */
+        .nav-drawer {
+            position: fixed; top: 0; left: -380px; width: 380px; height: 100vh;
+            background: var(--drawer-bg);
+            background-image: linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            transition: left 0.6s cubic-bezier(0.16, 1, 0.3, 1); z-index: 4000;
+            box-shadow: 5px 0 30px rgba(0,0,0,0.4);
+            border-right: 4px solid var(--accent-gold);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(31, 78, 61, 0.6); opacity: 0; visibility: hidden;
+            transition: all 0.5s; z-index: 3999; backdrop-filter: blur(3px);
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .nav-btn {
+            font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic;
+            border-left: 4px solid transparent; transition: all 0.3s;
+            color: #E0E0E0; padding: 18px 24px;
+        }
+        .active-tab { 
+            border-left: 4px solid var(--accent-gold); color: var(--accent-gold) !important;
+            background: rgba(0,0,0,0.2); padding-left: 32px !important;
+        }
+
+        /* --- CONTENT STYLES --- */
+        /* Concept Box: Styled like an old banknote or certificate */
+        .concept-box {
+            margin: 3rem 0; padding: 2.5rem; 
+            border: 4px double var(--accent-gold); /* Double border */
+            background-color: #FFF; 
+            position: relative;
+        }
+        .concept-label {
+            position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+            background: var(--bg-paper); color: var(--accent-green); padding: 0 15px;
+            font-family: 'Cinzel', serif; font-weight: 700; border: 1px solid var(--accent-gold);
+            text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.1em;
+        }
+
+        blockquote {
+            border-top: 1px solid var(--accent-gold);
+            border-bottom: 1px solid var(--accent-gold);
+            padding: 2rem; text-align: center;
+            margin: 3rem 0; font-family: 'Playfair Display', serif; font-weight: 400; font-style: italic;
+            font-size: 1.5rem; color: var(--accent-green);
+        }
+
+        /* Separator: Ornamental */
+        .divider {
+            width: 100%; height: 1px; background: var(--accent-gold); margin: 4rem 0;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .divider::after {
+            content: '❖'; color: var(--accent-green); font-size: 1.5rem; background: var(--bg-paper); padding: 0 1rem;
+        }
+
+        /* List Styling */
+        .vintage-list { list-style: none; padding: 0; margin-top: 1rem; }
+        .vintage-list li { margin-bottom: 1.5rem; padding-left: 1.5rem; position: relative; }
+        .vintage-list li::before { 
+            content: '♦'; color: var(--accent-gold); position: absolute; left: 0; top: 2px;
+        }
+
+        @media (max-width: 640px) {
+            body { font-size: 18px; line-height: 1.8; }
+            .content-section { padding: 40px 24px; }
+            .nav-drawer { width: 85%; }
+            h2 { font-size: 2.2rem; }
+            .header-bar { padding: 0 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-bar">
+        <button class="menu-btn" onclick="toggleDrawer()" aria-label="Menu">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+
+        <div class="right-controls">
+            <a href="https://lp1.affiliateid.my.id/" class="back-link" aria-label="Back to Home">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            </a>
+
+            <div class="lang-toggle-container" onclick="toggleLanguage()">
+                <span class="lang-opt lang-id-btn">ID</span>
+                <span style="color: var(--accent-gold);">|</span>
+                <span class="lang-opt lang-en-btn active">EN</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    <nav class="nav-drawer flex flex-col h-full">
+        <div class="px-8 py-12">
+            <h2 class="text-[#C5A059] text-4xl leading-tight mb-2 font-serif tracking-wide border-b border-[#C5A059] pb-4">
+                THE ART OF <br><span class="text-white">MONEY GETTING</span>
+            </h2>
+            <p class="text-gray-400 text-[10px] uppercase tracking-[0.2em] font-serif mt-4">
+                P. T. Barnum (1880)
+            </p>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1">
+                 <li>
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left active-tab">
+                        <span class="lang-en">00. The Golden Rule</span>
+                        <span class="lang-id">00. Aturan Emas</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="lang-en">01. Your Vocation & Location</span>
+                        <span class="lang-id">01. Vokasi & Lokasi Anda</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="lang-en">02. The Horror of Debt</span>
+                        <span class="lang-id">02. Mengerikannya Utang</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="lang-en">03. Perseverance & Focus</span>
+                        <span class="lang-id">03. Ketekunan & Fokus</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="lang-en">04. The Art of Humbug (Advertising)</span>
+                        <span class="lang-id">04. Seni Humbug (Iklan)</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="p-8 text-[#C5A059] text-[10px] font-serif tracking-widest uppercase border-t border-[#C5A059]/30">
+            Golden Rules Edition
+        </div>
+    </nav>
+
+    <main>
+        
+        <section id="intro" class="content-section active fade-in">
+            <div class="gold-font mb-4">INTRODUCTION</div>
+            <h2 class="text-5xl sm:text-6xl mb-10 leading-none">
+                <span class="lang-en">The Road to Wealth</span>
+                <span class="lang-id">Jalan Menuju Kekayaan</span>
+            </h2>
+            
+            <div class="justified-text">
+                <p class="drop-cap">
+                    <span class="lang-en">In the United States, where we have more land than people, it is not difficult for persons in good health to make money. The road to wealth is, as Dr. Franklin truly says, "as plain as the road to the mill." It consists simply in spending less than we earn; that seems to be a very simple problem.</span>
+                    <span class="lang-id">Di Amerika Serikat, di mana kita memiliki lebih banyak tanah daripada manusia, tidak sulit bagi orang yang sehat untuk menghasilkan uang. Jalan menuju kekayaan, seperti yang dikatakan Dr. Franklin dengan benar, "sejelas jalan menuju penggilingan." Ini hanya terdiri dari membelanjakan kurang dari yang kita hasilkan; itu tampaknya masalah yang sangat sederhana.</span>
+                </p>
+
+                <p>
+                    <span class="lang-en">However, P.T. Barnum argues that while making money is easy, <em>keeping it</em> is the most difficult thing in the world. This book is a collection of "Golden Rules" to not just acquire wealth, but to maintain it with character.</span>
+                    <span class="lang-id">Namun, P.T. Barnum berpendapat bahwa meskipun menghasilkan uang itu mudah, <em>menyimpannya</em> adalah hal tersulit di dunia. Buku ini adalah kumpulan "Aturan Emas" untuk tidak hanya memperoleh kekayaan, tetapi untuk memeliharanya dengan karakter.</span>
+                </p>
+
+                 <blockquote>
+                    <span class="lang-en">"Economy is not meanness. It is a saving of waste."</span>
+                    <span class="lang-id">"Berhemat bukanlah kekikiran. Itu adalah penyelamatan dari pemborosan."</span>
+                </blockquote>
+            </div>
+        </section>
+
+        <section id="part1" class="content-section fade-in">
+            <div class="gold-font mb-4">RULE NO. 1</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">Don't Mistake Your Vocation</span>
+                <span class="lang-id">Jangan Salah Memilih Panggilan</span>
+            </h2>
+
+            <div class="justified-text">
+                <p>
+                    <span class="lang-en">The safest plan, and the one most sure of success for the young man starting in life, is to select the vocation which is most congenial to his tastes. We are all born with a distinct nature.</span>
+                    <span class="lang-id">Rencana teraman, dan yang paling pasti sukses bagi pemuda yang memulai hidup, adalah memilih panggilan yang paling sesuai dengan seleranya. Kita semua dilahirkan dengan sifat yang berbeda.</span>
+                </p>
+
+                <div class="concept-box">
+                    <div class="concept-label">THE SQUARE PEG</div>
+                    <p>
+                        <span class="lang-en">Barnum uses the metaphor of a blacksmith attempting to be a preacher. Unless a man enters upon the vocation intended for him by nature, and best suited to his peculiar genius, he cannot succeed.</span>
+                        <span class="lang-id">Barnum menggunakan metafora pandai besi yang mencoba menjadi pengkhotbah. Kecuali seorang pria memasuki panggilan yang ditujukan untuknya oleh alam, dan paling cocok dengan kejeniusannya yang khas, dia tidak akan berhasil.</span>
+                    </p>
+                </div>
+
+                <h3 class="text-2xl mt-8 mb-4 italic">Select the Right Location</h3>
+                <p>
+                    <span class="lang-en">You may have the right vocation, but if you are in the wrong location, you will fail. "You might conduct a hotel like a fire-trap and yet have it pay, if it is located near a railroad station." Location is half the battle.</span>
+                    <span class="lang-id">Anda mungkin memiliki panggilan yang tepat, tetapi jika Anda berada di lokasi yang salah, Anda akan gagal. "Anda mungkin mengelola hotel seperti jebakan api namun tetap untung, jika lokasinya dekat stasiun kereta." Lokasi adalah separuh pertempuran.</span>
+                </p>
+            </div>
+        </section>
+
+        <section id="part2" class="content-section fade-in">
+            <div class="gold-font mb-4">RULE NO. 2</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">Avoid Debt Like Fire</span>
+                <span class="lang-id">Hindari Utang Seperti Api</span>
+            </h2>
+
+            <div class="justified-text">
+                <p class="drop-cap">
+                    <span class="lang-en">Young men starting in life should avoid running into debt. There is scarcely anything that drags a person down like debt. It is a slavish position to get in, yet we find many a young man, hardly out of his teens, running in debt.</span>
+                    <span class="lang-id">Para pemuda yang memulai hidup harus menghindari berutang. Hampir tidak ada yang menyeret seseorang ke bawah seperti utang. Ini adalah posisi budak, namun kita menemukan banyak pemuda, yang baru saja melewati masa remaja, terjerat utang.</span>
+                </p>
+
+                <p>
+                    <span class="lang-en">Barnum distinguishes between debt incurred for business (which is an investment) and debt incurred for living expenses. The latter is the killer.</span>
+                    <span class="lang-id">Barnum membedakan antara utang yang terjadi untuk bisnis (yang merupakan investasi) dan utang untuk biaya hidup. Yang terakhir inilah pembunuhnya.</span>
+                </p>
+
+                <blockquote>
+                    <span class="lang-en">"Money is in some respects like fire; it is a very excellent servant but a terrible master."</span>
+                    <span class="lang-id">"Uang dalam beberapa hal seperti api; ia adalah pelayan yang sangat baik tetapi tuan yang mengerikan."</span>
+                </blockquote>
+
+                <p>
+                    <span class="lang-en"><strong>The Interest Trap:</strong> "Interest works night and day; in fair weather and in foul. It gnaws at a man's substance with invisible teeth."</span>
+                    <span class="lang-id"><strong>Jebakan Bunga:</strong> "Bunga bekerja siang dan malam; dalam cuaca cerah dan buruk. Ia menggerogoti harta seseorang dengan gigi yang tak terlihat."</span>
+                </p>
+            </div>
+        </section>
+
+        <section id="part3" class="content-section fade-in">
+            <div class="gold-font mb-4">RULE NO. 3</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">Perseverance</span>
+                <span class="lang-id">Ketekunan</span>
+            </h2>
+
+            <div class="justified-text">
+                <p>
+                    <span class="lang-en">When a man is in the right path, he must persevere. Barnum warns against "scatteration"—doing too many things at once.</span>
+                    <span class="lang-id">Ketika seseorang berada di jalan yang benar, dia harus tekun. Barnum memperingatkan terhadap "penyebaran"—melakukan terlalu banyak hal sekaligus.</span>
+                </p>
+
+                <div class="concept-box">
+                    <div class="concept-label">FOCUS</div>
+                    <p>
+                        <span class="lang-en">"Stick to your business, and your business will stick to you." Many fortunes have slipped through men's fingers because they were engaged in too many different occupations at a time.</span>
+                        <span class="lang-id">"Tetaplah pada bisnis Anda, dan bisnis Anda akan tetap pada Anda." Banyak kekayaan telah lolos dari jari-jari pria karena mereka terlibat dalam terlalu banyak pekerjaan berbeda sekaligus.</span>
+                    </p>
+                </div>
+                
+                <h3 class="text-2xl mt-8 mb-4 italic">"Whatever you do, do it with all your might"</h3>
+                <p>
+                    <span class="lang-en">Work at it, if necessary, early and late, in season and out of season, not leaving a stone unturned, and never deferring for a single hour that which can be done just as well now.</span>
+                    <span class="lang-id">Kerjakanlah, jika perlu, pagi dan malam, di musim dan di luar musim, jangan tinggalkan satu batu pun yang tidak dibalik, dan jangan pernah menunda satu jam pun apa yang bisa dilakukan dengan baik sekarang.</span>
+                </p>
+            </div>
+        </section>
+
+        <section id="part4" class="content-section fade-in">
+            <div class="gold-font mb-4">RULE NO. 4</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">Advertise Your Business</span>
+                <span class="lang-id">Iklankan Bisnis Anda</span>
+            </h2>
+
+            <div class="justified-text">
+                <p>
+                    <span class="lang-en">Barnum was the master showman, so his advice on advertising is critical. He tells a story of a man who didn't advertise because "everybody knew him." That man failed.</span>
+                    <span class="lang-id">Barnum adalah ahli pertunjukan, jadi nasihatnya tentang iklan sangat penting. Dia menceritakan kisah seorang pria yang tidak beriklan karena "semua orang mengenalnya." Pria itu gagal.</span>
+                </p>
+
+                <ul class="vintage-list">
+                    <li>
+                        <strong><span class="lang-en">Be Polite and Kind to Customers</span><span class="lang-id">Sopan dan Baik kepada Pelanggan</span></strong>
+                        <span class="lang-en">Politeness and civility are the best capital ever invested in business.</span>
+                        <span class="lang-id">Kesopanan dan keramahan adalah modal terbaik yang pernah diinvestasikan dalam bisnis.</span>
+                    </li>
+                    <li>
+                        <strong><span class="lang-en">Don't Hide Your Light</span><span class="lang-id">Jangan Sembunyikan Cahaya Anda</span></strong>
+                        <span class="lang-en">You may have the best goods in the world, but if nobody knows it, it does you no good. Use printer's ink (advertising).</span>
+                        <span class="lang-id">Anda mungkin memiliki barang terbaik di dunia, tetapi jika tidak ada yang tahu, itu tidak berguna bagi Anda. Gunakan tinta printer (iklan).</span>
+                    </li>
+                    <li>
+                        <strong><span class="lang-en">Integrity</span><span class="lang-id">Integritas</span></strong>
+                        <span class="lang-en">Whatever you do, do not lie to the public. You may fool some of the people some of the time, but you cannot fool all of the people all of the time.</span>
+                        <span class="lang-id">Apa pun yang Anda lakukan, jangan berbohong kepada publik. Anda mungkin menipu sebagian orang di sebagian waktu, tetapi Anda tidak dapat menipu semua orang sepanjang waktu.</span>
+                    </li>
+                </ul>
+
+                <div class="divider"></div>
+                <p class="text-center font-serif italic text-xl">
+                    <span class="lang-en">"Preserve your integrity. It is more precious than diamonds or rubies."</span>
+                    <span class="lang-id">"Jagalah integritas Anda. Itu lebih berharga daripada berlian atau batu delima."</span>
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- LOGIC ---
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateContent();
+        }
+
+        function updateContent() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const langEnBtn = document.querySelector('.lang-en-btn');
+            const langIdBtn = document.querySelector('.lang-id-btn');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                
+                langEnBtn.classList.add('active');
+                langIdBtn.classList.remove('active');
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                
+                langIdBtn.classList.add('active');
+                langEnBtn.classList.remove('active');
+            }
+        }
+
+        // Navigation Drawer Logic
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            if(drawer.classList.contains('open')) document.body.style.overflow = 'hidden';
+            else document.body.style.overflow = '';
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(sec => {
+                sec.classList.remove('active');
+                sec.classList.remove('fade-in');
+            });
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active-tab');
+            });
+            const target = document.getElementById(sectionId);
+            target.classList.add('active');
+            void target.offsetWidth; 
+            target.classList.add('fade-in');
+            event.currentTarget.classList.add('active-tab');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+  </html>
