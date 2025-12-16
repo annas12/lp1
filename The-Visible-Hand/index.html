@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Visible Hand — Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Steel/Bronze Theme for Industrial Revolution */
+        .active-tab { background: linear-gradient(135deg, #334155 0%, #1e293b 100%); } 
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.8; }
+
+        /* Language Utilities */
+        .lang-id { display: none; } 
+        .lang-en { display: block; }
+        
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.7; }
+            .mobile-title { font-size: 1.5rem !important; }
+            .mobile-subtitle { font-size: 1.1rem !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-margin { margin-bottom: 1rem !important; }
+        }
+        
+        .nav-drawer {
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999;
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #64748b 0%, #334155 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(100, 116, 139, 0.3);
+        }
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(100, 116, 139, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #475569 0%, #334155 100%); box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3); }
+        
+        /* Simple Language Button */
+        .lang-btn-simple {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1002;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lang-btn-simple:hover { background-color: #f1f5f9; transform: scale(1.05); }
+        .lang-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #475569; }
+
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        .nav-item:hover::before { left: 100%; }
+        
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-amber-50 min-h-screen">
+
+    <button class="lang-btn-simple" onclick="toggleLanguage()">
+        <span class="lang-indicator"></span>
+        <span class="lang-text">English / Indonesia</span>
+    </button>
+
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer">
+        <div class="p-6 border-b border-slate-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-slate-500 to-slate-700 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">H</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-semibold text-lg">The Visible Hand</h2>
+                    <p class="text-slate-400 text-sm">
+                        <span class="lang-en">Managerial Revolution</span>
+                        <span class="lang-id">Revolusi Manajerial</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <h3 class="text-slate-400 text-sm font-medium uppercase tracking-wider mb-4 px-2">
+                <span class="lang-en">Evolution of Business</span>
+                <span class="lang-id">Evolusi Bisnis</span>
+            </h3>
+            <ul class="space-y-2">
+                <li class="nav-item">
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 active-tab text-white flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center text-xs font-bold">🏭</span>
+                        <span class="lang-en">Introduction</span>
+                        <span class="lang-id">Pendahuluan</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-amber-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Railroads</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Birth of Management</span>
+                                <span class="lang-id">Lahirnya Manajemen</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-orange-700 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="text-left">
+                            <div class="font-medium">Mass Distribution</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Retail Revolution</span>
+                                <span class="lang-id">Revolusi Ritel</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-stone-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="text-left">
+                            <div class="font-medium">Mass Production</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">Speed & Throughput</span>
+                                <span class="lang-id">Kecepatan & Throughput</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-800 rounded-lg flex items-center justify-center text-xs font-bold">4</span>
+                        <div class="text-left">
+                            <div class="font-medium">Integration</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">The Modern Corp</span>
+                                <span class="lang-id">Korporasi Modern</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-700 text-slate-300 flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-teal-700 rounded-lg flex items-center justify-center text-xs font-bold">5</span>
+                        <div class="text-left">
+                            <div class="font-medium">The Manager</div>
+                            <div class="text-xs text-slate-400">
+                                <span class="lang-en">A New Class</span>
+                                <span class="lang-id">Kelas Baru</span>
+                            </div>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
+            <div class="text-center">
+                <p class="text-slate-400 text-xs">© Alfred D. Chandler Jr.</p>
+                <p class="text-slate-500 text-xs mt-1">Master Edition</p>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 mobile-title">
+                    The Visible Hand
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-slate-600 font-medium px-2">
+                    <span class="lang-en">The Managerial Revolution in American Business</span>
+                    <span class="lang-id">Revolusi Manajerial dalam Bisnis Amerika</span>
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-slate-500 to-amber-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+        <main>
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden">
+                    
+                <section id="intro" class="content-section active p-4 sm:p-6 md:p-8 mobile-padding fade-in">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+                            <span class="lang-en">The Core Thesis</span>
+                            <span class="lang-id">Tesis Utama</span>
+                        </span>
+                        
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Invisible Hand vs. Visible Hand</span>
+                            <span class="lang-id">Tangan Tak Terlihat vs. Tangan Terlihat</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <div class="text-base sm:text-lg text-slate-600 font-medium border-l-4 border-slate-500 pl-4 italic mobile-text justified-text">
+                            <span class="lang-en">"Modern business enterprise took the place of market mechanisms in coordinating the activities of the economy and allocating its resources."</span>
+                            <span class="lang-id">"Perusahaan bisnis modern mengambil alih mekanisme pasar dalam mengoordinasikan aktivitas ekonomi dan mengalokasikan sumber dayanya."</span>
+                        </div>
+                        
+                        <div class="mobile-text justified-text">
+                            <p class="lang-en mb-4">
+                                Alfred Chandler argues against Adam Smith's famous concept of the "Invisible Hand." Smith believed that market forces (supply and demand) automatically coordinated the economy among small, family-owned firms. Chandler proves that by the mid-19th century, technology and complexity made the "Invisible Hand" inefficient.
+                            </p>
+                            <p class="lang-id mb-4">
+                                Alfred Chandler menentang konsep terkenal Adam Smith tentang "Tangan Tak Terlihat." Smith percaya bahwa kekuatan pasar (penawaran dan permintaan) secara otomatis mengoordinasikan ekonomi di antara perusahaan kecil milik keluarga. Chandler membuktikan bahwa pada pertengahan abad ke-19, teknologi dan kompleksitas membuat "Tangan Tak Terlihat" menjadi tidak efisien.
+                            </p>
+                            
+                            <p class="lang-en">
+                                Instead, a new force emerged: the <strong>Visible Hand</strong> of management. Administrative coordination became more efficient than market coordination. This led to the rise of the Multi-Unit Business Enterprise (MME)—companies with many distinct operating units managed by a hierarchy of salaried executives.
+                            </p>
+                            <p class="lang-id">
+                                Sebaliknya, kekuatan baru muncul: <strong>Tangan Terlihat</strong> dari manajemen. Koordinasi administratif menjadi lebih efisien daripada koordinasi pasar. Ini mengarah pada kebangkitan Perusahaan Bisnis Multi-Unit (MME)—perusahaan dengan banyak unit operasi berbeda yang dikelola oleh hierarki eksekutif bergaji.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 1</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Railroads: The First Modern Business</span>
+                            <span class="lang-id">Kereta Api: Bisnis Modern Pertama</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            Before 1840, business was personal. Owners managed everything. But you cannot run a railroad like a textile mill. The sheer scale and danger of railroads forced the invention of modern management.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Sebelum 1840, bisnis bersifat personal. Pemilik mengelola segalanya. Tapi Anda tidak bisa menjalankan kereta api seperti pabrik tekstil. Skala besar dan bahaya kereta api memaksa penemuan manajemen modern.
+                        </p>
+
+                        <div class="bg-amber-50 p-6 rounded-xl border border-amber-200">
+                            <h4 class="font-bold text-amber-900 text-lg mb-3 lang-en">Why Management Was Invented</h4>
+                            <h4 class="font-bold text-amber-900 text-lg mb-3 lang-id">Mengapa Manajemen Ditemukan</h4>
+                            
+                            <p class="text-sm text-amber-800 justified-text mb-3 lang-en">
+                                <strong>Safety & Scheduling:</strong> On a single track, if two trains run in opposite directions without precise coordination, they crash and people die. You cannot rely on "market forces" to prevent a crash. You need a schedule.
+                                <br><br>
+                                <strong>The Structure:</strong> This need for precision created the first managerial hierarchy.
+                                <br>1. <strong>Line Managers:</strong> Controlled the movement of trains.
+                                <br>2. <strong>Middle Managers:</strong> Audited the accounts and coordinated traffic between divisions.
+                                <br>3. <strong>Top Management:</strong> Focused on long-term strategy and finance, separated from daily operations.
+                                <br><br>
+                                Railroads were the first to separate "operations" from "strategy," creating the blueprint for every modern corporation.
+                            </p>
+                            <p class="text-sm text-amber-800 justified-text mb-3 lang-id">
+                                <strong>Keselamatan & Penjadwalan:</strong> Di jalur tunggal, jika dua kereta berjalan berlawanan arah tanpa koordinasi tepat, mereka bertabrakan dan orang mati. Anda tidak bisa mengandalkan "kekuatan pasar" untuk mencegah tabrakan. Anda butuh jadwal.
+                                <br><br>
+                                <strong>Struktur:</strong> Kebutuhan akan presisi ini menciptakan hierarki manajerial pertama.
+                                <br>1. <strong>Manajer Lini:</strong> Mengontrol pergerakan kereta.
+                                <br>2. <strong>Manajer Menengah:</strong> Mengaudit akun dan mengoordinasikan lalu lintas antar divisi.
+                                <br>3. <strong>Manajemen Puncak:</strong> Fokus pada strategi jangka panjang dan keuangan, terpisah dari operasi harian.
+                                <br><br>
+                                Kereta api adalah yang pertama memisahkan "operasi" dari "strategi," menciptakan cetak biru untuk setiap korporasi modern.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-orange-100 text-orange-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Revolution in Distribution</span>
+                            <span class="lang-id">Revolusi dalam Distribusi</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            With the railroads providing reliable transportation, a new type of merchant appeared: The Mass Marketer. They bypassed the traditional network of middlemen (wholesalers/jobbers).
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Dengan kereta api menyediakan transportasi andal, tipe pedagang baru muncul: Pemasar Massal. Mereka memotong jaringan tradisional perantara (grosir).
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                                <strong class="block text-orange-900 text-lg mb-2 lang-en">The Department Store</strong>
+                                <strong class="block text-orange-900 text-lg mb-2 lang-id">Department Store</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    Stores like <strong>Macy's</strong> and <strong>Marshall Field</strong> brought high volume to cities. Their innovation was "Stock Turn" (turnover). By selling goods quickly at lower margins, they made more profit than traditional stores that sold slowly at high margins.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    Toko seperti <strong>Macy's</strong> dan <strong>Marshall Field</strong> membawa volume tinggi ke kota. Inovasi mereka adalah "Perputaran Stok" (turnover). Dengan menjual barang cepat dengan margin rendah, mereka untung lebih banyak dibanding toko tradisional yang jual lambat dengan margin tinggi.
+                                </p>
+                            </div>
+
+                            <div class="bg-stone-100 p-4 rounded-lg border border-stone-300">
+                                <strong class="block text-stone-900 text-lg mb-2 lang-en">The Mail Order House</strong>
+                                <strong class="block text-stone-900 text-lg mb-2 lang-id">Rumah Pesanan Pos</strong>
+                                <p class="text-sm text-slate-700 justified-text lang-en">
+                                    <strong>Sears Roebuck</strong> and <strong>Montgomery Ward</strong> used the railroad network to reach rural farmers. They built massive logistical organizations to process thousands of orders daily. This required an army of managers to coordinate purchasing, warehousing, and shipping.
+                                </p>
+                                <p class="text-sm text-slate-700 justified-text lang-id">
+                                    <strong>Sears Roebuck</strong> dan <strong>Montgomery Ward</strong> menggunakan jaringan kereta api untuk menjangkau petani desa. Mereka membangun organisasi logistik masif untuk memproses ribuan pesanan setiap hari. Ini butuh pasukan manajer untuk koordinasi pembelian, pergudangan, dan pengiriman.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-stone-100 text-stone-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Mass Production & Throughput</span>
+                            <span class="lang-id">Produksi Massal & Throughput</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            In manufacturing, the revolution wasn't just about machines. It was about <strong>speed</strong>.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Dalam manufaktur, revolusi bukan hanya tentang mesin. Ini tentang <strong>kecepatan</strong>.
+                        </p>
+
+                        <div class="bg-stone-50 p-6 rounded-xl border border-stone-200 shadow-sm">
+                            <h4 class="font-bold text-stone-900 text-lg mb-3 lang-en">The Concept of Throughput</h4>
+                            <h4 class="font-bold text-stone-900 text-lg mb-3 lang-id">Konsep Throughput</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                Chandler introduces the critical concept of "Throughput"—the speed at which materials move through the factory.
+                                <br><br>
+                                <strong>Case Study: Cigarettes (Duke) & Matches (Diamond).</strong>
+                                <br>Before the 1880s, cigarettes were rolled by hand. Then came the Bonsack machine, which could produce 120,000 cigarettes a day (equal to 40 hand workers).
+                                <br><br>
+                                <strong>The Managerial Challenge:</strong> The machine was useless if you couldn't get enough tobacco <em>in</em> and move the cigarettes <em>out</em> fast enough. To utilize the technology, manufacturers had to organize the flow of materials meticulously. Management became the key to unlocking the machine's potential.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Chandler memperkenalkan konsep kritis "Throughput"—kecepatan material bergerak melalui pabrik.
+                                <br><br>
+                                <strong>Studi Kasus: Rokok (Duke) & Korek Api (Diamond).</strong>
+                                <br>Sebelum 1880-an, rokok dilinting tangan. Lalu muncul mesin Bonsack, yang bisa produksi 120.000 rokok sehari (setara 40 pekerja tangan).
+                                <br><br>
+                                <strong>Tantangan Manajerial:</strong> Mesin itu tidak berguna jika Anda tidak bisa memasukkan cukup tembakau <em>masuk</em> dan mengeluarkan rokok <em>keluar</em> cukup cepat. Untuk memanfaatkan teknologi, produsen harus mengatur aliran material dengan sangat teliti. Manajemen menjadi kunci untuk membuka potensi mesin.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 4</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">Vertical Integration</span>
+                            <span class="lang-id">Integrasi Vertikal</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            The modern corporation was born when Mass Production met Mass Distribution. Companies realized they couldn't rely on outside suppliers or distributors to handle their high-speed throughput. They had to own everything.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Korporasi modern lahir saat Produksi Massal bertemu Distribusi Massal. Perusahaan sadar mereka tidak bisa mengandalkan pemasok atau distributor luar untuk menangani throughput kecepatan tinggi mereka. Mereka harus memiliki segalanya.
+                        </p>
+
+                        <div class="bg-blue-50 p-6 rounded-xl border border-blue-200">
+                            <h4 class="font-bold text-blue-900 text-lg mb-3 lang-en">Case Study: Gustavus Swift (Meatpacking)</h4>
+                            <h4 class="font-bold text-blue-900 text-lg mb-3 lang-id">Studi Kasus: Gustavus Swift (Pengemasan Daging)</h4>
+                            
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-en">
+                                Before Swift, cattle were shipped live by rail to the East Coast, then butchered locally. This was expensive (you pay to ship the inedible parts of the cow).
+                                <br><br>
+                                Swift invented the <strong>Refrigerated Rail Car</strong>. He could butcher in Chicago (mass production) and ship only the meat East.
+                                <br><br>
+                                <strong>The Problem:</strong> Local butchers refused to sell his meat (protecting their jobs). The railroads refused to carry his cars (protecting livestock shipping fees).
+                                <br><br>
+                                <strong>The Solution (Vertical Integration):</strong> Swift built his own distribution network. He built his own refrigerated warehouses, hired his own sales force, and managed the entire chain from cow to consumer. The "Visible Hand" of Swift's management replaced the fragmented market of local butchers.
+                            </p>
+                            <p class="text-sm text-slate-700 justified-text mb-3 lang-id">
+                                Sebelum Swift, sapi dikirim hidup dengan kereta ke Pantai Timur, lalu dipotong lokal. Ini mahal (Anda bayar kirim bagian sapi yang tak bisa dimakan).
+                                <br><br>
+                                Swift menemukan <strong>Gerbong Kereta Berpendingin</strong>. Dia bisa memotong di Chicago (produksi massal) dan kirim hanya dagingnya ke Timur.
+                                <br><br>
+                                <strong>Masalahnya:</strong> Tukang daging lokal menolak jual dagingnya (lindungi kerjaan). Kereta api menolak bawa gerbongnya (lindungi biaya kirim ternak).
+                                <br><br>
+                                <strong>Solusinya (Integrasi Vertikal):</strong> Swift bangun jaringan distribusinya sendiri. Dia bangun gudang pendingin sendiri, sewa tenaga penjualan sendiri, dan kelola seluruh rantai dari sapi ke konsumen. "Tangan Terlihat" manajemen Swift menggantikan pasar terfragmentasi tukang daging lokal.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-4 sm:p-6 md:p-8 mobile-padding">
+                    <div class="mb-4 sm:mb-6 mobile-margin">
+                        <span class="inline-block px-3 py-1 bg-teal-100 text-teal-800 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">Part 5</span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 mobile-title">
+                            <span class="lang-en">The Rise of the Manager</span>
+                            <span class="lang-id">Kebangkitan Manajer</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="max-w-none text-slate-700 leading-relaxed space-y-6">
+                        <p class="text-base text-slate-600 justified-text lang-en">
+                            As these companies grew, families could no longer manage them. The complexity required specialized skills. This led to the separation of <strong>Ownership</strong> and <strong>Management</strong>.
+                        </p>
+                        <p class="text-base text-slate-600 justified-text lang-id">
+                            Saat perusahaan ini tumbuh, keluarga tidak bisa lagi mengelolanya. Kompleksitas butuh keahlian khusus. Ini mengarah pada pemisahan <strong>Kepemilikan</strong> dan <strong>Manajemen</strong>.
+                        </p>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 mt-4">
+                            <strong class="block text-slate-900 text-lg mb-2 lang-en">The Professional Manager</strong>
+                            <strong class="block text-slate-900 text-lg mb-2 lang-id">Manajer Profesional</strong>
+                            <ul class="list-disc ml-5 text-sm text-slate-700 space-y-2">
+                                <li>
+                                    <span class="lang-en">They were salaried careerists, not owners.</span>
+                                    <span class="lang-id">Mereka adalah kariris bergaji, bukan pemilik.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en">They made decisions based on the long-term health of the enterprise, not just immediate dividends for the family.</span>
+                                    <span class="lang-id">Mereka buat keputusan berdasarkan kesehatan jangka panjang perusahaan, bukan cuma dividen instan buat keluarga.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en"><strong>The Legacy:</strong> This new class of managers became the most powerful economic force in America, steering the massive resources of the modern industrial economy.</span>
+                                    <span class="lang-id"><strong>Warisan:</strong> Kelas manajer baru ini menjadi kekuatan ekonomi paling kuat di Amerika, mengemudikan sumber daya masif ekonomi industri modern.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const indicator = document.querySelector('.lang-indicator');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                indicator.style.backgroundColor = '#475569'; // Slate
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                indicator.style.backgroundColor = '#d97706'; // Amber
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('open');
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            const toggle = document.querySelector('.drawer-toggle');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            toggle.classList.remove('open');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active', 'fade-in');
+            }
+            
+            const activeButton = event.target.closest('.nav-btn');
+            if (activeButton) {
+                activeButton.classList.add('active-tab', 'text-white');
+                activeButton.classList.remove('text-slate-300');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrawer();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024) {
+                closeDrawer();
+            }
+        });
+    </script>
+</body>
+</html>
