@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alibaba: The House That Jack Ma Built</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Import Premium Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500&display=swap');
+        
+        /* --- ELEGANT THEME SETTINGS --- */
+        :root {
+            --bg-paper: #FDFBF7; /* Warm Paper Tone */
+            --text-ink: #2D2A26; /* Soft Black */
+            --accent-gold: #EA580C; /* Alibaba Orange-Gold Hybrid */
+            --drawer-bg: #121212; /* Deep Black for Contrast */
+        }
+
+        body { 
+            font-family: 'Crimson Pro', serif; 
+            background-color: var(--bg-paper); 
+            color: var(--text-ink); 
+            line-height: 1.9; /* Loose leading for readability */
+            font-size: 19px; /* Slightly larger for comfort */
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Typography */
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: #111; letter-spacing: -0.02em; }
+        .sans-serif { font-family: 'Inter', sans-serif; letter-spacing: 0.05em; }
+        
+        /* Drop Cap Styling (Classic Literature Feel) */
+        .drop-cap::first-letter {
+            float: left;
+            font-size: 4rem;
+            line-height: 0.8;
+            margin-right: 0.15em;
+            margin-top: 0.05em;
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+
+        /* Animations */
+        .fade-in { animation: fadeIn 1s cubic-bezier(0.22, 1, 0.36, 1); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .content-section { display: none; padding-bottom: 120px; max-width: 720px; margin: 0 auto; }
+        .content-section.active { display: block; }
+        
+        /* Language Utilities */
+        .lang-id { display: none; }
+        .lang-en { display: block; }
+        .justified-text { text-align: justify; }
+        
+        /* --- NAVIGATION DRAWER --- */
+        .nav-drawer {
+            position: fixed; top: 0; left: -340px; width: 340px; height: 100vh;
+            background: var(--drawer-bg);
+            transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 2000;
+            box-shadow: 20px 0 50px rgba(0,0,0,0.3);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(45, 42, 38, 0.4); opacity: 0; visibility: hidden;
+            transition: all 0.5s; z-index: 1999; backdrop-filter: blur(8px);
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        /* Nav Items */
+        .nav-btn {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border-left: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        .active-tab { 
+            border-left: 2px solid var(--accent-gold);
+            color: #fff !important;
+            padding-left: 24px !important;
+            background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+        }
+        
+        /* --- FLOATING CONTROLS (Minimalist) --- */
+        .float-btn {
+            position: fixed; z-index: 2001; cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .float-btn:hover { transform: scale(1.1); }
+
+        .drawer-toggle { 
+            top: 30px; left: 30px; 
+            color: #111;
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        
+        .lang-switch {
+            top: 30px; right: 30px; 
+            font-family: 'Inter', sans-serif;
+            font-size: 12px; font-weight: 600;
+            letter-spacing: 0.1em;
+            color: #111;
+            border-bottom: 1px solid #111;
+            padding-bottom: 2px;
+        }
+
+        /* --- DECORATIVE ELEMENTS --- */
+        .callout {
+            margin: 2.5rem 0;
+            padding: 2rem;
+            border-top: 1px solid var(--accent-gold);
+            border-bottom: 1px solid var(--accent-gold);
+            background-color: transparent;
+            font-style: italic;
+            font-size: 1.1rem;
+            text-align: center;
+            color: #4a4a4a;
+        }
+
+        .section-number {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+        }
+
+        /* Divider */
+        .divider {
+            width: 60px; height: 1px; background: #ddd; margin: 3rem auto;
+        }
+
+        @media (max-width: 640px) {
+            body { font-size: 18px; line-height: 1.7; }
+            .content-section { padding-left: 24px; padding-right: 24px; padding-top: 80px; }
+            .nav-drawer { width: 85%; }
+            .drop-cap::first-letter { font-size: 3.5rem; }
+        }
+        
+        @media (min-width: 641px) {
+            .content-section { padding-top: 100px; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="float-btn lang-switch" onclick="toggleLanguage()">
+        <span class="lang-text">INDONESIA</span>
+    </button>
+
+    <button class="float-btn drawer-toggle" onclick="toggleDrawer()">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
+
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    <nav class="nav-drawer flex flex-col h-full">
+        <div class="px-10 py-12 bg-[#0a0a0a]">
+            <h2 class="text-white font-serif text-4xl leading-none mb-2 italic">Alibaba</h2>
+            <p class="text-gray-500 text-[10px] uppercase tracking-[0.2em] sans-serif font-medium">
+                The House That Jack Ma Built
+            </p>
+            <div class="w-8 h-px bg-orange-600 mt-6"></div>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto py-8 px-6">
+            <ul class="space-y-4">
+                <li>
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 text-gray-400 hover:text-white active-tab">
+                        <span class="lang-en">00. The Iron Triangle</span>
+                        <span class="lang-id">00. Segitiga Besi</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 text-gray-400 hover:text-white">
+                        <span class="lang-en">01. The Teacher</span>
+                        <span class="lang-id">01. Sang Guru</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 text-gray-400 hover:text-white">
+                        <span class="lang-en">02. Crocodile vs. Shark</span>
+                        <span class="lang-id">02. Buaya vs Hiu</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 text-gray-400 hover:text-white">
+                        <span class="lang-en">03. Solving Trust</span>
+                        <span class="lang-id">03. Memecahkan Masalah Kepercayaan</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 text-gray-400 hover:text-white">
+                        <span class="lang-en">04. The IPO & Beyond</span>
+                        <span class="lang-id">04. IPO & Masa Depan</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="p-8 text-gray-600 text-[10px] sans-serif tracking-widest uppercase">
+            Summary by Duncan Clark
+        </div>
+    </nav>
+
+    <main>
+        
+        <section id="intro" class="content-section active fade-in">
+            <span class="section-number">Introduction</span>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">The Iron Triangle</span>
+                <span class="lang-id">Segitiga Besi</span>
+            </h2>
+            
+            <div class="text-stone-800 space-y-8 justified-text">
+                <p class="drop-cap">
+                    <span class="lang-en">Duncan Clark's biography of Alibaba is not just a corporate history; it is a lens into the transformation of modern China. Clark, an investment banker turned consultant who lived in China for decades, argues that Jack Ma did not simply build a company—he built an infrastructure for commerce where none existed.</span>
+                    <span class="lang-id">Biografi Alibaba karya Duncan Clark bukan sekadar sejarah korporat; ini adalah lensa untuk melihat transformasi Tiongkok modern. Clark, mantan bankir investasi yang menjadi konsultan dan tinggal di Tiongkok selama beberapa dekade, berpendapat bahwa Jack Ma tidak sekadar membangun perusahaan—ia membangun infrastruktur perdagangan di tempat yang sebelumnya tidak ada.</span>
+                </p>
+
+                <p>
+                    <span class="lang-en">Unlike Silicon Valley giants like Amazon that disrupted existing efficient retail networks (like Walmart), Alibaba rose in a vacuum. China had fragmented logistics, no credit card culture, and low trust between strangers. Jack Ma succeeded because he built what Clark calls the <strong>"Iron Triangle"</strong>: E-commerce (Alibaba/Taobao), Logistics (Cainiao), and Finance (Alipay). Without one, the others would fail.</span>
+                    <span class="lang-id">Berbeda dengan raksasa Silicon Valley seperti Amazon yang mendisrupsi jaringan ritel yang sudah efisien (seperti Walmart), Alibaba bangkit dalam kekosongan. Tiongkok memiliki logistik yang terfragmentasi, tidak ada budaya kartu kredit, dan kepercayaan rendah antar orang asing. Jack Ma berhasil karena ia membangun apa yang disebut Clark sebagai <strong>"Segitiga Besi"</strong>: E-commerce (Alibaba/Taobao), Logistik (Cainiao), dan Keuangan (Alipay). Tanpa satu bagian, bagian lainnya akan runtuh.</span>
+                </p>
+
+                <div class="callout">
+                    <span class="lang-en"><strong>Core Insight:</strong> "Jack Ma is more artist than engineer. While Bill Gates and Mark Zuckerberg wrote code, Jack Ma performed sketches. His superpower was not technology, but his ability to sell a dream to his team when they had nothing."</span>
+                    <span class="lang-id"><strong>Wawasan Inti:</strong> "Jack Ma lebih merupakan seniman daripada insinyur. Sementara Bill Gates dan Mark Zuckerberg menulis kode, Jack Ma menampilkan sketsa. Kekuatan supernya bukanlah teknologi, melainkan kemampuannya menjual mimpi kepada timnya saat mereka tidak memiliki apa-apa."</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="part1" class="content-section fade-in">
+            <span class="section-number">Part One</span>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">The English Teacher & The Apartment</span>
+                <span class="lang-id">Guru Bahasa Inggris & Apartemen</span>
+            </h2>
+
+            <div class="text-stone-800 space-y-8 justified-text">
+                <h3 class="text-2xl font-bold mt-12 mb-4 italic font-serif">
+                    <span class="lang-en">The Man Who Failed</span>
+                    <span class="lang-id">Pria yang Selalu Gagal</span>
+                </h3>
+                <p class="drop-cap">
+                    <span class="lang-en">Jack Ma’s early life is defined by rejection. He failed the rigorous Chinese university entrance exam ("gaokao") twice. He applied to 30 jobs and was rejected by all of them, including KFC (where 24 people applied, and 23 were hired—Jack was the only rejection). This forged a resilience that would become Alibaba’s DNA.</span>
+                    <span class="lang-id">Masa muda Jack Ma didefinisikan oleh penolakan. Dia gagal dalam ujian masuk universitas Tiongkok yang ketat ("gaokao") sebanyak dua kali. Dia melamar ke 30 pekerjaan dan ditolak oleh semuanya, termasuk KFC (di mana 24 orang melamar, dan 23 diterima—hanya Jack yang ditolak). Ini menempa ketahanan yang kelak menjadi DNA Alibaba.</span>
+                </p>
+                <p>
+                    <span class="lang-en">Before Alibaba, there was his first venture: the Hope Translation Agency. Then came his "road to Damascus" moment in 1995. While visiting Seattle as a translator/debt collector, he saw the Internet for the first time. He searched for "Beer" and saw results from many countries, but none from China. He searched for "China" and found nothing. He realized: <em>"If we can put China on the map, we can change the world."</em></span>
+                    <span class="lang-id">Sebelum Alibaba, ada usaha pertamanya: Biro Terjemahan Hope. Kemudian datanglah momen pencerahannya pada tahun 1995. Saat mengunjungi Seattle sebagai penerjemah/penagih utang, dia melihat Internet untuk pertama kalinya. Dia mencari kata "Bir" dan melihat hasil dari banyak negara, tapi tidak ada dari Tiongkok. Dia mencari "Tiongkok" dan tidak menemukan apa pun. Dia menyadari: <em>"Jika kita bisa menempatkan Tiongkok di peta digital, kita bisa mengubah dunia."</em></span>
+                </p>
+
+                <div class="divider"></div>
+
+                <h3 class="text-2xl font-bold mt-12 mb-4 italic font-serif">
+                    <span class="lang-en">1999: The Lakeside Gardens</span>
+                    <span class="lang-id">1999: Apartemen Lakeside Gardens</span>
+                </h3>
+                <p>
+                    <span class="lang-en">After a failed stint working for the government in Beijing (where he learned bureaucracy stifles innovation), Jack returned to Hangzhou. He gathered 17 friends in his small apartment at Lakeside Gardens. This group, the "18 Luohats" (Arhats), founded Alibaba.</span>
+                    <span class="lang-id">Setelah masa kerja yang gagal di pemerintahan Beijing (di mana ia belajar bahwa birokrasi menghambat inovasi), Jack kembali ke Hangzhou. Dia mengumpulkan 17 teman di apartemen kecilnya di Lakeside Gardens. Kelompok ini, yang disebut "18 Luohat" (Arhat), mendirikan Alibaba.</span>
+                </p>
+                <p>
+                    <span class="lang-en">Jack delivered a famous speech, recorded on a grainy camcorder: <em>"Our competitors are not in China, but in Silicon Valley... We will make it because we are used to hardship."</em> He chose the name "Alibaba" because it was universal—everyone knew the story of "Open Sesame," unlocking treasure. His goal was to help small businesses (SMEs) unlock the treasure of the global market.</span>
+                    <span class="lang-id">Jack menyampaikan pidato terkenal, yang direkam dengan camcorder buram: <em>"Pesaing kita bukan di Tiongkok, tapi di Silicon Valley... Kita akan berhasil karena kita terbiasa dengan kesulitan."</em> Dia memilih nama "Alibaba" karena universal—semua orang tahu cerita "Open Sesame," membuka harta karun. Tujuannya adalah membantu usaha kecil (UKM) membuka harta karun pasar global.</span>
+                </p>
+            </div>
+        </section>
+
+        <section id="part2" class="content-section fade-in">
+            <span class="section-number">Part Two</span>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">The Great War: Crocodile vs. Shark</span>
+                <span class="lang-id">Perang Besar: Buaya vs Hiu</span>
+            </h2>
+
+            <div class="text-stone-800 space-y-8 justified-text">
+                <p class="drop-cap">
+                    <span class="lang-en">In 2003, eBay entered China by buying EachNet, the dominant local player. eBay controlled 85% of the market. Most analysts advised Jack Ma to stay in B2B (Business to Business). But Jack knew if eBay conquered consumer e-commerce, they would eventually swallow Alibaba's B2B business too. He launched a guerrilla war with a new platform: <strong>Taobao</strong> ("Digging for Treasure").</span>
+                    <span class="lang-id">Pada tahun 2003, eBay masuk ke Tiongkok dengan membeli EachNet, pemain lokal yang dominan. eBay menguasai 85% pasar. Sebagian besar analis menyarankan Jack Ma untuk tetap di B2B (Bisnis ke Bisnis). Tapi Jack tahu jika eBay menaklukkan e-commerce konsumen, mereka akhirnya akan menelan bisnis B2B Alibaba juga. Dia meluncurkan perang gerilya dengan platform baru: <strong>Taobao</strong> ("Menggali Harta Karun").</span>
+                </p>
+
+                <div class="callout">
+                    <h4 class="font-bold text-amber-900 mb-2 sans-serif text-sm uppercase tracking-widest">
+                        <span class="lang-en">The Famous Metaphor</span>
+                        <span class="lang-id">Metafora Terkenal</span>
+                    </h4>
+                    <span class="lang-en">"eBay may be a shark in the ocean, but I am a crocodile in the Yangtze River. If we fight in the ocean, we lose—but if we fight in the river, we win."</span>
+                    <span class="lang-id">"eBay mungkin hiu di samudra, tapi saya adalah buaya di Sungai Yangtze. Jika kita bertarung di samudra, kita kalah—tapi jika kita bertarung di sungai, kita menang."</span>
+                </div>
+
+                <h3 class="text-2xl font-bold mt-12 mb-4 italic font-serif">
+                    <span class="lang-en">The "Free" Strategy</span>
+                    <span class="lang-id">Strategi "Gratis"</span>
+                </h3>
+                <p>
+                    <span class="lang-en">eBay's model charged listing fees for sellers. Jack Ma declared Taobao would be <strong>free</strong> for three years. eBay CEO Meg Whitman mocked this, saying "Free is not a business model." But in a price-sensitive market like China, free was everything. Sellers flocked to Taobao.</span>
+                    <span class="lang-id">Model bisnis eBay membebankan biaya pendaftaran bagi penjual. Jack Ma menyatakan Taobao akan <strong>gratis</strong> selama tiga tahun. CEO eBay, Meg Whitman, mengejek ini, mengatakan "Gratis bukanlah model bisnis." Namun di pasar yang sensitif terhadap harga seperti Tiongkok, gratis adalah segalanya. Penjual berbondong-bondong pindah ke Taobao.</span>
+                </p>
+                <p>
+                    <span class="lang-en">eBay tried to block Jack Ma by buying exclusive ad rights on major Chinese portals (Sina, Sohu). Jack Ma circumvented this by buying ads on TV stations and small websites. He also focused on "Guanxi" (relationships), adding a chat feature called <strong>AliWangWang</strong> so buyers and sellers could talk—something eBay didn't allow. By 2006, eBay retreated from China in defeat.</span>
+                    <span class="lang-id">eBay mencoba memblokir Jack Ma dengan membeli hak iklan eksklusif di portal utama Tiongkok (Sina, Sohu). Jack Ma mengakali ini dengan membeli iklan di stasiun TV dan situs web kecil. Dia juga fokus pada "Guanxi" (hubungan), menambahkan fitur obrolan bernama <strong>AliWangWang</strong> agar pembeli dan penjual bisa bicara—sesuatu yang tidak diizinkan eBay. Pada 2006, eBay mundur dari Tiongkok dengan kekalahan.</span>
+                </p>
+            </div>
+        </section>
+
+        <section id="part3" class="content-section fade-in">
+            <span class="section-number">Part Three</span>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">Solving the Trust Deficit</span>
+                <span class="lang-id">Memecahkan Defisit Kepercayaan</span>
+            </h2>
+
+            <div class="text-stone-800 space-y-8 justified-text">
+                <p class="drop-cap">
+                    <span class="lang-en">The biggest barrier to e-commerce in China wasn't technology; it was trust. In a society recovering from the Cultural Revolution and rapid urbanization, people didn't trust strangers. Buyers wouldn't pay until they received goods; sellers wouldn't ship until they were paid. It was a deadlock.</span>
+                    <span class="lang-id">Hambatan terbesar e-commerce di Tiongkok bukanlah teknologi, melainkan kepercayaan. Dalam masyarakat yang baru pulih dari Revolusi Kebudayaan dan urbanisasi cepat, orang tidak percaya pada orang asing. Pembeli tidak mau membayar sampai menerima barang; penjual tidak mau mengirim sampai dibayar. Itu adalah jalan buntu.</span>
+                </p>
+
+                <h3 class="text-2xl font-bold mt-12 mb-4 italic font-serif">
+                    <span class="lang-en">The Accidental Bank: Alipay</span>
+                    <span class="lang-id">Bank yang Tak Disengaja: Alipay</span>
+                </h3>
+                <p>
+                    <span class="lang-en">Jack Ma created <strong>Alipay</strong>, an escrow service. Alibaba would hold the buyer's money and only release it to the seller once the buyer confirmed the goods were received and satisfactory.</span>
+                    <span class="lang-id">Jack Ma menciptakan <strong>Alipay</strong>, layanan rekening bersama (escrow). Alibaba akan menahan uang pembeli dan hanya melepaskannya ke penjual setelah pembeli mengonfirmasi barang telah diterima dan memuaskan.</span>
+                </p>
+                
+                <div class="callout">
+                    <span class="lang-en"><strong>The Risk:</strong> At the time, private financial services were technically illegal in China. Jack Ma famously told his team, "If someone has to go to jail for this, I'll go." It was a massive gamble that paid off, eventually evolving into Ant Financial, one of the world's largest fintech companies.</span>
+                    <span class="lang-id"><strong>Risikonya:</strong> Saat itu, layanan keuangan swasta secara teknis ilegal di Tiongkok. Jack Ma dengan terkenal mengatakan kepada timnya, "Jika seseorang harus masuk penjara karena ini, sayalah yang akan pergi." Itu adalah perjudian besar yang terbayar lunas, yang akhirnya berkembang menjadi Ant Financial, salah satu perusahaan fintech terbesar di dunia.</span>
+                </div>
+
+                <h3 class="text-2xl font-bold mt-12 mb-4 italic font-serif">
+                    <span class="lang-en">Cainiao: The Logistics Network</span>
+                    <span class="lang-id">Cainiao: Jaringan Logistik</span>
+                </h3>
+                <p>
+                    <span class="lang-en">Unlike Amazon, which built its own warehouses and trucks, Alibaba chose an "asset-light" model. They created <strong>Cainiao</strong>, a data platform that coordinated thousands of independent courier companies. This allowed Alibaba to scale rapidly without the heavy capital investment of owning trucks, enabling the famous "Singles Day" sales where billions of dollars of goods are shipped in 24 hours.</span>
+                    <span class="lang-id">Berbeda dengan Amazon yang membangun gudang dan truk sendiri, Alibaba memilih model "aset-ringan". Mereka menciptakan <strong>Cainiao</strong>, platform data yang mengoordinasikan ribuan perusahaan kurir independen. Ini memungkinkan Alibaba untuk berskala besar dengan cepat tanpa investasi modal berat untuk memiliki truk, memungkinkan penjualan "Singles Day" (Harbolnas Tiongkok) yang terkenal di mana miliaran dolar barang dikirim dalam 24 jam.</span>
+                </p>
+            </div>
+        </section>
+
+        <section id="part4" class="content-section fade-in">
+            <span class="section-number">Part Four</span>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">The IPO & The Future</span>
+                <span class="lang-id">IPO & Masa Depan</span>
+            </h2>
+
+            <div class="text-stone-800 space-y-8 justified-text">
+                <p class="drop-cap">
+                    <span class="lang-en">In September 2014, Alibaba listed on the New York Stock Exchange. It was the largest IPO in history, raising $25 billion. Jack Ma, the former English teacher who earned $12 a month, was now the richest man in Asia. But Clark notes that the IPO was not just a financial event; it was China's "coming out party" on the global economic stage.</span>
+                    <span class="lang-id">Pada September 2014, Alibaba melantai di Bursa Saham New York (NYSE). Itu adalah IPO terbesar dalam sejarah, mengumpulkan $25 miliar. Jack Ma, mantan guru bahasa Inggris yang bergaji $12 sebulan, kini menjadi orang terkaya di Asia. Namun Clark mencatat bahwa IPO ini bukan sekadar peristiwa keuangan; itu adalah "pesta debut" Tiongkok di panggung ekonomi global.</span>
+                </p>
+
+                <h3 class="text-2xl font-bold mt-12 mb-4 italic font-serif">
+                    <span class="lang-en">The Six Veins Spirit</span>
+                    <span class="lang-id">Semangat Enam Urat Nadi</span>
+                </h3>
+                <p>
+                    <span class="lang-en">Clark details the internal culture that keeps the giant moving, known as the "Six Veins Spirit" (customer first, teamwork, embrace change, integrity, passion, commitment). Employees are often given nicknames from Kung Fu novels, reinforcing a culture of brotherhood and martial valor in business.</span>
+                    <span class="lang-id">Clark merinci budaya internal yang membuat raksasa ini terus bergerak, yang dikenal sebagai "Semangat Enam Urat Nadi" (pelanggan utama, kerja tim, rangkul perubahan, integritas, hasrat, komitmen). Karyawan sering diberi nama panggilan dari novel Kung Fu, memperkuat budaya persaudaraan dan keberanian bela diri dalam bisnis.</span>
+                </p>
+
+                <div class="divider"></div>
+
+                <h3 class="text-2xl font-bold mt-12 mb-4 italic font-serif">
+                    <span class="lang-en">Challenges Ahead</span>
+                    <span class="lang-id">Tantangan di Depan</span>
+                </h3>
+                <p>
+                    <span class="lang-en">The book concludes with the challenges facing the House Jack Built. These include the massive problem of counterfeit goods ("fakes") on Taobao, the saturation of the Chinese market leading to a push into rural areas, and the delicate dance with the Chinese government. As Jack Ma famously said about the government: <em>"Fall in love with them, but don't marry them."</em> A philosophy that has become increasingly difficult to maintain in recent years.</span>
+                    <span class="lang-id">Buku ini diakhiri dengan tantangan yang dihadapi Rumah yang Dibangun Jack. Ini termasuk masalah besar barang palsu di Taobao, kejenuhan pasar Tiongkok yang mendorong ekspansi ke daerah pedesaan, dan tarian rumit dengan pemerintah Tiongkok. Seperti kata-kata terkenal Jack Ma tentang pemerintah: <em>"Jatuh cintalah pada mereka, tapi jangan menikah dengan mereka."</em> Sebuah filosofi yang menjadi semakin sulit dipertahankan dalam beberapa tahun terakhir.</span>
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Language Toggle Logic
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateContent();
+        }
+
+        function updateContent() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const langBtnText = document.querySelector('.lang-text');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                langBtnText.innerText = "INDONESIA";
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                langBtnText.innerText = "ENGLISH";
+            }
+        }
+
+        // Navigation Logic
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            
+            // Lock body scroll when menu is open
+            if(drawer.classList.contains('open')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(sec => {
+                sec.classList.remove('active');
+                sec.classList.remove('fade-in');
+            });
+
+            // Reset active tab styling
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active-tab');
+                btn.classList.remove('text-gray-400');
+            });
+
+            // Show target
+            const target = document.getElementById(sectionId);
+            target.classList.add('active');
+            
+            // Trigger animation
+            void target.offsetWidth; 
+            target.classList.add('fade-in');
+
+            // Set active tab
+            event.currentTarget.classList.add('active-tab');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
