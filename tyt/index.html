@@ -1,395 +1,442 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Toyota Way: The Masterclass</title>
+    <title>The Toyota Way - Masterclass Summary</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* --- TYPOGRAPHY: EFFICIENT & INDUSTRIAL --- */
-        /* Roboto untuk keterbacaan modern (standar industri), Oswald untuk heading yang tegas */
-        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
         
-        /* --- THEME PALETTE: TOYOTA STYLE (Red, White, Grey) --- */
-        :root {
-            --bg-paper: #FFFFFF; /* Absolute White - Cleanliness (5S) */
-            --text-ink: #333333; /* Dark Grey/Black */
-            --accent-red: #EB0A1E; /* Toyota Brand Red */
-            --accent-grey: #F3F4F6; /* Light Grey for backgrounds */
-            --drawer-bg: #1F2937; /* Dark Industrial Slate */
-            --header-bg: rgba(255, 255, 255, 0.98);
-        }
-
-        body { 
-            font-family: 'Roboto', sans-serif; 
-            background-color: var(--bg-paper); 
-            color: var(--text-ink); 
-            line-height: 1.8; 
-            font-size: 18px; 
-            -webkit-font-smoothing: antialiased;
-            padding-top: 80px;
-        }
-        
-        h1, h2, h3, h4 { 
-            font-family: 'Oswald', sans-serif; 
-            text-transform: uppercase; 
-            color: #000;
-            letter-spacing: 0.02em;
-        }
-
-        /* Japanese Terminology Style */
-        .jp-term { 
-            font-weight: 700;
-            color: var(--accent-red);
-            font-family: 'Oswald', sans-serif;
-            text-transform: uppercase;
-        }
-        
-        /* DROP CAP - Industrial Style */
-        .drop-cap::first-letter {
-            float: left;
-            font-size: 4.5rem;
-            line-height: 0.8;
-            margin-right: 0.15em;
-            margin-top: 0.05em;
-            font-family: 'Oswald', sans-serif;
-            color: var(--accent-red);
-            font-weight: 700;
-        }
-
-        /* --- ANIMATIONS --- */
-        .fade-in { animation: fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+        /* Animations */
+        .fade-in { animation: fadeIn 0.5s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
-        .content-section { display: none; padding-bottom: 120px; max-width: 800px; margin: 0 auto; }
+        /* Interactive States */
+        .active-tab { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white !important; }
+        .active-tab .icon-box { background: rgba(255,255,255,0.2); color: white; }
+        
+        .content-section { display: none; }
         .content-section.active { display: block; }
         
-        /* --- LANGUAGE UTILS --- */
+        .justified-text { text-align: justify; }
+        .mobile-text { font-size: 16px; line-height: 1.7; }
+
+        /* Language Utilities */
         .lang-id { display: none; }
         .lang-en { display: block; }
-        .justified-text { text-align: justify; }
         
-        /* --- CLEAN HEADER BAR --- */
-        .header-bar {
-            position: fixed; top: 0; left: 0; width: 100%; height: 75px;
-            background: var(--header-bg); 
-            backdrop-filter: blur(5px);
-            border-bottom: 2px solid var(--accent-red); /* The Red Line */
-            z-index: 3000; display: flex; align-items: center; justify-content: space-between;
-            padding: 0 24px; transition: top 0.3s;
+        @media (max-width: 640px) {
+            .mobile-text { font-size: 15px; line-height: 1.6; }
+            .mobile-title { font-size: 1.75rem !important; }
+            .mobile-padding { padding: 1.5rem !important; }
         }
-
-        .menu-btn {
-            width: 40px; height: 40px; display: flex; align-items: center; justify-content: flex-start;
-            cursor: pointer; color: #000; transition: color 0.3s;
-        }
-        .menu-btn:hover { color: var(--accent-red); }
-
-        .right-controls { display: flex; align-items: center; gap: 24px; }
-
-        .back-link {
-            display: flex; align-items: center; justify-content: center;
-            color: #000; transition: transform 0.2s, color 0.2s;
-        }
-        .back-link:hover { transform: translateX(-3px); color: var(--accent-red); }
-
-        /* LANGUAGE TOGGLE */
-        .lang-toggle-container {
-            font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 600;
-            cursor: pointer; display: flex; align-items: center; gap: 8px; user-select: none;
-        }
-        .lang-opt { color: #BBB; transition: color 0.3s; }
-        .lang-opt.active { color: var(--accent-red); border-bottom: 2px solid var(--accent-red); }
         
-        /* --- NAVIGATION DRAWER (Industrial Theme) --- */
+        /* Drawer Styles */
         .nav-drawer {
-            position: fixed; top: 0; left: -380px; width: 380px; height: 100vh;
-            background: var(--drawer-bg);
-            transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 4000;
-            box-shadow: 10px 0 40px rgba(0,0,0,0.5);
-            border-right: 4px solid var(--accent-red);
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            transition: left 0.3s ease-in-out; z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
         }
         .nav-drawer.open { left: 0; }
         
         .nav-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(255, 255, 255, 0.8); opacity: 0; visibility: hidden;
-            transition: all 0.5s; z-index: 3999; backdrop-filter: blur(2px);
+            background: rgba(0, 0, 0, 0.6); opacity: 0; visibility: hidden;
+            transition: all 0.3s ease-in-out; z-index: 999; backdrop-filter: blur(2px);
         }
         .nav-overlay.active { opacity: 1; visibility: visible; }
         
-        .nav-btn {
-            font-family: 'Oswald', sans-serif; font-size: 1rem; letter-spacing: 0.05em;
-            border-left: 4px solid transparent; transition: all 0.3s;
-            color: #9CA3AF; padding: 18px 24px; text-transform: uppercase;
+        /* Buttons */
+        .drawer-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border: none; border-radius: 12px; padding: 12px; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
-        .active-tab { 
-            border-left: 4px solid var(--accent-red); color: #FFF !important;
-            background: rgba(235, 10, 30, 0.1); padding-left: 32px !important;
+        .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4); }
+        .drawer-toggle.open { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); }
+        
+        .lang-switch-float {
+            position: fixed; bottom: 30px; right: 30px; z-index: 1002;
+            background: white; border: 2px solid #2563eb; border-radius: 50px;
+            padding: 12px 24px; cursor: pointer; font-weight: 600; color: #2563eb;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15); transition: all 0.3s ease;
         }
+        .lang-switch-float:hover { background: #2563eb; color: white; transform: translateY(-3px); }
 
-        /* --- CONTENT STYLES --- */
-        /* Concept Box: "The House of TPS" Style */
-        .concept-box {
-            margin: 3rem 0; padding: 2rem; 
-            border: 1px solid #E5E7EB;
-            border-top: 4px solid var(--accent-red);
-            background-color: var(--accent-grey); 
-            position: relative;
-        }
-        .concept-label {
-            position: absolute; top: -14px; left: 2rem;
-            background: var(--accent-red); color: #FFF; padding: 2px 12px;
-            font-family: 'Oswald', sans-serif; font-weight: 700;
-            text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.1em;
-        }
-
-        blockquote {
-            border-left: 4px solid var(--accent-red);
-            padding: 1rem 0 1rem 2rem;
-            margin: 3rem 0; font-family: 'Roboto', sans-serif; font-style: italic; font-weight: 300;
-            font-size: 1.4rem; color: #4B5563;
-        }
-
-        /* Separator */
-        .divider {
-            width: 100%; height: 1px; background: #E5E7EB; margin: 4rem 0;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .divider::after {
-            content: 'TOYOTA'; color: #9CA3AF; font-size: 0.7rem; letter-spacing: 0.2em; background: var(--bg-paper); padding: 0 1rem; font-family: 'Oswald', sans-serif;
-        }
-
-        /* 4P List Styling */
-        .principles-list { list-style: none; padding: 0; margin-top: 1rem; }
-        .principles-list li { margin-bottom: 2rem; }
-        .principles-list strong { color: var(--accent-red); display: block; margin-bottom: 0.5rem; font-family: 'Oswald', sans-serif; text-transform: uppercase;}
-
-        @media (max-width: 640px) {
-            body { font-size: 17px; line-height: 1.7; }
-            .content-section { padding: 40px 24px; }
-            .nav-drawer { width: 85%; }
-            h2 { font-size: 2.2rem; }
-            .header-bar { padding: 0 20px; }
-        }
+        /* Hamburger Icon */
+        .hamburger { width: 24px; height: 18px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 7px; }
+        .hamburger span:nth-child(3) { top: 14px; }
+        .drawer-toggle.open .hamburger span:nth-child(1) { top: 7px; transform: rotate(135deg); }
+        .drawer-toggle.open .hamburger span:nth-child(2) { opacity: 0; left: -60px; }
+        .drawer-toggle.open .hamburger span:nth-child(3) { top: 7px; transform: rotate(-135deg); }
+        
+        /* Nav Item Hover Effect */
+        .nav-btn { position: relative; overflow: hidden; }
     </style>
 </head>
-<body>
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen text-slate-800">
 
-    <header class="header-bar">
-        <button class="menu-btn" onclick="toggleDrawer()" aria-label="Menu">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-        </button>
+    <button class="lang-switch-float" onclick="toggleLanguage()">
+        <span class="lang-text">🇮🇩 Bahasa Indonesia</span>
+    </button>
 
-        <div class="right-controls">
-            <a href="https://lp1.affiliateid.my.id/" class="back-link" aria-label="Back to Home">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-            </a>
-
-            <div class="lang-toggle-container" onclick="toggleLanguage()">
-                <span class="lang-opt lang-id-btn">ID</span>
-                <span style="color: #E5E7EB;">|</span>
-                <span class="lang-opt lang-en-btn active">EN</span>
+    <button class="drawer-toggle" onclick="toggleDrawer()">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    
+    <nav class="nav-drawer flex flex-col">
+        <div class="p-8 border-b border-slate-700 bg-slate-900">
+            <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-red-500 to-red-700 rounded-xl flex items-center justify-center shadow-lg">
+                    <span class="text-white font-bold text-xl">T</span>
+                </div>
+                <div>
+                    <h2 class="text-white font-bold text-xl tracking-tight">The Toyota Way</h2>
+                    <p class="text-slate-400 text-xs uppercase tracking-widest mt-1">
+                        Jeffrey K. Liker
+                    </p>
+                </div>
             </div>
         </div>
-    </header>
-
-    <div class="nav-overlay" onclick="closeDrawer()"></div>
-    <nav class="nav-drawer flex flex-col h-full">
-        <div class="px-8 py-12 bg-black">
-            <h2 class="text-white text-5xl leading-none mb-2 font-bold tracking-tighter">
-                THE TOYOTA <span class="text-[#EB0A1E]">WAY</span>
-            </h2>
-            <p class="text-gray-400 text-[10px] uppercase tracking-[0.3em] font-sans mt-2">
-                Jeffrey K. Liker
-            </p>
-            <div class="w-16 h-1 bg-[#EB0A1E] mt-6"></div>
-        </div>
         
-        <div class="flex-1 overflow-y-auto py-8">
-            <ul class="space-y-1">
-                 <li>
-                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left active-tab">
-                        <span class="lang-en">00. Operational Excellence</span>
-                        <span class="lang-id">00. Keunggulan Operasional</span>
+        <div class="flex-1 overflow-y-auto p-4 custom-scrollbar">
+            <h3 class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-4 px-2 mt-2">
+                <span class="lang-en">Structure</span>
+                <span class="lang-id">Struktur Buku</span>
+            </h3>
+            <ul class="space-y-2">
+                <li>
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-800 text-slate-300 flex items-center space-x-3 active-tab">
+                        <span class="icon-box w-8 h-8 bg-slate-700 text-slate-300 rounded-lg flex items-center justify-center text-xs font-bold transition-colors">00</span>
+                        <div class="flex-1">
+                            <span class="lang-en">Preface & History</span>
+                            <span class="lang-id">Pengantar & Sejarah</span>
+                        </div>
                     </button>
                 </li>
                 <li>
-                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left">
-                        <span class="lang-en">01. Philosophy (Long-Term)</span>
-                        <span class="lang-id">01. Filosofi (Jangka Panjang)</span>
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-800 text-slate-300 flex items-center space-x-3">
+                        <span class="icon-box w-8 h-8 bg-slate-700 text-slate-300 rounded-lg flex items-center justify-center text-xs font-bold transition-colors">01</span>
+                        <div class="flex-1">
+                            <span class="lang-en">Philosophy (Long-Term)</span>
+                            <span class="lang-id">Filosofi (Jangka Panjang)</span>
+                        </div>
                     </button>
                 </li>
                 <li>
-                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left">
-                        <span class="lang-en">02. Process (Eliminate Waste)</span>
-                        <span class="lang-id">02. Proses (Eliminasi Pemborosan)</span>
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-800 text-slate-300 flex items-center space-x-3">
+                        <span class="icon-box w-8 h-8 bg-slate-700 text-slate-300 rounded-lg flex items-center justify-center text-xs font-bold transition-colors">02</span>
+                        <div class="flex-1">
+                            <span class="lang-en">Process (Eliminate Waste)</span>
+                            <span class="lang-id">Proses (Hapus Pemborosan)</span>
+                        </div>
                     </button>
                 </li>
                 <li>
-                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left">
-                        <span class="lang-en">03. People & Partners</span>
-                        <span class="lang-id">03. Orang & Mitra</span>
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-800 text-slate-300 flex items-center space-x-3">
+                        <span class="icon-box w-8 h-8 bg-slate-700 text-slate-300 rounded-lg flex items-center justify-center text-xs font-bold transition-colors">03</span>
+                        <div class="flex-1">
+                            <span class="lang-en">People & Partners</span>
+                            <span class="lang-id">SDM & Mitra</span>
+                        </div>
                     </button>
                 </li>
                 <li>
-                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left">
-                        <span class="lang-en">04. Problem Solving (Kaizen)</span>
-                        <span class="lang-id">04. Pemecahan Masalah (Kaizen)</span>
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-800 text-slate-300 flex items-center space-x-3">
+                        <span class="icon-box w-8 h-8 bg-slate-700 text-slate-300 rounded-lg flex items-center justify-center text-xs font-bold transition-colors">04</span>
+                        <div class="flex-1">
+                            <span class="lang-en">Problem Solving</span>
+                            <span class="lang-id">Pemecahan Masalah</span>
+                        </div>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-800 text-slate-300 flex items-center space-x-3">
+                        <span class="icon-box w-8 h-8 bg-slate-700 text-slate-300 rounded-lg flex items-center justify-center text-xs font-bold transition-colors">05</span>
+                        <div class="flex-1">
+                            <span class="lang-en">Conclusion</span>
+                            <span class="lang-id">Kesimpulan</span>
+                        </div>
                     </button>
                 </li>
             </ul>
         </div>
-        <div class="p-8 text-gray-500 text-[10px] font-sans tracking-widest uppercase border-t border-gray-700">
-            14 Management Principles
+        
+        <div class="p-6 border-t border-slate-700 bg-slate-900 text-center">
+            <p class="text-slate-500 text-[10px] uppercase tracking-widest">Masterclass Edition</p>
         </div>
     </nav>
 
-    <main>
-        
-        <section id="intro" class="content-section active fade-in">
-            <h2 class="text-5xl sm:text-6xl mb-10 leading-none">
-                <span class="lang-en">Operational Excellence</span>
-                <span class="lang-id">Keunggulan Operasional</span>
-            </h2>
-            
-            <div class="justified-text">
-                <p class="drop-cap">
-                    <span class="lang-en">Toyota is not just a car manufacturer; it is the gold standard for manufacturing efficiency. For decades, Western competitors tried to copy Toyota's tools (Kanban, Just-in-Time) but failed to replicate their success. Why?</span>
-                    <span class="lang-id">Toyota bukan sekadar produsen mobil; ini adalah standar emas untuk efisiensi manufaktur. Selama beberapa dekade, pesaing Barat mencoba meniru alat Toyota (Kanban, Just-in-Time) tetapi gagal meniru kesuksesan mereka. Mengapa?</span>
+    <header class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-6 py-6 pl-16 md:pl-6"> <div class="text-center">
+                <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">The Toyota Way</h1>
+                <p class="text-sm md:text-base text-slate-500 font-medium">
+                    <span class="lang-en">14 Management Principles from the World's Greatest Manufacturer</span>
+                    <span class="lang-id">14 Prinsip Manajemen dari Pabrikan Terbesar di Dunia</span>
                 </p>
-
-                <p>
-                    <span class="lang-en">Jeffrey Liker argues that the secret isn't the tools, but the <strong>culture</strong>. The Toyota Way is a system designed to provide the tools for people to continually improve their work. It relies on the "4P Model": Philosophy, Process, People, and Problem Solving.</span>
-                    <span class="lang-id">Jeffrey Liker berpendapat bahwa rahasianya bukanlah alatnya, melainkan <strong>budayanya</strong>. Toyota Way adalah sistem yang dirancang untuk menyediakan alat bagi orang-orang untuk terus meningkatkan pekerjaan mereka. Ini bergantung pada "Model 4P": Philosophy (Filosofi), Process (Proses), People (Orang), dan Problem Solving (Pemecahan Masalah).</span>
-                </p>
-
-                 <blockquote>
-                    <span class="lang-en">"We get brilliant results from average people managing brilliant processes. We observe that our competitors often get average results from brilliant people managing broken processes."</span>
-                    <span class="lang-id">"Kami mendapatkan hasil yang brilian dari orang-orang rata-rata yang mengelola proses yang brilian. Kami mengamati bahwa pesaing kami sering mendapatkan hasil rata-rata dari orang-orang brilian yang mengelola proses yang rusak."</span>
-                </blockquote>
+                <div class="w-16 h-1.5 bg-red-600 mx-auto mt-4 rounded-full"></div>
             </div>
-        </section>
+        </div>
+    </header>
 
-        <section id="part1" class="content-section fade-in">
-            <h4 class="text-gray-400 mb-2">The 1st "P"</h4>
-            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
-                <span class="lang-en">Philosophy</span>
-                <span class="lang-id">Filosofi</span>
-            </h2>
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+        <main>
+            <div class="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden min-h-[60vh]">
+                
+                <section id="intro" class="content-section active p-6 md:p-10 fade-in">
+                    <div class="mb-8">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 uppercase tracking-wide mb-4">
+                            Introduction
+                        </span>
+                        <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
+                            <span class="lang-en">Operational Excellence</span>
+                            <span class="lang-id">Keunggulan Operasional</span>
+                        </h2>
+                        
+                        <div class="space-y-6 text-slate-700 mobile-text justified-text">
+                            <p class="first-letter:text-5xl first-letter:font-bold first-letter:text-red-600 first-letter:mr-3 first-letter:float-left">
+                                <span class="lang-en">Toyota is not just a car manufacturer; it is the gold standard for manufacturing efficiency. For decades, Western competitors tried to copy Toyota's tools (Kanban, Just-in-Time) but failed to replicate their success. Why?</span>
+                                <span class="lang-id">Toyota bukan sekadar produsen mobil; ini adalah standar emas untuk efisiensi manufaktur. Selama beberapa dekade, pesaing Barat mencoba meniru alat Toyota (Kanban, Just-in-Time) tetapi gagal meniru kesuksesan mereka. Mengapa?</span>
+                            </p>
+                            <p>
+                                <span class="lang-en">Jeffrey Liker argues that the secret isn't the tools, but the <strong>culture</strong>. The Toyota Way is a system designed to provide the tools for people to continually improve their work. It relies on the "4P Model": Philosophy, Process, People, and Problem Solving.</span>
+                                <span class="lang-id">Jeffrey Liker berpendapat bahwa rahasianya bukanlah alatnya, melainkan <strong>budayanya</strong>. Toyota Way adalah sistem yang dirancang untuk menyediakan alat bagi orang-orang untuk terus meningkatkan pekerjaan mereka. Ini bergantung pada "Model 4P": Filosofi, Proses, Orang, dan Pemecahan Masalah.</span>
+                            </p>
+                        </div>
 
-            <div class="justified-text">
-                <div class="concept-box">
-                    <div class="concept-label">Principle 1</div>
-                    <p>
-                        <strong class="jp-term block mb-2 text-black">Base your management decisions on a long-term philosophy, even at the expense of short-term financial goals.</strong>
-                        <span class="lang-en">Toyota does not react to every quarter's stock price. They think in terms of decades. They will keep a factory open during a recession to protect the jobs of skilled workers, because firing them would damage trust and long-term capability.</span>
-                        <span class="lang-id">Toyota tidak bereaksi terhadap harga saham setiap kuartal. Mereka berpikir dalam hitungan dekade. Mereka akan tetap membuka pabrik selama resesi untuk melindungi pekerjaan pekerja terampil, karena memecat mereka akan merusak kepercayaan dan kemampuan jangka panjang.</span>
-                    </p>
-                </div>
-                <p>
-                    <span class="lang-en">This sense of purpose supercedes any short-term decision making. It aligns the entire organization towards creating value for the customer, society, and the economy.</span>
-                    <span class="lang-id">Rasa tujuan ini menggantikan pengambilan keputusan jangka pendek apa pun. Ini menyelaraskan seluruh organisasi untuk menciptakan nilai bagi pelanggan, masyarakat, dan ekonomi.</span>
-                </p>
+                        <div class="mt-8 bg-slate-50 border-l-4 border-red-500 p-6 rounded-r-lg">
+                            <p class="text-lg font-serif italic text-slate-700">
+                                <span class="lang-en">"We get brilliant results from average people managing brilliant processes. We observe that our competitors often get average results from brilliant people managing broken processes."</span>
+                                <span class="lang-id">"Kami mendapatkan hasil yang brilian dari orang-orang rata-rata yang mengelola proses yang brilian. Kami mengamati bahwa pesaing kami sering mendapatkan hasil rata-rata dari orang-orang brilian yang mengelola proses yang rusak."</span>
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part1" class="content-section p-6 md:p-10 fade-in">
+                    <div class="mb-8">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700 uppercase tracking-wide mb-4">
+                            The 1st "P"
+                        </span>
+                        <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
+                            <span class="lang-en">Long-Term Philosophy</span>
+                            <span class="lang-id">Filosofi Jangka Panjang</span>
+                        </h2>
+
+                        <div class="bg-gradient-to-r from-slate-50 to-blue-50 p-6 rounded-xl border border-slate-200 mb-8">
+                            <h3 class="text-xl font-bold text-slate-900 mb-2">Principle 1</h3>
+                            <p class="text-slate-700 font-medium mobile-text">
+                                <span class="lang-en">Base your management decisions on a long-term philosophy, even at the expense of short-term financial goals.</span>
+                                <span class="lang-id">Dasarkan keputusan manajemen Anda pada filosofi jangka panjang, bahkan dengan mengorbankan tujuan keuangan jangka pendek.</span>
+                            </p>
+                        </div>
+
+                        <div class="space-y-6 text-slate-700 mobile-text justified-text">
+                            <p>
+                                <span class="lang-en">Toyota does not react to every quarter's stock price. They think in terms of decades. They will keep a factory open during a recession to protect the jobs of skilled workers, because firing them would damage trust and long-term capability.</span>
+                                <span class="lang-id">Toyota tidak bereaksi terhadap harga saham setiap kuartal. Mereka berpikir dalam hitungan dekade. Mereka akan tetap membuka pabrik selama resesi untuk melindungi pekerjaan pekerja terampil, karena memecat mereka akan merusak kepercayaan dan kemampuan jangka panjang.</span>
+                            </p>
+                            <p>
+                                <span class="lang-en">This sense of purpose supercedes any short-term decision making. It aligns the entire organization towards creating value for the customer, society, and the economy.</span>
+                                <span class="lang-id">Rasa tujuan ini menggantikan pengambilan keputusan jangka pendek apa pun. Ini menyelaraskan seluruh organisasi untuk menciptakan nilai bagi pelanggan, masyarakat, dan ekonomi.</span>
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part2" class="content-section p-6 md:p-10 fade-in">
+                    <div class="mb-8">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 uppercase tracking-wide mb-4">
+                            The 2nd "P"
+                        </span>
+                        <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
+                            <span class="lang-en">The Right Process</span>
+                            <span class="lang-id">Proses yang Benar</span>
+                        </h2>
+
+                        <div class="mb-6 text-slate-700 mobile-text justified-text">
+                            <p>
+                                <span class="lang-en">The goal is to eliminate waste (<em>Muda</em>). But waste isn't just trash; it's overproduction, waiting, and unevenness.</span>
+                                <span class="lang-id">Tujuannya adalah menghilangkan pemborosan (<em>Muda</em>). Tapi pemborosan bukan hanya sampah; itu adalah kelebihan produksi, waktu tunggu, dan ketidakrataan.</span>
+                            </p>
+                        </div>
+
+                        <div class="grid gap-4 md:grid-cols-2">
+                            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-green-600 font-bold text-sm mb-2 uppercase">Principle 2</div>
+                                <h4 class="font-bold text-slate-900 mb-2">Continuous Flow</h4>
+                                <p class="text-sm text-slate-600">
+                                    <span class="lang-en">Connect processes. "One-Piece Flow" exposes hidden problems immediately.</span>
+                                    <span class="lang-id">Hubungkan proses. "Aliran Satu Bagian" segera mengungkap masalah tersembunyi.</span>
+                                </p>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-green-600 font-bold text-sm mb-2 uppercase">Principle 3</div>
+                                <h4 class="font-bold text-slate-900 mb-2">Pull Systems</h4>
+                                <p class="text-sm text-slate-600">
+                                    <span class="lang-en">Don't push inventory. Let the downstream process pull what they need (Just-in-Time).</span>
+                                    <span class="lang-id">Jangan mendorong inventaris. Biarkan proses hilir menarik apa yang mereka butuhkan (JIT).</span>
+                                </p>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-green-600 font-bold text-sm mb-2 uppercase">Principle 4</div>
+                                <h4 class="font-bold text-slate-900 mb-2">Heijunka</h4>
+                                <p class="text-sm text-slate-600">
+                                    <span class="lang-en">Level out the workload. Work like the tortoise, not the hare.</span>
+                                    <span class="lang-id">Ratakan beban kerja. Bekerjalah seperti kura-kura, bukan kelinci.</span>
+                                </p>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-green-600 font-bold text-sm mb-2 uppercase">Principle 5</div>
+                                <h4 class="font-bold text-slate-900 mb-2">Jidoka</h4>
+                                <p class="text-sm text-slate-600">
+                                    <span class="lang-en">Build a culture of stopping to fix problems. Quality carries a price.</span>
+                                    <span class="lang-id">Budaya berhenti untuk memperbaiki masalah. Kualitas memiliki harga.</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part3" class="content-section p-6 md:p-10 fade-in">
+                    <div class="mb-8">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-700 uppercase tracking-wide mb-4">
+                            The 3rd "P"
+                        </span>
+                        <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
+                            <span class="lang-en">People & Partners</span>
+                            <span class="lang-id">Orang & Mitra</span>
+                        </h2>
+
+                        <div class="bg-purple-50 p-6 rounded-xl mb-8">
+                            <p class="text-purple-900 font-medium mobile-text justified-text">
+                                <span class="lang-en">You cannot "Lean" a process without the people. Toyota invests heavily in people because they are the ones who solve problems.</span>
+                                <span class="lang-id">Anda tidak dapat menerapkan "Lean" pada suatu proses tanpa orang-orangnya. Toyota berinvestasi besar-besaran pada orang-orang karena merekalah yang memecahkan masalah.</span>
+                            </p>
+                        </div>
+
+                        <div class="space-y-8">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 mb-3 flex items-center">
+                                    <span class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-sm mr-3">9</span>
+                                    <span class="lang-en">Grow Leaders from Within</span>
+                                    <span class="lang-id">Tumbuhkan Pemimpin dari Dalam</span>
+                                </h3>
+                                <p class="text-slate-600 ml-11 mobile-text justified-text">
+                                    <span class="lang-en">Toyota rarely hires CEOs from outside. They grow them from within because leadership requires deep understanding of the work.</span>
+                                    <span class="lang-id">Toyota jarang mempekerjakan CEO dari luar. Mereka menumbuhkannya dari dalam karena kepemimpinan membutuhkan pemahaman mendalam tentang pekerjaan tersebut.</span>
+                                </p>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 mb-3 flex items-center">
+                                    <span class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-sm mr-3">10</span>
+                                    <span class="lang-en">Develop People & Teams</span>
+                                    <span class="lang-id">Kembangkan Orang & Tim</span>
+                                </h3>
+                                <p class="text-slate-600 ml-11 mobile-text justified-text">
+                                    <span class="lang-en">Exceptional people and teams follow the company's philosophy. It's about teamwork, not individual stars.</span>
+                                    <span class="lang-id">Orang dan tim yang luar biasa mengikuti filosofi perusahaan. Ini tentang kerja tim, bukan bintang individu.</span>
+                                </p>
+                            </div>
+
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 mb-3 flex items-center">
+                                    <span class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-sm mr-3">11</span>
+                                    <span class="lang-en">Respect Partners</span>
+                                    <span class="lang-id">Hormati Mitra</span>
+                                </h3>
+                                <p class="text-slate-600 ml-11 mobile-text justified-text">
+                                    <span class="lang-en">Challenge them to grow. Don't just ask for lower prices; help suppliers improve their own processes.</span>
+                                    <span class="lang-id">Tantang mereka untuk tumbuh. Jangan hanya meminta harga lebih rendah; bantu pemasok meningkatkan proses mereka sendiri.</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part4" class="content-section p-6 md:p-10 fade-in">
+                    <div class="mb-8">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 uppercase tracking-wide mb-4">
+                            The 4th "P"
+                        </span>
+                        <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
+                            <span class="lang-en">Problem Solving</span>
+                            <span class="lang-id">Pemecahan Masalah</span>
+                        </h2>
+
+                        <div class="text-slate-700 mobile-text justified-text mb-8">
+                            <p>
+                                <span class="lang-en">The highest level of the Toyota Way is organizational learning. Continuous improvement (<em>Kaizen</em>) is driven by constant reflection (<em>Hansei</em>).</span>
+                                <span class="lang-id">Tingkat tertinggi dari Toyota Way adalah pembelajaran organisasi. Perbaikan terus-menerus (<em>Kaizen</em>) didorong oleh refleksi konstan (<em>Hansei</em>).</span>
+                            </p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="flex flex-col md:flex-row gap-4">
+                                <div class="flex-1 bg-amber-50 p-6 rounded-xl border border-amber-100">
+                                    <h3 class="font-bold text-amber-800 mb-2">Genchi Genbutsu</h3>
+                                    <p class="text-sm text-amber-900">
+                                        <span class="lang-en">"Go and see for yourself." Do not rely on reports. Go to the "Gemba" (place of work) to understand the real situation.</span>
+                                        <span class="lang-id">"Pergi dan lihat sendiri." Jangan mengandalkan laporan. Pergilah ke "Gemba" (tempat kerja) untuk memahami situasi sebenarnya.</span>
+                                    </p>
+                                </div>
+                                <div class="flex-1 bg-amber-50 p-6 rounded-xl border border-amber-100">
+                                    <h3 class="font-bold text-amber-800 mb-2">Nemawashi</h3>
+                                    <p class="text-sm text-amber-900">
+                                        <span class="lang-en">Decide slowly by consensus, considering all options. But once decided, implement rapidly.</span>
+                                        <span class="lang-id">Putuskan perlahan melalui konsensus, pertimbangkan semua opsi. Tapi begitu diputuskan, laksanakan dengan cepat.</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="bg-amber-50 p-6 rounded-xl border border-amber-100">
+                                <h3 class="font-bold text-amber-800 mb-2">Hansei & Kaizen</h3>
+                                <p class="text-sm text-amber-900">
+                                    <span class="lang-en">Relentless reflection and continuous improvement. Become a learning organization.</span>
+                                    <span class="lang-id">Refleksi tanpa henti dan perbaikan terus-menerus. Menjadi organisasi pembelajar.</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="part5" class="content-section p-6 md:p-10 fade-in">
+                    <div class="flex flex-col items-center justify-center h-full text-center py-12">
+                        <div class="w-20 h-20 bg-slate-900 rounded-full flex items-center justify-center mb-6 shadow-xl text-white">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                            <span class="lang-en">Building People, Not Just Cars</span>
+                            <span class="lang-id">Membangun Manusia, Bukan Hanya Mobil</span>
+                        </h2>
+                        <div class="max-w-2xl text-slate-600 mobile-text">
+                            <p>
+                                <span class="lang-en">"The Toyota Way is not just about tools and techniques. It is about how we work, how we treat others, and how we solve problems. It is a culture of discipline, respect, and continuous growth."</span>
+                                <span class="lang-id">"The Toyota Way bukan hanya tentang alat dan teknik. Ini tentang bagaimana kita bekerja, bagaimana kita memperlakukan orang lain, dan bagaimana kita memecahkan masalah. Ini adalah budaya disiplin, rasa hormat, dan pertumbuhan yang berkelanjutan."</span>
+                            </p>
+                        </div>
+                        <div class="mt-10 p-4 bg-slate-50 rounded-lg text-sm text-slate-400">
+                            Summary of Jeffrey K. Liker's Classic
+                        </div>
+                    </div>
+                </section>
+
             </div>
-        </section>
-
-        <section id="part2" class="content-section fade-in">
-            <h4 class="text-gray-400 mb-2">The 2nd "P"</h4>
-            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
-                <span class="lang-en">Process</span>
-                <span class="lang-id">Proses</span>
-            </h2>
-
-            <div class="justified-text">
-                <p>
-                    <span class="lang-en">The goal is to eliminate waste (<span class="jp-term text-sm">Muda</span>). But waste isn't just trash; it's overproduction, waiting, and unevenness.</span>
-                    <span class="lang-id">Tujuannya adalah menghilangkan pemborosan (<span class="jp-term text-sm">Muda</span>). Tapi pemborosan bukan hanya sampah; itu adalah kelebihan produksi, waktu tunggu, dan ketidakrataan.</span>
-                </p>
-
-                <ul class="principles-list">
-                    <li>
-                        <strong>Principle 2: Create Continuous Process Flow</strong>
-                        <span class="lang-en">Connect processes together. If A produces for B, make sure A only produces when B needs it. This "One-Piece Flow" exposes hidden problems immediately.</span>
-                        <span class="lang-id">Hubungkan proses bersama. Jika A memproduksi untuk B, pastikan A hanya memproduksi saat B membutuhkannya. "Aliran Satu Bagian" ini segera mengungkap masalah tersembunyi.</span>
-                    </li>
-                    <li>
-                        <strong>Principle 3: Use "Pull" Systems</strong>
-                        <span class="lang-en">Don't push inventory onto the next stage. Let the downstream process pull what they need. (Just-in-Time).</span>
-                        <span class="lang-id">Jangan mendorong inventaris ke tahap berikutnya. Biarkan proses hilir menarik apa yang mereka butuhkan. (Just-in-Time).</span>
-                    </li>
-                    <li>
-                        <strong>Principle 5: Build a Culture of Stopping to Fix Problems (<span class="jp-term text-sm">Jidoka</span>)</strong>
-                        <span class="lang-en">Quality carries a price. If a defect occurs, stop the line immediately. Fix it now so it doesn't move downstream. The famous "Andon Cord" allows any worker to stop the entire factory line.</span>
-                        <span class="lang-id">Kualitas memiliki harga. Jika terjadi cacat, segera hentikan lini produksi. Perbaiki sekarang agar tidak bergerak ke hilir. "Tali Andon" yang terkenal memungkinkan pekerja mana pun untuk menghentikan seluruh lini pabrik.</span>
-                    </li>
-                </ul>
-            </div>
-        </section>
-
-        <section id="part3" class="content-section fade-in">
-            <h4 class="text-gray-400 mb-2">The 3rd "P"</h4>
-            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
-                <span class="lang-en">People & Partners</span>
-                <span class="lang-id">Orang & Mitra</span>
-            </h2>
-
-            <div class="justified-text">
-                <p>
-                    <span class="lang-en">You cannot "Lean" a process without the people. Toyota invests heavily in people because they are the ones who solve problems.</span>
-                    <span class="lang-id">Anda tidak dapat menerapkan "Lean" pada suatu proses tanpa orang-orangnya. Toyota berinvestasi besar-besaran pada orang-orang karena merekalah yang memecahkan masalah.</span>
-                </p>
-
-                <div class="concept-box">
-                    <div class="concept-label">Principle 9</div>
-                    <p>
-                        <span class="lang-en"><strong>Grow leaders who thoroughly understand the work, live the philosophy, and teach it to others.</strong> Toyota rarely hires CEOs from outside. They grow them from within because leadership requires deep understanding of the work ("Genchi Genbutsu").</span>
-                        <span class="lang-id"><strong>Tumbuhkan pemimpin yang benar-benar memahami pekerjaan, menghidupi filosofi, dan mengajarkannya kepada orang lain.</strong> Toyota jarang mempekerjakan CEO dari luar. Mereka menumbuhkannya dari dalam karena kepemimpinan membutuhkan pemahaman mendalam tentang pekerjaan tersebut ("Genchi Genbutsu").</span>
-                    </p>
-                </div>
-
-                <p>
-                    <span class="lang-en">They also respect their partners and suppliers by challenging them. They don't just ask for lower prices; they send engineers to supplier factories to help them improve their own processes.</span>
-                    <span class="lang-id">Mereka juga menghormati mitra dan pemasok dengan menantang mereka. Mereka tidak hanya meminta harga lebih rendah; mereka mengirim insinyur ke pabrik pemasok untuk membantu mereka meningkatkan proses mereka sendiri.</span>
-                </p>
-            </div>
-        </section>
-
-        <section id="part4" class="content-section fade-in">
-            <h4 class="text-gray-400 mb-2">The 4th "P"</h4>
-            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
-                <span class="lang-en">Problem Solving (Learning)</span>
-                <span class="lang-id">Pemecahan Masalah (Belajar)</span>
-            </h2>
-
-            <div class="justified-text">
-                <p class="drop-cap">
-                    <span class="lang-en">The highest level of the Toyota Way is organizational learning. Continuous improvement (<span class="jp-term text-sm">Kaizen</span>) is driven by constant reflection (<span class="jp-term text-sm">Hansei</span>).</span>
-                    <span class="lang-id">Tingkat tertinggi dari Toyota Way adalah pembelajaran organisasi. Perbaikan terus-menerus (<span class="jp-term text-sm">Kaizen</span>) didorong oleh refleksi konstan (<span class="jp-term text-sm">Hansei</span>).</span>
-                </p>
-
-                <ul class="principles-list">
-                    <li>
-                        <strong>Principle 12: Genchi Genbutsu</strong>
-                        <span class="lang-en">"Go and see for yourself." Do not rely on reports or data screens. Go to the "Gemba" (the place where work is done) to understand the real situation.</span>
-                        <span class="lang-id">"Pergi dan lihat sendiri." Jangan mengandalkan laporan atau layar data. Pergilah ke "Gemba" (tempat kerja dilakukan) untuk memahami situasi sebenarnya.</span>
-                    </li>
-                    <li>
-                        <strong>Principle 13: Decide Slowly, Implement Rapidly</strong>
-                        <span class="lang-en">Make decisions slowly by consensus, thoroughly considering all options (<span class="jp-term text-sm">Nemawashi</span>). But once the decision is made, implement it immediately.</span>
-                        <span class="lang-id">Buat keputusan secara perlahan melalui konsensus, pertimbangkan semua opsi secara menyeluruh (<span class="jp-term text-sm">Nemawashi</span>). Tetapi begitu keputusan dibuat, laksanakan segera.</span>
-                    </li>
-                </ul>
-
-                <div class="divider"></div>
-                <p class="text-center font-bold">
-                    <span class="lang-en">"We are not just building cars; we are building people."</span>
-                    <span class="lang-id">"Kami tidak hanya membangun mobil; kami membangun manusia."</span>
-                </p>
-            </div>
-        </section>
-
-    </main>
+        </main>
+    </div>
 
     <script>
         // --- LOGIC ---
@@ -403,21 +450,16 @@
         function updateContent() {
             const enElements = document.querySelectorAll('.lang-en');
             const idElements = document.querySelectorAll('.lang-id');
-            const langEnBtn = document.querySelector('.lang-en-btn');
-            const langIdBtn = document.querySelector('.lang-id-btn');
+            const langBtnText = document.querySelector('.lang-text');
 
             if (currentLang === 'en') {
                 enElements.forEach(el => el.style.display = 'block');
                 idElements.forEach(el => el.style.display = 'none');
-                
-                langEnBtn.classList.add('active');
-                langIdBtn.classList.remove('active');
+                langBtnText.innerText = "🇮🇩 Bahasa Indonesia";
             } else {
                 enElements.forEach(el => el.style.display = 'none');
                 idElements.forEach(el => el.style.display = 'block');
-                
-                langIdBtn.classList.add('active');
-                langEnBtn.classList.remove('active');
+                langBtnText.innerText = "🇺🇸 English";
             }
         }
 
@@ -425,33 +467,63 @@
         function toggleDrawer() {
             const drawer = document.querySelector('.nav-drawer');
             const overlay = document.querySelector('.nav-overlay');
+            const toggleBtn = document.querySelector('.drawer-toggle');
+            
             drawer.classList.toggle('open');
             overlay.classList.toggle('active');
-            if(drawer.classList.contains('open')) document.body.style.overflow = 'hidden';
-            else document.body.style.overflow = '';
+            toggleBtn.classList.toggle('open');
+            
+            if(drawer.classList.contains('open')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
         }
         
         function closeDrawer() {
             const drawer = document.querySelector('.nav-drawer');
             const overlay = document.querySelector('.nav-overlay');
+            const toggleBtn = document.querySelector('.drawer-toggle');
+            
             drawer.classList.remove('open');
             overlay.classList.remove('active');
+            toggleBtn.classList.remove('open');
             document.body.style.overflow = '';
         }
         
         function showSection(sectionId) {
+            // Hide all sections
             document.querySelectorAll('.content-section').forEach(sec => {
                 sec.classList.remove('active');
                 sec.classList.remove('fade-in');
             });
+
+            // Reset active tab styling
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('active-tab');
+                btn.classList.remove('text-white');
+                btn.classList.add('text-slate-300');
+                
+                // Reset icon box color
+                const iconBox = btn.querySelector('.icon-box');
+                if(iconBox) {
+                    iconBox.classList.remove('bg-slate-700', 'text-white'); // Reset logic if needed
+                }
             });
+
+            // Show target
             const target = document.getElementById(sectionId);
             target.classList.add('active');
+            
+            // Trigger animation
             void target.offsetWidth; 
             target.classList.add('fade-in');
-            event.currentTarget.classList.add('active-tab');
+
+            // Set active tab styling
+            const activeBtn = event.currentTarget;
+            activeBtn.classList.add('active-tab');
+            activeBtn.classList.remove('text-slate-300');
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
