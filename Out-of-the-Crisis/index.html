@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Out of the Crisis: The Masterclass</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* --- TYPOGRAPHY: CLASSIC & URGENT --- */
+        /* Menggunakan font serif yang tegas seperti pada sampul MIT Press */
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Oswald:wght@300;400;600&family=Roboto+Mono:wght@400;500&display=swap');
+        
+        /* --- THEME PALETTE: CRISIS MANAGEMENT (White, Alarm Red, Ink Black) --- */
+        :root {
+            --bg-paper: #FFFFFF; /* Stark White - Clinical & Clear */
+            --text-ink: #111111; /* Absolute Black for high contrast */
+            --accent-red: #D32F2F; /* "Crisis" Red - Urgent & Bold */
+            --drawer-bg: #1A1A1A; /* Dark Grey for focus */
+            --text-muted: #555555;
+            --border-color: #E0E0E0;
+        }
+
+        body { 
+            font-family: 'Libre Baskerville', serif; 
+            background-color: var(--bg-paper); 
+            color: var(--text-ink); 
+            line-height: 1.9; 
+            font-size: 19px; 
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* HEADINGS */
+        h1, h2, h3, h4 { 
+            font-family: 'Oswald', sans-serif; 
+            text-transform: uppercase; 
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            color: var(--text-ink);
+        }
+        
+        /* MONOSPACE for Principles/Data */
+        .mono-font { 
+            font-family: 'Roboto Mono', monospace; 
+            font-size: 0.85em; 
+            letter-spacing: 0.05em;
+            color: var(--accent-red);
+        }
+        
+        /* DROP CAP - The "Red" Impact */
+        .drop-cap::first-letter {
+            float: left;
+            font-size: 4.5rem;
+            line-height: 0.8;
+            margin-right: 0.15em;
+            margin-top: 0.05em;
+            font-family: 'Oswald', sans-serif;
+            color: var(--accent-red);
+            font-weight: 700;
+        }
+
+        /* ANIMATIONS */
+        .fade-in { animation: fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .content-section { display: none; padding-bottom: 140px; max-width: 800px; margin: 0 auto; }
+        .content-section.active { display: block; }
+        
+        /* LANGUAGE UTILS */
+        .lang-id { display: none; }
+        .lang-en { display: block; }
+        .justified-text { text-align: justify; }
+        
+        /* --- NAVIGATION DRAWER --- */
+        .nav-drawer {
+            position: fixed; top: 0; left: -380px; width: 380px; height: 100vh;
+            background: var(--drawer-bg);
+            transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 2000;
+            box-shadow: 10px 0 40px rgba(0,0,0,0.6);
+            border-right: 4px solid var(--accent-red);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(255, 255, 255, 0.8); /* Light overlay for contrast with dark drawer */
+            opacity: 0; visibility: hidden;
+            transition: all 0.5s; z-index: 1999; backdrop-filter: blur(4px);
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        /* NAV ITEMS */
+        .nav-btn {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border-left: 4px solid transparent;
+            transition: all 0.3s;
+            color: #999;
+            padding: 16px 24px;
+        }
+        .active-tab { 
+            border-left: 4px solid var(--accent-red);
+            color: #FFF !important;
+            background: linear-gradient(90deg, rgba(211, 47, 47, 0.1) 0%, transparent 100%);
+            padding-left: 32px !important;
+        }
+        
+        /* --- FLOATING CONTROLS --- */
+        .float-btn {
+            position: fixed; z-index: 2001; cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--bg-paper);
+            border: 2px solid var(--text-ink);
+            color: var(--text-ink);
+            box-shadow: 4px 4px 0px rgba(0,0,0,1); /* Brutalist shadow */
+        }
+        .float-btn:hover { 
+            transform: translate(-2px, -2px); 
+            box-shadow: 6px 6px 0px var(--accent-red);
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        .drawer-toggle { 
+            top: 30px; left: 30px; 
+            width: 50px; height: 50px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        
+        .lang-switch {
+            top: 30px; right: 30px; 
+            font-family: 'Oswald', sans-serif;
+            font-size: 14px; font-weight: 700;
+            padding: 12px 24px;
+            letter-spacing: 0.1em;
+        }
+
+        /* HOME BUTTON */
+        .home-btn {
+            top: 95px; right: 30px;
+            width: 50px; height: 50px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* --- DECORATIVE ELEMENTS --- */
+        
+        /* "THE 14 POINTS" LIST STYLE */
+        .points-list {
+            list-style: none;
+            counter-reset: deming-counter;
+            padding: 0;
+            margin: 2rem 0;
+        }
+        .points-list li {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 2rem;
+        }
+        .points-list li::before {
+            counter-increment: deming-counter;
+            content: counter(deming-counter);
+            position: absolute;
+            left: 0; top: 0;
+            font-family: 'Oswald', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: rgba(211, 47, 47, 0.2); /* Faded red number */
+            line-height: 1;
+        }
+        .points-list strong {
+            display: block;
+            color: var(--accent-red);
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        /* CONCEPT BOX - Stark & Industrial */
+        .concept-box {
+            margin: 3rem 0;
+            padding: 2rem;
+            border: 4px solid var(--text-ink);
+            background-color: #FAFAFA;
+            position: relative;
+        }
+        .concept-label {
+            position: absolute;
+            top: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text-ink);
+            color: #FFF;
+            padding: 4px 20px;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        /* BLOCKQUOTE - Philosophical */
+        blockquote {
+            border-left: 8px solid var(--accent-red);
+            padding: 1rem 0 1rem 2rem;
+            margin: 3rem 0;
+            font-family: 'Libre Baskerville', serif;
+            font-style: italic;
+            font-size: 1.25rem;
+            color: var(--text-ink);
+            background: transparent;
+        }
+
+        /* SEPARATOR */
+        .divider {
+            width: 100%; height: 1px; background: var(--border-color); margin: 4rem 0;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .divider::after {
+            content: '●'; color: var(--accent-red); font-size: 1.5rem; background: var(--bg-paper); padding: 0 1rem;
+        }
+
+        @media (max-width: 640px) {
+            body { font-size: 18px; line-height: 1.7; }
+            .content-section { padding: 90px 24px; }
+            .nav-drawer { width: 85%; }
+            .home-btn { top: 90px; right: 30px; }
+            h2 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="float-btn lang-switch" onclick="toggleLanguage()">
+        <span class="lang-text">INDONESIA</span>
+    </button>
+
+    <a href="https://lp1.affiliateid.my.id/" class="float-btn home-btn" aria-label="Home">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </a>
+
+    <button class="float-btn drawer-toggle" onclick="toggleDrawer()">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
+
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    <nav class="nav-drawer flex flex-col h-full">
+        <div class="px-8 py-12 bg-black">
+            <h2 class="text-white text-5xl leading-none mb-2 font-bold tracking-tighter">OUT OF THE <span class="text-[#D32F2F]">CRISIS</span></h2>
+            <p class="text-gray-400 text-[11px] uppercase tracking-[0.25em] font-mono mt-4">
+                W. Edwards Deming
+            </p>
+            <div class="w-20 h-2 bg-[#D32F2F] mt-6"></div>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto py-8">
+            <ul class="space-y-1">
+                 <li>
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left active-tab">
+                        <span class="lang-en">00. The Transformation</span>
+                        <span class="lang-id">00. Transformasi</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="lang-en">01. The 14 Points (1-7)</span>
+                        <span class="lang-id">01. 14 Poin Manajemen (1-7)</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="lang-en">02. The 14 Points (8-14)</span>
+                        <span class="lang-id">02. 14 Poin Manajemen (8-14)</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="lang-en">03. The Deadly Diseases</span>
+                        <span class="lang-id">03. Penyakit Mematikan</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="lang-en">04. Red Bead Experiment</span>
+                        <span class="lang-id">04. Eksperimen Manik Merah</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="lang-en">05. Conclusion: PDCA</span>
+                        <span class="lang-id">05. Kesimpulan: PDCA</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="p-8 text-gray-600 text-[10px] font-mono tracking-widest uppercase border-t border-gray-800">
+            MIT Press Edition Style
+        </div>
+    </nav>
+
+    <main>
+        
+        <section id="intro" class="content-section active fade-in">
+            <div class="mono-font mb-4">INTRODUCTION</div>
+            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+                <span class="lang-en">Transformation Required</span>
+                <span class="lang-id">Transformasi Diperlukan</span>
+            </h2>
+            
+            <div class="justified-text">
+                <p class="drop-cap">
+                    <span class="lang-en">This book is not about "fixing" a few problems; it is about a total transformation of management. Deming wrote this text when American industry was crumbling under Japanese competition. The prevailing Western style of management—based on quarterly results, quotas, and blaming workers—was not the solution; it was the problem.</span>
+                    <span class="lang-id">Buku ini bukan tentang "memperbaiki" beberapa masalah; ini tentang transformasi total manajemen. Deming menulis teks ini ketika industri Amerika runtuh di bawah persaingan Jepang. Gaya manajemen Barat yang berlaku—berdasarkan hasil kuartalan, kuota, dan menyalahkan pekerja—bukanlah solusinya; itulah masalahnya.</span>
+                </p>
+
+                <p>
+                    <span class="lang-en">Deming argues that we are in a new economic age. The old rules of "good enough" quality or "inspecting quality in" are dead. Management's job is not to supervise, but to lead.</span>
+                    <span class="lang-id">Deming berpendapat bahwa kita berada di era ekonomi baru. Aturan lama tentang kualitas "cukup baik" atau "memeriksa kualitas di akhir" sudah mati. Tugas manajemen bukanlah mengawasi, tetapi memimpin.</span>
+                </p>
+
+                 <blockquote>
+                    <span class="lang-en">"Quality is not made by inspection. It is made by improvement of the process."</span>
+                    <span class="lang-id">"Kualitas tidak dibuat melalui inspeksi. Kualitas dibuat melalui perbaikan proses."</span>
+                </blockquote>
+            </div>
+        </section>
+
+        <section id="part1" class="content-section fade-in">
+            <div class="mono-font mb-4">CHAPTER 01 - PART A</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">The 14 Points (1-7)</span>
+                <span class="lang-id">14 Poin Manajemen (1-7)</span>
+            </h2>
+
+            <div class="justified-text">
+                <p>
+                    <span class="lang-en">Deming’s core philosophy is encapsulated in these 14 points. They are not a checklist, but a vehicle for profound knowledge.</span>
+                    <span class="lang-id">Filosofi inti Deming terangkum dalam 14 poin ini. Ini bukan daftar periksa, tetapi kendaraan untuk pengetahuan yang mendalam.</span>
+                </p>
+
+                <ol class="points-list">
+                    <li>
+                        <strong><span class="lang-en">1. Create Constancy of Purpose</span><span class="lang-id">1. Ciptakan Keteguhan Tujuan</span></strong>
+                        <span class="lang-en">Don't just think about today's stock price. Plan to stay in business and provide jobs for the next 30 years. Allocate resources for long-term planning, research, and education.</span>
+                        <span class="lang-id">Jangan hanya memikirkan harga saham hari ini. Berencanalah untuk tetap dalam bisnis dan menyediakan lapangan kerja selama 30 tahun ke depan. Alokasikan sumber daya untuk perencanaan jangka panjang, penelitian, dan pendidikan.</span>
+                    </li>
+                    <li>
+                        <strong><span class="lang-en">2. Adopt the New Philosophy</span><span class="lang-id">2. Adopsi Filosofi Baru</span></strong>
+                        <span class="lang-en">We can no longer live with commonly accepted levels of delays, mistakes, and defective workmanship. Management must awaken to the challenge and take leadership for change.</span>
+                        <span class="lang-id">Kita tidak bisa lagi hidup dengan tingkat keterlambatan, kesalahan, dan pengerjaan cacat yang "lumrah". Manajemen harus sadar akan tantangan ini dan mengambil kepemimpinan untuk perubahan.</span>
+                    </li>
+                    <li>
+                        <strong><span class="lang-en">3. Cease Dependence on Inspection</span><span class="lang-id">3. Hentikan Ketergantungan pada Inspeksi</span></strong>
+                        <span class="lang-en">Inspection is too late. The defect is already there. Build quality into the product in the first place. Mass inspection is managing the aftermath, not the cause.</span>
+                        <span class="lang-id">Inspeksi sudah terlambat. Cacat sudah ada di sana. Bangun kualitas ke dalam produk sejak awal. Inspeksi massal hanya mengelola akibat, bukan penyebab.</span>
+                    </li>
+                    <li>
+                        <strong><span class="lang-en">4. End Lowest-Bidder Contracts</span><span class="lang-id">4. Akhiri Kontrak Penawar Terendah</span></strong>
+                        <span class="lang-en">Stop awarding business on the basis of price tag alone. Instead, minimize total cost. Move toward a single supplier for any one item on a long-term relationship of loyalty and trust.</span>
+                        <span class="lang-id">Berhenti memberikan bisnis hanya berdasarkan harga. Sebaliknya, minimalkan total biaya. Bergeraklah menuju pemasok tunggal untuk setiap item dalam hubungan jangka panjang yang penuh loyalitas dan kepercayaan.</span>
+                    </li>
+                    <li>
+                        <strong><span class="lang-en">5. Improve Constantly and Forever</span><span class="lang-id">5. Perbaiki Secara Konstan dan Selamanya</span></strong>
+                        <span class="lang-en">Improve the system of production and service to improve quality and productivity, and thus constantly decrease costs. It is a never-ending cycle.</span>
+                        <span class="lang-id">Perbaiki sistem produksi dan layanan untuk meningkatkan kualitas dan produktivitas, dan dengan demikian secara konstan menurunkan biaya. Ini adalah siklus tanpa akhir.</span>
+                    </li>
+                    <li>
+                        <strong><span class="lang-en">6. Institute Training on the Job</span><span class="lang-id">6. Lembagakan Pelatihan di Tempat Kerja</span></strong>
+                        <span class="lang-en">Workers often learn from other workers who never learned properly. Training must be formalized and modernized.</span>
+                        <span class="lang-id">Pekerja sering belajar dari pekerja lain yang tidak pernah belajar dengan benar. Pelatihan harus diformalkan dan dimodernisasi.</span>
+                    </li>
+                    <li>
+                        <strong><span class="lang-en">7. Institute Leadership</span><span class="lang-id">7. Lembagakan Kepemimpinan</span></strong>
+                        <span class="lang-en">The aim of supervision should be to help people and machines to do a better job. Supervision of management is in need of overhaul, as well as supervision of production workers.</span>
+                        <span class="lang-id">Tujuan pengawasan haruslah membantu orang dan mesin melakukan pekerjaan yang lebih baik. Pengawasan manajemen perlu dirombak total, begitu juga pengawasan pekerja produksi.</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="part2" class="content-section fade-in">
+            <div class="mono-font mb-4">CHAPTER 01 - PART B</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">The 14 Points (8-14)</span>
+                <span class="lang-id">14 Poin Manajemen (8-14)</span>
+            </h2>
+
+            <div class="justified-text">
+                <ol class="points-list" style="counter-reset: deming-counter 7;">
+                    <li>
+                        <strong><span class="lang-en">8. Drive Out Fear</span><span class="lang-id">8. Hilangkan Ketakutan</span></strong>
+                        <span class="lang-en">No one can put in his best performance unless he feels secure. Fear causes distorted data (hiding mistakes) and kills innovation.</span>
+                        <span class="lang-id">Tidak ada yang bisa memberikan kinerja terbaik kecuali dia merasa aman. Ketakutan menyebabkan data yang menyimpang (menyembunyikan kesalahan) dan membunuh inovasi.</span>
+                    </li>
+                    <li>
+                        <strong><span class="lang-en">9. Break Down Barriers</span><span class="lang-id">9. Hancurkan Penghalang Antar Departemen</span></strong>
+                        <span class="lang-en">People in research, design, sales, and production must work as a team, to foresee problems of production and in use that may be encountered with the product or service.</span>
+                        <span class="lang-id">Orang-orang di riset, desain, penjualan, dan produksi harus bekerja sebagai tim, untuk mengantisipasi masalah produksi yang mungkin dihadapi dengan produk atau layanan.</span>
+                    </li>
+                    <li>
+                        <strong><span class="lang-en">10. Eliminate Slogans</span><span class="lang-id">10. Hapus Slogan dan Desakan</span></strong>
+                        <span class="lang-en">Eliminate slogans asking for "Zero Defects" without providing the methods. Such exhortations create adversarial relationships, as the bulk of the causes of low quality belong to the system, not the worker.</span>
+                        <span class="lang-id">Hapus slogan yang meminta "Nol Cacat" tanpa menyediakan metodenya. Desakan semacam itu menciptakan hubungan permusuhan, karena sebagian besar penyebab kualitas rendah berasal dari sistem, bukan pekerja.</span>
+                    </li>
+                    <li>
+                        <strong><span class="lang-en">11. Eliminate Quotas (Work Standards)</span><span class="lang-id">11. Hapus Kuota (Standar Kerja)</span></strong>
+                        <span class="lang-en">Quotas prioritize quantity over quality. A worker will rush to meet the number, ignoring the defect. Substitute leadership for numerical quotas.</span>
+                        <span class="lang-id">Kuota memprioritaskan kuantitas di atas kualitas. Seorang pekerja akan terburu-buru memenuhi angka, mengabaikan cacat. Gantikan kuota numerik dengan kepemimpinan.</span>
+                    </li>
+                    <li>
+                        <strong><span class="lang-en">12. Remove Barriers to Pride of Workmanship</span><span class="lang-id">12. Hapus Penghalang Kebanggaan Kerja</span></strong>
+                        <span class="lang-en">Abolish the annual or merit rating and management by objective. These destroy teamwork and foster mediocrity. Let people take pride in their craft.</span>
+                        <span class="lang-id">Hapus penilaian tahunan atau peringkat kinerja dan manajemen berdasarkan tujuan. Hal-hal ini menghancurkan kerja tim dan memupuk mediokritas. Biarkan orang bangga dengan keahlian mereka.</span>
+                    </li>
+                    <li>
+                        <strong><span class="lang-en">13. Institute Education</span><span class="lang-id">13. Lembagakan Pendidikan</span></strong>
+                        <span class="lang-en">Institute a vigorous program of education and self-improvement. The organization needs not just good people; it needs people who are improving with education.</span>
+                        <span class="lang-id">Lembagakan program pendidikan dan pengembangan diri yang giat. Organisasi tidak hanya membutuhkan orang baik; ia membutuhkan orang yang berkembang dengan pendidikan.</span>
+                    </li>
+                    <li>
+                        <strong><span class="lang-en">14. The Transformation</span><span class="lang-id">14. Transformasi adalah Tugas Semua Orang</span></strong>
+                        <span class="lang-en">Put everybody in the company to work to accomplish the transformation. The transformation is everybody's job.</span>
+                        <span class="lang-id">Libatkan semua orang di perusahaan untuk bekerja mencapai transformasi. Transformasi adalah tugas semua orang.</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="part3" class="content-section fade-in">
+            <div class="mono-font mb-4">CHAPTER 02</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">The Deadly Diseases</span>
+                <span class="lang-id">Penyakit Mematikan</span>
+            </h2>
+
+            <div class="justified-text">
+                <p class="drop-cap">
+                    <span class="lang-en">Even with the 14 Points, management faces serious obstacles. Deming identified "Seven Deadly Diseases" that cripple Western management.</span>
+                    <span class="lang-id">Bahkan dengan 14 Poin, manajemen menghadapi hambatan serius. Deming mengidentifikasi "Tujuh Penyakit Mematikan" yang melumpuhkan manajemen Barat.</span>
+                </p>
+
+                <div class="concept-box">
+                    <div class="concept-label">THE 7 DISEASES</div>
+                    <ul class="list-disc pl-6 space-y-4">
+                        <li>
+                            <strong class="text-black block mb-1">1. Lack of Constancy of Purpose</strong>
+                            <span class="lang-en">No long-range plan for staying in business.</span>
+                            <span class="lang-id">Tidak ada rencana jangka panjang untuk tetap dalam bisnis.</span>
+                        </li>
+                        <li>
+                            <strong class="text-black block mb-1">2. Emphasis on Short-Term Profits</strong>
+                            <span class="lang-en">Short-term thinking (quarterly dividends) defeats long-term purpose.</span>
+                            <span class="lang-id">Pemikiran jangka pendek (dividen kuartalan) mengalahkan tujuan jangka panjang.</span>
+                        </li>
+                        <li>
+                            <strong class="text-black block mb-1">3. Evaluation by Performance (Merit Rating)</strong>
+                            <span class="lang-en">It nourishes short-term performance, annihilates long-term planning, builds fear, leaves people bitter, and crushes the team.</span>
+                            <span class="lang-id">Ini memupuk kinerja jangka pendek, memusnahkan perencanaan jangka panjang, membangun ketakutan, membuat orang pahit, dan menghancurkan tim.</span>
+                        </li>
+                        <li>
+                            <strong class="text-black block mb-1">4. Mobility of Management</strong>
+                            <span class="lang-en">Job-hopping managers never understand the companies they work for.</span>
+                            <span class="lang-id">Manajer yang berpindah-pindah kerja tidak pernah memahami perusahaan tempat mereka bekerja.</span>
+                        </li>
+                        <li>
+                            <strong class="text-black block mb-1">5. Running a Company on Visible Figures Alone</strong>
+                            <span class="lang-en">The most important figures (multiplier effect of a happy customer) are unknown and unknowable.</span>
+                            <span class="lang-id">Angka-angka paling penting (efek pengganda dari pelanggan yang puas) tidak diketahui dan tidak dapat diketahui.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="part4" class="content-section fade-in">
+            <div class="mono-font mb-4">CASE STUDY</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">The Red Bead Experiment</span>
+                <span class="lang-id">Eksperimen Manik Merah</span>
+            </h2>
+
+            <div class="justified-text">
+                <p class="drop-cap">
+                    <span class="lang-en">This is Deming's famous teaching simulation. It demonstrates the futility of rewarding or punishing workers for results that are determined by the system.</span>
+                    <span class="lang-id">Ini adalah simulasi pengajaran Deming yang terkenal. Ini menunjukkan kesia-siaan memberi penghargaan atau menghukum pekerja atas hasil yang ditentukan oleh sistem.</span>
+                </p>
+
+                <h3 class="text-2xl mt-8 mb-4">The Setup</h3>
+                <p>
+                    <span class="lang-en">Deming plays the "Foreman". He recruits 6 "Willing Workers". Their job is to dip a paddle into a bowl of beads (80% white, 20% red). The goal is to produce only white beads. Red beads are defects.</span>
+                    <span class="lang-id">Deming berperan sebagai "Mandor". Dia merekrut 6 "Pekerja Sukarela". Tugas mereka adalah mencelupkan dayung ke dalam mangkuk manik-manik (80% putih, 20% merah). Tujuannya adalah menghasilkan hanya manik-manik putih. Manik merah adalah cacat.</span>
+                </p>
+
+                <div class="concept-box">
+                    <div class="concept-label">THE LESSON</div>
+                    <p>
+                        <span class="lang-en">The workers try their best. Some get 5 red beads, some get 15. Deming praises the ones with 5 (bonus!) and scolds the ones with 15 (probation!). He exhorts them: "Zero Defects!".</span>
+                        <span class="lang-id">Para pekerja mencoba yang terbaik. Ada yang dapat 5 manik merah, ada yang 15. Deming memuji yang dapat 5 (bonus!) dan memarahi yang dapat 15 (masa percobaan!). Dia mendesak mereka: "Nol Cacat!".</span>
+                    </p>
+                    <br>
+                    <strong class="text-[#D32F2F]">The Reality:</strong>
+                    <p>
+                        <span class="lang-en">The workers have NO control over the number of red beads. The variation comes from the paddle and the mixture (the System). Management designed the system. Rewarding or punishing the worker is irrational.</span>
+                        <span class="lang-id">Para pekerja TIDAK memiliki kendali atas jumlah manik merah. Variasi berasal dari dayung dan campuran (Sistem). Manajemenlah yang merancang sistem. Memberi penghargaan atau hukuman kepada pekerja adalah tidak rasional.</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="part5" class="content-section fade-in">
+            <div class="mono-font mb-4">CONCLUSION</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">PDCA & The Future</span>
+                <span class="lang-id">PDCA & Masa Depan</span>
+            </h2>
+
+            <div class="justified-text">
+                <p>
+                    <span class="lang-en">Deming concludes that quality is a continuous cycle of learning. He popularized the Shewhart Cycle, now known as PDCA:</span>
+                    <span class="lang-id">Deming menyimpulkan bahwa kualitas adalah siklus pembelajaran yang berkelanjutan. Dia mempopulerkan Siklus Shewhart, yang sekarang dikenal sebagai PDCA:</span>
+                </p>
+
+                <ul class="list-none space-y-4 my-8 font-bold text-xl font-oswald text-center">
+                    <li class="p-4 border border-gray-300">PLAN <span class="text-[#D32F2F] mx-2">➔</span> DO <span class="text-[#D32F2F] mx-2">➔</span> CHECK (STUDY) <span class="text-[#D32F2F] mx-2">➔</span> ACT</li>
+                </ul>
+
+                <p>
+                    <span class="lang-en">There is no instant pudding. The transformation takes time. But the cost of not transforming is the "Crisis"—loss of markets, loss of jobs, and decline.</span>
+                    <span class="lang-id">Tidak ada puding instan (hasil instan). Transformasi memakan waktu. Tapi biaya jika tidak bertransformasi adalah "Krisis"—kehilangan pasar, kehilangan pekerjaan, dan kemunduran.</span>
+                </p>
+                
+                <div class="divider"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- LOGIC ---
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateContent();
+        }
+
+        function updateContent() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const langBtnText = document.querySelector('.lang-text');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                langBtnText.innerText = "INDONESIA";
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                langBtnText.innerText = "ENGLISH";
+            }
+        }
+
+        // Navigation Drawer Logic
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            
+            if(drawer.classList.contains('open')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(sec => {
+                sec.classList.remove('active');
+                sec.classList.remove('fade-in');
+            });
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active-tab');
+            });
+
+            const target = document.getElementById(sectionId);
+            target.classList.add('active');
+            void target.offsetWidth; 
+            target.classList.add('fade-in');
+
+            event.currentTarget.classList.add('active-tab');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
