@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Visible Hand — Ultimate Extended Edition</title>
+    <title>The Visible Hand — Alfred Chandler Summary</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
         
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #334155; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #334155; transition: all 0.3s ease; }
         h1, h2, h3, h4 { font-family: 'Merriweather', serif; }
         
         .fade-in { animation: fadeIn 0.8s ease-in; }
@@ -17,13 +17,12 @@
         /* Steel & Bronze Theme */
         .theme-steel { background: linear-gradient(135deg, #475569 0%, #1e293b 100%); }
         .theme-bronze { color: #b45309; }
-        .border-bronze { border-left: 5px solid #d97706; }
         
-        /* Typography for Long Form Reading */
+        /* Typography */
         .prose-text { font-size: 1.05rem; line-height: 1.9; text-align: justify; color: #475569; }
         .prose-highlight { background-color: #fff7ed; padding: 2px 4px; border-radius: 4px; color: #9a3412; font-weight: 600; }
         
-        /* Navigation */
+        /* Navigation Drawer */
         .nav-drawer {
             position: fixed; top: 0; left: -350px; width: 350px; height: 100vh;
             background: #0f172a; transition: left 0.3s ease-in-out; z-index: 1000;
@@ -43,8 +42,9 @@
             transition: all 0.2s; font-size: 0.95rem;
         }
         .chapter-btn:hover { background-color: #1e293b; color: #fbbf24; padding-left: 25px; }
-        .chapter-btn span { margin-right: 12px; font-size: 1.2rem; }
+        .chapter-btn span.icon { margin-right: 12px; font-size: 1.2rem; }
 
+        /* Buttons */
         .drawer-toggle {
             position: fixed; top: 25px; left: 25px; z-index: 1001;
             background: linear-gradient(135deg, #d97706 0%, #92400e 100%);
@@ -54,9 +54,22 @@
             transition: transform 0.3s;
         }
         .drawer-toggle:hover { transform: scale(1.1) rotate(90deg); }
+
+        .lang-toggle {
+            position: fixed; top: 25px; right: 25px; z-index: 1001;
+            background: white; border: 2px solid #cbd5e1;
+            color: #334155; border-radius: 30px; padding: 10px 20px;
+            cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-weight: bold; font-family: 'Inter', sans-serif;
+            transition: all 0.3s; display: flex; align-items: center; gap: 8px;
+        }
+        .lang-toggle:hover { background: #f1f5f9; border-color: #94a3b8; }
         
         .content-section { display: none; padding-bottom: 80px; }
         .content-section.active { display: block; }
+
+        /* Utility for Language Switching */
+        .hidden-lang { display: none !important; }
     </style>
 </head>
 <body>
@@ -67,6 +80,11 @@
         </svg>
     </button>
 
+    <button class="lang-toggle" onclick="switchLanguage()">
+        <span class="text-xl">🌐</span>
+        <span id="lang-label">English</span>
+    </button>
+
     <div class="nav-overlay" onclick="closeDrawer()"></div>
     <nav class="nav-drawer">
         <div class="p-8 border-b border-slate-700 bg-slate-950">
@@ -75,22 +93,34 @@
         </div>
         <div class="flex flex-col">
             <button onclick="showSection('intro'); closeDrawer();" class="chapter-btn">
-                <span>📖</span> Pendahuluan: Tesis Utama
+                <span class="icon">📖</span> 
+                <span class="lang-id">Pendahuluan</span>
+                <span class="lang-en hidden-lang">Introduction</span>
             </button>
             <button onclick="showSection('part1'); closeDrawer();" class="chapter-btn">
-                <span>🚂</span> Bagian 1: Revolusi Kereta Api
+                <span class="icon">🚂</span> 
+                <span class="lang-id">Bagian 1: Kereta Api</span>
+                <span class="lang-en hidden-lang">Part 1: Railroads</span>
             </button>
             <button onclick="showSection('part2'); closeDrawer();" class="chapter-btn">
-                <span>📦</span> Bagian 2: Distribusi Massal
+                <span class="icon">📦</span> 
+                <span class="lang-id">Bagian 2: Distribusi Massal</span>
+                <span class="lang-en hidden-lang">Part 2: Mass Distribution</span>
             </button>
             <button onclick="showSection('part3'); closeDrawer();" class="chapter-btn">
-                <span>🏭</span> Bagian 3: Produksi Massal
+                <span class="icon">🏭</span> 
+                <span class="lang-id">Bagian 3: Produksi Massal</span>
+                <span class="lang-en hidden-lang">Part 3: Mass Production</span>
             </button>
             <button onclick="showSection('part4'); closeDrawer();" class="chapter-btn">
-                <span>🔗</span> Bagian 4: Integrasi Vertikal
+                <span class="icon">🔗</span> 
+                <span class="lang-id">Bagian 4: Integrasi Vertikal</span>
+                <span class="lang-en hidden-lang">Part 4: Vertical Integration</span>
             </button>
             <button onclick="showSection('part5'); closeDrawer();" class="chapter-btn">
-                <span>👔</span> Bagian 5: Manajer Profesional
+                <span class="icon">👔</span> 
+                <span class="lang-id">Bagian 5: Manajer Profesional</span>
+                <span class="lang-en hidden-lang">Part 5: Prof. Managers</span>
             </button>
         </div>
         <div class="p-6 mt-auto text-slate-500 text-xs text-center">
@@ -103,34 +133,57 @@
         <section id="intro" class="content-section active fade-in">
             <div class="theme-steel text-white p-10 rounded-2xl shadow-2xl mb-10 relative overflow-hidden">
                 <div class="relative z-10">
-                    <span class="inline-block px-3 py-1 mb-4 text-xs font-bold tracking-wider uppercase bg-amber-600 rounded text-white">Sejarah Bisnis</span>
+                    <span class="lang-id inline-block px-3 py-1 mb-4 text-xs font-bold tracking-wider uppercase bg-amber-600 rounded text-white">Sejarah Bisnis</span>
+                    <span class="lang-en hidden-lang inline-block px-3 py-1 mb-4 text-xs font-bold tracking-wider uppercase bg-amber-600 rounded text-white">Business History</span>
+                    
                     <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">The Visible Hand</h1>
-                    <p class="text-xl md:text-2xl text-slate-300 font-light italic">"Revolusi Manajerial dalam Bisnis Amerika"</p>
+                    
+                    <p class="lang-id text-xl md:text-2xl text-slate-300 font-light italic">"Revolusi Manajerial dalam Bisnis Amerika"</p>
+                    <p class="lang-en hidden-lang text-xl md:text-2xl text-slate-300 font-light italic">"The Managerial Revolution in American Business"</p>
                 </div>
                 <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-16 -mt-16 blur-3xl"></div>
             </div>
 
             <div class="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-3xl font-bold text-slate-800 mb-6 border-b pb-4">Tesis Utama: Runtuhnya Mitos Adam Smith</h3>
+                <h3 class="lang-id text-3xl font-bold text-slate-800 mb-6 border-b pb-4">Tesis Utama: Runtuhnya Mitos Adam Smith</h3>
+                <h3 class="lang-en hidden-lang text-3xl font-bold text-slate-800 mb-6 border-b pb-4">Core Thesis: The Fall of Adam Smith's Myth</h3>
                 
                 <div class="prose-text space-y-6">
-                    <p>
-                        Karya Alfred Chandler ini adalah serangan langsung namun akademis terhadap konsep ekonomi klasik yang mendominasi pemikiran Barat selama berabad-abad: <strong>"The Invisible Hand"</strong> (Tangan Tak Terlihat) milik Adam Smith. Smith berargumen bahwa dalam ekonomi yang sempurna, kekuatan pasar—interaksi penawaran dan permintaan antara ribuan produsen kecil—akan secara otomatis mengalokasikan sumber daya dengan cara yang paling efisien tanpa perlu campur tangan pusat.
+                    <p class="lang-id">
+                        Karya Alfred Chandler ini adalah serangan langsung namun akademis terhadap konsep ekonomi klasik yang mendominasi pemikiran Barat: <strong>"The Invisible Hand"</strong> (Tangan Tak Terlihat) milik Adam Smith. Smith berargumen bahwa dalam ekonomi sempurna, kekuatan pasar—interaksi penawaran dan permintaan—akan mengalokasikan sumber daya secara efisien tanpa campur tangan pusat.
                     </p>
-                    <p>
-                        Namun, Chandler mengajukan argumen sejarah yang tak terbantahkan. Dia menunjukkan bahwa pada pertengahan abad ke-19, khususnya di Amerika Serikat, terjadi pergeseran fundamental. Teknologi baru—terutama mesin uap, rel kereta api, dan telegraf—menciptakan pasar yang begitu luas dan proses produksi yang begitu cepat sehingga mekanisme pasar tradisional menjadi terlalu lambat dan tidak efisien.
+                    <p class="lang-en hidden-lang">
+                        Alfred Chandler's work is a direct yet academic assault on the classical economic concept that dominated Western thought: Adam Smith's <strong>"The Invisible Hand"</strong>. Smith argued that in a perfect economy, market forces—the interaction of supply and demand—would efficiently allocate resources without central intervention.
                     </p>
-                    <p>
-                        Sebagai gantinya, muncullah <span class="prose-highlight">The Visible Hand</span> (Tangan Terlihat) dari manajemen. Chandler membuktikan bahwa koordinasi administratif internal (keputusan yang dibuat oleh manajer bergaji di dalam perusahaan) menjadi jauh lebih produktif daripada koordinasi pasar eksternal. Pergeseran ini melahirkan institusi paling kuat di dunia modern: <strong>Perusahaan Bisnis Multi-Unit</strong> yang dikelola oleh hierarki manajer profesional.
+
+                    <p class="lang-id">
+                        Namun, Chandler mengajukan argumen sejarah. Pada pertengahan abad ke-19, teknologi baru—mesin uap, rel kereta api, dan telegraf—menciptakan pasar yang begitu luas dan cepat sehingga mekanisme pasar tradisional menjadi terlalu lambat dan tidak efisien.
+                    </p>
+                    <p class="lang-en hidden-lang">
+                        However, Chandler presents a historical counter-argument. In the mid-19th century, new technologies—steam engines, railroads, and the telegraph—created markets so vast and fast that traditional market mechanisms became too slow and inefficient.
+                    </p>
+
+                    <p class="lang-id">
+                        Sebagai gantinya, muncullah <span class="prose-highlight">The Visible Hand</span> (Tangan Terlihat) dari manajemen. Chandler membuktikan bahwa koordinasi administratif internal (keputusan oleh manajer bergaji) menjadi lebih produktif daripada koordinasi pasar. Ini melahirkan institusi modern: <strong>Perusahaan Bisnis Multi-Unit</strong>.
+                    </p>
+                    <p class="lang-en hidden-lang">
+                        In its place emerged <span class="prose-highlight">The Visible Hand</span> of management. Chandler proved that internal administrative coordination (decisions made by salaried managers) became far more productive than market coordination. This gave birth to the modern institution: the <strong>Multi-Unit Business Enterprise</strong>.
                     </p>
                 </div>
                 
                 <div class="mt-8 bg-slate-50 p-6 rounded-xl border-l-4 border-slate-600">
-                    <h4 class="font-bold text-slate-800 text-lg mb-2">3 Proposisi Inti Chandler:</h4>
-                    <ol class="list-decimal ml-5 space-y-3 text-slate-700">
-                        <li>Perusahaan bisnis multi-unit menggantikan perusahaan kecil tradisional ketika koordinasi administratif memungkinkan produktivitas yang lebih besar, biaya yang lebih rendah, dan keuntungan yang lebih tinggi daripada koordinasi mekanisme pasar.</li>
-                        <li>Keuntungan dari menginternalisasi aktivitas berbagai unit bisnis tidak dapat direalisasikan sampai sebuah <strong>hierarki manajerial</strong> diciptakan.</li>
-                        <li>Begitu hierarki manajerial terbentuk dan berhasil menjalankan fungsinya, hierarki itu sendiri menjadi sumber permanensi, kekuatan, dan pertumbuhan yang berkelanjutan (terlepas dari pemilik aslinya).</li>
+                    <h4 class="lang-id font-bold text-slate-800 text-lg mb-2">3 Proposisi Inti Chandler:</h4>
+                    <h4 class="lang-en hidden-lang font-bold text-slate-800 text-lg mb-2">Chandler's 3 Core Propositions:</h4>
+                    
+                    <ol class="lang-id list-decimal ml-5 space-y-3 text-slate-700">
+                        <li>Perusahaan multi-unit menggantikan perusahaan kecil ketika koordinasi administratif memungkinkan produktivitas lebih besar daripada mekanisme pasar.</li>
+                        <li>Keuntungan internalisasi aktivitas ini tidak dapat direalisasikan sampai sebuah <strong>hierarki manajerial</strong> diciptakan.</li>
+                        <li>Begitu terbentuk, hierarki manajerial menjadi sumber permanensi, kekuatan, dan pertumbuhan berkelanjutan.</li>
+                    </ol>
+                    <ol class="lang-en hidden-lang list-decimal ml-5 space-y-3 text-slate-700">
+                        <li>Multi-unit business enterprises replaced small traditional firms when administrative coordination permitted greater productivity than market mechanisms.</li>
+                        <li>The advantages of internalizing these activities could not be realized until a <strong>managerial hierarchy</strong> was created.</li>
+                        <li>Once formed, the managerial hierarchy itself became the source of permanence, power, and continued growth.</li>
                     </ol>
                 </div>
             </div>
@@ -140,61 +193,74 @@
             <div class="flex items-center gap-4 mb-8">
                 <span class="text-4xl">🚂</span>
                 <div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Bagian 1: Kereta Api</h2>
-                    <p class="text-amber-700 font-medium">Kelahiran Manajemen Modern & Struktur Korporasi</p>
+                    <h2 class="lang-id text-3xl md:text-4xl font-bold text-slate-900">Bagian 1: Kereta Api</h2>
+                    <h2 class="lang-en hidden-lang text-3xl md:text-4xl font-bold text-slate-900">Part 1: The Railroads</h2>
+                    
+                    <p class="lang-id text-amber-700 font-medium">Kelahiran Manajemen Modern & Struktur Korporasi</p>
+                    <p class="lang-en hidden-lang text-amber-700 font-medium">Birth of Modern Management & Corporate Structure</p>
                 </div>
             </div>
 
             <div class="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200 mb-8">
-                <h3 class="text-2xl font-bold text-slate-800 mb-6">Mengapa Kereta Api Mengubah Segalanya?</h3>
+                <h3 class="lang-id text-2xl font-bold text-slate-800 mb-6">Mengapa Kereta Api Mengubah Segalanya?</h3>
+                <h3 class="lang-en hidden-lang text-2xl font-bold text-slate-800 mb-6">Why Railroads Changed Everything</h3>
+                
                 <div class="prose-text space-y-6">
-                    <p>
-                        Sebelum tahun 1840-an, hampir semua bisnis di Amerika adalah milik keluarga atau kemitraan kecil. Pemilik mengelola semuanya sendiri. Pabrik tekstil, misalnya, beroperasi di satu lokasi, memproses bahan baku menjadi barang jadi, dan menjualnya ke agen lokal. Ritme kerjanya mengikuti matahari atau musim.
+                    <p class="lang-id">
+                        Sebelum 1840-an, bisnis adalah milik keluarga kecil. Namun, kereta api beroperasi 24 jam melintasi ribuan mil. Tanpa koordinasi presisi, risikonya bukan hanya inefisiensi, tapi <span class="prose-highlight">kematian</span> (tabrakan kereta). Kompleksitas ini memaksa penciptaan struktur organisasi formal pertama.
                     </p>
-                    <p>
-                        Kedatangan kereta api menghancurkan model ini. Tidak seperti pabrik yang bisa ditutup di malam hari, kereta api adalah operasi 24 jam yang membentang ratusan, bahkan ribuan mil. Kompleksitasnya belum pernah terjadi sebelumnya. Satu jalur rel tunggal harus dilalui oleh kereta penumpang ekspres, kereta barang lambat, dan kereta pos, seringkali di kedua arah.
-                    </p>
-                    <p>
-                        Tanpa koordinasi yang presisi hingga ke menit, hasilnya bukan sekadar inefisiensi, melainkan <span class="prose-highlight">kematian</span>. Risiko tabrakan "adu banteng" adalah nyata. Kompleksitas inilah yang memaksa penciptaan struktur organisasi formal pertama dalam sejarah bisnis.
+                    <p class="lang-en hidden-lang">
+                        Before the 1840s, businesses were small family affairs. However, railroads operated 24 hours a day across thousands of miles. Without precise coordination, the result wasn't just inefficiency, but <span class="prose-highlight">death</span> (train collisions). This complexity forced the creation of history's first formal organizational structures.
                     </p>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div class="bg-slate-100 p-6 rounded-xl border-t-4 border-amber-600">
-                    <strong class="block text-xl text-slate-800 mb-2">1. Manajer Lini</strong>
-                    <p class="text-sm text-slate-600 leading-relaxed text-justify">
-                        Bertanggung jawab atas pergerakan fisik kereta dan keselamatan di divisi geografis tertentu. Mereka memiliki otoritas absolut di lapangan (seperti kapten kapal). Fokus mereka adalah <strong>eksekusi harian</strong>.
+                    <strong class="lang-id block text-xl text-slate-800 mb-2">1. Manajer Lini</strong>
+                    <strong class="lang-en hidden-lang block text-xl text-slate-800 mb-2">1. Line Managers</strong>
+                    
+                    <p class="lang-id text-sm text-slate-600 leading-relaxed text-justify">
+                        Bertanggung jawab atas pergerakan fisik dan keselamatan di divisi geografis. Otoritas absolut di lapangan. Fokus: <strong>Eksekusi Harian</strong>.
+                    </p>
+                    <p class="lang-en hidden-lang text-sm text-slate-600 leading-relaxed text-justify">
+                        Responsible for physical movement and safety in geographic divisions. Absolute authority in the field. Focus: <strong>Daily Execution</strong>.
                     </p>
                 </div>
                 <div class="bg-slate-100 p-6 rounded-xl border-t-4 border-slate-500">
-                    <strong class="block text-xl text-slate-800 mb-2">2. Manajer Menengah</strong>
-                    <p class="text-sm text-slate-600 leading-relaxed text-justify">
-                        Inovasi terbesar. Mereka tidak menjalankan kereta, tapi mengelola arus informasi. Mereka mengaudit laporan tiket, biaya bahan bakar, dan mengoordinasikan lalu lintas antar divisi. Fokus mereka adalah <strong>efisiensi & koordinasi</strong>.
+                    <strong class="lang-id block text-xl text-slate-800 mb-2">2. Manajer Menengah</strong>
+                    <strong class="lang-en hidden-lang block text-xl text-slate-800 mb-2">2. Middle Managers</strong>
+                    
+                    <p class="lang-id text-sm text-slate-600 leading-relaxed text-justify">
+                        Inovasi terbesar. Mengelola arus informasi, mengaudit laporan, dan koordinasi antar divisi. Fokus: <strong>Efisiensi & Koordinasi</strong>.
+                    </p>
+                    <p class="lang-en hidden-lang text-sm text-slate-600 leading-relaxed text-justify">
+                        The biggest innovation. Managing information flow, auditing reports, and coordinating between divisions. Focus: <strong>Efficiency & Coordination</strong>.
                     </p>
                 </div>
                 <div class="bg-slate-100 p-6 rounded-xl border-t-4 border-slate-800">
-                    <strong class="block text-xl text-slate-800 mb-2">3. Manajemen Puncak</strong>
-                    <p class="text-sm text-slate-600 leading-relaxed text-justify">
-                        Terpisah dari operasi harian. Mereka melihat perusahaan sebagai aset finansial. Tugas mereka adalah alokasi modal jangka panjang, merger, dan strategi ekspansi. Fokus mereka adalah <strong>masa depan perusahaan</strong>.
+                    <strong class="lang-id block text-xl text-slate-800 mb-2">3. Manajemen Puncak</strong>
+                    <strong class="lang-en hidden-lang block text-xl text-slate-800 mb-2">3. Top Management</strong>
+                    
+                    <p class="lang-id text-sm text-slate-600 leading-relaxed text-justify">
+                        Terpisah dari operasi harian. Tugas mereka adalah alokasi modal, merger, dan strategi. Fokus: <strong>Masa Depan Perusahaan</strong>.
+                    </p>
+                    <p class="lang-en hidden-lang text-sm text-slate-600 leading-relaxed text-justify">
+                        Detached from daily operations. Their task is capital allocation, mergers, and strategy. Focus: <strong>The Future of the Firm</strong>.
                     </p>
                 </div>
             </div>
 
             <div class="bg-slate-900 text-white p-8 md:p-10 rounded-2xl shadow-xl border-l-8 border-amber-500">
-                <h4 class="text-2xl font-bold text-amber-400 mb-4">🏛️ Studi Kasus Mendalam: Kecelakaan Western Railroad (1841)</h4>
+                <h4 class="lang-id text-2xl font-bold text-amber-400 mb-4">🏛️ Studi Kasus: Western Railroad (1841)</h4>
+                <h4 class="lang-en hidden-lang text-2xl font-bold text-amber-400 mb-4">🏛️ Case Study: Western Railroad (1841)</h4>
+                
                 <div class="space-y-4 text-slate-300 text-justify leading-relaxed">
-                    <p>
-                        <strong>Konteks:</strong> Western Railroad di Massachusetts adalah salah satu jalur kereta api pertama yang rumit dan panjang. Pada tahun 1841, terjadi serangkaian tabrakan fatal antara kereta penumpang yang berjalan berlawanan arah.
+                    <p class="lang-id">
+                        Setelah serangkaian tabrakan fatal, penyelidikan mengungkapkan masalah struktural: tidak ada rantai komando yang jelas. Solusinya adalah <strong>Inovasi Organisasi</strong>. Mereka menyusun bagan organisasi formal pertama dengan definisi wewenang yang kaku. Ini membuktikan bahwa "Tangan Tak Terlihat" pasar tidak bisa menjamin keselamatan; hanya birokrasi manajerial yang bisa.
                     </p>
-                    <p>
-                        <strong>Analisis Masalah:</strong> Publik dan dewan direksi awalnya menyalahkan "kecerobohan" manusia atau kegagalan mekanis. Namun, penyelidikan internal mengungkapkan masalah struktural: tidak ada hierarki komando yang jelas. Ketika jadwal terganggu (misalnya karena cuaca), kondektur di satu kereta tidak tahu wewenang siapa yang harus diikuti—apakah menunggu di stasiun atau terus maju.
-                    </p>
-                    <p>
-                        <strong>Solusi Revolusioner:</strong> Manajemen Western Railroad merespons bukan dengan teknologi baru, melainkan dengan <strong>inovasi organisasi</strong>. Mereka menyusun bagan organisasi formal pertama. Mereka menetapkan rantai komando yang kaku di mana tanggung jawab dan wewenang didefinisikan dengan jelas dari Presiden hingga penjaga rel. Mereka menciptakan sistem "kondektur dan operator telegraf" untuk mengontrol pergerakan secara real-time.
-                    </p>
-                    <p>
-                        <strong>Dampak:</strong> Ini membuktikan bahwa untuk mengelola teknologi skala besar, "Tangan Tak Terlihat" pasar tidak berguna. Hanya birokrasi manajerial yang terstruktur ("Tangan Terlihat") yang bisa menjamin keselamatan dan efisiensi.
+                    <p class="lang-en hidden-lang">
+                        After a series of fatal collisions, investigations revealed a structural problem: no clear chain of command. The solution was <strong>Organizational Innovation</strong>. They drafted the first formal organizational chart with rigid definitions of authority. This proved that the market's "Invisible Hand" could not guarantee safety; only managerial bureaucracy could.
                     </p>
                 </div>
             </div>
@@ -204,52 +270,47 @@
             <div class="flex items-center gap-4 mb-8">
                 <span class="text-4xl">📦</span>
                 <div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Bagian 2: Distribusi Massal</h2>
-                    <p class="text-amber-700 font-medium">Revolusi Ritel & Matinya Perantara Tradisional</p>
+                    <h2 class="lang-id text-3xl md:text-4xl font-bold text-slate-900">Bagian 2: Distribusi Massal</h2>
+                    <h2 class="lang-en hidden-lang text-3xl md:text-4xl font-bold text-slate-900">Part 2: Mass Distribution</h2>
+                    <p class="lang-id text-amber-700 font-medium">Revolusi Ritel & Matinya Perantara</p>
+                    <p class="lang-en hidden-lang text-amber-700 font-medium">Retail Revolution & The Death of Middlemen</p>
                 </div>
             </div>
 
             <div class="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200 mb-8">
-                <h3 class="text-2xl font-bold text-slate-800 mb-6">Munculnya Pedagang Modern</h3>
+                <h3 class="lang-id text-2xl font-bold text-slate-800 mb-6">Munculnya Pedagang Modern</h3>
+                <h3 class="lang-en hidden-lang text-2xl font-bold text-slate-800 mb-6">Rise of the Modern Marketers</h3>
                 <div class="prose-text space-y-6">
-                    <p>
-                        Sebelum tahun 1850-an, distribusi barang di Amerika sangat lambat dan mahal. Barang bergerak melalui rantai panjang perantara: dari pabrik -> ke agen komisi -> ke pedagang grosir (jobber) -> ke pedagang umum di desa -> baru ke konsumen. Setiap tangan mengambil potongan keuntungan, membuat harga akhir menjadi mahal.
+                    <p class="lang-id">
+                        Telegraf dan kereta api memungkinkan jenis pedagang baru: <strong>Pemasar Massal</strong> (seperti Department Store dan Mail Order). Mereka memotong rantai panjang perantara, membeli langsung dari pabrik, dan menjual ke konsumen dengan harga murah.
                     </p>
-                    <p>
-                        Dengan adanya jaringan telegraf dan kereta api yang handal, kecepatan komunikasi dan transportasi meningkat drastis. Ini memungkinkan munculnya jenis pedagang baru yang berani: <strong>Pemasar Massal (Mass Marketer)</strong>. Mereka menyadari bahwa mereka bisa memotong semua perantara tersebut, membeli langsung dari pabrik dalam jumlah raksasa, dan menjual langsung ke konsumen dengan harga yang jauh lebih murah.
-                    </p>
-                    <p>
-                        Chandler menyoroti dua bentuk utama dari revolusi ini: <strong>Department Store</strong> di kota besar dan <strong>Mail Order House</strong> untuk pedesaan.
+                    <p class="lang-en hidden-lang">
+                        The telegraph and railroad enabled a new breed of merchant: the <strong>Mass Marketer</strong> (like Department Stores and Mail Order houses). They cut out the long chain of middlemen, buying directly from factories and selling to consumers at low prices.
                     </p>
                 </div>
             </div>
 
             <div class="bg-amber-50 p-8 rounded-2xl border border-amber-200 mb-8">
-                <h4 class="text-xl font-bold text-amber-900 mb-3">Konsep Kunci: Kecepatan "Stock Turn"</h4>
-                <p class="text-slate-700 text-justify leading-relaxed">
-                    Pedagang tradisional hidup dari margin tinggi (membeli murah, menjual mahal) tetapi dengan volume rendah. Pedagang modern membalik logika ini. Mereka menemukan bahwa kekayaan sejati ada pada <strong>Kecepatan Perputaran Stok</strong>.
-                    <br><br>
-                    Jika sebuah toko tradisional menjual kemeja dengan untung $5 tapi butuh 6 bulan untuk laku, mereka mendapatkan $10 setahun.
-                    <br>Jika Macy's menjual kemeja dengan untung hanya $1 tapi laku dalam 2 minggu, mereka bisa menjual 26 kemeja setahun, menghasilkan $26.
-                    <br><br>
-                    <strong>Kesimpulan:</strong> Volume dan Kecepatan mengalahkan Margin Tinggi. Tapi untuk mencapai kecepatan ini, dibutuhkan manajemen inventaris dan logistik yang sangat canggih—sekali lagi, peran "Manajer" menjadi vital.
+                <h4 class="lang-id text-xl font-bold text-amber-900 mb-3">Konsep Kunci: Kecepatan "Stock Turn"</h4>
+                <h4 class="lang-en hidden-lang text-xl font-bold text-amber-900 mb-3">Key Concept: Velocity of "Stock Turn"</h4>
+                
+                <p class="lang-id text-slate-700 text-justify leading-relaxed">
+                    Pedagang modern menemukan bahwa kekayaan sejati ada pada <strong>Kecepatan Perputaran Stok</strong>. Volume dan Kecepatan mengalahkan Margin Tinggi. Tapi kecepatan ini membutuhkan manajemen inventaris dan logistik yang sangat canggih.
+                </p>
+                <p class="lang-en hidden-lang text-slate-700 text-justify leading-relaxed">
+                    Modern merchants discovered that true wealth lay in the <strong>Velocity of Stock Turn</strong>. Volume and Speed beat High Margins. But this speed required incredibly sophisticated inventory management and logistics.
                 </p>
             </div>
 
             <div class="bg-slate-900 text-white p-8 md:p-10 rounded-2xl shadow-xl border-l-8 border-slate-500">
-                <h4 class="text-2xl font-bold text-slate-200 mb-4">📦 Studi Kasus Mendalam: Sears, Roebuck & Co.</h4>
+                <h4 class="lang-id text-2xl font-bold text-slate-200 mb-4">📦 Studi Kasus: Sears, Roebuck & Co.</h4>
+                <h4 class="lang-en hidden-lang text-2xl font-bold text-slate-200 mb-4">📦 Case Study: Sears, Roebuck & Co.</h4>
                 <div class="space-y-4 text-slate-300 text-justify leading-relaxed">
-                    <p>
-                        <strong>Konteks:</strong> Pada akhir abad ke-19, mayoritas penduduk Amerika masih tinggal di pedesaan. Mereka adalah pasar yang terisolasi, dipaksa membeli barang dengan harga tinggi dan pilihan terbatas dari "toko kelontong" lokal yang memonopoli area tersebut.
+                    <p class="lang-id">
+                        Sears hampir hancur karena kesuksesannya sendiri; pesanan membanjir hingga gudang kacau. Solusinya datang dari manajer Julius Rosenwald. Dia menciptakan sistem "pabrik pesanan" dengan jadwal waktu yang ketat. Manajemen logistik inilah yang memungkinkan Sears mendominasi ritel Amerika.
                     </p>
-                    <p>
-                        <strong>Inovasi Strategis:</strong> Richard Sears memanfaatkan jaringan rel kereta api nasional untuk menjangkau petani secara langsung melalui <strong>Katalog</strong>. Katalog Sears menjadi "buku impian" bagi petani, menawarkan segala sesuatu mulai dari jam tangan, mesin jahit, hingga rumah rakitan dengan harga yang jauh di bawah toko lokal.
-                    </p>
-                    <p>
-                        <strong>Tantangan Manajerial:</strong> Kesuksesan Sears hampir membunuhnya. Pesanan membanjir begitu cepat hingga gudang menjadi kacau balau; barang salah kirim, rusak, atau hilang. Sears pandai menjual, tapi buruk dalam mengelola.
-                    </p>
-                    <p>
-                        <strong>Solusi Sistematis:</strong> Masuklah Julius Rosenwald (seorang manajer sejati). Dia merancang sistem "pabrik pesanan" di Chicago. Gudang raksasa diorganisir dengan sistem ban berjalan dan jadwal waktu yang ketat. Setiap pesanan diberi waktu spesifik (misal: 10:15 pagi) untuk dikumpulkan dari berbagai departemen, disatukan di ruang pengepakan, dan dimuat ke kereta. Sistem manajemen logistik inilah yang memungkinkan Sears mendominasi ritel Amerika selama hampir satu abad.
+                    <p class="lang-en hidden-lang">
+                        Sears was nearly destroyed by its own success; orders flooded in until warehouses were in chaos. The solution came from manager Julius Rosenwald. He created an "order factory" system with rigid scheduling. It was this logistics management that allowed Sears to dominate American retail.
                     </p>
                 </div>
             </div>
@@ -259,40 +320,35 @@
             <div class="flex items-center gap-4 mb-8">
                 <span class="text-4xl">🏭</span>
                 <div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Bagian 3: Produksi Massal</h2>
-                    <p class="text-amber-700 font-medium">Revolusi Throughput & Teknologi</p>
+                    <h2 class="lang-id text-3xl md:text-4xl font-bold text-slate-900">Bagian 3: Produksi Massal</h2>
+                    <h2 class="lang-en hidden-lang text-3xl md:text-4xl font-bold text-slate-900">Part 3: Mass Production</h2>
+                    <p class="lang-id text-amber-700 font-medium">Revolusi Throughput & Teknologi</p>
+                    <p class="lang-en hidden-lang text-amber-700 font-medium">Throughput Revolution & Technology</p>
                 </div>
             </div>
 
             <div class="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200 mb-8">
-                <h3 class="text-2xl font-bold text-slate-800 mb-6">Lebih dari Sekadar Mesin</h3>
+                <h3 class="lang-id text-2xl font-bold text-slate-800 mb-6">Lebih dari Sekadar Mesin</h3>
+                <h3 class="lang-en hidden-lang text-2xl font-bold text-slate-800 mb-6">More Than Just Machines</h3>
                 <div class="prose-text space-y-6">
-                    <p>
-                        Chandler menekankan bahwa revolusi industri bukan hanya tentang penemuan mesin baru. Mesin hanyalah potensi. Revolusi sebenarnya terjadi ketika organisasi pabrik diubah untuk memungkinkan <strong>Throughput</strong> (aliran material) yang berkecepatan tinggi.
+                    <p class="lang-id">
+                        Revolusi industri bukan hanya tentang mesin, tapi tentang organisasi pabrik untuk memungkinkan <strong>Throughput</strong> (aliran material) berkecepatan tinggi. Jika bahan baku terlambat, mesin mahal harus berhenti. Manajemen bergeser dari "mengawasi buruh" menjadi "mengelola aliran material."
                     </p>
-                    <p>
-                        Dalam industri seperti penyulingan minyak, produksi baja, dan pengolahan tembakau, teknologi memungkinkan peningkatan output yang eksplosif. Namun, peningkatan ini hanya bisa direalisasikan jika aliran bahan baku masuk dan barang jadi keluar dikelola dengan sempurna. Jika bahan baku terlambat satu jam, mesin raksasa yang mahal harus berhenti, dan biaya melonjak.
-                    </p>
-                    <p>
-                        Oleh karena itu, manajemen pabrik bergeser dari sekadar "mengawasi buruh" menjadi "mengelola aliran material."
+                    <p class="lang-en hidden-lang">
+                        The industrial revolution wasn't just about machines, but organizing factories to enable high-speed <strong>Throughput</strong> (flow of materials). If raw materials were late, expensive machines had to stop. Management shifted from "overseeing labor" to "managing material flow."
                     </p>
                 </div>
             </div>
 
             <div class="bg-slate-900 text-white p-8 md:p-10 rounded-2xl shadow-xl border-l-8 border-amber-600">
-                <h4 class="text-2xl font-bold text-amber-400 mb-4">🚬 Studi Kasus Mendalam: James Bonsack & Industri Tembakau</h4>
+                <h4 class="lang-id text-2xl font-bold text-amber-400 mb-4">🚬 Studi Kasus: James Bonsack (Tembakau)</h4>
+                <h4 class="lang-en hidden-lang text-2xl font-bold text-amber-400 mb-4">🚬 Case Study: James Bonsack (Tobacco)</h4>
                 <div class="space-y-4 text-slate-300 text-justify leading-relaxed">
-                    <p>
-                        <strong>Situasi Lama:</strong> Sebelum tahun 1880-an, rokok adalah produk mewah yang dilinting dengan tangan. Seorang pekerja ahli hanya bisa melinting sekitar 3.000 batang rokok per hari. Produksi dibatasi oleh kecepatan tangan manusia.
+                    <p class="lang-id">
+                        Mesin rokok otomatis Bonsack (1881) bisa memproduksi 120.000 batang/hari, setara dengan 40 pekerja ahli. James Duke menyadari bahwa satu mesin bisa membanjiri pasar. Dia membangun organisasi global untuk pembelian bahan baku dan pemasaran agresif guna menyerap output mesin tersebut.
                     </p>
-                    <p>
-                        <strong>Disrupsi Teknologi:</strong> James Bonsack menemukan mesin pelinting rokok otomatis pada tahun 1881. Satu mesin ini bisa memproduksi <strong>120.000 batang rokok per hari</strong>. Itu setara dengan pekerjaan 40 ahli linting tangan.
-                    </p>
-                    <p>
-                        <strong>Dampak Bisnis (The Visible Hand):</strong> James Duke (pendiri American Tobacco) melihat potensi ini. Dia menyadari bahwa satu mesin saja bisa membanjiri pasar rokok Amerika saat itu. Masalahnya bukan lagi <em>memproduksi</em>, tapi <em>menjual</em>.
-                    </p>
-                    <p>
-                        <strong>Tanggapan Manajerial:</strong> Duke tidak hanya memasang mesin; dia membangun organisasi global. Dia menciptakan jaringan pembelian tembakau yang masif untuk memberi makan mesin tersebut tanpa henti. Dia juga membangun jaringan pemasaran dan penjualan global yang agresif (termasuk iklan dan kartu koleksi) untuk menciptakan permintaan yang cukup guna menyerap output mesin. Integrasi antara produksi massal dan distribusi massal ini menciptakan monopoli tembakau modern.
+                    <p class="lang-en hidden-lang">
+                        Bonsack's automatic cigarette machine (1881) could produce 120,000 sticks/day, equal to 40 skilled workers. James Duke realized one machine could flood the market. He built a global organization for raw material purchasing and aggressive marketing to absorb the machine's output.
                     </p>
                 </div>
             </div>
@@ -302,45 +358,35 @@
             <div class="flex items-center gap-4 mb-8">
                 <span class="text-4xl">🔗</span>
                 <div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Bagian 4: Integrasi Vertikal</h2>
-                    <p class="text-amber-700 font-medium">Lahirnya Korporasi Raksasa Modern</p>
+                    <h2 class="lang-id text-3xl md:text-4xl font-bold text-slate-900">Bagian 4: Integrasi Vertikal</h2>
+                    <h2 class="lang-en hidden-lang text-3xl md:text-4xl font-bold text-slate-900">Part 4: Vertical Integration</h2>
+                    <p class="lang-id text-amber-700 font-medium">Lahirnya Korporasi Raksasa</p>
+                    <p class="lang-en hidden-lang text-amber-700 font-medium">Birth of the Giant Corporation</p>
                 </div>
             </div>
 
             <div class="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200 mb-8">
-                <h3 class="text-2xl font-bold text-slate-800 mb-6">Mengapa Perusahaan Menjadi Raksasa?</h3>
+                <h3 class="lang-id text-2xl font-bold text-slate-800 mb-6">Menggabungkan Produksi & Distribusi</h3>
+                <h3 class="lang-en hidden-lang text-2xl font-bold text-slate-800 mb-6">Merging Production & Distribution</h3>
                 <div class="prose-text space-y-6">
-                    <p>
-                        Strategi paling penting dalam kebangkitan bisnis Amerika adalah <strong>Integrasi Vertikal</strong>: penggabungan produksi massal dengan distribusi massal dalam satu perusahaan tunggal.
+                    <p class="lang-id">
+                        Strategi terpenting adalah <strong>Integrasi Vertikal</strong>. Perusahaan perintis menyadari mereka tidak bisa bergantung pada pemasok luar jika ingin memproduksi dengan kecepatan tinggi. Mereka harus memiliki segalanya: dari tambang, pabrik, hingga penjualan.
                     </p>
-                    <p>
-                        Perusahaan-perusahaan perintis menyadari bahwa mereka tidak bisa mengambil risiko bergantung pada pemasok luar atau distributor independen. Jika Anda memproduksi barang dengan kecepatan tinggi (seperti kasus mesin rokok Bonsack), Anda tidak bisa membiarkan distributor independen yang lambat menumpuk barang Anda di gudang. Anda harus mengontrol saluran distribusinya sendiri.
-                    </p>
-                    <p>
-                        Maka lahirlah perusahaan yang memiliki segalanya: dari tambang bahan baku, pabrik pengolahan, hingga kantor penjualan. Ini membutuhkan struktur manajemen pusat yang sangat kompleks untuk mengoordinasikan departemen-departemen yang berbeda fungsi ini.
+                    <p class="lang-en hidden-lang">
+                        The most critical strategy was <strong>Vertical Integration</strong>. Pioneering firms realized they couldn't rely on outside suppliers if they wanted high-speed production. They had to own everything: from mines, to factories, to sales.
                     </p>
                 </div>
             </div>
 
             <div class="bg-slate-900 text-white p-8 md:p-10 rounded-2xl shadow-xl border-l-8 border-slate-400">
-                <h4 class="text-2xl font-bold text-slate-200 mb-4">🥩 Studi Kasus Mendalam: Gustavus Swift & Daging Sapi</h4>
+                <h4 class="lang-id text-2xl font-bold text-slate-200 mb-4">🥩 Studi Kasus: Gustavus Swift (Daging)</h4>
+                <h4 class="lang-en hidden-lang text-2xl font-bold text-slate-200 mb-4">🥩 Case Study: Gustavus Swift (Meat)</h4>
                 <div class="space-y-4 text-slate-300 text-justify leading-relaxed">
-                    <p>
-                        <strong>Cara Lama:</strong> Sapi diternakkan di Barat, lalu dikirim hidup-hidup menggunakan kereta api ke kota-kota besar di Timur (seperti New York atau Boston). Di sana, tukang daging lokal akan menyembelih sapi tersebut dan menjual dagingnya. Ini sangat tidak efisien: perusahaan membayar biaya kirim untuk seluruh sapi (tulang, darah, jeroan), padahal hanya 60% yang bisa dimakan. Selain itu, sapi sering mati atau kehilangan berat badan dalam perjalanan.
+                    <p class="lang-id">
+                        Swift menemukan cara mengirim daging potong beku menggunakan gerbong berpendingin, yang jauh lebih efisien daripada mengirim sapi hidup. Ketika distributor lokal memboikotnya, Swift membangun jaringan distribusinya sendiri (gudang pendingin & tenaga penjualan). Dia mengubah industri daging yang terfragmentasi menjadi satu mesin perusahaan raksasa yang terintegrasi.
                     </p>
-                    <p>
-                        <strong>Inovasi Swift:</strong> Gustavus Swift menyadari bahwa jauh lebih murah menyembelih sapi di Chicago (pusat transit), dan hanya mengirimkan karkas daging yang sudah dipotong ke Timur. Untuk melakukan ini, dia mendanai pengembangan <strong>Gerbong Kereta Berpendingin</strong> (Refrigerated Rail Car) yang bisa menjaga daging tetap segar bahkan di musim panas.
-                    </p>
-                    <p>
-                        <strong>Resistensi Pasar:</strong> Rencana Swift ditentang keras. Perusahaan kereta api menolak mengangkut gerbong pendinginnya (karena mereka untung dari pengiriman sapi hidup yang lebih berat). Tukang daging lokal di Timur memboikot daging Swift karena takut kehilangan pekerjaan ("Daging Chicago tidak segar!" kata mereka).
-                    </p>
-                    <p>
-                        <strong>Tangan Terlihat Beraksi:</strong> Karena pasar menolaknya, Swift membangun pasarnya sendiri (Integrasi Vertikal).
-                        <br>1. Dia membangun armada gerbong pendinginnya sendiri.
-                        <br>2. Dia membangun jaringan gudang pendingin (cabang) di setiap kota besar di Timur.
-                        <br>3. Dia menyewa tenaga penjualannya sendiri dan memotong tukang daging lokal, menjual langsung ke toko-toko.
-                        <br><br>
-                        Swift mengubah industri daging dari jaringan pedagang kecil yang terfragmentasi menjadi satu mesin perusahaan raksasa yang terintegrasi secara vertikal, dikelola secara terpusat dari Chicago.
+                    <p class="lang-en hidden-lang">
+                        Swift figured out how to ship butchered meat using refrigerated rail cars, far more efficient than shipping live cattle. When local distributors boycotted him, Swift built his own distribution network (warehouses & sales force). He turned the fragmented meat industry into one giant integrated corporate machine.
                     </p>
                 </div>
             </div>
@@ -350,26 +396,22 @@
             <div class="flex items-center gap-4 mb-8">
                 <span class="text-4xl">👔</span>
                 <div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Bagian 5: Manajer Profesional</h2>
-                    <p class="text-amber-700 font-medium">Pemisahan Kepemilikan dan Kontrol</p>
+                    <h2 class="lang-id text-3xl md:text-4xl font-bold text-slate-900">Bagian 5: Manajer Profesional</h2>
+                    <h2 class="lang-en hidden-lang text-3xl md:text-4xl font-bold text-slate-900">Part 5: Professional Managers</h2>
+                    <p class="lang-id text-amber-700 font-medium">Pemisahan Kepemilikan dan Kontrol</p>
+                    <p class="lang-en hidden-lang text-amber-700 font-medium">Separation of Ownership and Control</p>
                 </div>
             </div>
 
             <div class="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-2xl font-bold text-slate-800 mb-6">Lahirnya Kelas Baru</h3>
+                <h3 class="lang-id text-2xl font-bold text-slate-800 mb-6">Lahirnya Kelas Baru</h3>
+                <h3 class="lang-en hidden-lang text-2xl font-bold text-slate-800 mb-6">Birth of a New Class</h3>
                 <div class="prose-text space-y-6">
-                    <p>
-                        Puncak dari revolusi ini adalah munculnya kelas sosial baru: <strong>Manajer Karir Bergaji</strong>. Seiring perusahaan tumbuh menjadi raksasa nasional yang kompleks (seperti Standard Oil, GE, US Steel), keluarga pendiri tidak lagi memiliki kemampuan teknis, waktu, atau bahkan modal untuk mengelolanya sendiri.
+                    <p class="lang-id">
+                        Puncaknya adalah munculnya <strong>Manajer Karir Bergaji</strong>. Keluarga pendiri tidak lagi sanggup mengelola kompleksitas raksasa korporasi. Terjadilah "Pemisahan Kepemilikan dan Kontrol". Ekonomi dijalankan bukan oleh pemilik modal, tetapi oleh birokrat korporat yang ahli—<strong>The Visible Hand</strong>.
                     </p>
-                    <p>
-                        Terjadilah apa yang disebut Chandler sebagai "Pemisahan Kepemilikan dan Kontrol."
-                        <br>
-                        <strong>Pemilik (Pemegang Saham):</strong> Menjadi pasif, hanya menunggu dividen.
-                        <br>
-                        <strong>Pengelola (Manajer):</strong> Memegang kendali aktif, meskipun mereka tidak memiliki perusahaan tersebut.
-                    </p>
-                    <p>
-                        Manajer profesional ini membuat keputusan berdasarkan keberlangsungan jangka panjang perusahaan dan stabilitas organisasi, bukan sekadar memaksimalkan keuntungan jangka pendek untuk keluarga pemilik. Mereka dipilih berdasarkan prestasi, pendidikan, dan pengalaman, bukan hubungan darah. Inilah yang mendefinisikan kapitalisme modern Amerika di abad ke-20: ekonomi yang dijalankan bukan oleh pemilik modal, tetapi oleh birokrat korporat yang ahli—<strong>The Visible Hand</strong>.
+                    <p class="lang-en hidden-lang">
+                        The culmination was the rise of the <strong>Salaried Career Manager</strong>. Founding families could no longer manage the complexity of corporate giants. The "Separation of Ownership and Control" occurred. The economy was run not by capital owners, but by expert corporate bureaucrats—<strong>The Visible Hand</strong>.
                     </p>
                 </div>
             </div>
@@ -378,6 +420,31 @@
     </div>
 
     <script>
+        // Language Toggle Logic
+        let currentLang = 'id'; // Default language
+
+        function switchLanguage() {
+            currentLang = currentLang === 'id' ? 'en' : 'id';
+            updateContent();
+        }
+
+        function updateContent() {
+            const idElements = document.querySelectorAll('.lang-id');
+            const enElements = document.querySelectorAll('.lang-en');
+            const btnLabel = document.getElementById('lang-label');
+
+            if (currentLang === 'id') {
+                idElements.forEach(el => el.classList.remove('hidden-lang'));
+                enElements.forEach(el => el.classList.add('hidden-lang'));
+                btnLabel.innerText = "English"; // Tombol menawarkan bahasa tujuan
+            } else {
+                idElements.forEach(el => el.classList.add('hidden-lang'));
+                enElements.forEach(el => el.classList.remove('hidden-lang'));
+                btnLabel.innerText = "Indonesia";
+            }
+        }
+
+        // Drawer Logic
         function toggleDrawer() {
             const drawer = document.querySelector('.nav-drawer');
             const overlay = document.querySelector('.nav-overlay');
@@ -392,16 +459,14 @@
             overlay.classList.remove('active');
         }
         
+        // Navigation Logic
         function showSection(sectionId) {
-            // Hide all sections
             document.querySelectorAll('.content-section').forEach(section => {
                 section.classList.remove('active');
             });
-            // Show target section
             const target = document.getElementById(sectionId);
             if(target) {
                 target.classList.add('active');
-                // Re-trigger animation
                 target.classList.remove('fade-in');
                 void target.offsetWidth; // trigger reflow
                 target.classList.add('fade-in');
