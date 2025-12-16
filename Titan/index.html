@@ -3,194 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Titan: The Extended Summary</title>
+    <title>Titan: The Life of John D. Rockefeller, Sr.</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+        /* Import Premium Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500&display=swap');
         
-        /* Base Typography for Long Form Reading */
+        /* --- ELEGANT THEME SETTINGS --- */
+        :root {
+            --bg-paper: #FDFBF7; /* Warm Paper Tone */
+            --text-ink: #2D2A26; /* Soft Black */
+            --accent-gold: #B45309; /* Bronze/Gold */
+            --drawer-bg: #121212; /* Deep Black for Contrast */
+        }
+
         body { 
-            font-family: 'Crimson Pro', serif; /* Serif font for main text = better reading experience */
-            background-color: #fcfbf9; 
-            color: #292524; 
-            line-height: 1.8;
-            font-size: 18px;
+            font-family: 'Crimson Pro', serif; 
+            background-color: var(--bg-paper); 
+            color: var(--text-ink); 
+            line-height: 1.9; /* Loose leading for readability */
+            font-size: 19px; /* Slightly larger for comfort */
+            -webkit-font-smoothing: antialiased;
         }
         
-        h1, h2, h3, h4, .sans-serif { font-family: 'Inter', sans-serif; }
+        /* Typography */
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: #111; letter-spacing: -0.02em; }
+        .sans-serif { font-family: 'Inter', sans-serif; letter-spacing: 0.05em; }
         
-        .fade-in { animation: fadeIn 0.8s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* Drop Cap Styling (Classic Literature Feel) */
+        .drop-cap::first-letter {
+            float: left;
+            font-size: 4rem;
+            line-height: 0.8;
+            margin-right: 0.15em;
+            margin-top: 0.05em;
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+
+        /* Animations */
+        .fade-in { animation: fadeIn 1s cubic-bezier(0.22, 1, 0.36, 1); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         
-        .content-section { display: none; padding-bottom: 100px; }
+        .content-section { display: none; padding-bottom: 120px; max-width: 720px; margin: 0 auto; }
         .content-section.active { display: block; }
         
         /* Language Utilities */
         .lang-id { display: none; }
         .lang-en { display: block; }
-        
         .justified-text { text-align: justify; }
         
-        /* Drawer & Nav Styles */
+        /* --- NAVIGATION DRAWER --- */
         .nav-drawer {
-            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
-            background: #1c1917; /* Stone 900 */
-            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2000;
-            box-shadow: 10px 0 30px rgba(0,0,0,0.4);
-            border-right: 1px solid #44403c;
+            position: fixed; top: 0; left: -340px; width: 340px; height: 100vh;
+            background: var(--drawer-bg);
+            transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 2000;
+            box-shadow: 20px 0 50px rgba(0,0,0,0.3);
         }
         .nav-drawer.open { left: 0; }
         
         .nav-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0, 0, 0, 0.7); opacity: 0; visibility: hidden;
-            transition: all 0.4s; z-index: 1999; backdrop-filter: blur(4px);
+            background: rgba(45, 42, 38, 0.4); opacity: 0; visibility: hidden;
+            transition: all 0.5s; z-index: 1999; backdrop-filter: blur(8px);
         }
         .nav-overlay.active { opacity: 1; visibility: visible; }
         
+        /* Nav Items */
+        .nav-btn {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border-left: 2px solid transparent;
+            transition: all 0.3s;
+        }
         .active-tab { 
-            background: linear-gradient(90deg, #b45309 0%, #78350f 100%); 
-            color: white !important;
-            border-left: 4px solid #fff;
-            padding-left: 12px !important;
+            border-left: 2px solid var(--accent-gold);
+            color: #fff !important;
+            padding-left: 24px !important;
+            background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, transparent 100%);
         }
         
-        /* Interactive Elements */
+        /* --- FLOATING CONTROLS (Minimalist) --- */
         .float-btn {
             position: fixed; z-index: 2001; cursor: pointer;
-            transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .float-btn:hover { transform: scale(1.05); }
+        .float-btn:hover { transform: scale(1.1); }
 
         .drawer-toggle { 
-            top: 25px; left: 25px; 
-            background: #1c1917; color: #d97706;
-            border-radius: 50%; width: 55px; height: 55px;
+            top: 30px; left: 30px; 
+            color: #111;
+            width: 40px; height: 40px;
             display: flex; align-items: center; justify-content: center;
-            border: 2px solid #d97706;
         }
-
+        
         .lang-switch {
-            bottom: 30px; right: 30px;
-            background: #fff; border: 2px solid #1c1917;
-            border-radius: 50px; padding: 12px 24px;
-            font-weight: 700; color: #1c1917;
+            top: 30px; right: 30px; /* Pindah ke atas agar footer bersih */
             font-family: 'Inter', sans-serif;
-            font-size: 14px;
+            font-size: 12px; font-weight: 600;
+            letter-spacing: 0.1em;
+            color: #111;
+            border-bottom: 1px solid #111;
+            padding-bottom: 2px;
         }
 
-        /* Quotes and Callouts */
+        /* --- DECORATIVE ELEMENTS --- */
         .callout {
-            margin: 2rem 0;
-            padding: 1.5rem;
-            border-left: 4px solid #d97706;
-            background-color: #fffbeb;
-            border-radius: 0 8px 8px 0;
+            margin: 2.5rem 0;
+            padding: 2rem;
+            border-top: 1px solid var(--accent-gold);
+            border-bottom: 1px solid var(--accent-gold);
+            background-color: transparent;
             font-style: italic;
+            font-size: 1.1rem;
+            text-align: center;
+            color: #4a4a4a;
         }
 
-        .chapter-marker {
-            display: inline-block;
-            padding: 4px 12px;
-            background: #e7e5e4;
-            color: #44403c;
-            border-radius: 20px;
-            font-size: 0.8rem;
+        .section-number {
+            display: block;
             font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            letter-spacing: 1px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: var(--accent-gold);
             text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+        }
+
+        /* Divider */
+        .divider {
+            width: 60px; height: 1px; background: #ddd; margin: 3rem auto;
         }
 
         @media (max-width: 640px) {
-            body { font-size: 17px; line-height: 1.6; }
-            h1 { font-size: 2.5rem !important; }
+            body { font-size: 18px; line-height: 1.7; }
+            .content-section { padding-left: 24px; padding-right: 24px; padding-top: 80px; }
             .nav-drawer { width: 85%; }
-            .callout { padding: 1rem; font-size: 0.95rem; }
+            .drop-cap::first-letter { font-size: 3.5rem; }
+        }
+        
+        @media (min-width: 641px) {
+            .content-section { padding-top: 100px; }
         }
     </style>
 </head>
 <body>
 
     <button class="float-btn lang-switch" onclick="toggleLanguage()">
-        <span class="lang-text">🇮🇩 Switch to ID</span>
+        <span class="lang-text">INDONESIA</span>
     </button>
 
     <button class="float-btn drawer-toggle" onclick="toggleDrawer()">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
         </svg>
     </button>
 
     <div class="nav-overlay" onclick="closeDrawer()"></div>
     <nav class="nav-drawer flex flex-col h-full">
-        <div class="p-8 border-b border-stone-800 bg-stone-950 pt-12">
-            <h2 class="text-amber-600 font-bold text-3xl font-serif tracking-widest sans-serif">TITAN</h2>
-            <p class="text-stone-400 text-[10px] mt-2 uppercase tracking-widest sans-serif">
-                Extended Summary Edition
+        <div class="px-10 py-12 bg-[#0a0a0a]">
+            <h2 class="text-white font-serif text-4xl leading-none mb-2 italic">Titan</h2>
+            <p class="text-gray-500 text-[10px] uppercase tracking-[0.2em] sans-serif font-medium">
+                The Life of John D. Rockefeller
             </p>
+            <div class="w-8 h-px bg-amber-700 mt-6"></div>
         </div>
         
-        <div class="flex-1 overflow-y-auto py-6">
-            <ul class="space-y-2 px-4">
+        <div class="flex-1 overflow-y-auto py-8 px-6">
+            <ul class="space-y-4">
                 <li>
-                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-4 rounded-lg text-sm font-medium text-stone-300 hover:bg-stone-800 transition-all active-tab sans-serif">
-                        <span class="lang-en">The Silent Sphinx</span>
-                        <span class="lang-id">Sang Sphinx Pendiam</span>
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 text-gray-400 hover:text-white active-tab">
+                        <span class="lang-en">00. The Dual Nature</span>
+                        <span class="lang-id">00. Sifat Ganda</span>
                     </button>
                 </li>
                 <li>
-                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-4 rounded-lg text-sm font-medium text-stone-300 hover:bg-stone-800 transition-all sans-serif">
-                        <span class="lang-en">Pt 1: The Sins of the Father</span>
-                        <span class="lang-id">Bg 1: Dosa Sang Ayah</span>
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 text-gray-400 hover:text-white">
+                        <span class="lang-en">01. The Boy & The Ledger</span>
+                        <span class="lang-id">01. Anak & Buku Besar</span>
                     </button>
                 </li>
                 <li>
-                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-4 rounded-lg text-sm font-medium text-stone-300 hover:bg-stone-800 transition-all sans-serif">
-                        <span class="lang-en">Pt 2: The Great Game</span>
-                        <span class="lang-id">Bg 2: Permainan Besar</span>
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 text-gray-400 hover:text-white">
+                        <span class="lang-en">02. The Great Game</span>
+                        <span class="lang-id">02. Permainan Besar</span>
                     </button>
                 </li>
                 <li>
-                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-4 rounded-lg text-sm font-medium text-stone-300 hover:bg-stone-800 transition-all sans-serif">
-                        <span class="lang-en">Pt 3: The Octopus</span>
-                        <span class="lang-id">Bg 3: Sang Gurita</span>
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 text-gray-400 hover:text-white">
+                        <span class="lang-en">03. The Octopus</span>
+                        <span class="lang-id">03. Sang Gurita</span>
                     </button>
                 </li>
                 <li>
-                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-4 rounded-lg text-sm font-medium text-stone-300 hover:bg-stone-800 transition-all sans-serif">
-                        <span class="lang-en">Pt 4: Redemption</span>
-                        <span class="lang-id">Bg 4: Penebusan</span>
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-4 py-3 text-gray-400 hover:text-white">
+                        <span class="lang-en">04. Redemption</span>
+                        <span class="lang-id">04. Penebusan</span>
                     </button>
                 </li>
             </ul>
         </div>
+        <div class="p-8 text-gray-600 text-[10px] sans-serif tracking-widest uppercase">
+            Summary by Ron Chernow
+        </div>
     </nav>
 
-    <main class="max-w-3xl mx-auto px-6 py-24 sm:px-8 sm:py-28">
+    <main>
         
-        <header class="text-center mb-16 fade-in">
-            <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold text-stone-900 mb-6 leading-none tracking-tight">Titan</h1>
-            <p class="text-xl text-stone-500 font-serif italic">
-                <span class="lang-en">"The Life of John D. Rockefeller, Sr."</span>
-                <span class="lang-id">"Kehidupan John D. Rockefeller, Sr."</span>
-            </p>
-            <div class="text-sm font-bold mt-4 text-amber-700 uppercase tracking-widest sans-serif">
-                <span class="lang-en">Extended Analysis</span>
-                <span class="lang-id">Analisis Mendalam</span>
-            </div>
-        </header>
-
         <section id="intro" class="content-section active fade-in">
-            <span class="chapter-marker">Introduction</span>
-            <h2 class="text-3xl sm:text-4xl font-bold text-stone-800 mb-8 sans-serif">
+            <span class="section-number">Introduction</span>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
                 <span class="lang-en">The Man Who Was Two Men</span>
                 <span class="lang-id">Pria yang Memiliki Dua Wajah</span>
             </h2>
             
-            <div class="text-stone-700 space-y-6 justified-text">
-                <p>
+            <div class="text-stone-800 space-y-8 justified-text">
+                <p class="drop-cap">
                     <span class="lang-en">Ron Chernow's biography opens by presenting John D. Rockefeller not as a simple villain or hero, but as a perplexing paradox. To the public, he was a monster—the "Mephistopheles of Cleveland"—who crushed widows and orphans to build the Standard Oil monopoly. But in private, he was a gentle father, a man who gave dimes to children, and a deeply pious Baptist who believed his wealth was a divinely ordained responsibility.</span>
                     <span class="lang-id">Biografi Ron Chernow dibuka dengan menghadirkan John D. Rockefeller bukan sebagai penjahat atau pahlawan sederhana, melainkan sebagai paradoks yang membingungkan. Bagi publik, dia adalah monster—"Mephistopheles dari Cleveland"—yang menghancurkan janda dan yatim piatu demi membangun monopoli Standard Oil. Namun secara pribadi, dia adalah ayah yang lembut, pria yang membagikan uang receh kepada anak-anak, dan seorang Baptis yang sangat taat yang percaya kekayaannya adalah tanggung jawab yang ditakdirkan Tuhan.</span>
                 </p>
@@ -208,18 +242,18 @@
         </section>
 
         <section id="part1" class="content-section fade-in">
-            <span class="chapter-marker">Part 1: 1839 - 1855</span>
-            <h2 class="text-3xl sm:text-4xl font-bold text-stone-800 mb-8 sans-serif">
+            <span class="section-number">Part One</span>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
                 <span class="lang-en">The Sins of the Father & The Ledger</span>
                 <span class="lang-id">Dosa Sang Ayah & Buku Besar</span>
             </h2>
 
-            <div class="text-stone-700 space-y-6 justified-text">
-                <h3 class="text-2xl font-bold text-stone-900 mt-8 mb-4 sans-serif">
+            <div class="text-stone-800 space-y-8 justified-text">
+                <h3 class="text-2xl font-bold mt-12 mb-4 italic font-serif">
                     <span class="lang-en">Devil Bill and Saint Eliza</span>
                     <span class="lang-id">Bill "Iblis" dan Eliza "Suci"</span>
                 </h3>
-                <p>
+                <p class="drop-cap">
                     <span class="lang-en">Rockefeller's psychology was forged in the fire of his parents' disastrous marriage. His father, William Avery "Bill" Rockefeller, was a colorful con artist who posed as a deaf-mute peddler and sold "cancer cures" (which were just crude oil and laxatives). Bill was a bigamist who secretly married another woman and brought his mistress to live in the family home as a "housekeeper." He taught John a brutal lesson: <em>"I cheat my boys every chance I get. I want to make 'em sharp."</em></span>
                     <span class="lang-id">Psikologi Rockefeller ditempa dalam api pernikahan orang tuanya yang hancur. Ayahnya, William Avery "Bill" Rockefeller, adalah seorang penipu ulung yang berpura-pura menjadi pedagang bisu-tuli dan menjual "obat kanker" (yang sebenarnya hanya minyak mentah dan obat pencahar). Bill adalah pelaku bigami yang diam-diam menikahi wanita lain dan membawa selingkuhannya tinggal di rumah keluarga sebagai "pembantu". Dia mengajarkan John pelajaran brutal: <em>"Saya menipu anak-anak saya setiap ada kesempatan. Saya ingin membuat mereka tajam."</em></span>
                 </p>
@@ -228,7 +262,9 @@
                     <span class="lang-id">Sebaliknya, ibunya Eliza adalah pilar stabilitas. Dia menanggung kekejaman Bill dengan iman agama yang tabah. Dia mengajari John bahwa pemborosan adalah dosa. Ketika John masih kecil, dia mendorongnya untuk meminjamkan uang kepada ayahnya sendiri dengan bunga. Lingkungan aneh ini menciptakan seorang anak laki-laki yang dewasa sebelum waktunya, tertutup, dan terobsesi dengan kendali.</span>
                 </p>
 
-                <h3 class="text-2xl font-bold text-stone-900 mt-8 mb-4 sans-serif">
+                <div class="divider"></div>
+
+                <h3 class="text-2xl font-bold mt-12 mb-4 italic font-serif">
                     <span class="lang-en">September 26, 1855: "Job Day"</span>
                     <span class="lang-id">26 September 1855: "Hari Pekerjaan"</span>
                 </h3>
@@ -244,30 +280,28 @@
         </section>
 
         <section id="part2" class="content-section fade-in">
-            <span class="chapter-marker">Part 2: 1860s - 1880s</span>
-            <h2 class="text-3xl sm:text-4xl font-bold text-stone-800 mb-8 sans-serif">
+            <span class="section-number">Part Two</span>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
                 <span class="lang-en">The Great Game & The Massacre</span>
                 <span class="lang-id">Permainan Besar & Pembantaian</span>
             </h2>
 
-            <div class="text-stone-700 space-y-6 justified-text">
-                <p>
+            <div class="text-stone-800 space-y-8 justified-text">
+                <p class="drop-cap">
                     <span class="lang-en">The oil industry in the 1860s was like the Wild West—booms, busts, fires, and chaos. Rockefeller looked at the oil fields of Pennsylvania and saw only waste. He famously decided not to drill for oil (which was gambling) but to <strong>refine</strong> it (which was manufacturing). He built Standard Oil on the premise of predictability.</span>
                     <span class="lang-id">Industri minyak pada tahun 1860-an seperti Wild West—ledakan, kebangkrutan, kebakaran, dan kekacauan. Rockefeller melihat ladang minyak Pennsylvania dan hanya melihat pemborosan. Dia terkenal memutuskan untuk tidak mengebor minyak (yang merupakan perjudian) tetapi untuk <strong>mengilangnya</strong> (yang merupakan manufaktur). Dia membangun Standard Oil di atas premis prediktabilitas.</span>
                 </p>
 
-                <div class="bg-amber-50 p-6 rounded-xl border border-amber-200 shadow-sm my-6">
-                    <h4 class="font-bold text-amber-900 mb-2 sans-serif text-lg">
+                <div class="callout">
+                    <h4 class="font-bold text-amber-900 mb-2 sans-serif text-sm uppercase tracking-widest">
                         <span class="lang-en">Anecdote: The 39 Drops</span>
                         <span class="lang-id">Anekdot: 39 Tetes</span>
                     </h4>
-                    <p class="text-stone-800 text-sm italic">
-                        <span class="lang-en">Rockefeller once visited a packing plant and asked a worker how many drops of solder were used to seal a kerosene can. The answer was 40. Rockefeller asked if they had tried 38. They did, and the cans leaked. Then they tried 39. The cans sealed perfectly. Rockefeller ordered the change immediately. That one saved drop of solder saved the company $2,500 the first year (a fortune back then). This illustrates his obsession with "economies of scale."</span>
-                        <span class="lang-id">Rockefeller pernah mengunjungi pabrik pengemasan dan bertanya kepada pekerja berapa tetes timah solder yang digunakan untuk menyegel kaleng minyak tanah. Jawabannya adalah 40. Rockefeller bertanya apakah mereka sudah mencoba 38. Mereka mencobanya, dan kalengnya bocor. Lalu mereka mencoba 39. Kaleng tersegel sempurna. Rockefeller segera memerintahkan perubahan itu. Satu tetes timah yang dihemat itu menyelamatkan perusahaan $2.500 pada tahun pertama (harta karun saat itu). Ini menggambarkan obsesinya terhadap "skala ekonomi".</span>
-                    </p>
+                    <span class="lang-en">Rockefeller once visited a packing plant and asked a worker how many drops of solder were used to seal a kerosene can. The answer was 40. Rockefeller asked if they had tried 38. They did, and the cans leaked. Then they tried 39. The cans sealed perfectly. Rockefeller ordered the change immediately. That one saved drop of solder saved the company $2,500 the first year. This illustrates his obsession with "economies of scale."</span>
+                    <span class="lang-id">Rockefeller pernah mengunjungi pabrik dan bertanya kepada pekerja berapa tetes timah solder yang digunakan untuk menyegel kaleng. Jawabannya 40. Dia bertanya apakah bisa 38? Ternyata bocor. Lalu 39? Ternyata sempurna. Dia memerintahkan perubahan itu. Satu tetes timah yang dihemat menyelamatkan perusahaan $2.500 pada tahun pertama. Ini menggambarkan obsesinya terhadap "skala ekonomi".</span>
                 </div>
 
-                <h3 class="text-2xl font-bold text-stone-900 mt-8 mb-4 sans-serif">
+                <h3 class="text-2xl font-bold mt-12 mb-4 italic font-serif">
                     <span class="lang-en">The South Improvement Company</span>
                     <span class="lang-id">Perusahaan South Improvement</span>
                 </h3>
@@ -280,7 +314,9 @@
                     <span class="lang-id">Secara efektif, pesaingnya mensubsidi dia. Ketika kesepakatan rahasia ini bocor, hal itu menyebabkan "Perang Minyak" di Pennsylvania, di mana pengebor yang marah menyerang gerbong kereta Standard Oil. Meskipun skema tersebut dibatalkan secara hukum, Rockefeller telah menggunakan ancamannya untuk mengintimidasi pesaing agar menjual perusahaan mereka.</span>
                 </p>
 
-                <h3 class="text-2xl font-bold text-stone-900 mt-8 mb-4 sans-serif">
+                <div class="divider"></div>
+
+                <h3 class="text-2xl font-bold mt-12 mb-4 italic font-serif">
                     <span class="lang-en">The Cleveland Massacre (1872)</span>
                     <span class="lang-id">Pembantaian Cleveland (1872)</span>
                 </h3>
@@ -292,14 +328,14 @@
         </section>
 
         <section id="part3" class="content-section fade-in">
-            <span class="chapter-marker">Part 3: 1890s - 1911</span>
-            <h2 class="text-3xl sm:text-4xl font-bold text-stone-800 mb-8 sans-serif">
+            <span class="section-number">Part Three</span>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
                 <span class="lang-en">The Octopus & The Trust</span>
                 <span class="lang-id">Sang Gurita & Perwalian (The Trust)</span>
             </h2>
 
-            <div class="text-stone-700 space-y-6 justified-text">
-                <p>
+            <div class="text-stone-800 space-y-8 justified-text">
+                <p class="drop-cap">
                     <span class="lang-en">As Standard Oil grew, it hit a legal wall: companies in one state were not allowed to own shares in companies from another state. Rockefeller's lawyer, Samuel Dodd, invented a legal loophole called <strong>"The Trust."</strong> Shareholders of various companies would hand over their stock to a board of nine "Trustees" (led by Rockefeller) in exchange for trust certificates. This allowed Rockefeller to control the entire national industry from a single office in New York.</span>
                     <span class="lang-id">Saat Standard Oil berkembang, ia membentur tembok hukum: perusahaan di satu negara bagian tidak diizinkan memiliki saham di perusahaan dari negara bagian lain. Pengacara Rockefeller, Samuel Dodd, menemukan celah hukum yang disebut <strong>"The Trust" (Perwalian).</strong> Pemegang saham dari berbagai perusahaan akan menyerahkan saham mereka kepada dewan yang terdiri dari sembilan "Wali Amanat" (dipimpin oleh Rockefeller) dengan imbalan sertifikat kepercayaan. Ini memungkinkan Rockefeller mengendalikan seluruh industri nasional dari satu kantor di New York.</span>
                 </p>
@@ -309,7 +345,7 @@
                     <span class="lang-id"><strong>Simbol:</strong> Standard Oil dikenal sebagai "Sang Gurita" dalam kartun politik—monster dengan tentakel yang menjangkau Gedung Capitol, jalur kereta api, dan rumah konsumen, mencekik pasar bebas.</span>
                 </div>
 
-                <h3 class="text-2xl font-bold text-stone-900 mt-8 mb-4 sans-serif">
+                <h3 class="text-2xl font-bold mt-12 mb-4 italic font-serif">
                     <span class="lang-en">Ida Tarbell's Revenge</span>
                     <span class="lang-id">Balas Dendam Ida Tarbell</span>
                 </h3>
@@ -322,7 +358,9 @@
                     <span class="lang-id">Rockefeller terkejut. Dia benar-benar percaya bahwa dia adalah "malaikat yang baik hati" yang menyediakan minyak tanah murah dan aman bagi massa (sebelum listrik, dia secara harfiah menerangi dunia). Dia tidak bisa mengerti mengapa publik membencinya. Pers yang buruk ini mengarah langsung pada tuntutan antimonopoli Theodore Roosevelt.</span>
                 </p>
 
-                <h3 class="text-2xl font-bold text-stone-900 mt-8 mb-4 sans-serif">
+                <div class="divider"></div>
+
+                <h3 class="text-2xl font-bold mt-12 mb-4 italic font-serif">
                     <span class="lang-en">1911: The Breakup</span>
                     <span class="lang-id">1911: Pemecahan Perusahaan</span>
                 </h3>
@@ -334,19 +372,19 @@
         </section>
 
         <section id="part4" class="content-section fade-in">
-            <span class="chapter-marker">Part 4: The Final Years</span>
-            <h2 class="text-3xl sm:text-4xl font-bold text-stone-800 mb-8 sans-serif">
+            <span class="section-number">Part Four</span>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
                 <span class="lang-en">Scientific Philanthropy & Redemption</span>
                 <span class="lang-id">Filantropi Ilmiah & Penebusan</span>
             </h2>
 
-            <div class="text-stone-700 space-y-6 justified-text">
-                <p>
+            <div class="text-stone-800 space-y-8 justified-text">
+                <p class="drop-cap">
                     <span class="lang-en">By his 50s, the stress of being the most hated man in America took a physical toll. Rockefeller lost all his hair (including eyebrows) and suffered from digestive ailments. He looked like a mummy. His doctor told him he had to retire or die. He chose to retire and focus on giving away his money.</span>
                     <span class="lang-id">Pada usia 50-an, tekanan menjadi orang yang paling dibenci di Amerika berdampak fisik. Rockefeller kehilangan semua rambutnya (termasuk alis) dan menderita penyakit pencernaan. Dia tampak seperti mumi. Dokternya memberitahunya bahwa dia harus pensiun atau mati. Dia memilih pensiun dan fokus menyumbangkan uangnya.</span>
                 </p>
 
-                <h3 class="text-2xl font-bold text-stone-900 mt-8 mb-4 sans-serif">
+                <h3 class="text-2xl font-bold mt-12 mb-4 italic font-serif">
                     <span class="lang-en">Frederick Gates & Wholesale Charity</span>
                     <span class="lang-id">Frederick Gates & Amal Grosir</span>
                 </h3>
@@ -359,18 +397,18 @@
                     <span class="lang-id">Bersama-sama, mereka menemukan <strong>Filantropi Ilmiah</strong>. Alih-alih memberi secara "eceran" (jumlah kecil untuk individu), mereka memberi secara "grosir" (membangun institusi untuk menyelesaikan akar masalah). Mereka tidak hanya memberi sup kepada orang sakit; mereka mendirikan <strong>Rockefeller Institute for Medical Research</strong> untuk menyembuhkan penyakit. Mereka mendanai University of Chicago. Mereka meluncurkan kampanye untuk membasmi cacing tambang di Selatan, yang merevitalisasi ekonomi seluruh wilayah.</span>
                 </p>
 
-                <div class="bg-red-50 p-6 rounded-xl border-l-4 border-red-800 my-6">
-                    <h4 class="font-bold text-red-900 mb-2 sans-serif text-lg">
+                <div class="callout">
+                    <h4 class="font-bold text-amber-900 mb-2 sans-serif text-sm uppercase tracking-widest">
                         <span class="lang-en">The Ludlow Massacre (1914)</span>
                         <span class="lang-id">Pembantaian Ludlow (1914)</span>
                     </h4>
-                    <p class="text-stone-800 text-sm">
-                        <span class="lang-en">Redemption wasn't a straight line. In 1914, a strike at a Rockefeller-owned mine in Colorado turned violent. The National Guard attacked the strikers' tent colony, killing women and children. Rockefeller Jr. (his son) was blamed. This tragedy forced the family to modernize their labor relations and hire PR expert Ivy Lee to reshape their image from cold tycoons to caring philanthropists.</span>
-                        <span class="lang-id">Penebusan bukanlah garis lurus. Pada tahun 1914, pemogokan di tambang milik Rockefeller di Colorado berubah menjadi kekerasan. Garda Nasional menyerang kemah pemogok, menewaskan wanita dan anak-anak. Rockefeller Jr. (putranya) disalahkan. Tragedi ini memaksa keluarga tersebut memodernisasi hubungan tenaga kerja mereka dan menyewa ahli PR Ivy Lee untuk membentuk kembali citra mereka dari taipan dingin menjadi dermawan yang peduli.</span>
-                    </p>
+                    <span class="lang-en">Redemption wasn't a straight line. In 1914, a strike at a Rockefeller-owned mine in Colorado turned violent. The National Guard attacked the strikers' tent colony, killing women and children. Rockefeller Jr. (his son) was blamed. This tragedy forced the family to modernize their labor relations and hire PR expert Ivy Lee to reshape their image from cold tycoons to caring philanthropists.</span>
+                    <span class="lang-id">Penebusan bukanlah garis lurus. Pada tahun 1914, pemogokan di tambang milik Rockefeller di Colorado berubah menjadi kekerasan. Garda Nasional menyerang kemah pemogok, menewaskan wanita dan anak-anak. Rockefeller Jr. (putranya) disalahkan. Tragedi ini memaksa keluarga tersebut memodernisasi hubungan tenaga kerja mereka dan menyewa ahli PR Ivy Lee untuk membentuk kembali citra mereka dari taipan dingin menjadi dermawan yang peduli.</span>
                 </div>
 
-                <h3 class="text-2xl font-bold text-stone-900 mt-8 mb-4 sans-serif">
+                <div class="divider"></div>
+
+                <h3 class="text-2xl font-bold mt-12 mb-4 italic font-serif">
                     <span class="lang-en">The End</span>
                     <span class="lang-id">Akhir Kisah</span>
                 </h3>
@@ -400,11 +438,11 @@
             if (currentLang === 'en') {
                 enElements.forEach(el => el.style.display = 'block');
                 idElements.forEach(el => el.style.display = 'none');
-                langBtnText.innerText = "🇮🇩 Switch to ID";
+                langBtnText.innerText = "INDONESIA";
             } else {
                 enElements.forEach(el => el.style.display = 'none');
                 idElements.forEach(el => el.style.display = 'block');
-                langBtnText.innerText = "🇺🇸 Switch to EN";
+                langBtnText.innerText = "ENGLISH";
             }
         }
 
