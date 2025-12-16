@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>50 Self-Help Classics: The Masterclass</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* --- TYPOGRAPHY: ACADEMIC & TIMELESS --- */
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+        
+        /* --- THEME PALETTE: ROYAL NAVY & ANTIQUE GOLD --- */
+        :root {
+            --bg-paper: #F5F7FA; /* Light Cloud/Paper */
+            --text-ink: #2C3E50; /* Dark Slate Blue */
+            --accent-gold: #D4AF37; /* Metallic Gold */
+            --accent-navy: #1A252F; /* Deep Navy */
+            --drawer-bg: #151F28; /* Darker Navy for Drawer */
+            --header-bg: rgba(245, 247, 250, 0.95);
+        }
+
+        body { 
+            font-family: 'Lato', sans-serif; 
+            background-color: var(--bg-paper); 
+            color: var(--text-ink); 
+            line-height: 1.8; 
+            font-size: 18px; 
+            -webkit-font-smoothing: antialiased;
+            padding-top: 80px;
+        }
+        
+        h1, h2, h3, h4 { 
+            font-family: 'Playfair Display', serif; 
+            color: var(--accent-navy);
+            font-weight: 700;
+        }
+
+        /* Decorative "Classic" Label */
+        .gold-label { 
+            font-family: 'Cinzel', serif; 
+            font-size: 0.8em; 
+            letter-spacing: 0.15em;
+            color: var(--accent-gold);
+            font-weight: 700;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--accent-gold);
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding-bottom: 4px;
+        }
+        
+        /* DROP CAP - Educational Style */
+        .drop-cap::first-letter {
+            float: left;
+            font-size: 4.5rem;
+            line-height: 0.8;
+            margin-right: 0.15em;
+            margin-top: 0.05em;
+            font-family: 'Cinzel', serif;
+            color: var(--accent-navy);
+            text-shadow: 2px 2px 0px rgba(212, 175, 55, 0.3);
+        }
+
+        /* --- ANIMATIONS --- */
+        .fade-in { animation: fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .content-section { display: none; padding-bottom: 120px; max-width: 800px; margin: 0 auto; }
+        .content-section.active { display: block; }
+        
+        /* --- LANGUAGE UTILS --- */
+        .lang-id { display: none; }
+        .lang-en { display: block; }
+        .justified-text { text-align: justify; }
+        
+        /* --- CLEAN HEADER BAR --- */
+        .header-bar {
+            position: fixed; top: 0; left: 0; width: 100%; height: 75px;
+            background: var(--header-bg); 
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid #E2E8F0;
+            z-index: 3000; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px; transition: top 0.3s;
+        }
+
+        .menu-btn {
+            width: 40px; height: 40px; display: flex; align-items: center; justify-content: flex-start;
+            cursor: pointer; color: var(--accent-navy); transition: color 0.3s;
+        }
+        .menu-btn:hover { color: var(--accent-gold); }
+
+        .right-controls { display: flex; align-items: center; gap: 24px; }
+
+        .back-link {
+            display: flex; align-items: center; justify-content: center;
+            color: var(--accent-navy); transition: transform 0.2s, color 0.2s;
+        }
+        .back-link:hover { transform: translateX(-3px); color: var(--accent-gold); }
+
+        /* LANGUAGE TOGGLE */
+        .lang-toggle-container {
+            font-family: 'Lato', sans-serif; font-size: 14px; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; gap: 8px; user-select: none;
+        }
+        .lang-opt { color: #BDC3C7; transition: color 0.3s; }
+        .lang-opt.active { color: var(--accent-navy); border-bottom: 2px solid var(--accent-gold); }
+        
+        /* --- NAVIGATION DRAWER (Library Style) --- */
+        .nav-drawer {
+            position: fixed; top: 0; left: -380px; width: 380px; height: 100vh;
+            background: var(--drawer-bg);
+            transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 4000;
+            box-shadow: 10px 0 40px rgba(0,0,0,0.5);
+            border-right: 4px solid var(--accent-gold);
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(26, 37, 47, 0.7); opacity: 0; visibility: hidden;
+            transition: all 0.5s; z-index: 3999; backdrop-filter: blur(3px);
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        .nav-btn {
+            font-family: 'Playfair Display', serif; font-size: 1rem;
+            border-left: 4px solid transparent; transition: all 0.3s;
+            color: #AAB7B8; padding: 18px 24px;
+        }
+        .active-tab { 
+            border-left: 4px solid var(--accent-gold); color: #FFF !important;
+            background: rgba(255,255,255,0.05); padding-left: 32px !important;
+        }
+
+        /* --- CONTENT STYLES --- */
+        /* Concept Box: Encyclopedia Entry Style */
+        .concept-box {
+            margin: 3rem 0; padding: 2.5rem; 
+            border: 1px solid var(--accent-gold);
+            outline: 1px solid var(--accent-gold); outline-offset: 4px; /* Double border effect */
+            background-color: #FFF; 
+            position: relative;
+        }
+        .concept-label {
+            position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+            background: var(--accent-navy); color: var(--accent-gold); padding: 0 15px;
+            font-family: 'Cinzel', serif; font-weight: 700;
+            text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.1em;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--accent-gold);
+            padding: 1.5rem 0 1.5rem 2rem;
+            margin: 3rem 0; font-family: 'Playfair Display', serif; font-style: italic;
+            font-size: 1.35rem; color: var(--accent-navy); background: #EAF0F6;
+        }
+
+        /* Separator: Classic Divider */
+        .divider {
+            width: 100%; height: 1px; background: #BDC3C7; margin: 4rem 0;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .divider::after {
+            content: '✦'; color: var(--accent-gold); font-size: 1.5rem; background: var(--bg-paper); padding: 0 1rem;
+        }
+
+        /* List Styling */
+        .classic-list { list-style: none; padding: 0; margin-top: 1rem; }
+        .classic-list li { margin-bottom: 1.5rem; padding-left: 1.5rem; position: relative; border-bottom: 1px dashed #E2E8F0; padding-bottom: 1rem;}
+        .classic-list li::before { 
+            content: '•'; color: var(--accent-gold); position: absolute; left: 0; top: 0px; font-size: 1.5rem; line-height: 1;
+        }
+
+        @media (max-width: 640px) {
+            body { font-size: 18px; line-height: 1.7; }
+            .content-section { padding: 40px 24px; }
+            .nav-drawer { width: 85%; }
+            h2 { font-size: 2.2rem; }
+            .header-bar { padding: 0 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-bar">
+        <button class="menu-btn" onclick="toggleDrawer()" aria-label="Menu">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+
+        <div class="right-controls">
+            <a href="https://lp1.affiliateid.my.id/" class="back-link" aria-label="Back to Home">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            </a>
+
+            <div class="lang-toggle-container" onclick="toggleLanguage()">
+                <span class="lang-opt lang-id-btn">ID</span>
+                <span style="color: #ccc;">|</span>
+                <span class="lang-opt lang-en-btn active">EN</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    <nav class="nav-drawer flex flex-col h-full">
+        <div class="px-8 py-12 bg-[#0E151C]">
+            <h2 class="text-[#D4AF37] text-5xl leading-none mb-2 font-serif tracking-tighter">
+                50 SELF-HELP
+            </h2>
+            <p class="text-white text-[10px] uppercase tracking-[0.3em] font-sans mt-2">
+                Classics by Butler-Bowdon
+            </p>
+            <div class="w-12 h-1 bg-[#D4AF37] mt-6"></div>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto py-8">
+            <ul class="space-y-1">
+                 <li>
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left active-tab">
+                        <span class="lang-en">00. Literature of Possibility</span>
+                        <span class="lang-id">00. Literatur Kemungkinan</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="lang-en">01. Theme: Power of Thought</span>
+                        <span class="lang-id">01. Tema: Kekuatan Pikiran</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="lang-en">02. Theme: Prosperity & Wealth</span>
+                        <span class="lang-id">02. Tema: Kemakmuran & Kekayaan</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="lang-en">03. Theme: Habits & Character</span>
+                        <span class="lang-id">03. Tema: Kebiasaan & Karakter</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="lang-en">04. Theme: Happiness & Flow</span>
+                        <span class="lang-id">04. Tema: Kebahagiaan & Alur</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="p-8 text-[#5D6D7E] text-[10px] font-sans tracking-widest uppercase border-t border-[#D4AF37]/20">
+            Anthology Edition
+        </div>
+    </nav>
+
+    <main>
+        
+        <section id="intro" class="content-section active fade-in">
+            <div class="gold-label">Introduction</div>
+            <h2 class="text-5xl sm:text-6xl mb-10 leading-none">
+                <span class="lang-en">The Literature of Possibility</span>
+                <span class="lang-id">Literatur Kemungkinan</span>
+            </h2>
+            
+            <div class="justified-text">
+                <p class="drop-cap">
+                    <span class="lang-en">We are often told that "self-help" is a modern, shallow phenomenon. Tom Butler-Bowdon argues otherwise. He demonstrates that the quest for self-improvement is the oldest philosophical pursuit of humanity. From Marcus Aurelius to Benjamin Franklin, and from Napoleon Hill to Stephen Covey, the message is consistent:</span>
+                    <span class="lang-id">Kita sering diberitahu bahwa "pengembangan diri" adalah fenomena modern yang dangkal. Tom Butler-Bowdon berpendapat sebaliknya. Dia menunjukkan bahwa pencarian perbaikan diri adalah pengejaran filosofis tertua umat manusia. Dari Marcus Aurelius hingga Benjamin Franklin, dan dari Napoleon Hill hingga Stephen Covey, pesannya konsisten:</span>
+                </p>
+
+                <p>
+                    <span class="lang-en">We are not fixed entities. We are creators of our own destiny. This book distills 50 of the most important works ever written into key themes that transform lives. It is a map of the "Literature of Possibility."</span>
+                    <span class="lang-id">Kita bukanlah entitas yang tetap. Kita adalah pencipta takdir kita sendiri. Buku ini menyaring 50 karya terpenting yang pernah ditulis menjadi tema-tema utama yang mengubah hidup. Ini adalah peta dari "Literatur Kemungkinan."</span>
+                </p>
+
+                 <blockquote>
+                    <span class="lang-en">"The unexamined life is not worth living." — Socrates</span>
+                    <span class="lang-id">"Hidup yang tidak diuji tidak layak untuk dijalani." — Socrates</span>
+                </blockquote>
+            </div>
+        </section>
+
+        <section id="part1" class="content-section fade-in">
+            <div class="gold-label">Theme 01</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">The Power of Thought</span>
+                <span class="lang-id">Kekuatan Pikiran</span>
+            </h2>
+
+            <div class="justified-text">
+                <p>
+                    <span class="lang-en">The foundational premise of almost all self-help classics is that your external reality is a reflection of your internal state. You cannot change your life without changing your mind.</span>
+                    <span class="lang-id">Premis dasar dari hampir semua karya klasik pengembangan diri adalah bahwa realitas eksternal Anda adalah cerminan dari keadaan internal Anda. Anda tidak dapat mengubah hidup Anda tanpa mengubah pikiran Anda.</span>
+                </p>
+
+                <div class="concept-box">
+                    <div class="concept-label">KEY WORKS</div>
+                    <ul class="classic-list">
+                        <li>
+                            <strong class="text-[#1A252F]">James Allen - <em>As a Man Thinketh</em> (1902)</strong><br>
+                            <span class="lang-en text-sm text-gray-600">The human mind is like a garden. It can be intelligently cultivated or allowed to run wild. If no useful seeds are put into it, then an abundance of useless weed-seeds will fall therein.</span>
+                            <span class="lang-id text-sm text-gray-600">Pikiran manusia itu seperti taman. Bisa dikelola dengan cerdas atau dibiarkan liar. Jika tidak ada benih berguna yang ditanam, maka benih gulma tak berguna akan tumbuh subur.</span>
+                        </li>
+                        <li>
+                            <strong class="text-[#1A252F]">Marcus Aurelius - <em>Meditations</em> (2nd Century)</strong><br>
+                            <span class="lang-en text-sm text-gray-600">"Our life is what our thoughts make it." The Stoic emperor teaches that we have power over our minds, not outside events. Realize this, and you will find strength.</span>
+                            <span class="lang-id text-sm text-gray-600">"Hidup kita adalah apa yang dibuat oleh pikiran kita." Kaisar Stoa mengajarkan bahwa kita memiliki kuasa atas pikiran kita, bukan peristiwa luar. Sadari ini, dan Anda akan menemukan kekuatan.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="part2" class="content-section fade-in">
+            <div class="gold-label">Theme 02</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">Prosperity & Wealth</span>
+                <span class="lang-id">Kemakmuran & Kekayaan</span>
+            </h2>
+
+            <div class="justified-text">
+                <p class="drop-cap">
+                    <span class="lang-en">Wealth is rarely an accident. The classics teach that money is a result of service, discipline, and a specific mindset ("prosperity consciousness").</span>
+                    <span class="lang-id">Kekayaan jarang sekali terjadi secara kebetulan. Karya klasik mengajarkan bahwa uang adalah hasil dari pelayanan, disiplin, dan pola pikir tertentu ("kesadaran kemakmuran").</span>
+                </p>
+
+                <div class="concept-box">
+                    <div class="concept-label">KEY WORKS</div>
+                    <ul class="classic-list">
+                        <li>
+                            <strong class="text-[#1A252F]">Napoleon Hill - <em>Think and Grow Rich</em> (1937)</strong><br>
+                            <span class="lang-en text-sm text-gray-600">Wealth begins with a "Burning Desire." Hill interviewed 500 millionaires to discover that success comes to those who become "money conscious"—not wishing for money, but planning for it with faith.</span>
+                            <span class="lang-id text-sm text-gray-600">Kekayaan dimulai dengan "Hasrat yang Membara." Hill mewawancarai 500 jutawan untuk menemukan bahwa kesuksesan datang kepada mereka yang menjadi "sadar uang"—bukan berharap uang, tetapi merencanakannya dengan keyakinan.</span>
+                        </li>
+                        <li>
+                            <strong class="text-[#1A252F]">George S. Clason - <em>The Richest Man in Babylon</em> (1926)</strong><br>
+                            <span class="lang-en text-sm text-gray-600">The golden rule: "A part of all you earn is yours to keep." Pay yourself first (at least 10%) before paying the grocer or the landlord.</span>
+                            <span class="lang-id text-sm text-gray-600">Aturan emas: "Sebagian dari semua yang Anda hasilkan adalah milik Anda untuk disimpan." Bayar diri Anda dulu (minimal 10%) sebelum membayar pedagang atau tuan tanah.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="part3" class="content-section fade-in">
+            <div class="gold-label">Theme 03</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">Habits & Effectiveness</span>
+                <span class="lang-id">Kebiasaan & Efektivitas</span>
+            </h2>
+
+            <div class="justified-text">
+                <p>
+                    <span class="lang-en">Success is not a one-time act; it is a habit. The classics shift the focus from "Personality Ethics" (techniques/charm) to "Character Ethics" (principles/integrity).</span>
+                    <span class="lang-id">Kesuksesan bukanlah tindakan satu kali; itu adalah kebiasaan. Karya klasik mengalihkan fokus dari "Etika Kepribadian" (teknik/pesona) ke "Etika Karakter" (prinsip/integritas).</span>
+                </p>
+
+                <div class="concept-box">
+                    <div class="concept-label">KEY WORKS</div>
+                    <ul class="classic-list">
+                        <li>
+                            <strong class="text-[#1A252F]">Stephen Covey - <em>The 7 Habits of Highly Effective People</em> (1989)</strong><br>
+                            <span class="lang-en text-sm text-gray-600">Move from Dependence to Independence, and finally to Interdependence. Private victories (self-mastery) must precede public victories (relationships).</span>
+                            <span class="lang-id text-sm text-gray-600">Bergerak dari Ketergantungan ke Kemandirian, dan akhirnya ke Saling Ketergantungan. Kemenangan pribadi (penguasaan diri) harus mendahului kemenangan publik (hubungan).</span>
+                        </li>
+                        <li>
+                            <strong class="text-[#1A252F]">Dale Carnegie - <em>How to Win Friends and Influence People</em> (1936)</strong><br>
+                            <span class="lang-en text-sm text-gray-600">The deepest urge in human nature is "the desire to be important." To influence others, do not criticize; give honest and sincere appreciation.</span>
+                            <span class="lang-id text-sm text-gray-600">Dorongan terdalam dalam sifat manusia adalah "keinginan untuk menjadi penting." Untuk memengaruhi orang lain, jangan mengkritik; berikan apresiasi yang jujur dan tulus.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="part4" class="content-section fade-in">
+            <div class="gold-label">Theme 04</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">Happiness & Meaning</span>
+                <span class="lang-id">Kebahagiaan & Makna</span>
+            </h2>
+
+            <div class="justified-text">
+                <p>
+                    <span class="lang-en">True happiness is not the absence of suffering, but the presence of meaning. The classics teach us to look beyond hedonism.</span>
+                    <span class="lang-id">Kebahagiaan sejati bukanlah ketiadaan penderitaan, melainkan kehadiran makna. Karya klasik mengajarkan kita untuk melihat melampaui hedonisme.</span>
+                </p>
+
+                <div class="concept-box">
+                    <div class="concept-label">KEY WORKS</div>
+                    <ul class="classic-list">
+                        <li>
+                            <strong class="text-[#1A252F]">Viktor Frankl - <em>Man's Search for Meaning</em> (1946)</strong><br>
+                            <span class="lang-en text-sm text-gray-600">Even in the Nazi concentration camps, Frankl found that those who survived were those who had a meaning to live for. We cannot choose our circumstances, but we can choose our attitude.</span>
+                            <span class="lang-id text-sm text-gray-600">Bahkan di kamp konsentrasi Nazi, Frankl menemukan bahwa mereka yang selamat adalah mereka yang memiliki makna untuk hidup. Kita tidak dapat memilih keadaan kita, tetapi kita dapat memilih sikap kita.</span>
+                        </li>
+                        <li>
+                            <strong class="text-[#1A252F]">Mihaly Csikszentmihalyi - <em>Flow</em> (1990)</strong><br>
+                            <span class="lang-en text-sm text-gray-600">Happiness occurs when we are fully immersed in an activity that challenges our skills. This state is called "Flow."</span>
+                            <span class="lang-id text-sm text-gray-600">Kebahagiaan terjadi ketika kita sepenuhnya tenggelam dalam aktivitas yang menantang keterampilan kita. Keadaan ini disebut "Flow" (Alur).</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="divider"></div>
+                <p class="text-center font-serif text-lg text-[#2C3E50]">
+                    <span class="lang-en">"History is the biography of great men." — Carlyle</span>
+                    <span class="lang-id">"Sejarah adalah biografi orang-orang hebat." — Carlyle</span>
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- LOGIC ---
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateContent();
+        }
+
+        function updateContent() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const langEnBtn = document.querySelector('.lang-en-btn');
+            const langIdBtn = document.querySelector('.lang-id-btn');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                
+                langEnBtn.classList.add('active');
+                langIdBtn.classList.remove('active');
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                
+                langIdBtn.classList.add('active');
+                langEnBtn.classList.remove('active');
+            }
+        }
+
+        // Navigation Drawer Logic
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            if(drawer.classList.contains('open')) document.body.style.overflow = 'hidden';
+            else document.body.style.overflow = '';
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(sec => {
+                sec.classList.remove('active');
+                sec.classList.remove('fade-in');
+            });
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active-tab');
+            });
+            const target = document.getElementById(sectionId);
+            target.classList.add('active');
+            void target.offsetWidth; 
+            target.classList.add('fade-in');
+            event.currentTarget.classList.add('active-tab');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+              </html>
