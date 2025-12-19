@@ -93,6 +93,7 @@
             max-width: 900px; 
             margin: 0 auto;
             position: relative;
+            padding: 40px 24px;
         }
         .content-section.active { display: block; }
         
@@ -325,6 +326,30 @@
             margin-right: 1rem;
         }
 
+        /* Skeleton Loading */
+        .skeleton-text {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            height: 1em;
+            margin: 0.5rem 0;
+            border-radius: 4px;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .content-placeholder {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            padding: 3rem;
+            text-align: center;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
         @media (max-width: 768px) {
             body { font-size: 16px; line-height: 1.7; padding-top: 70px; }
             .content-section { padding: 30px 20px; max-width: 100%; }
@@ -394,7 +419,7 @@
                 </h3>
             </div>
             <ul class="space-y-1">
-                <!-- 00. Literatur Kemungkinan -->
+                <!-- 00. INTRODUCTION -->
                 <li>
                     <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left active-tab">
                         <span class="nav-icon">📚</span>
@@ -406,43 +431,43 @@
                     </button>
                 </li>
                 
-                <!-- 01. Kekuatan Pikiran -->
+                <!-- 01. ANCIENT WISDOM -->
                 <li>
                     <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left">
-                        <span class="nav-icon">💭</span>
+                        <span class="nav-icon">🏛️</span>
                         <div>
                             <div class="text-sm text-gray-400">01</div>
+                            <div class="lang-en">Ancient Wisdom</div>
+                            <div class="lang-id">Kebijaksanaan Kuno</div>
+                        </div>
+                    </button>
+                </li>
+                
+                <!-- 02. POWER OF THOUGHT -->
+                <li>
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="nav-icon">💭</span>
+                        <div>
+                            <div class="text-sm text-gray-400">02</div>
                             <div class="lang-en">Power of Thought</div>
                             <div class="lang-id">Kekuatan Pikiran</div>
                         </div>
                     </button>
                 </li>
                 
-                <!-- 02. Kemakmuran & Kekayaan -->
-                <li>
-                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left">
-                        <span class="nav-icon">💰</span>
-                        <div>
-                            <div class="text-sm text-gray-400">02</div>
-                            <div class="lang-en">Prosperity & Wealth</div>
-                            <div class="lang-id">Kemakmuran & Kekayaan</div>
-                        </div>
-                    </button>
-                </li>
-                
-                <!-- 03. Kebiasaan & Efektivitas -->
+                <!-- 03. MIND & CONSCIOUSNESS -->
                 <li>
                     <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left">
-                        <span class="nav-icon">⚡</span>
+                        <span class="nav-icon">🧠</span>
                         <div>
                             <div class="text-sm text-gray-400">03</div>
-                            <div class="lang-en">Habits & Effectiveness</div>
-                            <div class="lang-id">Kebiasaan & Efektivitas</div>
+                            <div class="lang-en">Mind & Consciousness</div>
+                            <div class="lang-id">Pikiran & Kesadaran</div>
                         </div>
                     </button>
                 </li>
                 
-                <!-- 04. Kebahagiaan & Makna -->
+                <!-- 04. HAPPINESS & MEANING -->
                 <li>
                     <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left">
                         <span class="nav-icon">😊</span>
@@ -454,43 +479,43 @@
                     </button>
                 </li>
                 
-                <!-- 05. Pikiran & Kesadaran -->
+                <!-- 05. HABITS & EFFECTIVENESS -->
                 <li>
                     <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left">
-                        <span class="nav-icon">🧠</span>
+                        <span class="nav-icon">⚡</span>
                         <div>
                             <div class="text-sm text-gray-400">05</div>
-                            <div class="lang-en">Mind & Consciousness</div>
-                            <div class="lang-id">Pikiran & Kesadaran</div>
+                            <div class="lang-en">Habits & Effectiveness</div>
+                            <div class="lang-id">Kebiasaan & Efektivitas</div>
                         </div>
                     </button>
                 </li>
                 
-                <!-- 06. Tujuan & Misi -->
+                <!-- 06. PROSPERITY & WEALTH -->
                 <li>
                     <button onclick="showSection('part6'); closeDrawer();" class="nav-btn w-full text-left">
-                        <span class="nav-icon">🎯</span>
+                        <span class="nav-icon">💰</span>
                         <div>
                             <div class="text-sm text-gray-400">06</div>
+                            <div class="lang-en">Prosperity & Wealth</div>
+                            <div class="lang-id">Kemakmuran & Kekayaan</div>
+                        </div>
+                    </button>
+                </li>
+                
+                <!-- 07. PURPOSE & MISSION -->
+                <li>
+                    <button onclick="showSection('part7'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="nav-icon">🎯</span>
+                        <div>
+                            <div class="text-sm text-gray-400">07</div>
                             <div class="lang-en">Purpose & Mission</div>
                             <div class="lang-id">Tujuan & Misi</div>
                         </div>
                     </button>
                 </li>
                 
-                <!-- 07. Transformasi & Perubahan -->
-                <li>
-                    <button onclick="showSection('part7'); closeDrawer();" class="nav-btn w-full text-left">
-                        <span class="nav-icon">🔄</span>
-                        <div>
-                            <div class="text-sm text-gray-400">07</div>
-                            <div class="lang-en">Transformation & Change</div>
-                            <div class="lang-id">Transformasi & Perubahan</div>
-                        </div>
-                    </button>
-                </li>
-                
-                <!-- 08. Potensi & Penguasaan -->
+                <!-- 08. POTENTIAL & MASTERY -->
                 <li>
                     <button onclick="showSection('part8'); closeDrawer();" class="nav-btn w-full text-left">
                         <span class="nav-icon">🌟</span>
@@ -502,24 +527,36 @@
                     </button>
                 </li>
                 
-                <!-- 09. Keseimbangan & Harmoni -->
+                <!-- 09. TRANSFORMATION & CHANGE -->
                 <li>
                     <button onclick="showSection('part9'); closeDrawer();" class="nav-btn w-full text-left">
-                        <span class="nav-icon">⚖️</span>
+                        <span class="nav-icon">🔄</span>
                         <div>
                             <div class="text-sm text-gray-400">09</div>
+                            <div class="lang-en">Transformation & Change</div>
+                            <div class="lang-id">Transformasi & Perubahan</div>
+                        </div>
+                    </button>
+                </li>
+                
+                <!-- 10. BALANCE & HARMONY -->
+                <li>
+                    <button onclick="showSection('part10'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="nav-icon">⚖️</span>
+                        <div>
+                            <div class="text-sm text-gray-400">10</div>
                             <div class="lang-en">Balance & Harmony</div>
                             <div class="lang-id">Keseimbangan & Harmoni</div>
                         </div>
                     </button>
                 </li>
                 
-                <!-- 10. Kebijaksanaan & Warisan -->
+                <!-- 11. WISDOM & LEGACY -->
                 <li>
-                    <button onclick="showSection('part10'); closeDrawer();" class="nav-btn w-full text-left">
-                        <span class="nav-icon">🏛️</span>
+                    <button onclick="showSection('part11'); closeDrawer();" class="nav-btn w-full text-left">
+                        <span class="nav-icon">📜</span>
                         <div>
-                            <div class="text-sm text-gray-400">10</div>
+                            <div class="text-sm text-gray-400">11</div>
                             <div class="lang-en">Wisdom & Legacy</div>
                             <div class="lang-id">Kebijaksanaan & Warisan</div>
                         </div>
@@ -535,7 +572,9 @@
     </nav>
 
     <main>
-        <!-- INTRODUCTION -->
+        <!-- ==================== -->
+        <!-- SECTION 00: INTRODUCTION - CONTENT COMPLETE -->
+        <!-- ==================== -->
         <section id="intro" class="content-section active fade-in">
             <div class="section-number">00</div>
             <div class="gold-label">Introduction</div>
@@ -556,64 +595,64 @@
                 </blockquote>
 
                 <p>
-                    <span class="lang-en">This comprehensive anthology distills 50 of the most transformative works ever written into ten foundational themes that have shaped human potential for centuries. Each theme represents a pillar of personal development, carefully curated to provide not just knowledge, but wisdom that can be applied immediately.</span>
-                    <span class="lang-id">Antologi komprehensif ini menyaring 50 karya paling transformatif yang pernah ditulis menjadi sepuluh tema dasar yang telah membentuk potensi manusia selama berabad-abad. Setiap tema mewakili pilar pengembangan pribadi, dengan hati-hati dikurasi untuk memberikan tidak hanya pengetahuan, tetapi kebijaksanaan yang dapat diterapkan segera.</span>
+                    <span class="lang-en">This comprehensive anthology distills 50 of the most transformative works ever written into twelve foundational themes that have shaped human potential for centuries. Each theme represents a pillar of personal development, carefully curated to provide not just knowledge, but wisdom that can be applied immediately.</span>
+                    <span class="lang-id">Antologi komprehensif ini menyaring 50 karya paling transformatif yang pernah ditulis menjadi dua belas tema dasar yang telah membentuk potensi manusia selama berabad-abad. Setiap tema mewakili pilar pengembangan pribadi, dengan hati-hati dikurasi untuk memberikan tidak hanya pengetahuan, tetapi kebijaksanaan yang dapat diterapkan segera.</span>
                 </p>
 
                 <div class="concept-box">
                     <div class="concept-label">THE MASTERCLASS STRUCTURE</div>
                     <p class="mb-4">
-                        <span class="lang-en">This masterclass is organized into ten comprehensive sections, each exploring a fundamental aspect of human potential:</span>
-                        <span class="lang-id">Masterclass ini diorganisir menjadi sepuluh bagian komprehensif, masing-masing mengeksplorasi aspek fundamental dari potensi manusia:</span>
+                        <span class="lang-en">This masterclass is organized into three parts, progressing from foundations to action to integration:</span>
+                        <span class="lang-id">Masterclass ini diorganisir menjadi tiga bagian, berkembang dari fondasi ke aksi ke integrasi:</span>
                     </p>
                     
                     <div class="toc-container">
-                        <!-- Introduction -->
+                        <!-- PART 1: FOUNDATIONS -->
                         <div class="toc-item">
                             <div class="flex items-center">
-                                <span class="toc-number">00</span>
+                                <span class="toc-number">P1</span>
                                 <div>
-                                    <div class="lang-en">Literature of Possibility</div>
-                                    <div class="lang-id">Literatur Kemungkinan</div>
+                                    <div class="lang-en font-bold">FOUNDATIONS</div>
+                                    <div class="lang-id font-bold">FONDASI</div>
                                 </div>
                             </div>
-                            <span class="text-green-600 text-sm">● Active</span>
+                            <span class="text-gray-500 text-sm">4 themes</span>
                         </div>
                         
-                        <!-- 01. Power of Thought -->
+                        <!-- 01. Ancient Wisdom -->
                         <div class="toc-item">
                             <div class="flex items-center">
                                 <span class="toc-number">01</span>
+                                <div>
+                                    <div class="lang-en">Ancient Wisdom</div>
+                                    <div class="lang-id">Kebijaksanaan Kuno</div>
+                                </div>
+                            </div>
+                            <span class="text-green-600 text-sm">Complete</span>
+                        </div>
+                        
+                        <!-- 02. Power of Thought -->
+                        <div class="toc-item">
+                            <div class="flex items-center">
+                                <span class="toc-number">02</span>
                                 <div>
                                     <div class="lang-en">Power of Thought</div>
                                     <div class="lang-id">Kekuatan Pikiran</div>
                                 </div>
                             </div>
-                            <span class="text-gray-500 text-sm">Classics: 5 works</span>
+                            <span class="text-green-600 text-sm">Complete</span>
                         </div>
                         
-                        <!-- 02. Prosperity & Wealth -->
-                        <div class="toc-item">
-                            <div class="flex items-center">
-                                <span class="toc-number">02</span>
-                                <div>
-                                    <div class="lang-en">Prosperity & Wealth</div>
-                                    <div class="lang-id">Kemakmuran & Kekayaan</div>
-                                </div>
-                            </div>
-                            <span class="text-gray-500 text-sm">Classics: 5 works</span>
-                        </div>
-                        
-                        <!-- 03. Habits & Effectiveness -->
+                        <!-- 03. Mind & Consciousness -->
                         <div class="toc-item">
                             <div class="flex items-center">
                                 <span class="toc-number">03</span>
                                 <div>
-                                    <div class="lang-en">Habits & Effectiveness</div>
-                                    <div class="lang-id">Kebiasaan & Efektivitas</div>
+                                    <div class="lang-en">Mind & Consciousness</div>
+                                    <div class="lang-id">Pikiran & Kesadaran</div>
                                 </div>
                             </div>
-                            <span class="text-gray-500 text-sm">Classics: 5 works</span>
+                            <span class="text-yellow-600 text-sm">Template</span>
                         </div>
                         
                         <!-- 04. Happiness & Meaning -->
@@ -625,43 +664,55 @@
                                     <div class="lang-id">Kebahagiaan & Makna</div>
                                 </div>
                             </div>
-                            <span class="text-gray-500 text-sm">Classics: 5 works</span>
+                            <span class="text-yellow-600 text-sm">Template</span>
                         </div>
                         
-                        <!-- 05. Mind & Consciousness -->
+                        <!-- PART 2: ACTION & RESULTS -->
+                        <div class="toc-item">
+                            <div class="flex items-center">
+                                <span class="toc-number">P2</span>
+                                <div>
+                                    <div class="lang-en font-bold">ACTION & RESULTS</div>
+                                    <div class="lang-id font-bold">AKSI & HASIL</div>
+                                </div>
+                            </div>
+                            <span class="text-gray-500 text-sm">4 themes</span>
+                        </div>
+                        
+                        <!-- 05. Habits & Effectiveness -->
                         <div class="toc-item">
                             <div class="flex items-center">
                                 <span class="toc-number">05</span>
                                 <div>
-                                    <div class="lang-en">Mind & Consciousness</div>
-                                    <div class="lang-id">Pikiran & Kesadaran</div>
+                                    <div class="lang-en">Habits & Effectiveness</div>
+                                    <div class="lang-id">Kebiasaan & Efektivitas</div>
                                 </div>
                             </div>
-                            <span class="text-gray-500 text-sm">Classics: 5 works</span>
+                            <span class="text-green-600 text-sm">Complete</span>
                         </div>
                         
-                        <!-- 06. Purpose & Mission -->
+                        <!-- 06. Prosperity & Wealth -->
                         <div class="toc-item">
                             <div class="flex items-center">
                                 <span class="toc-number">06</span>
+                                <div>
+                                    <div class="lang-en">Prosperity & Wealth</div>
+                                    <div class="lang-id">Kemakmuran & Kekayaan</div>
+                                </div>
+                            </div>
+                            <span class="text-green-600 text-sm">Complete</span>
+                        </div>
+                        
+                        <!-- 07. Purpose & Mission -->
+                        <div class="toc-item">
+                            <div class="flex items-center">
+                                <span class="toc-number">07</span>
                                 <div>
                                     <div class="lang-en">Purpose & Mission</div>
                                     <div class="lang-id">Tujuan & Misi</div>
                                 </div>
                             </div>
-                            <span class="text-gray-500 text-sm">Classics: 5 works</span>
-                        </div>
-                        
-                        <!-- 07. Transformation & Change -->
-                        <div class="toc-item">
-                            <div class="flex items-center">
-                                <span class="toc-number">07</span>
-                                <div>
-                                    <div class="lang-en">Transformation & Change</div>
-                                    <div class="lang-id">Transformasi & Perubahan</div>
-                                </div>
-                            </div>
-                            <span class="text-gray-500 text-sm">Classics: 5 works</span>
+                            <span class="text-yellow-600 text-sm">Template</span>
                         </div>
                         
                         <!-- 08. Potential & Mastery -->
@@ -673,31 +724,55 @@
                                     <div class="lang-id">Potensi & Penguasaan</div>
                                 </div>
                             </div>
-                            <span class="text-gray-500 text-sm">Classics: 5 works</span>
+                            <span class="text-yellow-600 text-sm">Template</span>
                         </div>
                         
-                        <!-- 09. Balance & Harmony -->
+                        <!-- PART 3: INTEGRATION & BEYOND -->
+                        <div class="toc-item">
+                            <div class="flex items-center">
+                                <span class="toc-number">P3</span>
+                                <div>
+                                    <div class="lang-en font-bold">INTEGRATION & BEYOND</div>
+                                    <div class="lang-id font-bold">INTEGRASI & MELAMPAUI</div>
+                                </div>
+                            </div>
+                            <span class="text-gray-500 text-sm">4 themes</span>
+                        </div>
+                        
+                        <!-- 09. Transformation & Change -->
                         <div class="toc-item">
                             <div class="flex items-center">
                                 <span class="toc-number">09</span>
+                                <div>
+                                    <div class="lang-en">Transformation & Change</div>
+                                    <div class="lang-id">Transformasi & Perubahan</div>
+                                </div>
+                            </div>
+                            <span class="text-yellow-600 text-sm">Template</span>
+                        </div>
+                        
+                        <!-- 10. Balance & Harmony -->
+                        <div class="toc-item">
+                            <div class="flex items-center">
+                                <span class="toc-number">10</span>
                                 <div>
                                     <div class="lang-en">Balance & Harmony</div>
                                     <div class="lang-id">Keseimbangan & Harmoni</div>
                                 </div>
                             </div>
-                            <span class="text-gray-500 text-sm">Classics: 5 works</span>
+                            <span class="text-yellow-600 text-sm">Template</span>
                         </div>
                         
-                        <!-- 10. Wisdom & Legacy -->
+                        <!-- 11. Wisdom & Legacy -->
                         <div class="toc-item">
                             <div class="flex items-center">
-                                <span class="toc-number">10</span>
+                                <span class="toc-number">11</span>
                                 <div>
                                     <div class="lang-en">Wisdom & Legacy</div>
                                     <div class="lang-id">Kebijaksanaan & Warisan</div>
                                 </div>
                             </div>
-                            <span class="text-gray-500 text-sm">Classics: 5 works</span>
+                            <span class="text-yellow-600 text-sm">Template</span>
                         </div>
                     </div>
                 </div>
@@ -767,12 +842,131 @@
             </div>
         </section>
 
-        <!-- PART 1: POWER OF THOUGHT -->
+        <!-- ==================== -->
+        <!-- SECTION 01: ANCIENT WISDOM - CONTENT COMPLETE -->
+        <!-- ==================== -->
         <section id="part1" class="content-section fade-in">
             <div class="section-number">01</div>
             <div class="gold-label">Theme 01</div>
             <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
-                <span class="lang-en">The Power of Thought</span>
+                <span class="lang-en">Ancient Wisdom</span>
+                <span class="lang-id">Kebijaksanaan Kuno</span>
+            </h2>
+
+            <div class="justified-text slide-in-left">
+                <p class="drop-cap">
+                    <span class="lang-en">The foundation of all self-improvement literature lies in the wisdom of ancient civilizations. Thousands of years before the term "self-help" was coined, philosophers, spiritual leaders, and thinkers were exploring the fundamental questions of human existence, happiness, and virtue. Their insights remain startlingly relevant today.</span>
+                    <span class="lang-id">Fondasi dari semua literatur pengembangan diri terletak pada kebijaksanaan peradaban kuno. Ribuan tahun sebelum istilah "pengembangan diri" diciptakan, filsuf, pemimpin spiritual, dan pemikir telah mengeksplorasi pertanyaan mendasar tentang eksistensi manusia, kebahagiaan, dan kebajikan. Wawasan mereka tetap sangat relevan hingga hari ini.</span>
+                </p>
+
+                <blockquote>
+                    <span class="lang-en">"Know thyself." — Inscription at the Temple of Apollo at Delphi</span>
+                    <span class="lang-id">"Kenali dirimu sendiri." — Prasasti di Kuil Apollo di Delphi</span>
+                </blockquote>
+
+                <div class="concept-box">
+                    <div class="concept-label">TIMELESS PRINCIPLES</div>
+                    <p class="mb-4">
+                        <span class="lang-en">Ancient wisdom traditions across cultures—from Greek Stoicism to Chinese Taoism, from Indian Buddhism to Roman philosophy—converge on several key principles: the importance of self-knowledge, the cultivation of virtue, acceptance of what cannot be changed, and living in harmony with nature and reason.</span>
+                        <span class="lang-id">Tradisi kebijaksanaan kuno di berbagai budaya—dari Stoaisme Yunani hingga Taoisme Cina, dari Buddhisme India hingga filsafat Romawi—bertemu pada beberapa prinsip kunci: pentingnya pengenalan diri, budidaya kebajikan, penerimaan terhadap apa yang tidak dapat diubah, dan hidup selaras dengan alam dan akal.</span>
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                        <div class="author-profile">
+                            <h4 class="font-bold text-lg mb-2">Marcus Aurelius</h4>
+                            <p class="text-sm text-gray-600">
+                                <span class="lang-en">Roman Emperor (121-180 CE) and Stoic philosopher who wrote Meditations as personal guidance.</span>
+                                <span class="lang-id">Kaisar Romawi (121-180 M) dan filsuf Stoa yang menulis Meditasi sebagai panduan pribadi.</span>
+                            </p>
+                        </div>
+                        <div class="author-profile">
+                            <h4 class="font-bold text-lg mb-2">Lao Tzu</h4>
+                            <p class="text-sm text-gray-600">
+                                <span class="lang-en">Ancient Chinese philosopher (6th century BCE), founder of Taoism and author of Tao Te Ching.</span>
+                                <span class="lang-id">Filsuf Cina kuno (abad ke-6 SM), pendiri Taoisme dan penulis Tao Te Ching.</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <div class="concept-label">KEY WORKS ANALYSIS</div>
+                    <ul class="classic-list">
+                        <li>
+                            <strong class="text-[#1A252F]">Marcus Aurelius - <em>Meditations</em> (2nd Century CE)</strong><br>
+                            <p class="lang-en text-sm text-gray-600 mt-2">
+                                Written as personal reflections during military campaigns, Meditations is perhaps the most personal and practical work of Stoic philosophy. Aurelius reminds himself (and us) that we cannot control external events, only our responses to them. The book emphasizes virtue, duty, and acceptance of nature's flow.
+                            </p>
+                            <p class="lang-id text-sm text-gray-600 mt-2">
+                                Ditulis sebagai refleksi pribadi selama kampanye militer, Meditasi mungkin adalah karya filsafat Stoa yang paling pribadi dan praktis. Aurelius mengingatkan dirinya sendiri (dan kita) bahwa kita tidak dapat mengendalikan peristiwa eksternal, hanya tanggapan kita terhadapnya. Buku ini menekankan kebajikan, kewajiban, dan penerimaan aliran alam.
+                            </p>
+                            <div class="mt-3 p-3 bg-yellow-50 border-l-4 border-yellow-300">
+                                <strong class="lang-en">Practical Exercise:</strong>
+                                <strong class="lang-id">Latihan Praktis:</strong>
+                                <p class="lang-en text-sm mt-1">Morning preparation: Each morning, anticipate the challenges you might face that day. Mentally prepare yourself to meet them with wisdom and equanimity rather than surprise or resentment.</p>
+                                <p class="lang-id text-sm mt-1">Persiapan pagi: Setiap pagi, antisipasi tantangan yang mungkin Anda hadapi hari itu. Persiapkan diri Anda secara mental untuk menghadapinya dengan kebijaksanaan dan ketenangan daripada kejutan atau kebencian.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <strong class="text-[#1A252F]">Lao Tzu - <em>Tao Te Ching</em> (6th century BCE)</strong><br>
+                            <p class="lang-en text-sm text-gray-600 mt-2">
+                                This foundational Taoist text teaches the principle of "wu wei" (effortless action) and living in harmony with the Tao (the Way). It suggests that true strength comes from flexibility, like water that flows around obstacles rather than confronting them directly. The text emphasizes simplicity, humility, and naturalness.
+                            </p>
+                            <p class="lang-id text-sm text-gray-600 mt-2">
+                                Teks Taois fondasional ini mengajarkan prinsip "wu wei" (tindakan tanpa usaha) dan hidup selaras dengan Tao (Jalan). Ini menyarankan bahwa kekuatan sejati datang dari fleksibilitas, seperti air yang mengalir di sekitar rintangan daripada menghadapinya langsung. Teks ini menekankan kesederhanaan, kerendahan hati, dan kealamian.
+                            </p>
+                        </li>
+                        <li>
+                            <strong class="text-[#1A252F]">Epictetus - <em>Enchiridion</em> (2nd Century CE)</strong><br>
+                            <p class="lang-en text-sm text-gray-600 mt-2">
+                                A former slave who became a Stoic philosopher, Epictetus taught that freedom comes from distinguishing between what is within our control (our judgments and actions) and what is not (external events). His handbook provides concise guidance for living a virtuous and tranquil life regardless of circumstances.
+                            </p>
+                            <p class="lang-id text-sm text-gray-600 mt-2">
+                                Seorang mantan budak yang menjadi filsuf Stoa, Epictetus mengajarkan bahwa kebebasan datang dari membedakan antara apa yang berada dalam kendali kita (penilaian dan tindakan kita) dan apa yang tidak (peristiwa eksternal). Buku pegangan ini memberikan panduan ringkas untuk hidup yang bajik dan tenang terlepas dari keadaan.
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="timeline-box">
+                    <h3 class="text-xl font-bold mb-4">
+                        <span class="lang-en">Four Ancient Wisdom Traditions</span>
+                        <span class="lang-id">Empat Tradisi Kebijaksanaan Kuno</span>
+                    </h3>
+                    <ul class="classic-list">
+                        <li>
+                            <strong>Stoicism (Greece/Rome)</strong><br>
+                            <span class="lang-en">Virtue as highest good; acceptance of nature; control what you can</span>
+                            <span class="lang-id">Kebajikan sebagai kebaikan tertinggi; penerimaan alam; kendalikan apa yang Anda bisa</span>
+                        </li>
+                        <li>
+                            <strong>Taoism (China)</strong><br>
+                            <span class="lang-en">Harmony with Tao; wu wei (effortless action); simplicity</span>
+                            <span class="lang-id">Harmoni dengan Tao; wu wei (tindakan tanpa usaha); kesederhanaan</span>
+                        </li>
+                        <li>
+                            <strong>Buddhism (India)</strong><br>
+                            <span class="lang-en">End of suffering through enlightenment; mindfulness; compassion</span>
+                            <span class="lang-id">Akhir penderitaan melalui pencerahan; kesadaran penuh; belas kasih</span>
+                        </li>
+                        <li>
+                            <strong>Virtue Ethics (Multiple)</strong><br>
+                            <span class="lang-en">Cultivation of character; golden mean; practical wisdom</span>
+                            <span class="lang-id">Budidaya karakter; jalan tengah; kebijaksanaan praktis</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SECTION 02: POWER OF THOUGHT - CONTENT COMPLETE -->
+        <!-- ==================== -->
+        <section id="part2" class="content-section fade-in">
+            <div class="section-number">02</div>
+            <div class="gold-label">Theme 02</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">Power of Thought</span>
                 <span class="lang-id">Kekuatan Pikiran</span>
             </h2>
 
@@ -793,23 +987,6 @@
                         <span class="lang-en">Modern neuroscience confirms what ancient wisdom traditions have long taught: our thoughts physically reshape our brains through neuroplasticity. Every thought strengthens specific neural pathways, making certain patterns of thinking easier and more automatic over time.</span>
                         <span class="lang-id">Ilmu saraf modern mengonfirmasi apa yang telah lama diajarkan tradisi kebijaksanaan kuno: pikiran kita secara fisik membentuk kembali otak kita melalui neuroplastisitas. Setiap pikiran memperkuat jalur saraf tertentu, membuat pola berpikir tertentu lebih mudah dan lebih otomatis seiring waktu.</span>
                     </p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                        <div class="author-profile">
-                            <h4 class="font-bold text-lg mb-2">James Allen</h4>
-                            <p class="text-sm text-gray-600">
-                                <span class="lang-en">British philosophical writer (1864-1912) whose work bridged Victorian morality with New Thought principles.</span>
-                                <span class="lang-id">Penulis filosofis Inggris (1864-1912) yang karyanya menjembatani moralitas Victoria dengan prinsip New Thought.</span>
-                            </p>
-                        </div>
-                        <div class="author-profile">
-                            <h4 class="font-bold text-lg mb-2">Marcus Aurelius</h4>
-                            <p class="text-sm text-gray-600">
-                                <span class="lang-en">Roman Emperor (121-180 CE) and Stoic philosopher who wrote Meditations as personal guidance.</span>
-                                <span class="lang-id">Kaisar Romawi (121-180 M) dan filsuf Stoa yang menulis Meditasi sebagai panduan pribadi.</span>
-                            </p>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="concept-box">
@@ -831,116 +1008,166 @@
                             </div>
                         </li>
                         <li>
-                            <strong class="text-[#1A252F]">Marcus Aurelius - <em>Meditations</em> (2nd Century)</strong><br>
-                            <p class="lang-en text-sm text-gray-600 mt-2">
-                                Written as personal reminders while on military campaigns, Meditations teaches that we have power over our minds, not outside events: "You have power over your mind—not outside events. Realize this, and you will find strength." The Stoic emperor emphasizes that suffering comes not from events themselves, but from our judgments about them.
-                            </p>
-                            <p class="lang-id text-sm text-gray-600 mt-2">
-                                Ditulis sebagai pengingat pribadi selama kampanye militer, Meditasi mengajarkan bahwa kita memiliki kuasa atas pikiran kita, bukan peristiwa luar: "Anda memiliki kuasa atas pikiran Anda—bukan peristiwa luar. Sadari ini, dan Anda akan menemukan kekuatan." Kaisar Stoa menekankan bahwa penderitaan datang bukan dari peristiwa itu sendiri, tetapi dari penilaian kita tentang mereka.
-                            </p>
-                            <div class="mt-3 p-3 bg-yellow-50 border-l-4 border-yellow-300">
-                                <strong class="lang-en">Practical Exercise:</strong>
-                                <strong class="lang-id">Latihan Praktis:</strong>
-                                <p class="lang-en text-sm mt-1">Practice the "View from Above" meditation: When facing a problem, imagine viewing it from a great height, seeing the smallness of individual concerns against the vastness of time and space.</p>
-                                <p class="lang-id text-sm mt-1">Praktikkan meditasi "Pandangan dari Atas": Saat menghadapi masalah, bayangkan melihatnya dari ketinggian besar, melihat kecilnya keprihatinan individu terhadap keluasan waktu dan ruang.</p>
-                            </div>
-                        </li>
-                        <li>
                             <strong class="text-[#1A252F]">Norman Vincent Peale - <em>The Power of Positive Thinking</em> (1952)</strong><br>
                             <p class="lang-en text-sm text-gray-600 mt-2">
-                                Peale synthesized Christian faith with psychological principles, creating a practical methodology for transforming thought patterns. His techniques include affirmation, visualization, and prayer as tools for mental conditioning.
+                                Peale synthesized Christian faith with psychological principles, creating a practical methodology for transforming thought patterns. His techniques include affirmation, visualization, and prayer as tools for mental conditioning. The book became a phenomenon by offering hope and practical techniques during post-war America.
                             </p>
                             <p class="lang-id text-sm text-gray-600 mt-2">
-                                Peale mensintesiskan iman Kristen dengan prinsip psikologis, menciptakan metodologi praktis untuk mengubah pola pikir. Tekniknya termasuk afirmasi, visualisasi, dan doa sebagai alat untuk pengondisian mental.
+                                Peale mensintesiskan iman Kristen dengan prinsip psikologis, menciptakan metodologi praktis untuk mengubah pola pikir. Tekniknya termasuk afirmasi, visualisasi, dan doa sebagai alat untuk pengondisian mental. Buku ini menjadi fenomena dengan menawarkan harapan dan teknik praktis selama Amerika pascaperang.
                             </p>
                         </li>
                     </ul>
                 </div>
+            </div>
+        </section>
 
-                <div class="timeline-box">
-                    <h3 class="text-xl font-bold mb-4">
-                        <span class="lang-en">Evolution of Thought Paradigms</span>
-                        <span class="lang-id">Evolusi Paradigma Pemikiran</span>
+        <!-- ==================== -->
+        <!-- SECTION 03: MIND & CONSCIOUSNESS - TEMPLATE ONLY -->
+        <!-- ==================== -->
+        <section id="part3" class="content-section fade-in">
+            <div class="section-number">03</div>
+            <div class="gold-label">Theme 03</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">Mind & Consciousness</span>
+                <span class="lang-id">Pikiran & Kesadaran</span>
+            </h2>
+
+            <div class="justified-text slide-in-left">
+                <!-- CONTENT PLACEHOLDER - TO BE FILLED LATER -->
+                <div class="content-placeholder">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-600">
+                        <span class="lang-en">Content Development Area</span>
+                        <span class="lang-id">Area Pengembangan Konten</span>
                     </h3>
-                    <ul class="classic-list">
-                        <li>
-                            <strong>Ancient Era</strong><br>
-                            <span class="lang-en">Thought as spiritual force (Stoicism, Buddhism, Taoism)</span>
-                            <span class="lang-id">Pikiran sebagai kekuatan spiritual (Stoaisme, Buddhisme, Taoisme)</span>
-                        </li>
-                        <li>
-                            <strong>19th Century</strong><br>
-                            <span class="lang-en">New Thought Movement: Thought as creative power</span>
-                            <span class="lang-id">Gerakan New Thought: Pikiran sebagai kekuatan kreatif</span>
-                        </li>
-                        <li>
-                            <strong>20th Century</strong><br>
-                            <span class="lang-en">Cognitive psychology: Thought patterns influence behavior</span>
-                            <span class="lang-id">Psikologi kognitif: Pola pikir memengaruhi perilaku</span>
-                        </li>
-                        <li>
-                            <strong>21st Century</strong><br>
-                            <span class="lang-en">Neuroscience: Thoughts physically rewire the brain</span>
-                            <span class="lang-id">Ilmu saraf: Pikiran secara fisik menyusun ulang otak</span>
-                        </li>
-                    </ul>
+                    <p class="mb-4 text-gray-500">
+                        <span class="lang-en">This section will explore works that bridge Eastern contemplative traditions with Western psychology, revealing methods for expanding awareness and achieving mental clarity.</span>
+                        <span class="lang-id">Bagian ini akan mengeksplorasi karya yang menjembatani tradisi kontemplatif Timur dengan psikologi Barat, mengungkapkan metode untuk memperluas kesadaran dan mencapai kejernihan mental.</span>
+                    </p>
+                    
+                    <div class="bg-gray-100 p-6 rounded-lg mb-6">
+                        <h4 class="font-bold mb-3 text-gray-700">
+                            <span class="lang-en">Template Structure Preview</span>
+                            <span class="lang-id">Pratinjau Struktur Template</span>
+                        </h4>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li>• Introduction with drop cap</li>
+                            <li>• Key concept boxes</li>
+                            <li>• Book analyses with exercises</li>
+                            <li>• Supporting timelines/principles</li>
+                            <li>• Author profiles</li>
+                        </ul>
+                    </div>
+                    
+                    <p class="text-sm text-gray-500">
+                        <span class="lang-en">To add content: Copy from completed sections and modify accordingly.</span>
+                        <span class="lang-id">Untuk menambah konten: Salin dari bagian yang sudah selesai dan modifikasi sesuai kebutuhan.</span>
+                    </p>
                 </div>
+            </div>
+        </section>
 
-                <div class="mt-8">
-                    <h3 class="text-2xl font-bold mb-4">
-                        <span class="lang-en">Four Levels of Thought Mastery</span>
-                        <span class="lang-id">Empat Tingkat Penguasaan Pikiran</span>
+        <!-- ==================== -->
+        <!-- SECTION 04: HAPPINESS & MEANING - TEMPLATE ONLY -->
+        <!-- ==================== -->
+        <section id="part4" class="content-section fade-in">
+            <div class="section-number">04</div>
+            <div class="gold-label">Theme 04</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">Happiness & Meaning</span>
+                <span class="lang-id">Kebahagiaan & Makna</span>
+            </h2>
+
+            <div class="justified-text slide-in-left">
+                <!-- CONTENT PLACEHOLDER - TO BE FILLED LATER -->
+                <div class="content-placeholder">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-600">
+                        <span class="lang-en">Content Development Area</span>
+                        <span class="lang-id">Area Pengembangan Konten</span>
                     </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="p-4 border border-gray-200 rounded-lg">
-                            <h4 class="font-bold mb-2">
-                                <span class="lang-en">1. Awareness</span>
-                                <span class="lang-id">1. Kesadaran</span>
-                            </h4>
-                            <p class="text-sm">
-                                <span class="lang-en">Recognizing automatic thought patterns without judgment</span>
-                                <span class="lang-id">Mengenali pola pikir otomatis tanpa penilaian</span>
-                            </p>
-                        </div>
-                        <div class="p-4 border border-gray-200 rounded-lg">
-                            <h4 class="font-bold mb-2">
-                                <span class="lang-en">2. Selection</span>
-                                <span class="lang-id">2. Seleksi</span>
-                            </h4>
-                            <p class="text-sm">
-                                <span class="lang-en">Choosing which thoughts to entertain and which to release</span>
-                                <span class="lang-id">Memilih pikiran mana yang dipertimbangkan dan mana yang dilepaskan</span>
-                            </p>
-                        </div>
-                        <div class="p-4 border border-gray-200 rounded-lg">
-                            <h4 class="font-bold mb-2">
-                                <span class="lang-en">3. Cultivation</span>
-                                <span class="lang-id">3. Kultivasi</span>
-                            </h4>
-                            <p class="text-sm">
-                                <span class="lang-en">Deliberately nurturing beneficial thought patterns</span>
-                                <span class="lang-id">Dengan sengaja memelihara pola pikir yang bermanfaat</span>
-                            </p>
-                        </div>
-                        <div class="p-4 border border-gray-200 rounded-lg">
-                            <h4 class="font-bold mb-2">
-                                <span class="lang-en">4. Integration</span>
-                                <span class="lang-id">4. Integrasi</span>
-                            </h4>
-                            <p class="text-sm">
-                                <span class="lang-en">Making constructive thinking automatic and natural</span>
-                                <span class="lang-id">Membuat pemikiran konstruktif menjadi otomatis dan alami</span>
-                            </p>
+                    <p class="mb-4 text-gray-500">
+                        <span class="lang-en">This section will explore how to build a life of purpose, fulfillment, and authentic joy beyond mere hedonism.</span>
+                        <span class="lang-id">Bagian ini akan mengeksplorasi bagaimana membangun kehidupan dengan tujuan, pemenuhan, dan sukacita otentik di luar sekadar hedonisme.</span>
+                    </p>
+                    
+                    <!-- SKELETON CONTENT FOR REFERENCE -->
+                    <div class="space-y-4">
+                        <div class="skeleton-text w-3/4"></div>
+                        <div class="skeleton-text w-full"></div>
+                        <div class="skeleton-text w-2/3"></div>
+                        
+                        <div class="border border-dashed border-gray-300 p-4 rounded mt-6">
+                            <div class="skeleton-text w-1/3 mb-2"></div>
+                            <div class="skeleton-text w-full mb-2"></div>
+                            <div class="skeleton-text w-4/5"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- PART 2: PROSPERITY & WEALTH -->
-        <section id="part2" class="content-section fade-in">
-            <div class="section-number">02</div>
-            <div class="gold-label">Theme 02</div>
+        <!-- ==================== -->
+        <!-- SECTION 05: HABITS & EFFECTIVENESS - CONTENT COMPLETE -->
+        <!-- ==================== -->
+        <section id="part5" class="content-section fade-in">
+            <div class="section-number">05</div>
+            <div class="gold-label">Theme 05</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">Habits & Effectiveness</span>
+                <span class="lang-id">Kebiasaan & Efektivitas</span>
+            </h2>
+
+            <div class="justified-text slide-in-left">
+                <p>
+                    <span class="lang-en">Success is not a one-time act; it is a habit. The classics shift the focus from "Personality Ethics" (techniques/charm) to "Character Ethics" (principles/integrity). This section explores how systems, routines, and disciplined practices create the architecture for lasting achievement.</span>
+                    <span class="lang-id">Kesuksesan bukanlah tindakan satu kali; itu adalah kebiasaan. Karya klasik mengalihkan fokus dari "Etika Kepribadian" (teknik/pesona) ke "Etika Karakter" (prinsip/integritas). Bagian ini mengeksplorasi bagaimana sistem, rutinitas, dan praktik disiplin menciptakan arsitektur untuk pencapaian yang bertahan lama.</span>
+                </p>
+
+                <div class="concept-box">
+                    <div class="concept-label">THE SCIENCE OF HABIT FORMATION</div>
+                    <p class="mb-4">
+                        <span class="lang-en">Habits operate on a neurological loop: Cue → Craving → Response → Reward. Understanding this loop allows us to design habits intentionally rather than being controlled by them. Effective people don't rely on willpower alone; they create environments and systems that make desired behaviors automatic.</span>
+                        <span class="lang-id">Kebiasaan beroperasi pada lingkaran neurologis: Isyarat → Keinginan → Respons → Hadiah. Memahami lingkaran ini memungkinkan kita merancang kebiasaan dengan sengaja daripada dikendalikan olehnya. Orang yang efektif tidak mengandalkan kemauan saja; mereka menciptakan lingkungan dan sistem yang membuat perilaku yang diinginkan menjadi otomatis.</span>
+                    </p>
+                </div>
+
+                <div class="concept-box">
+                    <div class="concept-label">KEY WORKS ANALYSIS</div>
+                    <ul class="classic-list">
+                        <li>
+                            <strong class="text-[#1A252F]">Stephen Covey - <em>The 7 Habits of Highly Effective People</em> (1989)</strong><br>
+                            <p class="lang-en text-sm text-gray-600 mt-2">
+                                Covey's framework progresses from dependence to independence to interdependence. The first three habits focus on self-mastery: Be Proactive, Begin with the End in Mind, and Put First Things First. The next three address interdependence: Think Win-Win, Seek First to Understand Then to Be Understood, and Synergize. The seventh habit, Sharpen the Saw, emphasizes continuous renewal in four dimensions: physical, social/emotional, mental, and spiritual.
+                            </p>
+                            <p class="lang-id text-sm text-gray-600 mt-2">
+                                Kerangka kerja Covey berkembang dari ketergantungan ke kemandirian ke saling ketergantungan. Tiga kebiasaan pertama berfokus pada penguasaan diri: Jadilah Proaktif, Mulailah dengan Tujuan Akhir dalam Pikiran, dan Dahulukan yang Utama. Tiga berikutnya membahas saling ketergantungan: Berpikir Menang-Menang, Berusaha Memahami Dahulu Baru Dipahami, dan Bersinergi. Kebiasaan ketujuh, Asahlah Gergaji, menekankan pembaruan terus-menerus dalam empat dimensi: fisik, sosial/emosional, mental, dan spiritual.
+                            </p>
+                            <div class="mt-3 p-3 bg-yellow-50 border-l-4 border-yellow-300">
+                                <strong class="lang-en">Practical Exercise:</strong>
+                                <strong class="lang-id">Latihan Praktis:</strong>
+                                <p class="lang-en text-sm mt-1">Create a personal mission statement that defines your values, roles, and long-term goals. Review it weekly to ensure alignment between your daily actions and deepest values.</p>
+                                <p class="lang-id text-sm mt-1">Buat pernyataan misi pribadi yang mendefinisikan nilai, peran, dan tujuan jangka panjang Anda. Tinjau mingguan untuk memastikan keselarasan antara tindakan harian dan nilai terdalam Anda.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <strong class="text-[#1A252F]">Dale Carnegie - <em>How to Win Friends and Influence People</em> (1936)</strong><br>
+                            <p class="lang-en text-sm text-gray-600 mt-2">
+                                Carnegie identified fundamental principles of human relations that remain relevant decades later. The book is organized into four parts: Fundamental Techniques in Handling People, Six Ways to Make People Like You, How to Win People to Your Way of Thinking, and Be a Leader: How to Change People Without Giving Offense. Central to Carnegie's approach is genuine interest in others and appreciation for their importance.
+                            </p>
+                            <p class="lang-id text-sm text-gray-600 mt-2">
+                                Carnegie mengidentifikasi prinsip dasar hubungan manusia yang tetap relevan beberapa dekade kemudian. Buku ini diorganisir menjadi empat bagian: Teknik Fundamental dalam Menangani Orang, Enam Cara Membuat Orang Menyukai Anda, Bagaimana Memenangkan Orang ke Cara Berpikir Anda, dan Jadilah Pemimpin: Bagaimana Mengubah Orang Tanpa Menyinggung. Pusat dari pendekatan Carnegie adalah ketertarikan tulus pada orang lain dan apresiasi atas pentingnya mereka.
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SECTION 06: PROSPERITY & WEALTH - CONTENT COMPLETE -->
+        <!-- ==================== -->
+        <section id="part6" class="content-section fade-in">
+            <div class="section-number">06</div>
+            <div class="gold-label">Theme 06</div>
             <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
                 <span class="lang-en">Prosperity & Wealth</span>
                 <span class="lang-id">Kemakmuran & Kekayaan</span>
@@ -1009,153 +1236,43 @@
             </div>
         </section>
 
-        <!-- PART 3: HABITS & EFFECTIVENESS -->
-        <section id="part3" class="content-section fade-in">
-            <div class="section-number">03</div>
-            <div class="gold-label">Theme 03</div>
-            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
-                <span class="lang-en">Habits & Effectiveness</span>
-                <span class="lang-id">Kebiasaan & Efektivitas</span>
-            </h2>
-
-            <div class="justified-text slide-in-left">
-                <p>
-                    <span class="lang-en">Success is not a one-time act; it is a habit. The classics shift the focus from "Personality Ethics" (techniques/charm) to "Character Ethics" (principles/integrity). This section explores how systems, routines, and disciplined practices create the architecture for lasting achievement.</span>
-                    <span class="lang-id">Kesuksesan bukanlah tindakan satu kali; itu adalah kebiasaan. Karya klasik mengalihkan fokus dari "Etika Kepribadian" (teknik/pesona) ke "Etika Karakter" (prinsip/integritas). Bagian ini mengeksplorasi bagaimana sistem, rutinitas, dan praktik disiplin menciptakan arsitektur untuk pencapaian yang bertahan lama.</span>
-                </p>
-
-                <div class="concept-box">
-                    <div class="concept-label">THE SCIENCE OF HABIT FORMATION</div>
-                    <p class="mb-4">
-                        <span class="lang-en">Habits operate on a neurological loop: Cue → Craving → Response → Reward. Understanding this loop allows us to design habits intentionally rather than being controlled by them. Effective people don't rely on willpower alone; they create environments and systems that make desired behaviors automatic.</span>
-                        <span class="lang-id">Kebiasaan beroperasi pada lingkaran neurologis: Isyarat → Keinginan → Respons → Hadiah. Memahami lingkaran ini memungkinkan kita merancang kebiasaan dengan sengaja daripada dikendalikan olehnya. Orang yang efektif tidak mengandalkan kemauan saja; mereka menciptakan lingkungan dan sistem yang membuat perilaku yang diinginkan menjadi otomatis.</span>
-                    </p>
-                </div>
-
-                <div class="concept-box">
-                    <div class="concept-label">KEY WORKS ANALYSIS</div>
-                    <ul class="classic-list">
-                        <li>
-                            <strong class="text-[#1A252F]">Stephen Covey - <em>The 7 Habits of Highly Effective People</em> (1989)</strong><br>
-                            <p class="lang-en text-sm text-gray-600 mt-2">
-                                Covey's framework progresses from dependence to independence to interdependence. The first three habits focus on self-mastery: Be Proactive, Begin with the End in Mind, and Put First Things First. The next three address interdependence: Think Win-Win, Seek First to Understand Then to Be Understood, and Synergize. The seventh habit, Sharpen the Saw, emphasizes continuous renewal in four dimensions: physical, social/emotional, mental, and spiritual.
-                            </p>
-                            <p class="lang-id text-sm text-gray-600 mt-2">
-                                Kerangka kerja Covey berkembang dari ketergantungan ke kemandirian ke saling ketergantungan. Tiga kebiasaan pertama berfokus pada penguasaan diri: Jadilah Proaktif, Mulailah dengan Tujuan Akhir dalam Pikiran, dan Dahulukan yang Utama. Tiga berikutnya membahas saling ketergantungan: Berpikir Menang-Menang, Berusaha Memahami Dahulu Baru Dipahami, dan Bersinergi. Kebiasaan ketujuh, Asahlah Gergaji, menekankan pembaruan terus-menerus dalam empat dimensi: fisik, sosial/emosional, mental, dan spiritual.
-                            </p>
-                            <div class="mt-3 p-3 bg-yellow-50 border-l-4 border-yellow-300">
-                                <strong class="lang-en">Practical Exercise:</strong>
-                                <strong class="lang-id">Latihan Praktis:</strong>
-                                <p class="lang-en text-sm mt-1">Create a personal mission statement that defines your values, roles, and long-term goals. Review it weekly to ensure alignment between your daily actions and deepest values.</p>
-                                <p class="lang-id text-sm mt-1">Buat pernyataan misi pribadi yang mendefinisikan nilai, peran, dan tujuan jangka panjang Anda. Tinjau mingguan untuk memastikan keselarasan antara tindakan harian dan nilai terdalam Anda.</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- PART 4: HAPPINESS & MEANING -->
-        <section id="part4" class="content-section fade-in">
-            <div class="section-number">04</div>
-            <div class="gold-label">Theme 04</div>
-            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
-                <span class="lang-en">Happiness & Meaning</span>
-                <span class="lang-id">Kebahagiaan & Makna</span>
-            </h2>
-
-            <div class="justified-text slide-in-left">
-                <p class="drop-cap">
-                    <span class="lang-en">True happiness is not the absence of suffering, but the presence of meaning. The classics teach us to look beyond hedonism toward eudaimonia—the Greek concept of human flourishing. This section explores how to build a life of purpose, fulfillment, and authentic joy.</span>
-                    <span class="lang-id">Kebahagiaan sejati bukanlah ketiadaan penderitaan, melainkan kehadiran makna. Karya klasik mengajarkan kita untuk melihat melampaui hedonisme menuju eudaimonia—konsep Yunani tentang kemakmuran manusia. Bagian ini mengeksplorasi bagaimana membangun kehidupan dengan tujuan, pemenuhan, dan sukacita otentik.</span>
-                </p>
-
-                <div class="concept-box">
-                    <div class="concept-label">THE PARADOX OF HAPPINESS</div>
-                    <p class="mb-4">
-                        <span class="lang-en">Research shows that happiness often eludes those who pursue it directly. Instead, it emerges as a byproduct of meaningful engagement, strong relationships, and contribution to something larger than oneself. The happiness classics distinguish between pleasure (temporary sensation) and fulfillment (lasting satisfaction).</span>
-                        <span class="lang-id">Penelitian menunjukkan bahwa kebahagiaan sering menghindari mereka yang mengejarnya secara langsung. Sebaliknya, itu muncul sebagai produk sampingan dari keterlibatan yang bermakna, hubungan yang kuat, dan kontribusi pada sesuatu yang lebih besar dari diri sendiri. Karya klasik kebahagiaan membedakan antara kesenangan (sensasi sementara) dan pemenuhan (kepuasan abadi).</span>
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- PART 5: MIND & CONSCIOUSNESS -->
-        <section id="part5" class="content-section fade-in">
-            <div class="section-number">05</div>
-            <div class="gold-label">Theme 05</div>
-            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
-                <span class="lang-en">Mind & Consciousness</span>
-                <span class="lang-id">Pikiran & Kesadaran</span>
-            </h2>
-
-            <div class="justified-text slide-in-left">
-                <p class="drop-cap">
-                    <span class="lang-en">Beyond mere thinking lies consciousness—the awareness that observes thoughts themselves. This section explores works that bridge Eastern contemplative traditions with Western psychology, revealing methods for expanding awareness and achieving mental clarity.</span>
-                    <span class="lang-id">Di balik sekadar berpikir terletak kesadaran—kesadaran yang mengamati pikiran itu sendiri. Bagian ini mengeksplorasi karya yang menjembatani tradisi kontemplatif Timur dengan psikologi Barat, mengungkapkan metode untuk memperluas kesadaran dan mencapai kejernihan mental.</span>
-                </p>
-
-                <div class="concept-box">
-                    <div class="concept-label">LEVELS OF CONSCIOUSNESS</div>
-                    <p class="mb-4">
-                        <span class="lang-en">Consciousness exists on a spectrum from ordinary waking awareness to expanded states of perception. The classics in this section provide maps for navigating this inner landscape, from mindfulness meditation to peak experiences.</span>
-                        <span class="lang-id">Kesadaran ada pada spektrum dari kesadaran bangun biasa hingga keadaan persepsi yang diperluas. Karya klasik di bagian ini memberikan peta untuk menavigasi lanskap batin ini, dari meditasi mindfulness hingga pengalaman puncak.</span>
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- PART 6: PURPOSE & MISSION -->
-        <section id="part6" class="content-section fade-in">
-            <div class="section-number">06</div>
-            <div class="gold-label">Theme 06</div>
+        <!-- ==================== -->
+        <!-- SECTION 07: PURPOSE & MISSION - TEMPLATE ONLY -->
+        <!-- ==================== -->
+        <section id="part7" class="content-section fade-in">
+            <div class="section-number">07</div>
+            <div class="gold-label">Theme 07</div>
             <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
                 <span class="lang-en">Purpose & Mission</span>
                 <span class="lang-id">Tujuan & Misi</span>
             </h2>
 
             <div class="justified-text slide-in-left">
-                <p class="drop-cap">
-                    <span class="lang-en">A life without purpose is a ship without a rudder. The classics in this section guide readers toward discovering their unique calling—that intersection of passion, talent, and service that creates meaning beyond mere achievement.</span>
-                    <span class="lang-id">Hidup tanpa tujuan adalah kapal tanpa kemudi. Karya klasik di bagian ini memandu pembaca menuju penemuan panggilan unik mereka—persimpangan antara gairah, bakat, dan pelayanan yang menciptakan makna di luar sekadar pencapaian.</span>
-                </p>
-
-                <div class="concept-box">
-                    <div class="concept-label">THE THREE ELEMENTS OF PURPOSE</div>
-                    <p class="mb-4">
-                        <span class="lang-en">True purpose emerges when three elements align: what you love (passion), what you're good at (talent), and what the world needs (service). The classics provide frameworks for discovering this alignment and living it daily.</span>
-                        <span class="lang-id">Tujuan sejati muncul ketika tiga elemen selaras: apa yang Anda cintai (gairah), apa yang Anda kuasai (bakat), dan apa yang dibutuhkan dunia (pelayanan). Karya klasik memberikan kerangka kerja untuk menemukan keselarasan ini dan menghidupinya setiap hari.</span>
+                <!-- CONTENT PLACEHOLDER - TO BE FILLED LATER -->
+                <div class="content-placeholder">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-600">
+                        <span class="lang-en">Content Development Area</span>
+                        <span class="lang-id">Area Pengembangan Konten</span>
+                    </h3>
+                    <p class="mb-4 text-gray-500">
+                        <span class="lang-en">This section will guide readers toward discovering their unique calling—that intersection of passion, talent, and service that creates meaning beyond mere achievement.</span>
+                        <span class="lang-id">Bagian ini akan memandu pembaca menuju penemuan panggilan unik mereka—persimpangan antara gairah, bakat, dan pelayanan yang menciptakan makna di luar sekadar pencapaian.</span>
                     </p>
+                    
+                    <!-- EXAMPLE OF MINIMAL CONTENT STRUCTURE -->
+                    <div class="border-l-4 border-yellow-300 pl-4 py-2 my-4">
+                        <p class="text-gray-600 italic">
+                            <span class="lang-en">Sample content structure will appear here when developed.</span>
+                            <span class="lang-id">Struktur konten contoh akan muncul di sini ketika dikembangkan.</span>
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- PART 7: TRANSFORMATION & CHANGE -->
-        <section id="part7" class="content-section fade-in">
-            <div class="section-number">07</div>
-            <div class="gold-label">Theme 07</div>
-            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
-                <span class="lang-en">Transformation & Change</span>
-                <span class="lang-id">Transformasi & Perubahan</span>
-            </h2>
-
-            <div class="justified-text slide-in-left">
-                <p class="drop-cap">
-                    <span class="lang-en">Change is inevitable, but transformation is a choice. This section explores works that provide roadmaps for profound personal metamorphosis—moving from who we are to who we can become through deliberate, courageous action.</span>
-                    <span class="lang-id">Perubahan tidak terhindarkan, tetapi transformasi adalah pilihan. Bagian ini mengeksplorasi karya yang memberikan peta jalan untuk metamorfosis pribadi yang mendalam—bergerak dari siapa kita menuju siapa yang bisa kita menjadi melalui tindakan yang disengaja dan berani.</span>
-                </p>
-
-                <div class="concept-box">
-                    <div class="concept-label">THE TRANSFORMATION CYCLE</div>
-                    <p class="mb-4">
-                        <span class="lang-en">Lasting transformation follows a predictable cycle: awakening (realizing change is needed), surrendering (releasing old patterns), reconstructing (building new habits), and integration (making changes permanent).</span>
-                        <span class="lang-id">Transformasi abadi mengikuti siklus yang dapat diprediksi: kebangkitan (menyadari perubahan diperlukan), penyerahan (melepaskan pola lama), rekonstruksi (membangun kebiasaan baru), dan integrasi (membuat perubahan permanen).</span>
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- PART 8: POTENTIAL & MASTERY -->
+        <!-- ==================== -->
+        <!-- SECTION 08: POTENTIAL & MASTERY - TEMPLATE ONLY -->
+        <!-- ==================== -->
         <section id="part8" class="content-section fade-in">
             <div class="section-number">08</div>
             <div class="gold-label">Theme 08</div>
@@ -1165,116 +1282,126 @@
             </h2>
 
             <div class="justified-text slide-in-left">
-                <p class="drop-cap">
-                    <span class="lang-en">Human potential is not fixed but expandable. This section examines works that reveal how ordinary people achieve extraordinary mastery through deliberate practice, focused attention, and continuous learning over decades.</span>
-                    <span class="lang-id">Potensi manusia tidak tetap tetapi dapat diperluas. Bagian ini memeriksa karya yang mengungkapkan bagaimana orang biasa mencapai penguasaan luar biasa melalui latihan yang disengaja, perhatian terfokus, dan pembelajaran terus-menerus selama beberapa dekade.</span>
-                </p>
-
-                <div class="concept-box">
-                    <div class="concept-label">THE 10,000-HOUR PRINCIPLE</div>
-                    <p class="mb-4">
-                        <span class="lang-en">Research shows that world-class expertise requires approximately 10,000 hours of deliberate practice. The classics in this section explore how to structure practice for maximum growth and how to sustain motivation through the "plateau" periods of skill development.</span>
-                        <span class="lang-id">Penelitian menunjukkan bahwa keahlian kelas dunia membutuhkan sekitar 10.000 jam latihan yang disengaja. Karya klasik di bagian ini mengeksplorasi bagaimana menyusun latihan untuk pertumbuhan maksimal dan bagaimana mempertahankan motivasi melalui periode "dataran tinggi" pengembangan keterampilan.</span>
+                <!-- CONTENT PLACEHOLDER - TO BE FILLED LATER -->
+                <div class="content-placeholder">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-600">
+                        <span class="lang-en">Content Development Area</span>
+                        <span class="lang-id">Area Pengembangan Konten</span>
+                    </h3>
+                    <p class="mb-4 text-gray-500">
+                        <span class="lang-en">This section examines works that reveal how ordinary people achieve extraordinary mastery through deliberate practice, focused attention, and continuous learning over decades.</span>
+                        <span class="lang-id">Bagian ini memeriksa karya yang mengungkapkan bagaimana orang biasa mencapai penguasaan luar biasa melalui latihan yang disengaja, perhatian terfokus, dan pembelajaran terus-menerus selama beberapa dekade.</span>
                     </p>
+                    
+                    <div class="text-center py-8">
+                        <div class="inline-block p-4 bg-yellow-50 rounded-full">
+                            <span class="text-3xl">📝</span>
+                        </div>
+                        <p class="mt-4 text-gray-500 text-sm">
+                            <span class="lang-en">Follow the template structure from completed sections</span>
+                            <span class="lang-id">Ikuti struktur template dari bagian yang sudah selesai</span>
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- PART 9: BALANCE & HARMONY -->
+        <!-- ==================== -->
+        <!-- SECTION 09: TRANSFORMATION & CHANGE - TEMPLATE ONLY -->
+        <!-- ==================== -->
         <section id="part9" class="content-section fade-in">
             <div class="section-number">09</div>
             <div class="gold-label">Theme 09</div>
+            <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
+                <span class="lang-en">Transformation & Change</span>
+                <span class="lang-id">Transformasi & Perubahan</span>
+            </h2>
+
+            <div class="justified-text slide-in-left">
+                <!-- CONTENT PLACEHOLDER - TO BE FILLED LATER -->
+                <div class="content-placeholder">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-600">
+                        <span class="lang-en">Content Development Area</span>
+                        <span class="lang-id">Area Pengembangan Konten</span>
+                    </h3>
+                    <p class="mb-4 text-gray-500">
+                        <span class="lang-en">This section explores works that provide roadmaps for profound personal metamorphosis—moving from who we are to who we can become through deliberate, courageous action.</span>
+                        <span class="lang-id">Bagian ini mengeksplorasi karya yang memberikan peta jalan untuk metamorfosis pribadi yang mendalam—bergerak dari siapa kita menuju siapa yang bisa kita menjadi melalui tindakan yang disengaja dan berani.</span>
+                    </p>
+                    
+                    <!-- SKELETON STRUCTURE -->
+                    <div class="space-y-3">
+                        <div class="skeleton-text w-1/2"></div>
+                        <div class="skeleton-text w-3/4"></div>
+                        <div class="skeleton-text w-2/3"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SECTION 10: BALANCE & HARMONY - TEMPLATE ONLY -->
+        <!-- ==================== -->
+        <section id="part10" class="content-section fade-in">
+            <div class="section-number">10</div>
+            <div class="gold-label">Theme 10</div>
             <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
                 <span class="lang-en">Balance & Harmony</span>
                 <span class="lang-id">Keseimbangan & Harmoni</span>
             </h2>
 
             <div class="justified-text slide-in-left">
-                <p class="drop-cap">
-                    <span class="lang-en">True success is not about maximizing any single area of life, but about creating harmony among all dimensions: work, relationships, health, and spirit. This section explores works that teach the art of balanced living in an unbalanced world.</span>
-                    <span class="lang-id">Kesuksesan sejati bukan tentang memaksimalkan satu area kehidupan, tetapi tentang menciptakan harmoni di antara semua dimensi: pekerjaan, hubungan, kesehatan, dan jiwa. Bagian ini mengeksplorasi karya yang mengajarkan seni hidup seimbang di dunia yang tidak seimbang.</span>
-                </p>
-
-                <div class="concept-box">
-                    <div class="concept-label">THE FOUR QUADRANTS OF LIFE</div>
-                    <p class="mb-4">
-                        <span class="lang-en">A balanced life attends to four quadrants: physical (body/health), mental (intellect/growth), emotional (relationships/feelings), and spiritual (meaning/connection). Neglecting any quadrant eventually undermines the others.</span>
-                        <span class="lang-id">Hidup yang seimbang memperhatikan empat kuadran: fisik (tubuh/kesehatan), mental (intelek/pertumbuhan), emosional (hubungan/perasaan), dan spiritual (makna/koneksi). Mengabaikan kuadran mana pun akhirnya merusak yang lain.</span>
+                <!-- CONTENT PLACEHOLDER - TO BE FILLED LATER -->
+                <div class="content-placeholder">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-600">
+                        <span class="lang-en">Content Development Area</span>
+                        <span class="lang-id">Area Pengembangan Konten</span>
+                    </h3>
+                    <p class="mb-4 text-gray-500">
+                        <span class="lang-en">This section explores works that teach the art of balanced living in an unbalanced world—creating harmony among work, relationships, health, and spirit.</span>
+                        <span class="lang-id">Bagian ini mengeksplorasi karya yang mengajarkan seni hidup seimbang di dunia yang tidak seimbang—menciptakan harmoni antara pekerjaan, hubungan, kesehatan, dan jiwa.</span>
                     </p>
+                    
+                    <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                        <p class="text-sm text-gray-600">
+                            <span class="lang-en">Template ready for content development. Copy structure from completed sections.</span>
+                            <span class="lang-id">Template siap untuk pengembangan konten. Salin struktur dari bagian yang sudah selesai.</span>
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- PART 10: WISDOM & LEGACY -->
-        <section id="part10" class="content-section fade-in">
-            <div class="section-number">10</div>
-            <div class="gold-label">Theme 10</div>
+        <!-- ==================== -->
+        <!-- SECTION 11: WISDOM & LEGACY - TEMPLATE ONLY -->
+        <!-- ==================== -->
+        <section id="part11" class="content-section fade-in">
+            <div class="section-number">11</div>
+            <div class="gold-label">Theme 11</div>
             <h2 class="text-4xl sm:text-5xl mb-10 leading-tight">
                 <span class="lang-en">Wisdom & Legacy</span>
                 <span class="lang-id">Kebijaksanaan & Warisan</span>
             </h2>
 
             <div class="justified-text slide-in-left">
-                <p class="drop-cap">
-                    <span class="lang-en">The ultimate purpose of personal development is not self-aggrandizement but contribution—leaving the world better than we found it. This final section explores works that transcend personal success to address how we can live wisely and create lasting positive impact.</span>
-                    <span class="lang-id">Tujuan akhir pengembangan pribadi bukan peningkatan diri tetapi kontribusi—meninggalkan dunia lebih baik daripada yang kita temui. Bagian akhir ini mengeksplorasi karya yang melampaui kesuksesan pribadi untuk membahas bagaimana kita dapat hidup dengan bijaksana dan menciptakan dampak positif yang abadi.</span>
-                </p>
-
-                <div class="concept-box">
-                    <div class="concept-label">THE THREE GENERATIONS OF IMPACT</div>
-                    <p class="mb-4">
-                        <span class="lang-en">True legacy operates across three generations: what we receive from our ancestors, what we create in our lifetime, and what we pass to future generations. The classics in this section help readers think beyond their lifespan to their lasting influence.</span>
-                        <span class="lang-id">Warisan sejati beroperasi melintasi tiga generasi: apa yang kita terima dari leluhur kita, apa yang kita ciptakan dalam hidup kita, dan apa yang kita wariskan kepada generasi mendatang. Karya klasik di bagian ini membantu pembaca berpikir melampaui rentang hidup mereka hingga pengaruh abadi mereka.</span>
-                    </p>
-                </div>
-
-                <div class="divider"></div>
-                
-                <div class="text-center py-12">
-                    <h3 class="text-3xl font-bold mb-6">
-                        <span class="lang-en">The Journey Continues</span>
-                        <span class="lang-id">Perjalanan Berlanjut</span>
+                <!-- CONTENT PLACEHOLDER - TO BE FILLED LATER -->
+                <div class="content-placeholder">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-600">
+                        <span class="lang-en">Content Development Area</span>
+                        <span class="lang-id">Area Pengembangan Konten</span>
                     </h3>
-                    
-                    <blockquote class="mx-auto max-w-2xl mb-8">
-                        <span class="lang-en">"The only true wisdom is in knowing you know nothing." — Socrates</span>
-                        <span class="lang-id">"Kebijaksanaan sejati satu-satunya adalah dalam mengetahui bahwa Anda tidak tahu apa-apa." — Socrates</span>
-                    </blockquote>
-                    
-                    <p class="text-lg mb-8">
-                        <span class="lang-en">This masterclass represents not an end, but a beginning—an invitation to engage with the great conversation about human potential that has spanned centuries. The 50 works distilled here are doorways, not destinations.</span>
-                        <span class="lang-id">Masterclass ini mewakili bukan akhir, tetapi awal—undangan untuk terlibat dengan percakapan besar tentang potensi manusia yang telah membentang berabad-abad. 50 karya yang disaring di sini adalah pintu, bukan tujuan.</span>
+                    <p class="mb-4 text-gray-500">
+                        <span class="lang-en">This final section explores works that transcend personal success to address how we can live wisely and create lasting positive impact—leaving the world better than we found it.</span>
+                        <span class="lang-id">Bagian akhir ini mengeksplorasi karya yang melampaui kesuksesan pribadi untuk membahas bagaimana kita dapat hidup dengan bijaksana dan menciptakan dampak positif yang abadi—meninggalkan dunia lebih baik daripada yang kita temui.</span>
                     </p>
                     
-                    <div class="bg-gradient-to-r from-[#D4AF37]/10 to-[#1A252F]/10 p-8 rounded-lg border border-[#D4AF37]/20">
-                        <h4 class="font-bold text-xl mb-4">
-                            <span class="lang-en">Your Next Steps</span>
-                            <span class="lang-id">Langkah Selanjutnya Anda</span>
-                        </h4>
-                        <ul class="classic-list text-left max-w-md mx-auto">
-                            <li>
-                                <span class="lang-en"><strong>Choose one theme</strong> that resonates most with your current life situation</span>
-                                <span class="lang-id"><strong>Pilih satu tema</strong> yang paling sesuai dengan situasi hidup Anda saat ini</span>
-                            </li>
-                            <li>
-                                <span class="lang-en"><strong>Select one key work</strong> from that theme to study deeply over the next month</span>
-                                <span class="lang-id"><strong>Pilih satu karya utama</strong> dari tema itu untuk dipelajari secara mendalam selama bulan depan</span>
-                            </li>
-                            <li>
-                                <span class="lang-en"><strong>Implement one exercise</strong> consistently for 30 days to build new neural pathways</span>
-                                <span class="lang-id"><strong>Implementasikan satu latihan</strong> secara konsisten selama 30 hari untuk membangun jalur saraf baru</span>
-                            </li>
-                            <li>
-                                <span class="lang-en"><strong>Share your insights</strong> with others to reinforce your learning and contribute to theirs</span>
-                                <span class="lang-id"><strong>Bagikan wawasan Anda</strong> dengan orang lain untuk memperkuat pembelajaran Anda dan berkontribusi pada mereka</span>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="mt-12">
+                    <div class="text-center py-8">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-yellow-100 rounded-full mb-4">
+                            <span class="text-2xl">✨</span>
+                        </div>
                         <p class="text-gray-600">
-                            <span class="lang-en">"History is the biography of great men." — Thomas Carlyle</span>
-                            <span class="lang-id">"Sejarah adalah biografi orang-orang hebat." — Thomas Carlyle</span>
+                            <span class="lang-en">This section will have a special concluding content with actionable next steps</span>
+                            <span class="lang-id">Bagian ini akan memiliki konten penutup khusus dengan langkah-langkah tindakan berikutnya</span>
                         </p>
                     </div>
                 </div>
@@ -1372,7 +1499,7 @@
 
         // Progress Bar Logic
         function updateProgress(sectionId) {
-            const sections = ['intro', 'part1', 'part2', 'part3', 'part4', 'part5', 'part6', 'part7', 'part8', 'part9', 'part10'];
+            const sections = ['intro', 'part1', 'part2', 'part3', 'part4', 'part5', 'part6', 'part7', 'part8', 'part9', 'part10', 'part11'];
             const currentIndex = sections.indexOf(sectionId);
             const progressPercentage = ((currentIndex + 1) / sections.length) * 100;
             
@@ -1391,7 +1518,7 @@
             const progressBar = document.getElementById('progressBar');
             if (progressBar && scrollPercentage > 0) {
                 // Combine section progress with scroll progress for current section
-                const sections = ['intro', 'part1', 'part2', 'part3', 'part4', 'part5', 'part6', 'part7', 'part8', 'part9', 'part10'];
+                const sections = ['intro', 'part1', 'part2', 'part3', 'part4', 'part5', 'part6', 'part7', 'part8', 'part9', 'part10', 'part11'];
                 const currentIndex = sections.indexOf(currentSection);
                 const sectionProgress = ((currentIndex + 1) / sections.length) * 100;
                 const scrollProgress = scrollPercentage / sections.length;
