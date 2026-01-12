@@ -21,7 +21,7 @@
 <body class="bg-gray-50 min-h-screen">
 
   <header class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="px-4 py-4 flex justify-between items-center max-w-md mx-auto">
+    <div class="px-4 py-4 flex justify-between items-center max-w-6xl mx-auto">
       <h1 class="text-xl font-bold text-blue-700">Best Books Summary</h1>
       <label for="drawer-check" class="cursor-pointer p-1 rounded-md hover:bg-gray-100">
         <svg class="w-7 h-7 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -43,7 +43,7 @@
     </div>
   </div>
 
-  <main id="content" class="pb-10 max-w-md mx-auto min-h-screen"></main>
+  <main id="content" class="pb-10 max-w-6xl mx-auto min-h-screen"></main>
 
   <script>
     /* DATA BUKU DIPERBARUI
@@ -123,13 +123,13 @@
       if (page === 'home') {
         content.innerHTML = `
           <div class="px-4 pt-6">            
-            <div class="relative max-w-md mx-auto mb-8">
+            <div class="relative max-w-4xl mx-auto mb-8">
                 <input id="search-input" type="text" placeholder="Search title or author ..." 
                        class="w-full px-4 py-3 rounded-xl border border-gray-200 shadow-sm focus:border-blue-500 focus:outline-none transition text-sm bg-white"
                        oninput="searchBooks()">
             </div>
 
-            <div id="book-grid" class="grid grid-cols-2 gap-4 px-1 pb-10">
+            <div id="book-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 px-1 pb-10">
               ${renderBooks(books)}
             </div>
           </div>`;
