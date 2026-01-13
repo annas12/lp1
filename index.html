@@ -142,11 +142,13 @@
       if (bookList.length === 0) {
           return `<div class="col-span-2 text-center text-gray-400 py-10">No books found</div>`;
       }
-      return bookList.map(b => `
+      return bookList.map(b => {
+        const imagePath = encodeURI(b.img);
+        return `
         <div onclick="openBook('${b.dir}')" class="cursor-pointer group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col h-full">
           
           <div class="aspect-[2/3] w-full relative overflow-hidden bg-gray-200">
-            <img src="${b.img}" alt="${b.title}" loading="lazy" 
+            <img src="${imagePath}" alt="${b.title}" loading="lazy" decoding="async"
                  class="book-image absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
                  onerror="this.onerror=null;this.src='https://placehold.co/600x900?text=No+Image';">
           </div>
@@ -155,7 +157,8 @@
             <h3 class="font-bold text-gray-800 text-sm line-clamp-2 leading-tight mb-1 text-center">${b.title}</h3>
             <p class="text-xs text-gray-500 font-medium text-center">${b.author}</p>
           </div>
-        </div>`).join('');
+        </div>`;
+      }).join('');
     }
 
     function searchBooks() {
@@ -167,7 +170,7 @@
       document.getElementById('book-grid').innerHTML = renderBooks(filtered);
     }
 
-    window.onload = () => showPage('home');
+    document.addEventListener('DOMContentLoaded', () => showPage('home'));
   </script>
 </body>
 </html>

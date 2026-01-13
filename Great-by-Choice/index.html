@@ -27,6 +27,7 @@
             -webkit-font-smoothing: antialiased;
             /* Subtle gradient texture for cloudy feel */
             background-image: linear-gradient(to bottom, #F0F9FF, #F8FAFC);
+            padding-top: 80px;
         }
         
         /* Typography */
@@ -99,40 +100,70 @@
             padding-left: 28px !important;
         }
         
-        /* --- FLOATING CONTROLS --- */
-        .float-btn {
-            position: fixed; z-index: 2001; cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            background: var(--bg-paper);
-            border: 2px solid var(--text-ink);
+        /* Header Bar */
+        .header-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(248, 250, 252, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+            box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
+            z-index: 2200;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+        }
+        .menu-btn { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+        .right-controls { display: flex; align-items: center; gap: 18px; }
+        .back-link {
+            width: 36px;
+            height: 36px;
+            border-radius: 999px;
+            border: 1px solid #cbd5e1;
+            background: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #0f172a;
+            transition: transform 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .back-link:hover { transform: translateX(-3px); }
+        .lang-toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: #0f172a;
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px solid #cbd5e1;
+            background: #fff;
+        }
+        .lang-opt { color: rgba(15, 23, 42, 0.65); transition: color 0.2s ease; padding: 2px 6px; border-radius: 999px; }
+        .lang-opt.active { color: #fff; background: #0f172a; border-bottom: none; }
+        .lang-sep { color: rgba(15, 23, 42, 0.3); }
+
+        .drawer-toggle {
+            position: static;
+            top: auto;
+            left: auto;
+            z-index: auto;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            border: 1px solid rgba(15, 23, 42, 0.2);
             color: var(--text-ink);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        .float-btn:hover { transform: translateY(-3px); background: var(--accent-red); border-color: var(--accent-red); color: var(--text-white); }
-
-        .drawer-toggle { 
-            top: 30px; left: 30px; 
-            width: 48px; height: 48px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 50%;
-        }
-        
-        .lang-switch {
-            top: 30px; right: 30px; 
-            font-family: 'Oswald', sans-serif;
-            font-size: 14px; font-weight: 700;
-            padding: 10px 20px;
-            letter-spacing: 0.1em;
-            border-radius: 4px;
-        }
-
-        /* New Home Button styling */
-        .home-btn {
-            top: 90px; /* Positioned below the language switch */
-            right: 30px;
-            width: 48px; height: 48px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 50%;
         }
 
         /* --- DECORATIVE ELEMENTS --- */
@@ -201,7 +232,6 @@
             .nav-drawer { width: 85%; }
             .drop-cap::first-letter { font-size: 3.5rem; }
             h2 { font-size: 2.5rem; }
-            .home-btn { top: 80px; right: 30px; } /* Adjust mobile position */
         }
         
         @media (min-width: 641px) {
@@ -211,21 +241,27 @@
 </head>
 <body>
 
-    <button class="float-btn lang-switch" onclick="toggleLanguage()">
-        <span class="lang-text">INDONESIA</span>
-    </button>
-
-    <a href="https://lp1.affiliateid.my.id/" class="float-btn home-btn" aria-label="Home">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    </a>
-
-    <button class="float-btn drawer-toggle" onclick="toggleDrawer()">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-    </button>
+    <header class="header-bar">
+        <button class="drawer-toggle menu-btn" onclick="toggleDrawer()" aria-label="Menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+        <div class="right-controls">
+            <a class="back-link" href="../index.html" aria-label="Back to home">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 18l-6-6 6-6" />
+                </svg>
+            </a>
+            <button class="lang-toggle-container" onclick="toggleLanguage()" aria-label="Toggle language">
+                <span class="lang-opt lang-opt-id">ID</span>
+                <span class="lang-sep">|</span>
+                <span class="lang-opt lang-opt-en active">EN</span>
+            </button>
+        </div>
+    </header>
 
     <div class="nav-overlay" onclick="closeDrawer()"></div>
     <nav class="nav-drawer flex flex-col h-full">
@@ -555,16 +591,23 @@
         function updateContent() {
             const enElements = document.querySelectorAll('.lang-en');
             const idElements = document.querySelectorAll('.lang-id');
-            const langBtnText = document.querySelector('.lang-text');
+            const langEn = document.querySelector('.lang-opt-en');
+            const langId = document.querySelector('.lang-opt-id');
 
             if (currentLang === 'en') {
                 enElements.forEach(el => el.style.display = 'block');
                 idElements.forEach(el => el.style.display = 'none');
-                langBtnText.innerText = "INDONESIA";
+                if (langEn && langId) {
+                    langEn.classList.add('active');
+                    langId.classList.remove('active');
+                }
             } else {
                 enElements.forEach(el => el.style.display = 'none');
                 idElements.forEach(el => el.style.display = 'block');
-                langBtnText.innerText = "ENGLISH";
+                if (langEn && langId) {
+                    langEn.classList.remove('active');
+                    langId.classList.add('active');
+                }
             }
         }
 

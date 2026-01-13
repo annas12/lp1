@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; padding-top: 80px; }
         .fade-in { animation: fadeIn 0.5s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .active-tab { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); }
@@ -54,14 +54,56 @@
         .drawer-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4); }
         .drawer-toggle.open { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
         
-        /* Floating Language Button */
-        .lang-switch-float {
-            position: fixed; bottom: 30px; right: 30px; z-index: 1002;
-            background: white; border: 2px solid #3b82f6; border-radius: 50px;
-            padding: 10px 20px; cursor: pointer; font-weight: bold; color: #3b82f6;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease;
+        /* Header Bar */
+        .header-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+            box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
+            z-index: 1200;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
         }
-        .lang-switch-float:hover { background: #3b82f6; color: white; transform: translateY(-3px); }
+        .menu-btn { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+        .right-controls { display: flex; align-items: center; gap: 18px; }
+        .back-link {
+            width: 36px;
+            height: 36px;
+            border-radius: 999px;
+            border: 1px solid #cbd5e1;
+            background: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #0f172a;
+            transition: transform 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .back-link:hover { transform: translateX(-3px); }
+        .lang-toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: #0f172a;
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px solid #cbd5e1;
+            background: #fff;
+        }
+        .lang-opt { color: rgba(15, 23, 42, 0.65); transition: color 0.2s ease; padding: 2px 6px; border-radius: 999px; }
+        .lang-opt.active { color: #fff; background: #0f172a; border-bottom: none; }
+        .lang-sep { color: rgba(15, 23, 42, 0.3); }
 
         .hamburger { width: 24px; height: 18px; position: relative; }
         .hamburger span { display: block; position: absolute; height: 3px; width: 100%; background: white; border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
@@ -76,23 +118,45 @@
         .nav-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
         .nav-item:hover::before { left: 100%; }
         
-        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } .drawer-toggle { top: 15px; left: 15px; padding: 10px; } }
-        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .drawer-toggle { top: 12px; left: 12px; padding: 8px; } .hamburger { width: 20px; height: 15px; } }
+        @media (max-width: 768px) { .nav-drawer { width: 280px; left: -280px; } }
+        @media (max-width: 480px) { .nav-drawer { width: 260px; left: -260px; } .hamburger { width: 20px; height: 15px; } }
+
+        .drawer-toggle {
+            position: static;
+            top: auto;
+            left: auto;
+            z-index: auto;
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+        }
+        .drawer-toggle:hover { transform: none; box-shadow: none; }
+        .drawer-toggle.open { background: transparent; box-shadow: none; }
+        .hamburger span { background: currentColor; }
     </style>
 </head>
 <body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
-
-    <button class="lang-switch-float" onclick="toggleLanguage()">
-        <span class="lang-text">🇮🇩 Switch to ID</span>
-    </button>
-
-    <button class="drawer-toggle" onclick="toggleDrawer()">
-        <div class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
+    <header class="header-bar">
+        <button class="drawer-toggle menu-btn" onclick="toggleDrawer()" aria-label="Menu">
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </button>
+        <div class="right-controls">
+            <a class="back-link" href="../index.html" aria-label="Back to home">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 18l-6-6 6-6" />
+                </svg>
+            </a>
+            <button class="lang-toggle-container" onclick="toggleLanguage()" aria-label="Toggle language">
+                <span class="lang-opt lang-opt-id">ID</span>
+                <span class="lang-sep">|</span>
+                <span class="lang-opt lang-opt-en active">EN</span>
+            </button>
         </div>
-    </button>
+    </header>
     
     <div class="nav-overlay" onclick="closeDrawer()"></div>
     
@@ -904,16 +968,23 @@
         function updateLanguageDisplay() {
             const enElements = document.querySelectorAll('.lang-en');
             const idElements = document.querySelectorAll('.lang-id');
-            const btnText = document.querySelector('.lang-text');
+            const langEn = document.querySelector('.lang-opt-en');
+            const langId = document.querySelector('.lang-opt-id');
 
             if (currentLang === 'en') {
                 enElements.forEach(el => el.style.display = 'block');
                 idElements.forEach(el => el.style.display = 'none');
-                btnText.textContent = '🇮🇩 Switch to ID';
+                if (langEn && langId) {
+                    langEn.classList.add('active');
+                    langId.classList.remove('active');
+                }
             } else {
                 enElements.forEach(el => el.style.display = 'none');
                 idElements.forEach(el => el.style.display = 'block');
-                btnText.textContent = '🇺🇸 Switch to EN';
+                if (langEn && langId) {
+                    langEn.classList.remove('active');
+                    langId.classList.add('active');
+                }
             }
         }
 
