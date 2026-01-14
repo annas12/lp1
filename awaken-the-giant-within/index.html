@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Awaken the Giant Within — Part 1: Emotions (Masterclass)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Import Premium Fonts - Strong, Clear, Coach-like */
+    @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Oswald:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap');
+
+    /* --- THEME SETTINGS (Cloudy White BG, Deep Teal Drawer) --- */
+    :root {
+      --bg-paper: #F8FAFC;
+      --text-ink: #0C2F3B;
+      --accent-red: #FF4C3B;
+      --drawer-bg: #003B46;
+      --drawer-top: #002A33;
+      --text-white: #FFFFFF;
+      --muted: rgba(15, 23, 42, 0.62);
+    }
+
+    body {
+      font-family: 'Merriweather', serif;
+      background-color: var(--bg-paper);
+      color: var(--text-ink);
+      line-height: 2.0;
+      font-size: 18px;
+      -webkit-font-smoothing: antialiased;
+      background-image: linear-gradient(to bottom, #F0F9FF, #F8FAFC);
+      padding-top: 80px;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-family: 'Oswald', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      font-weight: 700;
+      color: var(--text-ink);
+    }
+    .mono-font { font-family: 'Roboto Mono', monospace; font-size: 0.92em; letter-spacing: 0.05em; }
+    .justified-text { text-align: justify; }
+
+    /* Drop Cap */
+    .drop-cap::first-letter {
+      float: left;
+      font-size: 4.2rem;
+      line-height: 0.8;
+      margin-right: 0.15em;
+      margin-top: 0.05em;
+      font-family: 'Oswald', sans-serif;
+      color: var(--accent-red);
+      font-weight: 700;
+    }
+
+    /* Animations */
+    .fade-in { animation: fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    .content-section { display: none; padding-bottom: 120px; max-width: 920px; margin: 0 auto; }
+    .content-section.active { display: block; }
+
+    /* Language Utilities */
+    .lang-id { display: none; }
+    .lang-en { display: block; }
+
+    /* --- NAVIGATION DRAWER --- */
+    .nav-drawer {
+      position: fixed; top: 0; left: -360px; width: 360px; height: 100vh;
+      background: var(--drawer-bg);
+      transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 2000;
+      box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+      border-right: 3px solid var(--accent-red);
+    }
+    .nav-drawer.open { left: 0; }
+
+    .nav-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(12, 47, 59, 0.7);
+      opacity: 0; visibility: hidden;
+      transition: all 0.5s;
+      z-index: 1999;
+      backdrop-filter: blur(5px);
+    }
+    .nav-overlay.active { opacity: 1; visibility: visible; }
+
+    .nav-btn {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.98rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-left: 4px solid transparent;
+      transition: all 0.25s;
+      color: #7AA8B8;
+    }
+    .active-tab {
+      border-left: 4px solid var(--accent-red);
+      color: var(--text-white) !important;
+      background: linear-gradient(90deg, rgba(255, 76, 59, 0.22) 0%, transparent 100%);
+      padding-left: 28px !important;
+    }
+
+    /* Header Bar */
+    .header-bar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 70px;
+      background: rgba(248, 250, 252, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+      z-index: 2200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+    }
+
+    .menu-btn { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+    .right-controls { display: flex; align-items: center; gap: 18px; }
+    .back-link { display: inline-flex; align-items: center; justify-content: center; color: inherit; transition: transform 0.2s ease; }
+    .back-link:hover { transform: translateX(-3px); }
+
+    .lang-toggle-container {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; cursor: pointer; color: inherit;
+    }
+    .lang-opt { color: rgba(15, 23, 42, 0.45); transition: color 0.2s ease; }
+    .lang-opt.active { color: inherit; border-bottom: 2px solid currentColor; }
+    .lang-sep { color: rgba(15, 23, 42, 0.3); }
+
+    .drawer-toggle {
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 12px;
+      border: 1px solid rgba(15, 23, 42, 0.2);
+      color: var(--text-ink);
+    }
+
+    /* --- DECORATIVE ELEMENTS --- */
+    .section-kicker {
+      display: block;
+      font-family: 'Roboto Mono', monospace;
+      color: var(--accent-red);
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+
+    .concept-box {
+      margin: 3.5rem 0;
+      padding: 2.5rem;
+      background-color: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-top: 3px solid var(--accent-red);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+      position: relative;
+      border-radius: 18px;
+    }
+    .concept-label {
+      position: absolute;
+      top: -16px;
+      left: 2rem;
+      background: var(--accent-red);
+      color: var(--text-white);
+      padding: 4px 16px;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      border-radius: 999px;
+    }
+
+    .divider { width: 100%; height: 1px; background: #CBD5E1; margin: 4rem 0; position: relative; }
+    .divider::after {
+      content: ''; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      width: 60px; height: 3px; background: var(--accent-red);
+      border-radius: 999px;
+    }
+
+    blockquote {
+      border-left: 6px solid var(--accent-red);
+      padding-left: 24px;
+      margin: 3rem 0;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 300;
+      color: var(--text-ink);
+      line-height: 1.4;
+      text-transform: uppercase;
+      background: #F1F5F9;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    .mini-card {
+      border: 1px solid #E2E8F0;
+      background: #FFFFFF;
+      padding: 1.25rem 1.25rem;
+      border-radius: 18px;
+      box-shadow: 0 10px 20px -10px rgba(0,0,0,0.08);
+    }
+
+    .pill {
+      display: inline-block;
+      border: 1px solid #E2E8F0;
+      background: #F8FAFC;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      color: rgba(12, 47, 59, 0.85);
+    }
+
+    .callout {
+      border-left: 4px solid var(--accent-red);
+      background: #FFFFFF;
+      padding: 1.25rem 1.25rem;
+      border: 1px solid #E2E8F0;
+      border-radius: 18px;
+    }
+
+    .kbd {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.85em;
+      padding: 0.15rem 0.5rem;
+      border-radius: 10px;
+      border: 1px solid #E2E8F0;
+      background: #F8FAFC;
+      letter-spacing: 0.06em;
+    }
+
+    @media (max-width: 640px) {
+      body { font-size: 17px; line-height: 1.8; }
+      .content-section { padding: 80px 24px; }
+      .nav-drawer { width: 85%; }
+      .drop-cap::first-letter { font-size: 3.5rem; }
+      h2 { font-size: 2.5rem; }
+    }
+
+    @media (min-width: 641px) {
+      .content-section { padding-top: 120px; padding-left: 24px; padding-right: 24px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="header-bar">
+    <button class="drawer-toggle menu-btn" onclick="toggleDrawer()" aria-label="Menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+
+    <div class="right-controls">
+      <a class="back-link" href="../index.html" aria-label="Back to home">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </a>
+
+      <button class="lang-toggle-container" onclick="toggleLanguage()" aria-label="Toggle language">
+        <span class="lang-opt lang-opt-id">ID</span>
+        <span class="lang-sep">|</span>
+        <span class="lang-opt lang-opt-en active">EN</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- NAV DRAWER -->
+  <div class="nav-overlay" onclick="closeDrawer()"></div>
+
+  <nav class="nav-drawer flex flex-col h-full">
+    <div class="px-8 py-12" style="background: var(--drawer-top);">
+      <h2 class="text-white text-4xl leading-none mb-2 font-bold tracking-tight">
+        AWAKEN <span class="text-white">THE GIANT</span>
+      </h2>
+      <p class="text-teal-400 text-[11px] uppercase tracking-[0.2em] font-mono font-medium mt-4">
+        <span class="text-[#FF4C3B]">Tony Robbins</span> — Part 1: Emotions
+      </p>
+      <div class="w-16 h-2 bg-[#FF4C3B] mt-6"></div>
+
+      <div class="mt-8 text-[12px] leading-relaxed text-teal-200/90 font-mono">
+        <div><span class="text-white/90">Goal:</span> Control your state.</div>
+        <div><span class="text-white/90">Mechanism:</span> Focus + Meaning + Physiology.</div>
+        <div><span class="text-white/90">Tool:</span> Decisions + Questions + Language.</div>
+      </div>
+    </div>
+
+    <div class="flex-1 overflow-y-auto py-8 px-4">
+      <ul class="space-y-3">
+        <li>
+          <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3 active-tab">
+            <span class="lang-en">00. Overview & The Emotional Engine</span>
+            <span class="lang-id">00. Gambaran & Mesin Emosi</span>
+          </button>
+        </li>
+
+        <li class="pt-2">
+          <div class="px-6 text-[10px] uppercase tracking-[0.18em] font-mono text-teal-300/80">Chapters</div>
+        </li>
+
+        <li>
+          <button onclick="showSection('ch1'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+            <span class="lang-en">01. Dreams of Destiny</span>
+            <span class="lang-id">01. Mimpi & Takdir</span>
+          </button>
+        </li>
+        <li>
+          <button onclick="showSection('ch2'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+            <span class="lang-en">02. Decisions: Pathway to Power</span>
+            <span class="lang-id">02. Keputusan: Jalan ke Kekuatan</span>
+          </button>
+        </li>
+        <li>
+          <button onclick="showSection('ch3'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+            <span class="lang-en">03. The Force That Shapes Your Life</span>
+            <span class="lang-id">03. Kekuatan yang Membentuk Hidup</span>
+          </button>
+        </li>
+        <li>
+          <button onclick="showSection('ch4'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+            <span class="lang-en">04. Belief Systems</span>
+            <span class="lang-id">04. Sistem Keyakinan</span>
+          </button>
+        </li>
+        <li>
+          <button onclick="showSection('ch5'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+            <span class="lang-en">05. The Power of Questions</span>
+            <span class="lang-id">05. Kekuatan Pertanyaan</span>
+          </button>
+        </li>
+        <li>
+          <button onclick="showSection('ch6'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+            <span class="lang-en">06. The Vocabulary of Success</span>
+            <span class="lang-id">06. Bahasa Kesuksesan</span>
+          </button>
+        </li>
+        <li>
+          <button onclick="showSection('ch7'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+            <span class="lang-en">07. Emotional Mastery (State Control)</span>
+            <span class="lang-id">07. Menguasai Emosi (Kontrol State)</span>
+          </button>
+        </li>
+
+        <li class="pt-4">
+          <div class="px-6 text-[10px] uppercase tracking-[0.18em] font-mono text-teal-300/80">Toolkits</div>
+        </li>
+
+        <li>
+          <button onclick="showSection('toolkit'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+            <span class="lang-en">A. Rapid Tools (1–10 minutes)</span>
+            <span class="lang-id">A. Tools Cepat (1–10 menit)</span>
+          </button>
+        </li>
+        <li>
+          <button onclick="showSection('7day'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+            <span class="lang-en">B. 7-Day Practice Plan</span>
+            <span class="lang-id">B. Rencana Latihan 7 Hari</span>
+          </button>
+        </li>
+        <li>
+          <button onclick="showSection('worksheets'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+            <span class="lang-en">C. Worksheets (Copy & Fill)</span>
+            <span class="lang-id">C. Lembar Latihan (Copy & Isi)</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="p-8 text-teal-500 text-[10px] font-mono tracking-widest uppercase border-t border-[#FF4C3B]">
+      Masterclass Edition — Part 1
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- INTRO -->
+    <section id="intro" class="content-section active fade-in">
+      <span class="section-kicker">Part 1 — Emotions</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">The Emotional Engine</span>
+        <span class="lang-id">Mesin Emosi</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            This section is about <strong>state control</strong>: the ability to shift your emotions on demand.
+            Tony Robbins argues that emotions are not random—they are produced by a system you can influence.
+            When you change your <span class="pill">Focus</span>, <span class="pill">Meaning</span>, and <span class="pill">Physiology</span>, you change your state.
+          </span>
+          <span class="lang-id">
+            Bagian ini tentang <strong>kontrol state</strong>: kemampuan mengubah emosi kapan pun dibutuhkan.
+            Tony Robbins menekankan emosi bukan sesuatu yang “datang sendiri”—emosi dihasilkan oleh sistem yang bisa kamu pengaruhi.
+            Saat kamu mengubah <span class="pill">Fokus</span>, <span class="pill">Makna</span>, dan <span class="pill">Fisiologi</span>, state-mu berubah.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">THE CORE FORMULA</div>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">1) Focus</span><span class="lang-id">1) Fokus</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">What you pay attention to becomes your reality in that moment.</span>
+                <span class="lang-id">Apa yang kamu perhatikan menjadi “realitas” kamu saat itu.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">2) Meaning</span><span class="lang-id">2) Makna</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">The story you attach to an event determines how you feel.</span>
+                <span class="lang-id">Cerita/makna yang kamu tempelkan menentukan perasaan.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">3) Physiology</span><span class="lang-id">3) Fisiologi</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Your posture, breathing, and movement shape your emotions instantly.</span>
+                <span class="lang-id">Postur, napas, dan gerak membentuk emosi secara cepat.</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Why This Matters</span><span class="lang-id">Kenapa Ini Penting</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">
+                  Your state controls your behavior. Behavior creates results. Results create your life.
+                  So if you can control state, you can control direction.
+                </span>
+                <span class="lang-id">
+                  State mengontrol perilaku. Perilaku menciptakan hasil. Hasil menciptakan hidupmu.
+                  Jadi kalau kamu bisa kontrol state, kamu bisa kontrol arah.
+                </span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">The 3 Decisions</span><span class="lang-id">3 Keputusan Inti</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Your emotions are shaped by 3 decisions: what you focus on, what it means, and what you do next.</span>
+                <span class="lang-id">Emosimu dibentuk oleh 3 keputusan: fokus ke apa, artinya apa, dan tindakan berikutnya.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <blockquote>
+          <span class="lang-en">THE QUALITY OF YOUR LIFE IS THE QUALITY OF YOUR DECISIONS.</span>
+          <span class="lang-id">KUALITAS HIDUPMU ADALAH KUALITAS KEPUTUSANMU.</span>
+        </blockquote>
+
+        <div class="concept-box">
+          <div class="concept-label">HOW TO READ THIS</div>
+          <p class="mb-0">
+            <span class="lang-en">
+              This is a learning-by-doing manual. Each chapter ends with <strong>Action Steps</strong>.
+              Don’t try to “finish reading.” Try to <strong>finish practicing</strong>.
+            </span>
+            <span class="lang-id">
+              Ini manual belajar lewat praktik. Setiap bab ada <strong>Langkah Aksi</strong>.
+              Jangan kejar “tamat baca.” Kejar <strong>tamat praktik</strong>.
+            </span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH1 -->
+    <section id="ch1" class="content-section fade-in">
+      <span class="section-kicker">Chapter 01</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Dreams of Destiny</span>
+        <span class="lang-id">Mimpi & Takdir</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            Tony opens with the idea that every person has a “giant within”—a vast reserve of capability that remains unused.
+            The problem is not lack of potential, but lack of <strong>direction</strong> and <strong>state control</strong>.
+            Most people drift into an average life because they let emotions and circumstances choose for them.
+          </span>
+          <span class="lang-id">
+            Tony membuka dengan ide bahwa setiap orang punya “raksasa” di dalam diri—cadangan kemampuan besar yang sering tidak dipakai.
+            Masalahnya bukan kekurangan potensi, tapi kekurangan <strong>arah</strong> dan <strong>kontrol state</strong>.
+            Banyak orang hidup “rata-rata” karena membiarkan emosi dan keadaan yang memilihkan hidup untuk mereka.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">THE BIG SHIFT</div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">From Drift</span><span class="lang-id">Dari Mengalir</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">Reacting to moods</span><span class="lang-id">Reaktif pada mood</span></li>
+                <li><span class="lang-en">Lowering standards to avoid pain</span><span class="lang-id">Menurunkan standar agar tidak sakit</span></li>
+                <li><span class="lang-en">Waiting for motivation</span><span class="lang-id">Menunggu motivasi</span></li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">To Design</span><span class="lang-id">Ke Mendesain</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">Choosing your state</span><span class="lang-id">Memilih state</span></li>
+                <li><span class="lang-en">Raising standards</span><span class="lang-id">Menaikkan standar</span></li>
+                <li><span class="lang-en">Building a system of decisions</span><span class="lang-id">Membangun sistem keputusan</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <p class="mb-0">
+            <span class="lang-en">
+              The “giant” awakens when you stop asking, “What do I feel like doing?” and start asking,
+              “What does my best self do—especially when it’s inconvenient?”
+            </span>
+            <span class="lang-id">
+              “Raksasa” bangun saat kamu berhenti bertanya, “Aku lagi pengen ngapain?”
+              dan mulai bertanya, “Versi terbaikku akan ngapain—apalagi ketika tidak nyaman?”
+            </span>
+          </p>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">COMMON TRAPS</div>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">1) Comfort Addiction</span><span class="lang-id">1) Kecanduan Nyaman</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Choosing short-term comfort repeatedly creates long-term pain.</span>
+                <span class="lang-id">Memilih nyaman jangka pendek berulang-ulang menciptakan sakit jangka panjang.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">2) Low Standards</span><span class="lang-id">2) Standar Rendah</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">You don’t get what you want; you get what you tolerate.</span>
+                <span class="lang-id">Kamu tidak dapat apa yang kamu mau; kamu dapat apa yang kamu toleransi.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">3) Passive Identity</span><span class="lang-id">3) Identitas Pasif</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">“That’s just who I am” becomes a prison sentence.</span>
+                <span class="lang-id">“Memang saya begini” jadi hukuman penjara.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">ACTION STEPS</div>
+          <ol class="list-decimal pl-6 space-y-3 mono-font">
+            <li>
+              <span class="lang-en">Write 3 areas where you’ve been tolerating less than you want.</span>
+              <span class="lang-id">Tulis 3 area di mana kamu menoleransi sesuatu yang kurang dari yang kamu mau.</span>
+            </li>
+            <li>
+              <span class="lang-en">Define your “new standard” as a sentence: “From now on, I do not accept ____.”</span>
+              <span class="lang-id">Tentukan “standar baru” dalam kalimat: “Mulai sekarang, saya tidak menerima ____.”</span>
+            </li>
+            <li>
+              <span class="lang-en">Pick ONE small proof action you will do within 24 hours.</span>
+              <span class="lang-id">Pilih SATU aksi bukti kecil yang kamu lakukan dalam 24 jam.</span>
+            </li>
+          </ol>
+          <div class="mt-6 callout">
+            <p class="mb-0">
+              <span class="lang-en"><strong>Tip:</strong> Standards change fast when you attach them to identity. Use: “I’m the kind of person who ____.”</span>
+              <span class="lang-id"><strong>Tip:</strong> Standar cepat berubah kalau terkait identitas. Pakai: “Saya tipe orang yang ____.”</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH2 -->
+    <section id="ch2" class="content-section fade-in">
+      <span class="section-kicker">Chapter 02</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Decisions: The Pathway to Power</span>
+        <span class="lang-id">Keputusan: Jalan ke Kekuatan</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            Desire is common. Commitment is rare. Tony’s core claim: <strong>your life changes the moment you make a true decision</strong>.
+            A true decision is not a wish—it is a commitment that produces action even when you don’t feel like it.
+          </span>
+          <span class="lang-id">
+            Keinginan itu umum. Komitmen itu langka. Klaim inti Tony: <strong>hidupmu berubah saat kamu membuat keputusan yang sungguh-sungguh</strong>.
+            Keputusan sungguh-sungguh bukan harapan—melainkan komitmen yang menghasilkan aksi meski kamu sedang tidak mood.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">WANTS VS DECISIONS</div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Wants (Weak)</span><span class="lang-id">Ingin (Lemah)</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">Vague (“I should…”, “I hope…”)</span><span class="lang-id">Kabur (“Harusnya…”, “Semoga…”)</span></li>
+                <li><span class="lang-en">No timeline</span><span class="lang-id">Tidak ada waktu</span></li>
+                <li><span class="lang-en">No method</span><span class="lang-id">Tidak ada cara</span></li>
+                <li><span class="lang-en">Depends on mood</span><span class="lang-id">Tergantung mood</span></li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Decisions (Strong)</span><span class="lang-id">Keputusan (Kuat)</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">Specific (what/when/where)</span><span class="lang-id">Spesifik (apa/kapan/di mana)</span></li>
+                <li><span class="lang-en">Backed by action</span><span class="lang-id">Didukung aksi</span></li>
+                <li><span class="lang-en">Creates a plan and a standard</span><span class="lang-id">Menciptakan rencana dan standar</span></li>
+                <li><span class="lang-en">Survives moods</span><span class="lang-id">Tahan mood</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">THE 3 DECISIONS</div>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">1) Focus</span><span class="lang-id">1) Fokus</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">What you choose to notice (problem vs solution) changes your state.</span>
+                <span class="lang-id">Apa yang kamu pilih untuk dilihat (masalah vs solusi) mengubah state.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">2) Meaning</span><span class="lang-id">2) Makna</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">The story you attach determines emotion (failure vs feedback).</span>
+                <span class="lang-id">Cerita yang kamu tempel menentukan emosi (gagal vs feedback).</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">3) Action</span><span class="lang-id">3) Aksi</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">The fastest way to change feelings is to do something.</span>
+                <span class="lang-id">Cara tercepat mengubah perasaan adalah melakukan sesuatu.</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="mini-card">
+            <h4 class="text-xl mb-2"><span class="lang-en">Scenario Reframe</span><span class="lang-id">Contoh Reframe</span></h4>
+            <p class="mb-0">
+              <span class="lang-en">
+                <strong>Event:</strong> Sales drop. <br/>
+                <strong>Weak focus:</strong> “We’re doomed.” → panic → freeze. <br/>
+                <strong>Power focus:</strong> “What can we control today?” → clarity → action.
+              </span>
+              <span class="lang-id">
+                <strong>Kejadian:</strong> Penjualan turun. <br/>
+                <strong>Fokus lemah:</strong> “Hancur.” → panik → diam. <br/>
+                <strong>Fokus kuat:</strong> “Apa yang bisa saya kontrol hari ini?” → jelas → bergerak.
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">ACTION STEPS</div>
+          <ol class="list-decimal pl-6 space-y-3 mono-font">
+            <li>
+              <span class="lang-en">Pick 1 area: Health / Money / Relationships / Skills.</span>
+              <span class="lang-id">Pilih 1 area: Kesehatan / Uang / Relasi / Skill.</span>
+            </li>
+            <li>
+              <span class="lang-en">Write a true decision using: “I decide ____ starting ____ at ____.”</span>
+              <span class="lang-id">Tulis keputusan sungguh-sungguh: “Saya memutuskan ____ mulai ____ jam ____.”</span>
+            </li>
+            <li>
+              <span class="lang-en">Add a standard: “No matter what, I will do the minimum version.”</span>
+              <span class="lang-id">Tambah standar: “Apapun yang terjadi, saya tetap lakukan versi minimum.”</span>
+            </li>
+          </ol>
+
+          <div class="mt-6 callout">
+            <p class="mb-0">
+              <span class="lang-en">
+                <strong>Minimum version idea:</strong> If you can’t do 30 minutes, do 2 minutes. A standard survives because it’s flexible, not because it’s perfect.
+              </span>
+              <span class="lang-id">
+                <strong>Ide versi minimum:</strong> Kalau tidak bisa 30 menit, lakukan 2 menit. Standar bertahan karena fleksibel, bukan karena sempurna.
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH3 -->
+    <section id="ch3" class="content-section fade-in">
+      <span class="section-kicker">Chapter 03</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">The Force That Shapes Your Life</span>
+        <span class="lang-id">Kekuatan yang Membentuk Hidup</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            Tony explains behavior change through <strong>associations</strong>.
+            People move toward pleasure and away from pain.
+            If a destructive habit feels rewarding, you repeat it—even if you “know better.”
+            Change becomes fast when you reshape what your brain associates with pain and pleasure.
+          </span>
+          <span class="lang-id">
+            Tony menjelaskan perubahan perilaku lewat <strong>asosiasi</strong>.
+            Manusia bergerak mengejar senang dan menghindari sakit.
+            Kalau kebiasaan buruk terasa rewarding, kita mengulang—meski kita “tahu itu salah.”
+            Perubahan jadi cepat kalau kamu mengubah asosiasi sakit dan senang di otak.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">LEVERAGE: PAIN & PLEASURE</div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Why You Stay Stuck</span><span class="lang-id">Kenapa Kamu Tersangkut</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">
+                  A bad habit often gives <strong>immediate pleasure</strong> (relief, comfort, distraction),
+                  while its pain is delayed. Good habits are often the opposite: their rewards are delayed.
+                </span>
+                <span class="lang-id">
+                  Kebiasaan buruk sering memberi <strong>senang cepat</strong> (lega, nyaman, distraksi),
+                  sedangkan sakitnya lambat. Kebiasaan baik sering kebalikannya: reward-nya lambat.
+                </span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">How You Break Through</span><span class="lang-id">Cara Menembus</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">
+                  Make the pain of staying the same bigger than the pain of change.
+                  Then make the pleasure of the new identity vivid and immediate.
+                </span>
+                <span class="lang-id">
+                  Buat sakitnya tetap seperti sekarang lebih besar daripada sakitnya berubah.
+                  Lalu buat “senangnya identitas baru” terasa jelas dan dekat.
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="mini-card">
+            <h4 class="text-xl mb-2"><span class="lang-en">Concrete Example: Smoking</span><span class="lang-id">Contoh Nyata: Merokok</span></h4>
+            <p class="mb-0">
+              <span class="lang-en">
+                <strong>Current association:</strong> smoking = calm, social, “me time.” <br/>
+                <strong>Upgrade association:</strong> smoking = weaker lungs, smell, wasted money, less stamina, shorter future. <br/>
+                <strong>New association:</strong> not smoking = freedom, clean breath, self-respect, strength.
+              </span>
+              <span class="lang-id">
+                <strong>Asosiasi lama:</strong> rokok = tenang, sosial, “me time.” <br/>
+                <strong>Asosiasi baru:</strong> rokok = napas lemah, bau, buang uang, stamina turun, masa depan pendek. <br/>
+                <strong>Asosiasi kebiasaan baru:</strong> tidak merokok = bebas, napas bersih, harga diri, kuat.
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">THE “PAIN / PLEASURE” WORKSHEET</div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">A) If I continue…</span><span class="lang-id">A) Kalau saya lanjut…</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en"><strong>Immediate cost:</strong> ____</span><span class="lang-id"><strong>Biaya sekarang:</strong> ____</span></li>
+                <li><span class="lang-en"><strong>Cost in 1 year:</strong> ____</span><span class="lang-id"><strong>Biaya 1 tahun:</strong> ____</span></li>
+                <li><span class="lang-en"><strong>Cost in 3 years:</strong> ____</span><span class="lang-id"><strong>Biaya 3 tahun:</strong> ____</span></li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">B) If I change…</span><span class="lang-id">B) Kalau saya berubah…</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en"><strong>Immediate benefit:</strong> ____</span><span class="lang-id"><strong>Manfaat sekarang:</strong> ____</span></li>
+                <li><span class="lang-en"><strong>Benefit in 1 year:</strong> ____</span><span class="lang-id"><strong>Manfaat 1 tahun:</strong> ____</span></li>
+                <li><span class="lang-en"><strong>Benefit in 3 years:</strong> ____</span><span class="lang-id"><strong>Manfaat 3 tahun:</strong> ____</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mt-6 callout">
+            <p class="mb-0">
+              <span class="lang-en">
+                <strong>Rule:</strong> make it vivid. Don’t write abstract words. Write pictures: “wheezing at night,” “can’t keep up with my kids,” “debt stress.”
+              </span>
+              <span class="lang-id">
+                <strong>Aturan:</strong> buat vivid. Jangan pakai kata abstrak. Tulis gambar: “sesak malam,” “tidak kuat main sama anak,” “stress hutang.”
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">ACTION STEPS</div>
+          <ol class="list-decimal pl-6 space-y-3 mono-font">
+            <li><span class="lang-en">Pick ONE habit you want to stop or build.</span><span class="lang-id">Pilih SATU kebiasaan yang ingin dihentikan atau dibangun.</span></li>
+            <li><span class="lang-en">Fill the Pain/Pleasure worksheet (A + B).</span><span class="lang-id">Isi worksheet Pain/Pleasure (A + B).</span></li>
+            <li><span class="lang-en">Turn it into a rule: “When I feel ____, I do ____ instead.”</span><span class="lang-id">Ubah jadi aturan: “Kalau saya merasa ____, saya lakukan ____ sebagai gantinya.”</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH4 -->
+    <section id="ch4" class="content-section fade-in">
+      <span class="section-kicker">Chapter 04</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Belief Systems</span>
+        <span class="lang-id">Sistem Keyakinan</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            Beliefs are not just opinions—they are filters that shape what you notice, what you attempt, and what you persist through.
+            If you believe “I can’t,” you stop searching. If you believe “I can learn,” you keep experimenting until you find a way.
+          </span>
+          <span class="lang-id">
+            Keyakinan bukan sekadar opini—keyakinan adalah filter yang menentukan apa yang kamu lihat, apa yang kamu coba, dan seberapa kamu bertahan.
+            Kalau kamu percaya “saya tidak bisa,” kamu berhenti mencari. Kalau kamu percaya “saya bisa belajar,” kamu terus mencoba sampai ketemu jalan.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">BELIEF = RULES IN YOUR HEAD</div>
+          <p class="mb-0">
+            <span class="lang-en">
+              A belief is like a rule: “If X happens, then it means Y.” <br/>
+              Example: “If I fail, it means I’m not good enough.” That rule creates fear and avoidance.
+              Change the rule and the emotion changes.
+            </span>
+            <span class="lang-id">
+              Keyakinan seperti aturan: “Kalau X terjadi, artinya Y.” <br/>
+              Contoh: “Kalau saya gagal, artinya saya tidak cukup baik.” Aturan ini menciptakan takut dan menghindar.
+              Ubah aturannya, emosinya ikut berubah.
+            </span>
+          </p>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">3 KILLER BELIEFS</div>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">1) I’m Not Enough</span><span class="lang-id">1) Saya Tidak Cukup</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Creates shame → procrastination → avoidance.</span>
+                <span class="lang-id">Menciptakan malu → menunda → menghindar.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">2) I’m Not Worthy</span><span class="lang-id">2) Saya Tidak Pantas</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Creates self-sabotage when progress appears.</span>
+                <span class="lang-id">Menciptakan sabotase diri saat mulai maju.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">3) People Like Me Can’t</span><span class="lang-id">3) Orang Seperti Saya Tidak Bisa</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Creates fixed identity and closed doors.</span>
+                <span class="lang-id">Menciptakan identitas kaku dan pintu tertutup.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">HOW TO CHANGE A BELIEF</div>
+          <div class="space-y-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Step 1 — Identify the belief</span><span class="lang-id">Langkah 1 — Sadari belief</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Write the belief as a sentence: “I am ____ / I can’t ____ / It’s impossible to ____.”</span>
+                <span class="lang-id">Tulis belief sebagai kalimat: “Saya ____ / Saya tidak bisa ____ / Mustahil ____.”</span>
+              </p>
+            </div>
+
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Step 2 — Find cracks in the evidence</span><span class="lang-id">Langkah 2 — Cari “retak” buktinya</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">
+                  Ask: “Is this always true?” and “Where is the counterexample?”
+                  One counterexample breaks the certainty.
+                </span>
+                <span class="lang-id">
+                  Tanya: “Apakah ini selalu benar?” dan “Mana contoh yang membantah?”
+                  Satu contoh pembantah menghancurkan kepastian palsu.
+                </span>
+              </p>
+            </div>
+
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Step 3 — Install a new belief with proof</span><span class="lang-id">Langkah 3 — Pasang belief baru dengan bukti</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">
+                  New belief must be supported by small daily proof. Proof beats motivation.
+                  Example: “I’m disciplined” is installed by doing the minimum version daily.
+                </span>
+                <span class="lang-id">
+                  Belief baru harus didukung bukti kecil harian. Bukti mengalahkan motivasi.
+                  Contoh: “Saya disiplin” dipasang dengan melakukan versi minimum tiap hari.
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">ACTION STEPS</div>
+          <ol class="list-decimal pl-6 space-y-3 mono-font">
+            <li><span class="lang-en">Write 1 limiting belief you repeat often.</span><span class="lang-id">Tulis 1 belief pembatas yang sering kamu ulang.</span></li>
+            <li><span class="lang-en">Write 2 counterexamples (times it wasn’t true).</span><span class="lang-id">Tulis 2 counterexample (saat belief itu tidak benar).</span></li>
+            <li><span class="lang-en">Write a new belief and define a daily proof action (≤ 2 minutes).</span><span class="lang-id">Tulis belief baru dan tentukan aksi bukti harian (≤ 2 menit).</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH5 -->
+    <section id="ch5" class="content-section fade-in">
+      <span class="section-kicker">Chapter 05</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">The Power of Questions</span>
+        <span class="lang-id">Kekuatan Pertanyaan</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            Questions are like a steering wheel for your mind.
+            Your brain is a meaning-making machine: it will answer whatever you ask—often by searching your memory for evidence.
+            Better questions produce better focus, better meaning, better emotions.
+          </span>
+          <span class="lang-id">
+            Pertanyaan adalah setir untuk pikiran.
+            Otak adalah mesin pemberi makna: ia akan menjawab apa pun yang kamu tanyakan—sering dengan mencari bukti di memori.
+            Pertanyaan yang lebih baik menghasilkan fokus, makna, dan emosi yang lebih baik.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">BAD VS GREAT QUESTIONS</div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Bad Questions</span><span class="lang-id">Pertanyaan Buruk</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">“Why am I always unlucky?”</span><span class="lang-id">“Kenapa saya selalu sial?”</span></li>
+                <li><span class="lang-en">“Why can’t I change?”</span><span class="lang-id">“Kenapa saya nggak bisa berubah?”</span></li>
+                <li><span class="lang-en">“What’s wrong with me?”</span><span class="lang-id">“Apa yang salah dengan saya?”</span></li>
+              </ul>
+              <p class="mt-4 mb-0 text-sm" style="color: var(--muted);">
+                <span class="lang-en">These force the brain to find “proof” of failure.</span>
+                <span class="lang-id">Ini memaksa otak mencari “bukti” kegagalan.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Great Questions</span><span class="lang-id">Pertanyaan Bagus</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">“What can I control right now?”</span><span class="lang-id">“Apa yang bisa saya kontrol sekarang?”</span></li>
+                <li><span class="lang-en">“What is this trying to teach me?”</span><span class="lang-id">“Apa pelajaran dari ini?”</span></li>
+                <li><span class="lang-en">“What’s the smallest effective step?”</span><span class="lang-id">“Langkah efektif terkecil apa?”</span></li>
+              </ul>
+              <p class="mt-4 mb-0 text-sm" style="color: var(--muted);">
+                <span class="lang-en">These force the brain to search for solutions and resources.</span>
+                <span class="lang-id">Ini memaksa otak mencari solusi dan sumber daya.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">THE DAILY QUESTION RITUAL</div>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Morning</span><span class="lang-id">Pagi</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">What am I grateful for?</span><span class="lang-id">Apa yang saya syukuri?</span></li>
+                <li><span class="lang-en">What would make today a win?</span><span class="lang-id">Apa yang bikin hari ini menang?</span></li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Midday</span><span class="lang-id">Siang</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">What is my #1 focus?</span><span class="lang-id">Fokus #1 saya apa?</span></li>
+                <li><span class="lang-en">What is the next best action?</span><span class="lang-id">Aksi terbaik berikutnya?</span></li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Night</span><span class="lang-id">Malam</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">What did I learn today?</span><span class="lang-id">Apa yang saya pelajari?</span></li>
+                <li><span class="lang-en">What will I improve 1% tomorrow?</span><span class="lang-id">Apa 1% yang saya perbaiki besok?</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mt-6 callout">
+            <p class="mb-0">
+              <span class="lang-en"><strong>Coach note:</strong> Don’t answer with long essays. Answer with 1–2 lines and then act. Questions are for direction, not overthinking.</span>
+              <span class="lang-id"><strong>Catatan coach:</strong> Jangan jawab dengan esai panjang. Jawab 1–2 baris lalu bergerak. Pertanyaan untuk arah, bukan overthinking.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">ACTION STEPS</div>
+          <ol class="list-decimal pl-6 space-y-3 mono-font">
+            <li><span class="lang-en">Pick 3 questions from the ritual and write them on paper.</span><span class="lang-id">Pilih 3 pertanyaan dari ritual, tulis di kertas.</span></li>
+            <li><span class="lang-en">Answer them daily for 7 days (max 2 minutes).</span><span class="lang-id">Jawab tiap hari selama 7 hari (maks 2 menit).</span></li>
+            <li><span class="lang-en">After answering, do ONE action immediately.</span><span class="lang-id">Setelah jawab, lakukan SATU aksi langsung.</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH6 -->
+    <section id="ch6" class="content-section fade-in">
+      <span class="section-kicker">Chapter 06</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">The Vocabulary of Success</span>
+        <span class="lang-id">Bahasa Kesuksesan</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            The words you use shape the feelings you experience.
+            When you label something as “devastating,” you generate a devastating state.
+            When you label it as “challenging,” you keep your power.
+            Vocabulary is a hidden lever: change the words, change the state.
+          </span>
+          <span class="lang-id">
+            Kata-kata yang kamu pakai membentuk perasaan yang kamu alami.
+            Saat kamu melabeli sesuatu sebagai “hancur,” kamu menciptakan state yang hancur.
+            Saat kamu melabelinya “menantang,” kamu tetap punya power.
+            Bahasa adalah tuas tersembunyi: ubah kata, ubah state.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">UPGRADE YOUR LABELS</div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">High-Intensity Labels</span><span class="lang-id">Label Intens</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">“I’m destroyed.”</span><span class="lang-id">“Saya hancur.”</span></li>
+                <li><span class="lang-en">“This is a disaster.”</span><span class="lang-id">“Ini bencana.”</span></li>
+                <li><span class="lang-en">“I’m overwhelmed.”</span><span class="lang-id">“Saya kewalahan.”</span></li>
+              </ul>
+              <p class="mt-4 mb-0 text-sm" style="color: var(--muted);">
+                <span class="lang-en">These words spike emotion and shrink options.</span>
+                <span class="lang-id">Kata-kata ini menaikkan emosi dan mengecilkan pilihan.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Power Labels</span><span class="lang-id">Label Power</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">“I’m disappointed—but I can adapt.”</span><span class="lang-id">“Saya kecewa—tapi saya bisa adaptasi.”</span></li>
+                <li><span class="lang-en">“This is a challenge.”</span><span class="lang-id">“Ini tantangan.”</span></li>
+                <li><span class="lang-en">“I have a lot to handle—let’s prioritize.”</span><span class="lang-id">“Saya banyak urusan—ayo prioritaskan.”</span></li>
+              </ul>
+              <p class="mt-4 mb-0 text-sm" style="color: var(--muted);">
+                <span class="lang-en">These words reduce intensity and expand choices.</span>
+                <span class="lang-id">Kata-kata ini menurunkan intensitas dan memperluas pilihan.</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="mini-card">
+            <h4 class="text-xl mb-2"><span class="lang-en">The Precision Rule</span><span class="lang-id">Aturan Presisi</span></h4>
+            <p class="mb-0">
+              <span class="lang-en">
+                Instead of vague labels like “stressed,” use precise language: “My energy is low,” “I need clarity,” “I need to say no.”
+                Precision turns chaos into a solvable problem.
+              </span>
+              <span class="lang-id">
+                Daripada label kabur seperti “stres,” pakai bahasa presisi: “Energi saya turun,” “Saya butuh kejelasan,” “Saya perlu berkata tidak.”
+                Presisi mengubah chaos jadi masalah yang bisa diselesaikan.
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">ACTION STEPS</div>
+          <ol class="list-decimal pl-6 space-y-3 mono-font">
+            <li><span class="lang-en">Write 5 negative words you often use.</span><span class="lang-id">Tulis 5 kata negatif yang sering kamu pakai.</span></li>
+            <li><span class="lang-en">Replace each with a “power label” (lower intensity + more precise).</span><span class="lang-id">Ganti tiap kata dengan “label power” (lebih ringan + lebih presisi).</span></li>
+            <li><span class="lang-en">Practice for 7 days: catch the old word, switch to the new one.</span><span class="lang-id">Latih 7 hari: tangkap kata lama, ganti kata baru.</span></li>
+          </ol>
+
+          <div class="mt-6 callout">
+            <p class="mb-0">
+              <span class="lang-en"><strong>Shortcut:</strong> When you feel stuck, say out loud: “What specifically is the problem?” Then define the smallest next step.</span>
+              <span class="lang-id"><strong>Jalan pintas:</strong> Saat buntu, ucapkan: “Masalah spesifiknya apa?” lalu tentukan langkah terkecil berikutnya.</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH7 -->
+    <section id="ch7" class="content-section fade-in">
+      <span class="section-kicker">Chapter 07</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Emotional Mastery</span>
+        <span class="lang-id">Menguasai Emosi</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            This chapter converts the entire philosophy into a practical skill: <strong>change your state fast</strong>.
+            The fastest lever is physiology. Then you lock it in with focus and meaning.
+            You do not wait for the “right mood.” You create it.
+          </span>
+          <span class="lang-id">
+            Bab ini mengubah semua filosofi menjadi skill praktis: <strong>mengubah state dengan cepat</strong>.
+            Tuas tercepat adalah fisiologi. Lalu kamu kunci dengan fokus dan makna.
+            Kamu tidak menunggu mood yang benar. Kamu menciptakannya.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">THE STATE TRIAD</div>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Focus</span><span class="lang-id">Fokus</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Ask: “What do I want?” not “What do I fear?”</span>
+                <span class="lang-id">Tanya: “Saya mau apa?” bukan “Saya takut apa?”</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Meaning</span><span class="lang-id">Makna</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Reframe: “This is feedback, not failure.”</span>
+                <span class="lang-id">Reframe: “Ini feedback, bukan kegagalan.”</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Physiology</span><span class="lang-id">Fisiologi</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Stand tall, breathe deep, move your body.</span>
+                <span class="lang-id">Tegakkan badan, napas dalam, gerakkan tubuh.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">60-SECOND EMOTIONAL RESET</div>
+          <div class="space-y-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-3"><span class="lang-en">Step-by-step</span><span class="lang-id">Langkah demi langkah</span></h4>
+              <ol class="list-decimal pl-6 space-y-2">
+                <li>
+                  <span class="lang-en"><strong>Posture:</strong> stand up, shoulders back, chin slightly up.</span>
+                  <span class="lang-id"><strong>Postur:</strong> berdiri, bahu ke belakang, dagu sedikit naik.</span>
+                </li>
+                <li>
+                  <span class="lang-en"><strong>Breath (6 cycles):</strong> inhale 4s → hold 2s → exhale 6s.</span>
+                  <span class="lang-id"><strong>Napas (6 putaran):</strong> tarik 4 dtk → tahan 2 dtk → buang 6 dtk.</span>
+                </li>
+                <li>
+                  <span class="lang-en"><strong>Movement:</strong> shake arms/legs for 10 seconds or do 10 squats.</span>
+                  <span class="lang-id"><strong>Gerak:</strong> shake tangan/kaki 10 detik atau squat 10x.</span>
+                </li>
+                <li>
+                  <span class="lang-en"><strong>Question:</strong> “What’s the smallest effective step right now?”</span>
+                  <span class="lang-id"><strong>Pertanyaan:</strong> “Langkah efektif terkecil sekarang apa?”</span>
+                </li>
+              </ol>
+            </div>
+
+            <div class="callout">
+              <p class="mb-0">
+                <span class="lang-en"><strong>Use this when:</strong> anxiety spikes, procrastination hits, anger rises, or you feel “stuck.”</span>
+                <span class="lang-id"><strong>Pakai ini saat:</strong> cemas naik, menunda, marah, atau merasa “buntu.”</span>
+              </p>
+            </div>
+
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Why This Works</span><span class="lang-id">Kenapa Ini Berhasil</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">
+                  Emotions have patterns in the body (breath, posture, tension). Change the pattern, the emotion shifts.
+                  Then focus + meaning keeps it from bouncing back.
+                </span>
+                <span class="lang-id">
+                  Emosi punya pola di tubuh (napas, postur, tegang). Ubah polanya, emosinya ikut bergeser.
+                  Lalu fokus + makna mencegah balik lagi.
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">THE “STATE SWITCH” SCRIPT</div>
+          <div class="mini-card">
+            <p class="mb-0 mono-font">
+              <span class="lang-en">
+                1) “Stop.” <br/>
+                2) “What am I focusing on?” <br/>
+                3) “What else could I focus on that empowers me?” <br/>
+                4) “What does this mean? What else could it mean?” <br/>
+                5) “What is the next best action—right now?” <br/>
+                6) (Move + breathe while answering)
+              </span>
+              <span class="lang-id">
+                1) “Stop.” <br/>
+                2) “Saya lagi fokus ke apa?” <br/>
+                3) “Fokus apa yang lebih memberdayakan?” <br/>
+                4) “Artinya apa? Bisa berarti apa lagi?” <br/>
+                5) “Aksi terbaik berikutnya apa—sekarang?” <br/>
+                6) (Gerak + napas sambil menjawab)
+              </span>
+            </p>
+          </div>
+
+          <div class="mt-6 callout">
+            <p class="mb-0">
+              <span class="lang-en"><strong>Tip:</strong> Read this out loud. Your voice is also physiology. Slow your speech to calm your state.</span>
+              <span class="lang-id"><strong>Tip:</strong> Bacakan keras-keras. Suara juga bagian fisiologi. Perlambat bicara untuk menenangkan state.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">ACTION STEPS</div>
+          <ol class="list-decimal pl-6 space-y-3 mono-font">
+            <li><span class="lang-en">Practice the 60-second reset once daily even when you feel fine.</span><span class="lang-id">Latih reset 60 detik sekali sehari bahkan saat kamu baik-baik saja.</span></li>
+            <li><span class="lang-en">When a negative state appears, run the “State Switch” script.</span><span class="lang-id">Saat state negatif muncul, jalankan skrip “State Switch.”</span></li>
+            <li><span class="lang-en">Log 1 sentence: “Before → After (state change).”</span><span class="lang-id">Catat 1 kalimat: “Sebelum → Sesudah (perubahan state).”</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLKIT -->
+    <section id="toolkit" class="content-section fade-in">
+      <span class="section-kicker">Toolkit A</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Rapid Tools (1–10 minutes)</span>
+        <span class="lang-id">Tools Cepat (1–10 menit)</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <div class="concept-box">
+          <div class="concept-label">TOOL 1 — 2-MINUTE CLARITY</div>
+          <div class="mini-card">
+            <p class="mb-0">
+              <span class="lang-en">
+                <strong>When:</strong> overwhelmed, too many tasks. <br/>
+                <strong>Do:</strong> write 3 bullets: (1) What matters today? (2) What can wait? (3) What is one next step? <br/>
+                <strong>Outcome:</strong> your brain stops spinning and starts acting.
+              </span>
+              <span class="lang-id">
+                <strong>Kapan:</strong> kewalahan, tugas kebanyakan. <br/>
+                <strong>Lakukan:</strong> tulis 3 poin: (1) Yang penting hari ini? (2) Yang bisa menunggu? (3) Langkah berikutnya? <br/>
+                <strong>Hasil:</strong> otak berhenti muter dan mulai bergerak.
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">TOOL 2 — “PAIN-TO-POWER” REFRAME</div>
+          <div class="mini-card">
+            <p class="mb-0 mono-font">
+              <span class="lang-en">
+                1) What is happening? (facts only) <br/>
+                2) What story am I telling? <br/>
+                3) What story empowers me more? <br/>
+                4) What action proves the empowering story?
+              </span>
+              <span class="lang-id">
+                1) Apa yang terjadi? (fakta saja) <br/>
+                2) Cerita apa yang saya buat? <br/>
+                3) Cerita apa yang lebih memberdayakan? <br/>
+                4) Aksi apa yang membuktikan cerita baru?
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">TOOL 3 — LANGUAGE DOWNGRADE</div>
+          <div class="mini-card">
+            <p class="mb-0">
+              <span class="lang-en">
+                Replace extreme words with precise ones. Example: “I’m overwhelmed” → “I have 3 priorities and need to choose #1.”
+              </span>
+              <span class="lang-id">
+                Ganti kata ekstrem dengan kata presisi. Contoh: “Saya kewalahan” → “Saya punya 3 prioritas dan perlu pilih #1.”
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">TOOL 4 — 60-SECOND RESET</div>
+          <div class="mini-card">
+            <p class="mb-0">
+              <span class="lang-en">
+                Posture + breath + movement + question. Use it to break the “emotion hijack.”
+              </span>
+              <span class="lang-id">
+                Postur + napas + gerak + pertanyaan. Dipakai untuk memutus “pembajakan emosi.”
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7-DAY PLAN -->
+    <section id="7day" class="content-section fade-in">
+      <span class="section-kicker">Toolkit B</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">7-Day Practice Plan</span>
+        <span class="lang-id">Rencana Latihan 7 Hari</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            This plan turns Part 1 into habit. Keep it simple. Do the minimum.
+            The goal is not to feel amazing all day, but to <strong>recover fast</strong> when you fall into a negative state.
+          </span>
+          <span class="lang-id">
+            Rencana ini mengubah Part 1 menjadi kebiasaan. Buat simpel. Jalankan minimum.
+            Tujuannya bukan “hebat seharian,” tapi <strong>cepat kembali</strong> saat state negatif muncul.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">DAILY RULE</div>
+          <div class="mini-card">
+            <p class="mb-0 mono-font">
+              <span class="lang-en">
+                Morning (2 min): 2 questions + 1 decision. <br/>
+                Midday (1 min): 60-second reset. <br/>
+                Night (2 min): 1 lesson + 1% improvement.
+              </span>
+              <span class="lang-id">
+                Pagi (2 mnt): 2 pertanyaan + 1 keputusan. <br/>
+                Siang (1 mnt): reset 60 detik. <br/>
+                Malam (2 mnt): 1 pelajaran + 1% perbaikan.
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">DAY BY DAY</div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Day 1 — Standards</span><span class="lang-id">Hari 1 — Standar</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">Write 3 things you won’t tolerate.</span><span class="lang-id">Tulis 3 hal yang tidak kamu toleransi.</span></li>
+                <li><span class="lang-en">Define 1 new standard.</span><span class="lang-id">Tentukan 1 standar baru.</span></li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Day 2 — Decisions</span><span class="lang-id">Hari 2 — Keputusan</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">Turn 1 want into a decision (what/when/where).</span><span class="lang-id">Ubah 1 “ingin” jadi keputusan (apa/kapan/di mana).</span></li>
+                <li><span class="lang-en">Define minimum version.</span><span class="lang-id">Tentukan versi minimum.</span></li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Day 3 — Pain/Pleasure</span><span class="lang-id">Hari 3 — Pain/Pleasure</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">Fill the worksheet for 1 habit.</span><span class="lang-id">Isi worksheet untuk 1 kebiasaan.</span></li>
+                <li><span class="lang-en">Create a replacement rule.</span><span class="lang-id">Buat aturan pengganti.</span></li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Day 4 — Beliefs</span><span class="lang-id">Hari 4 — Keyakinan</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">Identify 1 limiting belief + 2 counterexamples.</span><span class="lang-id">Tentukan 1 belief pembatas + 2 counterexample.</span></li>
+                <li><span class="lang-en">Install new belief with proof.</span><span class="lang-id">Pasang belief baru dengan aksi bukti.</span></li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Day 5 — Questions</span><span class="lang-id">Hari 5 — Pertanyaan</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">Choose 3 daily questions.</span><span class="lang-id">Pilih 3 pertanyaan harian.</span></li>
+                <li><span class="lang-en">Answer then act.</span><span class="lang-id">Jawab lalu bergerak.</span></li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Day 6 — Vocabulary</span><span class="lang-id">Hari 6 — Bahasa</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">Replace 5 negative labels with power labels.</span><span class="lang-id">Ganti 5 label negatif jadi label power.</span></li>
+                <li><span class="lang-en">Use precision rule once.</span><span class="lang-id">Pakai aturan presisi sekali.</span></li>
+              </ul>
+            </div>
+            <div class="mini-card md:col-span-2">
+              <h4 class="text-xl mb-2"><span class="lang-en">Day 7 — State Mastery</span><span class="lang-id">Hari 7 — Kontrol State</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">Use the 60-second reset 3 times (even if you feel okay).</span><span class="lang-id">Pakai reset 60 detik 3 kali (meski kamu baik-baik saja).</span></li>
+                <li><span class="lang-en">Write “Before → After” state notes.</span><span class="lang-id">Catat “Sebelum → Sesudah.”</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mt-6 callout">
+            <p class="mb-0">
+              <span class="lang-en"><strong>Consistency > intensity.</strong> If you miss a day, don’t restart the plan. Continue tomorrow.</span>
+              <span class="lang-id"><strong>Konsisten > intens.</strong> Kalau miss sehari, jangan reset plan. Lanjut besok.</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORKSHEETS -->
+    <section id="worksheets" class="content-section fade-in">
+      <span class="section-kicker">Toolkit C</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Worksheets (Copy & Fill)</span>
+        <span class="lang-id">Lembar Latihan (Copy & Isi)</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+
+        <div class="concept-box">
+          <div class="concept-label">1) TRUE DECISION TEMPLATE</div>
+          <div class="mini-card mono-font">
+            <p class="mb-0">
+              <span class="lang-en">
+                I decide to ____________________________ <br/>
+                Starting on (date) _____________________ at (time) ________ in (place) __________ <br/>
+                Minimum version (even on bad days): _____________________ <br/>
+                Proof I did it (how I track it): _________________________
+              </span>
+              <span class="lang-id">
+                Saya memutuskan ________________________ <br/>
+                Mulai (tanggal) ________________________ jam ________ di (tempat) __________ <br/>
+                Versi minimum (meski hari buruk): _______________________ <br/>
+                Bukti saya melakukannya (tracking): ______________________
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">2) PAIN / PLEASURE LEVERAGE</div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="mini-card mono-font">
+              <h4 class="text-xl mb-2"><span class="lang-en">If I keep the old habit…</span><span class="lang-id">Kalau saya lanjut kebiasaan lama…</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">
+                  Immediate pain: __________________________ <br/>
+                  Pain in 1 year: ___________________________ <br/>
+                  Pain in 3 years: ___________________________ <br/>
+                  Who do I become if I continue?: ____________
+                </span>
+                <span class="lang-id">
+                  Sakit sekarang: ____________________________ <br/>
+                  Sakit 1 tahun: _____________________________ <br/>
+                  Sakit 3 tahun: _____________________________ <br/>
+                  Saya jadi orang seperti apa?: ________________
+                </span>
+              </p>
+            </div>
+            <div class="mini-card mono-font">
+              <h4 class="text-xl mb-2"><span class="lang-en">If I change to the new habit…</span><span class="lang-id">Kalau saya ubah ke kebiasaan baru…</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">
+                  Immediate pleasure: ________________________ <br/>
+                  Pleasure in 1 year: _________________________ <br/>
+                  Pleasure in 3 years: _________________________ <br/>
+                  Who do I become if I change?: _______________
+                </span>
+                <span class="lang-id">
+                  Senang sekarang: ___________________________ <br/>
+                  Senang 1 tahun: _____________________________ <br/>
+                  Senang 3 tahun: _____________________________ <br/>
+                  Saya jadi orang seperti apa?: ________________
+                </span>
+              </p>
+            </div>
+          </div>
+          <div class="mt-6 callout">
+            <p class="mb-0">
+              <span class="lang-en"><strong>Replacement rule:</strong> When I feel ________, I will ________ for 2 minutes.</span>
+              <span class="lang-id"><strong>Aturan pengganti:</strong> Saat saya merasa ________, saya akan ________ selama 2 menit.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">3) BELIEF SWAP</div>
+          <div class="mini-card mono-font">
+            <p class="mb-0">
+              <span class="lang-en">
+                Limiting belief: “I ________________________.” <br/>
+                Evidence I used (past): ______________________ <br/>
+                Counterexamples (cracks): <br/>
+                - ___________________________________________ <br/>
+                - ___________________________________________ <br/>
+                New belief: “I’m the kind of person who ______.” <br/>
+                Daily proof action (≤ 2 min): _________________
+              </span>
+              <span class="lang-id">
+                Belief pembatas: “Saya ______________________.” <br/>
+                Bukti yang saya pakai (dulu): __________________ <br/>
+                Counterexample (retak bukti): <br/>
+                - ___________________________________________ <br/>
+                - ___________________________________________ <br/>
+                Belief baru: “Saya tipe orang yang __________.” <br/>
+                Aksi bukti harian (≤ 2 mnt): ___________________
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">4) DAILY QUESTIONS</div>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="mini-card mono-font">
+              <h4 class="text-xl mb-2"><span class="lang-en">Morning</span><span class="lang-id">Pagi</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">
+                  1) Grateful for: ___________________________ <br/>
+                  2) Today’s win: ____________________________
+                </span>
+                <span class="lang-id">
+                  1) Saya syukuri: ___________________________ <br/>
+                  2) Menang hari ini: _________________________
+                </span>
+              </p>
+            </div>
+            <div class="mini-card mono-font">
+              <h4 class="text-xl mb-2"><span class="lang-en">Midday</span><span class="lang-id">Siang</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">
+                  3) #1 focus: _______________________________ <br/>
+                  4) Next action: _____________________________
+                </span>
+                <span class="lang-id">
+                  3) Fokus #1: _______________________________ <br/>
+                  4) Aksi berikutnya: _________________________
+                </span>
+              </p>
+            </div>
+            <div class="mini-card mono-font">
+              <h4 class="text-xl mb-2"><span class="lang-en">Night</span><span class="lang-id">Malam</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">
+                  5) Lesson learned: __________________________ <br/>
+                  6) Improve 1% tomorrow: _____________________
+                </span>
+                <span class="lang-id">
+                  5) Pelajaran: _______________________________ <br/>
+                  6) 1% besok: _______________________________
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">5) 60-SECOND RESET CARD</div>
+          <div class="mini-card mono-font">
+            <p class="mb-0">
+              <span class="lang-en">
+                POSTURE: Stand tall. <br/>
+                BREATH: 4 in / 2 hold / 6 out × 6 cycles. <br/>
+                MOVE: 10 seconds shake or 10 squats. <br/>
+                QUESTION: “What is the smallest effective step now?” <br/>
+                ACTION: Do it immediately (2 minutes).
+              </span>
+              <span class="lang-id">
+                POSTUR: Tegakkan badan. <br/>
+                NAPAS: 4 tarik / 2 tahan / 6 buang × 6 putaran. <br/>
+                GERAK: Shake 10 detik atau squat 10x. <br/>
+                TANYA: “Langkah efektif terkecil sekarang?” <br/>
+                AKSI: Lakukan langsung (2 menit).
+              </span>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- SCRIPT -->
+  <script>
+    // --- LANGUAGE LOGIC ---
+    let currentLang = 'en';
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'en' ? 'id' : 'en';
+      updateContent();
+    }
+
+    function updateContent() {
+      const enElements = document.querySelectorAll('.lang-en');
+      const idElements = document.querySelectorAll('.lang-id');
+      const langEn = document.querySelector('.lang-opt-en');
+      const langId = document.querySelector('.lang-opt-id');
+
+      if (currentLang === 'en') {
+        enElements.forEach(el => el.style.display = 'block');
+        idElements.forEach(el => el.style.display = 'none');
+        if (langEn && langId) {
+          langEn.classList.add('active');
+          langId.classList.remove('active');
+        }
+      } else {
+        enElements.forEach(el => el.style.display = 'none');
+        idElements.forEach(el => el.style.display = 'block');
+        if (langEn && langId) {
+          langEn.classList.remove('active');
+          langId.classList.add('active');
+        }
+      }
+    }
+
+    // --- NAV DRAWER LOGIC ---
+    function toggleDrawer() {
+      const drawer = document.querySelector('.nav-drawer');
+      const overlay = document.querySelector('.nav-overlay');
+
+      drawer.classList.toggle('open');
+      overlay.classList.toggle('active');
+
+      if (drawer.classList.contains('open')) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
+      }
+    }
+
+    function closeDrawer() {
+      const drawer = document.querySelector('.nav-drawer');
+      const overlay = document.querySelector('.nav-overlay');
+
+      drawer.classList.remove('open');
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function showSection(sectionId) {
+      // Hide all sections
+      document.querySelectorAll('.content-section').forEach(sec => {
+        sec.classList.remove('active');
+        sec.classList.remove('fade-in');
+      });
+
+      // Reset active tab styling
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('active-tab');
+      });
+
+      // Show target
+      const target = document.getElementById(sectionId);
+      if (!target) return;
+
+      target.classList.add('active');
+
+      // Trigger reflow for animation
+      void target.offsetWidth;
+      target.classList.add('fade-in');
+
+      // Set active tab
+      if (typeof event !== 'undefined' && event.currentTarget) {
+        event.currentTarget.classList.add('active-tab');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Init
+    updateContent();
+  </script>
+</body>
+</html>
