@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Great by Choice: The Masterclass</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Import Premium Fonts - Strong, Disciplined, Empirical Feel */
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Oswald:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap');
+        
+        /* --- THEME SETTINGS (Updated Palette: Cloudy White BG, Deep Teal Drawer) --- */
+        :root {
+            --bg-paper: #F8FAFC; /* A very light, cloudy white/blue-grey */
+            --text-ink: #0C2F3B; /* Very dark blue/teal for readability against white */
+            --accent-red: #FF4C3B; /* Orange-Red accent */
+            --drawer-bg: #003B46; /* Deep dark teal for navigation (Book color) */
+            --text-white: #FFFFFF; /* White text for contrast on dark backgrounds */
+        }
+
+        body { 
+            font-family: 'Merriweather', serif; 
+            background-color: var(--bg-paper); 
+            color: var(--text-ink); 
+            line-height: 2.0; /* Generous spacing for deep reading */
+            font-size: 18px; 
+            -webkit-font-smoothing: antialiased;
+            /* Subtle gradient texture for cloudy feel */
+            background-image: linear-gradient(to bottom, #F0F9FF, #F8FAFC);
+            padding-top: 80px;
+        }
+        
+        /* Typography */
+        h1, h2, h3, h4 { 
+            font-family: 'Oswald', sans-serif; 
+            text-transform: uppercase; 
+            letter-spacing: 0.02em;
+            font-weight: 700;
+            color: var(--text-ink); /* Ensure titles are dark on white bg */
+        }
+        /* Monospace for data/empirical concepts */
+        .mono-font { font-family: 'Roboto Mono', monospace; font-size: 0.9em; letter-spacing: 0.05em; }
+        
+        /* Drop Cap Styling - The Orange-Red Punch */
+        .drop-cap::first-letter {
+            float: left;
+            font-size: 4.2rem;
+            line-height: 0.8;
+            margin-right: 0.15em;
+            margin-top: 0.05em;
+            font-family: 'Oswald', sans-serif;
+            color: var(--accent-red);
+            font-weight: 700;
+        }
+
+        /* Animations */
+        .fade-in { animation: fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .content-section { display: none; padding-bottom: 120px; max-width: 760px; margin: 0 auto; }
+        .content-section.active { display: block; }
+        
+        /* Language Utilities */
+        .lang-id { display: none; }
+        .lang-en { display: block; }
+        .justified-text { text-align: justify; }
+        
+        /* --- NAVIGATION DRAWER --- */
+        .nav-drawer {
+            position: fixed; top: 0; left: -360px; width: 360px; height: 100vh;
+            background: var(--drawer-bg);
+            transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 2000;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+            border-right: 3px solid var(--accent-red); /* Orange-Red spine */
+        }
+        .nav-drawer.open { left: 0; }
+        
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(12, 47, 59, 0.7); opacity: 0; visibility: hidden;
+            transition: all 0.5s; z-index: 1999; backdrop-filter: blur(5px);
+        }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        
+        /* Nav Items */
+        .nav-btn {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border-left: 4px solid transparent;
+            transition: all 0.3s;
+            color: #7AA8B8; /* Muted teal */
+        }
+        .active-tab { 
+            border-left: 4px solid var(--accent-red);
+            color: var(--text-white) !important;
+            background: linear-gradient(90deg, rgba(255, 76, 59, 0.2) 0%, transparent 100%);
+            padding-left: 28px !important;
+        }
+        
+        /* Header Bar */
+        .header-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(248, 250, 252, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+            z-index: 2200;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+        }
+        .menu-btn { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+        .right-controls { display: flex; align-items: center; gap: 18px; }
+        .back-link { display: inline-flex; align-items: center; justify-content: center; color: inherit; transition: transform 0.2s ease, color 0.2s ease; }
+        .back-link:hover { transform: translateX(-3px); }
+        .lang-toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: inherit;
+        }
+        .lang-opt { color: rgba(15, 23, 42, 0.45); transition: color 0.2s ease; }
+        .lang-opt.active { color: inherit; border-bottom: 2px solid currentColor; }
+        .lang-sep { color: rgba(15, 23, 42, 0.3); }
+
+        .drawer-toggle {
+            position: static;
+            top: auto;
+            left: auto;
+            z-index: auto;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            border: 1px solid rgba(15, 23, 42, 0.2);
+            color: var(--text-ink);
+        }
+
+        /* --- DECORATIVE ELEMENTS --- */
+        /* Concept Box: Adjusted for white background */
+        .concept-box {
+            margin: 3.5rem 0;
+            padding: 2.5rem;
+            background-color: #FFFFFF; /* Solid white */
+            border: 1px solid #E2E8F0; /* Light border */
+            border-top: 3px solid var(--accent-red);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+        .concept-label {
+            position: absolute;
+            top: -16px;
+            left: 2rem;
+            background: var(--accent-red);
+            color: var(--text-white);
+            padding: 4px 16px;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+        }
+
+        .section-kicker {
+            display: block;
+            font-family: 'Roboto Mono', monospace;
+            color: var(--accent-red);
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        /* Robust divider adapted for white bg */
+        .divider {
+            width: 100%; height: 1px; background: #CBD5E1; margin: 4rem 0; position: relative;
+        }
+        .divider::after {
+            content: ''; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+            width: 60px; height: 3px; background: var(--accent-red);
+        }
+
+        /* Quote style - adapted for white bg */
+        blockquote {
+            border-left: 6px solid var(--accent-red);
+            padding-left: 24px;
+            margin: 3rem 0;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 300;
+            color: var(--text-ink);
+            line-height: 1.4;
+            text-transform: uppercase;
+            background: #F1F5F9; /* Light gray background for contrast */
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        @media (max-width: 640px) {
+            body { font-size: 17px; line-height: 1.8; }
+            .content-section { padding: 80px 24px; }
+            .nav-drawer { width: 85%; }
+            .drop-cap::first-letter { font-size: 3.5rem; }
+            h2 { font-size: 2.5rem; }
+        }
+        
+        @media (min-width: 641px) {
+            .content-section { padding-top: 120px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-bar">
+        <button class="drawer-toggle menu-btn" onclick="toggleDrawer()" aria-label="Menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+        <div class="right-controls">
+            <a class="back-link" href="../index.html" aria-label="Back to home">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 18l-6-6 6-6" />
+                </svg>
+            </a>
+            <button class="lang-toggle-container" onclick="toggleLanguage()" aria-label="Toggle language">
+                <span class="lang-opt lang-opt-id">ID</span>
+                <span class="lang-sep">|</span>
+                <span class="lang-opt lang-opt-en active">EN</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="nav-overlay" onclick="closeDrawer()"></div>
+    <nav class="nav-drawer flex flex-col h-full">
+        <div class="px-8 py-12 bg-[#002A33]">
+            <h2 class="text-white text-4xl leading-none mb-2 font-bold tracking-tight">GREAT BY <span class="text-white">CHOICE</span></h2>
+            <p class="text-teal-400 text-[11px] uppercase tracking-[0.2em] font-mono font-medium mt-4">
+                <span class="text-[#FF4C3B]">Collins & Hansen</span>
+            </p>
+            <div class="w-16 h-2 bg-[#FF4C3B] mt-6"></div>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto py-8 px-4">
+            <ul class="space-y-3">
+                 <li>
+                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3 active-tab">
+                        <span class="lang-en">00. Introduction: The Question</span>
+                        <span class="lang-id">00. Pendahuluan: Pertanyaan Inti</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+                        <span class="lang-en">01. The 10Xers (Amundsen vs Scott)</span>
+                        <span class="lang-id">01. Para 10Xers (Amundsen vs Scott)</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+                        <span class="lang-en">02. 20 Mile March</span>
+                        <span class="lang-id">02. Mars 20 Mil</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+                        <span class="lang-en">03. Fire Bullets, Then Cannonballs</span>
+                        <span class="lang-id">03. Tembakkan Peluru, Lalu Meriam</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+                        <span class="lang-en">04. Leading above the Death Line</span>
+                        <span class="lang-id">04. Memimpin di Atas Garis Kematian</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+                        <span class="lang-en">05. SMaC Recipe</span>
+                        <span class="lang-id">05. Resep SMaC</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('part6'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+                        <span class="lang-en">06. Return on Luck</span>
+                        <span class="lang-id">06. Pengembalian atas Keberuntungan</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="p-8 text-teal-500 text-[10px] font-mono tracking-widest uppercase border-t border-[#FF4C3B]">
+            Masterclass Edition
+        </div>
+    </nav>
+
+    <main>
+        
+        <section id="intro" class="content-section active fade-in">
+            <span class="section-kicker">Introduction</span>
+            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+                <span class="lang-en">Thriving in Chaos</span>
+                <span class="lang-id">Berkembang dalam Kekacauan</span>
+            </h2>
+            
+            <div class="space-y-8 justified-text font-serif">
+                <p class="drop-cap">
+                    <span class="lang-en">The future cannot be predicted, but it can be created. This book addresses a single, haunting question born from extensive research: Why do some companies thrive in uncertainty, even chaos, beating their industry averages by at least ten times (10X), while others underperform or collapse entirely?</span>
+                    <span class="lang-id">Masa depan tidak dapat diprediksi, tetapi dapat diciptakan. Buku ini menjawab satu pertanyaan yang menghantui dari penelitian ekstensif: Mengapa beberapa perusahaan berkembang pesat dalam ketidakpastian, bahkan kekacauan, mengalahkan rata-rata industri mereka setidaknya sepuluh kali lipat (10X), sementara yang lain berkinerja buruk atau runtuh sama sekali?</span>
+                </p>
+
+                <p>
+                    <span class="lang-en">Collins and Hansen studied these "10X" companies during highly tumultuous periods. The findings shatter a common myth: that in a chaotic world, you need to be chaotic, fast, and risk-taking to win. The data proves the exact opposite.</span>
+                    <span class="lang-id">Collins dan Hansen mempelajari perusahaan "10X" ini selama periode yang sangat kacau. Temuan ini menghancurkan mitos umum: bahwa dalam dunia yang kacau, Anda harus menjadi kacau, cepat, dan berani mengambil risiko untuk menang. Data membuktikan hal yang sebaliknya.</span>
+                </p>
+
+                 <blockquote>
+                    <span class="lang-en">"Greatness is not a function of circumstance. Greatness, it turns out, is largely a matter of conscious choice, and discipline."</span>
+                    <span class="lang-id">"Kehebatan bukanlah fungsi dari keadaan. Kehebatan, ternyata, sebagian besar adalah masalah pilihan sadar, dan disiplin."</span>
+                </blockquote>
+            </div>
+        </section>
+
+        <section id="part1" class="content-section fade-in">
+            <span class="section-kicker">Chapter 01</span>
+            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+                <span class="lang-en">The 10Xers & The Triad</span>
+                <span class="lang-id">Para 10Xers & Tiga Serangkai</span>
+            </h2>
+
+            <div class="space-y-8 justified-text font-serif">
+                <h3 class="text-3xl mt-16 mb-6 font-bold">
+                    <span class="lang-en">The Definitive Case Study: Amundsen vs. Scott</span>
+                    <span class="lang-id">Studi Kasus Definitif: Amundsen vs. Scott</span>
+                </h3>
+
+                <p class="drop-cap">
+                    <span class="lang-en">In October 1911, two teams set out for the South Pole. One led by Roald Amundsen, the other by Robert Falcon Scott. The environment was equally brutal for both. Amundsen led his team to victory and returned safely. Scott arrived 34 days later, defeated, and died on the return journey with his entire team.</span>
+                    <span class="lang-id">Pada Oktober 1911, dua tim berangkat menuju Kutub Selatan. Satu dipimpin oleh Roald Amundsen, yang lain oleh Robert Falcon Scott. Lingkungan sama brutalnya bagi keduanya. Amundsen memimpin timnya menuju kemenangan dan kembali dengan selamat. Scott tiba 34 hari kemudian, kalah, dan meninggal dalam perjalanan pulang bersama seluruh timnya.</span>
+                </p>
+
+                <p>
+                    <span class="lang-en">Why the divergence? Amundsen was a 10Xer. He didn't wait for the storm to hit to prepare; he prepared for conditions far worse than he ever expected. He lived with Eskimos to learn survival. He used dogs (Scott used ponies, which froze). Crucially, Amundsen brought <strong>3 tons</strong> of supplies for 5 men. Scott brought <strong>1 ton</strong> for 17 men. Amundsen was not "lucky"; he was fanatically prepared for misfortune.</span>
+                    <span class="lang-id">Mengapa terjadi perbedaan? Amundsen adalah seorang 10Xer. Dia tidak menunggu badai datang untuk bersiap; dia bersiap untuk kondisi yang jauh lebih buruk daripada yang dia harapkan. Dia tinggal bersama orang Eskimo untuk belajar bertahan hidup. Dia menggunakan anjing (Scott menggunakan kuda poni, yang mati beku). Yang terpenting, Amundsen membawa <strong>3 ton</strong> perbekalan untuk 5 orang. Scott membawa <strong>1 ton</strong> untuk 17 orang. Amundsen tidak "beruntung"; dia siap secara fanatik menghadapi kemalangan.</span>
+                </p>
+
+                <div class="concept-box">
+                    <div class="concept-label">THE 10X TRIAD</div>
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="text-xl mb-1">1. Fanatic Discipline</h4>
+                            <p>Consistency of action. Adhering to values and performance standards regardless of the weather—good or bad.</p>
+                        </div>
+                        <div>
+                            <h4 class="text-xl mb-1">2. Empirical Creativity</h4>
+                            <p>Don't follow the herd. Look at the evidence (Empirical). Be bold in your solutions based on that evidence (Creative).</p>
+                        </div>
+                        <div>
+                            <h4 class="text-xl mb-1">3. Productive Paranoia</h4>
+                            <p>Hyper-vigilance. Assuming the worst will happen and preparing massive buffers before the storm hits.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="part2" class="content-section fade-in">
+            <span class="section-kicker">Chapter 02</span>
+            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+                <span class="lang-en">20 Mile March</span>
+                <span class="lang-id">Mars 20 Mil</span>
+            </h2>
+
+            <div class="space-y-8 justified-text font-serif">
+                <p class="drop-cap">
+                    <span class="lang-en">Imagine you must walk across a continent. A "20 Mile March" means you commit to walking exactly 20 miles every single day. On a beautiful, sunny day, you don't go 40 miles—you hold back. In a blizzard, you don't stay in bed—you get up and walk your 20 miles.</span>
+                    <span class="lang-id">Bayangkan Anda harus berjalan melintasi benua. "Mars 20 Mil" berarti Anda berkomitmen untuk berjalan tepat 20 mil setiap hari. Di hari yang cerah dan indah, Anda tidak menempuh 40 mil—Anda menahan diri. Saat badai salju, Anda tidak tetap di tempat tidur—Anda bangun dan berjalan 20 mil.</span>
+                </p>
+
+                <p>
+                    <span class="lang-en">The company <strong>Stryker</strong> is the perfect example. Since 1977, they set a benchmark of 20% net income growth every year. Not 50% in boom times, not 5% in recessions. Just a consistent 20%. This built a culture of intense discipline and predictability.</span>
+                    <span class="lang-id">Perusahaan <strong>Stryker</strong> adalah contoh sempurna. Sejak 1977, mereka menetapkan tolak ukur pertumbuhan laba bersih 20% setiap tahun. Bukan 50% di masa booming, bukan 5% di masa resesi. Hanya 20% yang konsisten. Ini membangun budaya disiplin yang intens dan prediktabilitas.</span>
+                </p>
+
+                <div class="concept-box">
+                    <div class="concept-label">THE PHILOSOPHY</div>
+                     <p>
+                        <span class="lang-en">The 20 Mile March imposes order amidst disorder. It gives people a concrete goal when the world is chaotic. It builds confidence. It requires two distinct types of discomfort:</span>
+                        <span class="lang-id">Mars 20 Mil memaksakan keteraturan di tengah ketidakteraturan. Ini memberi orang tujuan konkret saat dunia sedang kacau. Ini membangun kepercayaan diri. Ini membutuhkan dua jenis ketidaknyamanan yang berbeda:</span>
+                    </p>
+                    <ul class="list-disc pl-6 mt-4 space-y-2 mono-font">
+                        <li><strong>The discipline to deliver</strong> performance when it is difficult.</li>
+                        <li><strong>The discipline to hold back</strong> when you want to run faster.</li>
+                    </ul>
+                </div>
+                 <p>
+                    <span class="lang-en">10Xers resist the urge to grow too fast in good times, because unchecked growth eats the resources needed to survive the inevitable bad times.</span>
+                    <span class="lang-id">10Xers menahan dorongan untuk tumbuh terlalu cepat di masa-masa indah, karena pertumbuhan yang tidak terkendali memakan sumber daya yang dibutuhkan untuk bertahan di masa-masa sulit yang tak terelakkan.</span>
+                </p>
+            </div>
+        </section>
+
+        <section id="part3" class="content-section fade-in">
+            <span class="section-kicker">Chapter 03</span>
+            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+                <span class="lang-en">Fire Bullets, Then Cannonballs</span>
+                <span class="lang-id">Tembakkan Peluru, Lalu Meriam</span>
+            </h2>
+
+            <div class="space-y-8 justified-text font-serif">
+                <p class="drop-cap">
+                    <span class="lang-en">There is a pervasive myth that great companies are "bold innovators" who bet the farm on big ideas. The data says otherwise. 10Xers are actually quite risk-averse when it comes to unproven ideas.</span>
+                    <span class="lang-id">Ada mitos yang tersebar luas bahwa perusahaan hebat adalah "inovator berani" yang mempertaruhkan segalanya pada ide besar. Data mengatakan sebaliknya. 10Xers sebenarnya cukup menghindari risiko dalam hal ide yang belum terbukti.</span>
+                </p>
+
+                <div class="concept-box">
+                    <div class="concept-label">THE METAPHOR</div>
+                    <p class="mb-0 text-lg font-medium">
+                        <span class="lang-en">You are on a ship with limited gunpowder. A hostile ship approaches. If you fire your big cannonball immediately and miss, you are out of ammo and you die. Instead, you fire a small bullet. It misses. You adjust 10 degrees. Fire another bullet. It hits. <span class="text-[#FF4C3B]">Now</span>, you load the gunpowder into the cannon and fire the cannonball along the calibrated line.</span>
+                        <span class="lang-id">Anda berada di kapal dengan bubuk mesiu terbatas. Kapal musuh mendekat. Jika Anda segera menembakkan bola meriam besar dan meleset, Anda kehabisan amunisi dan mati. Sebaliknya, Anda menembakkan peluru kecil. Meleset. Anda sesuaikan 10 derajat. Tembak peluru lagi. Kena. <span class="text-[#FF4C3B]">Sekarang</span>, Anda memuat bubuk mesiu ke dalam meriam dan menembakkan bola meriam di jalur yang sudah terkalibrasi.</span>
+                    </p>
+                </div>
+
+                <h3 class="text-3xl mt-16 mb-6 font-bold">
+                    <span class="lang-en">Case Study: Apple's iPod</span>
+                    <span class="lang-id">Studi Kasus: iPod Apple</span>
+                </h3>
+                <p>
+                    <span class="lang-en">The iPod wasn't a random, giant gamble. Apple fired bullets first: they launched iTunes on Mac only, tested simple MP3 integration, and gauged user behavior. A bullet is low cost, low risk, and low distraction.</span>
+                    <span class="lang-id">iPod bukanlah perjudian acak yang besar. Apple menembakkan peluru terlebih dahulu: mereka meluncurkan iTunes hanya di Mac, menguji integrasi MP3 sederhana, dan mengukur perilaku pengguna. Peluru itu berbiaya rendah, berisiko rendah, dan gangguannya rendah.</span>
+                </p>
+                <p>
+                    <span class="lang-en">Only when they saw the bullet hit—confirming the demand for digital music organization—did they launch the cannonball: The iPod device combined with the iTunes Store for Windows, creating a massive success.</span>
+                    <span class="lang-id">Hanya ketika mereka melihat peluru itu mengenai sasaran—mengonfirmasi permintaan untuk organisasi musik digital—mereka meluncurkan bola meriam: Perangkat iPod yang digabungkan dengan iTunes Store untuk Windows, menciptakan kesuksesan besar.</span>
+                </p>
+            </div>
+        </section>
+
+        <section id="part4" class="content-section fade-in">
+            <span class="section-kicker">Chapter 04</span>
+            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+                <span class="lang-en">Leading Above the Death Line</span>
+                <span class="lang-id">Memimpin di Atas Garis Kematian</span>
+            </h2>
+
+            <div class="space-y-8 justified-text font-serif">
+                <p class="drop-cap">
+                    <span class="lang-en">10Xers operate with <strong>Productive Paranoia</strong>. They know that "Black Swan" events—unexpected, high-impact disasters—will happen. The only question is whether you have the buffer to survive them when they inevitably arrive.</span>
+                    <span class="lang-id">10Xers beroperasi dengan <strong>Paranoia Produktif</strong>. Mereka tahu bahwa peristiwa "Black Swan"—bencana tak terduga yang berdampak tinggi—akan terjadi. Satu-satunya pertanyaan adalah apakah Anda memiliki penyangga untuk bertahan ketika peristiwa itu datang.</span>
+                </p>
+
+                <h3 class="text-3xl mt-16 mb-6 font-bold">
+                    <span class="lang-en">Cash is Oxygen</span>
+                    <span class="lang-id">Uang Tunai adalah Oksigen</span>
+                </h3>
+                <p>
+                    <span class="lang-en">Most companies try to be "efficient" with capital, deploying it for maximum short-term return. 10X companies look inefficient by standard measures. Southwest Airlines, even after the industry collapsed following 9/11, remained the only profitable major airline because they maintained massive cash reserves far exceeding industry standards. They didn't need the cash when skies were clear; they needed it to breathe during the storm.</span>
+                    <span class="lang-id">Sebagian besar perusahaan berusaha "efisien" dengan modal, mengerahkannya untuk pengembalian jangka pendek yang maksimal. Perusahaan 10X terlihat tidak efisien menurut ukuran standar. Southwest Airlines, bahkan setelah industri runtuh setelah 9/11, tetap menjadi satu-satunya maskapai besar yang menguntungkan karena mereka memelihara cadangan kas besar yang jauh melebihi standar industri. Mereka tidak membutuhkan uang tunai saat langit cerah; mereka membutuhkannya untuk bernapas selama badai.</span>
+                </p>
+
+                <div class="concept-box">
+                    <div class="concept-label">ZOOM OUT, ZOOM IN</div>
+                    <p>
+                        <span class="lang-en">Productive paranoia requires a dual focus:</span>
+                        <span class="lang-id">Paranoia produktif membutuhkan fokus ganda:</span>
+                    </p>
+                     <ul class="list-none mt-6 space-y-4">
+                        <li>
+                            <strong class="text-[#FF4C3B] uppercase block tracking-wider mb-1 mono-font">Zoom Out</strong>
+                            <span class="lang-en">Sense the changing environment. Perceive the danger early. (Like Amundsen sensing the subtle shifts in Antarctic weather patterns).</span>
+                            <span class="lang-id">Rasakan perubahan lingkungan. Rasakan bahaya sejak dini. (Seperti Amundsen yang merasakan perubahan halus dalam pola cuaca Antartika).</span>
+                        </li>
+                         <li>
+                            <strong class="text-[#FF4C3B] uppercase block tracking-wider mb-1 mono-font">Zoom In</strong>
+                            <span class="lang-en">Execute with extreme precision and focus on the details. (Amundsen ensuring every single supply crate was marked perfectly so it could be found in a blizzard).</span>
+                            <span class="lang-id">Eksekusi dengan presisi ekstrem dan fokus pada detail. (Amundsen memastikan setiap peti perbekalan ditandai dengan sempurna agar dapat ditemukan saat badai salju).</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="part5" class="content-section fade-in">
+            <span class="section-kicker">Chapter 05</span>
+            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+                <span class="lang-en">SMaC Recipe</span>
+                <span class="lang-id">Resep SMaC</span>
+            </h2>
+
+            <div class="space-y-8 justified-text font-serif">
+                <p class="drop-cap">
+                    <span class="lang-en">SMaC stands for <strong>Specific, Methodical, and Consistent</strong>. A SMaC recipe is a set of durable operating practices that create a replicable and consistent success formula. It is not a strategy; it is your operational code of conduct.</span>
+                    <span class="lang-id">SMaC singkatan dari <strong>Specific (Spesifik), Methodical (Metodis), dan Consistent (Konsisten)</strong>. Resep SMaC adalah serangkaian praktik operasional tahan lama yang menciptakan formula sukses yang dapat ditiru dan konsisten. Ini bukan strategi; ini adalah kode etik operasional Anda.</span>
+                </p>
+
+                <div class="concept-box">
+                    <div class="concept-label">EXAMPLE: SOUTHWEST AIRLINES (1979 RECIPE)</div>
+                    <ul class="list-disc pl-6 space-y-3 mono-font">
+                        <li>Remain a short-haul carrier (under 2-hour flights).</li>
+                        <li>Utilize the Boeing 737 as the primary aircraft type.</li>
+                        <li>Stay out of food services (serve peanuts only).</li>
+                        <li>Turn aircraft in 10 minutes at the gate.</li>
+                        <li>The customer is not always right.</li>
+                    </ul>
+                </div>
+
+                <p>
+                    <span class="lang-en">The key power of a SMaC recipe isn't just having one; it's having the discipline to stick to it when the world tries to force you to change. When the internet boom happened, many companies abandoned their SMaC recipes to chase new trends, and failed. The 10Xers amended their recipe rarely (maybe a 15% change over 20 years), but executed the remaining 85% with fanatical consistency.</span>
+                    <span class="lang-id">Kekuatan utama dari resep SMaC bukan hanya memilikinya; tetapi memiliki disiplin untuk mematuhinya ketika dunia mencoba memaksa Anda untuk berubah. Saat ledakan internet terjadi, banyak perusahaan meninggalkan resep SMaC mereka untuk mengejar tren baru, dan gagal. Para 10Xers jarang mengubah resep mereka (mungkin perubahan 15% selama 20 tahun), tetapi mengeksekusi 85% sisanya dengan konsistensi fanatik.</span>
+                </p>
+            </div>
+        </section>
+
+        <section id="part6" class="content-section fade-in">
+            <span class="section-kicker">Chapter 06</span>
+            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+                <span class="lang-en">Return on Luck (ROL)</span>
+                <span class="lang-id">Pengembalian atas Keberuntungan (ROL)</span>
+            </h2>
+
+            <div class="space-y-8 justified-text font-serif">
+                <p class="drop-cap">
+                    <span class="lang-en">Are 10Xers just luckier than the comparison companies? Collins analyzed this empirically. He defined a "luck event" as something independent of the actor, significant in impact, and unpredictable.</span>
+                    <span class="lang-id">Apakah 10Xers hanya lebih beruntung daripada perusahaan pembanding? Collins menganalisis ini secara empiris. Dia mendefinisikan "peristiwa keberuntungan" sebagai sesuatu yang independen dari aktor, berdampak signifikan, dan tidak terduga.</span>
+                </p>
+
+                <p>
+                    <span class="lang-en"><strong>The Surprising Finding:</strong> The 10X companies did NOT get more good luck, nor did they get less bad luck, than the comparison companies. The distribution of luck was roughly equal. The defining difference was what they <em>did</em> with the luck they received.</span>
+                    <span class="lang-id"><strong>Temuan Mengejutkan:</strong> Perusahaan 10X TIDAK mendapatkan keberuntungan baik lebih banyak, juga tidak mendapatkan keberuntungan buruk lebih sedikit, daripada perusahaan pembanding. Distribusi keberuntungan kurang lebih sama. Perbedaan yang menentukan adalah apa yang mereka <em>lakukan</em> dengan keberuntungan yang mereka terima.</span>
+                </p>
+
+                <div class="concept-box">
+                    <div class="concept-label">THE FORMULA FOR HIGH ROL</div>
+                    <p class="text-lg">
+                        <span class="lang-en">Bill Gates didn't invent operating systems. He wasn't the only skilled programmer. But when the luck event happened—IBM needed an OS quickly—Gates recognized the moment, dropped out of Harvard, moved to Albuquerque, and worked 24/7 to capitalize on it.</span>
+                        <span class="lang-id">Bill Gates tidak menemukan sistem operasi. Dia bukan satu-satunya programmer yang terampil. Tapi saat peristiwa keberuntungan terjadi—IBM membutuhkan OS dengan cepat—Gates mengenali momen itu, keluar dari Harvard, pindah ke Albuquerque, dan bekerja 24/7 untuk memanfaatkannya.</span>
+                    </p>
+                    <p class="mt-4 font-bold text-[#FF4C3B]">That is High Return on Luck.</p>
+                </div>
+
+                <div class="divider"></div>
+
+                 <blockquote>
+                    <span class="lang-en">"We cannot control our luck, good or bad, but we can control our return on luck."</span>
+                    <span class="lang-id">"Kita tidak bisa mengendalikan keberuntungan kita, baik atau buruk, tapi kita bisa mengendalikan pengembalian atas keberuntungan itu."</span>
+                </blockquote>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- LOGIC ---
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateContent();
+        }
+
+        function updateContent() {
+            const enElements = document.querySelectorAll('.lang-en');
+            const idElements = document.querySelectorAll('.lang-id');
+            const langEn = document.querySelector('.lang-opt-en');
+            const langId = document.querySelector('.lang-opt-id');
+
+            if (currentLang === 'en') {
+                enElements.forEach(el => el.style.display = 'block');
+                idElements.forEach(el => el.style.display = 'none');
+                if (langEn && langId) {
+                    langEn.classList.add('active');
+                    langId.classList.remove('active');
+                }
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                idElements.forEach(el => el.style.display = 'block');
+                if (langEn && langId) {
+                    langEn.classList.remove('active');
+                    langId.classList.add('active');
+                }
+            }
+        }
+
+        // Navigation Drawer Logic
+        function toggleDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+            
+            if(drawer.classList.contains('open')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+        
+        function closeDrawer() {
+            const drawer = document.querySelector('.nav-drawer');
+            const overlay = document.querySelector('.nav-overlay');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(sec => {
+                sec.classList.remove('active');
+                sec.classList.remove('fade-in');
+            });
+
+            // Reset active tab styling
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active-tab');
+            });
+
+            // Show target
+            const target = document.getElementById(sectionId);
+            target.classList.add('active');
+            
+            // Trigger reflow for animation
+            void target.offsetWidth; 
+            target.classList.add('fade-in');
+
+            // Set active tab
+            event.currentTarget.classList.add('active-tab');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
