@@ -1,649 +1,1672 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Great by Choice: The Masterclass</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Import Premium Fonts - Strong, Disciplined, Empirical Feel */
-        @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Oswald:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap');
-        
-        /* --- THEME SETTINGS (Updated Palette: Cloudy White BG, Deep Teal Drawer) --- */
-        :root {
-            --bg-paper: #F8FAFC; /* A very light, cloudy white/blue-grey */
-            --text-ink: #0C2F3B; /* Very dark blue/teal for readability against white */
-            --accent-red: #FF4C3B; /* Orange-Red accent */
-            --drawer-bg: #003B46; /* Deep dark teal for navigation (Book color) */
-            --text-white: #FFFFFF; /* White text for contrast on dark backgrounds */
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Atomic Habits: The Masterclass</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 
-        body { 
-            font-family: 'Merriweather', serif; 
-            background-color: var(--bg-paper); 
-            color: var(--text-ink); 
-            line-height: 2.0; /* Generous spacing for deep reading */
-            font-size: 18px; 
-            -webkit-font-smoothing: antialiased;
-            /* Subtle gradient texture for cloudy feel */
-            background-image: linear-gradient(to bottom, #F0F9FF, #F8FAFC);
-            padding-top: 80px;
-        }
-        
-        /* Typography */
-        h1, h2, h3, h4 { 
-            font-family: 'Oswald', sans-serif; 
-            text-transform: uppercase; 
-            letter-spacing: 0.02em;
-            font-weight: 700;
-            color: var(--text-ink); /* Ensure titles are dark on white bg */
-        }
-        /* Monospace for data/empirical concepts */
-        .mono-font { font-family: 'Roboto Mono', monospace; font-size: 0.9em; letter-spacing: 0.05em; }
-        
-        /* Drop Cap Styling - The Orange-Red Punch */
-        .drop-cap::first-letter {
-            float: left;
-            font-size: 4.2rem;
-            line-height: 0.8;
-            margin-right: 0.15em;
-            margin-top: 0.05em;
-            font-family: 'Oswald', sans-serif;
-            color: var(--accent-red);
-            font-weight: 700;
-        }
+  <style>
+    /* Import Premium Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Oswald:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap');
 
-        /* Animations */
-        .fade-in { animation: fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .content-section { display: none; padding-bottom: 120px; max-width: 760px; margin: 0 auto; }
-        .content-section.active { display: block; }
-        
-        /* Language Utilities */
-        .lang-id { display: none; }
-        .lang-en { display: block; }
-        .justified-text { text-align: justify; }
-        
-        /* --- NAVIGATION DRAWER --- */
-        .nav-drawer {
-            position: fixed; top: 0; left: -360px; width: 360px; height: 100vh;
-            background: var(--drawer-bg);
-            transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 2000;
-            box-shadow: 10px 0 30px rgba(0,0,0,0.5);
-            border-right: 3px solid var(--accent-red); /* Orange-Red spine */
-        }
-        .nav-drawer.open { left: 0; }
-        
-        .nav-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(12, 47, 59, 0.7); opacity: 0; visibility: hidden;
-            transition: all 0.5s; z-index: 1999; backdrop-filter: blur(5px);
-        }
-        .nav-overlay.active { opacity: 1; visibility: visible; }
-        
-        /* Nav Items */
-        .nav-btn {
-            font-family: 'Oswald', sans-serif;
-            font-size: 1rem;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            border-left: 4px solid transparent;
-            transition: all 0.3s;
-            color: #7AA8B8; /* Muted teal */
-        }
-        .active-tab { 
-            border-left: 4px solid var(--accent-red);
-            color: var(--text-white) !important;
-            background: linear-gradient(90deg, rgba(255, 76, 59, 0.2) 0%, transparent 100%);
-            padding-left: 28px !important;
-        }
-        
-        /* Header Bar */
-        .header-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 70px;
-            background: rgba(248, 250, 252, 0.95);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
-            z-index: 2200;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 24px;
-        }
-        .menu-btn { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
-        .right-controls { display: flex; align-items: center; gap: 18px; }
-        .back-link { display: inline-flex; align-items: center; justify-content: center; color: inherit; transition: transform 0.2s ease, color 0.2s ease; }
-        .back-link:hover { transform: translateX(-3px); }
-        .lang-toggle-container {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            cursor: pointer;
-            color: inherit;
-        }
-        .lang-opt { color: rgba(15, 23, 42, 0.45); transition: color 0.2s ease; }
-        .lang-opt.active { color: inherit; border-bottom: 2px solid currentColor; }
-        .lang-sep { color: rgba(15, 23, 42, 0.3); }
+    :root{
+      --bg-paper:#F8FAFC;
+      --text-ink:#0C2F3B;
+      --accent:#FF4C3B;
+      --drawer-bg:#003B46;
+      --text-white:#FFFFFF;
+    }
 
-        .drawer-toggle {
-            position: static;
-            top: auto;
-            left: auto;
-            z-index: auto;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            border: 1px solid rgba(15, 23, 42, 0.2);
-            color: var(--text-ink);
-        }
+    body{
+      font-family:'Merriweather',serif;
+      background-color:var(--bg-paper);
+      color:var(--text-ink);
+      line-height:2.0;
+      font-size:18px;
+      -webkit-font-smoothing:antialiased;
+      background-image:linear-gradient(to bottom,#F0F9FF,#F8FAFC);
+      padding-top:80px;
+    }
 
-        /* --- DECORATIVE ELEMENTS --- */
-        /* Concept Box: Adjusted for white background */
-        .concept-box {
-            margin: 3.5rem 0;
-            padding: 2.5rem;
-            background-color: #FFFFFF; /* Solid white */
-            border: 1px solid #E2E8F0; /* Light border */
-            border-top: 3px solid var(--accent-red);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-            position: relative;
-        }
-        .concept-label {
-            position: absolute;
-            top: -16px;
-            left: 2rem;
-            background: var(--accent-red);
-            color: var(--text-white);
-            padding: 4px 16px;
-            font-family: 'Oswald', sans-serif;
-            font-weight: 700;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-        }
+    h1,h2,h3,h4{
+      font-family:'Oswald',sans-serif;
+      text-transform:uppercase;
+      letter-spacing:0.02em;
+      font-weight:700;
+      color:var(--text-ink);
+    }
 
-        .section-kicker {
-            display: block;
-            font-family: 'Roboto Mono', monospace;
-            color: var(--accent-red);
-            font-weight: 700;
-            letter-spacing: 0.2em;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-        }
+    .mono-font{font-family:'Roboto Mono',monospace;font-size:.9em;letter-spacing:.05em;}
+    .justified-text{text-align:justify;}
 
-        /* Robust divider adapted for white bg */
-        .divider {
-            width: 100%; height: 1px; background: #CBD5E1; margin: 4rem 0; position: relative;
-        }
-        .divider::after {
-            content: ''; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-            width: 60px; height: 3px; background: var(--accent-red);
-        }
+    .drop-cap::first-letter{
+      float:left;
+      font-size:4.2rem;
+      line-height:.8;
+      margin-right:.15em;
+      margin-top:.05em;
+      font-family:'Oswald',sans-serif;
+      color:var(--accent);
+      font-weight:700;
+    }
 
-        /* Quote style - adapted for white bg */
-        blockquote {
-            border-left: 6px solid var(--accent-red);
-            padding-left: 24px;
-            margin: 3rem 0;
-            font-family: 'Oswald', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 300;
-            color: var(--text-ink);
-            line-height: 1.4;
-            text-transform: uppercase;
-            background: #F1F5F9; /* Light gray background for contrast */
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-        }
+    .fade-in{animation:fadeIn .8s cubic-bezier(.22,1,.36,1);}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-        @media (max-width: 640px) {
-            body { font-size: 17px; line-height: 1.8; }
-            .content-section { padding: 80px 24px; }
-            .nav-drawer { width: 85%; }
-            .drop-cap::first-letter { font-size: 3.5rem; }
-            h2 { font-size: 2.5rem; }
-        }
-        
-        @media (min-width: 641px) {
-            .content-section { padding-top: 120px; }
-        }
-    </style>
+    .content-section{display:none;padding-bottom:120px;max-width:760px;margin:0 auto;}
+    .content-section.active{display:block;}
+
+    .lang-id{display:none;}
+    .lang-en{display:block;}
+
+    /* Header Bar */
+    .header-bar{
+      position:fixed;top:0;left:0;width:100%;height:70px;
+      background:rgba(248,250,252,.95);
+      backdrop-filter:blur(8px);
+      border-bottom:1px solid rgba(15,23,42,.08);
+      z-index:2200;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 24px;
+    }
+    .menu-btn{width:44px;height:44px;display:flex;align-items:center;justify-content:center;}
+    .right-controls{display:flex;align-items:center;gap:18px;}
+    .back-link{display:inline-flex;align-items:center;justify-content:center;color:inherit;transition:transform .2s ease,color .2s ease;}
+    .back-link:hover{transform:translateX(-3px);}
+    .lang-toggle-container{
+      display:flex;align-items:center;gap:6px;
+      font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+      cursor:pointer;color:inherit;
+    }
+    .lang-opt{color:rgba(15,23,42,.45);transition:color .2s ease;}
+    .lang-opt.active{color:inherit;border-bottom:2px solid currentColor;}
+    .lang-sep{color:rgba(15,23,42,.3);}
+
+    .drawer-toggle{
+      position:static;width:44px;height:44px;
+      display:flex;align-items:center;justify-content:center;
+      border-radius:12px;
+      border:1px solid rgba(15,23,42,.2);
+      color:var(--text-ink);
+    }
+
+    /* Drawer */
+    .nav-drawer{
+      position:fixed;top:0;left:-360px;width:360px;height:100vh;
+      background:var(--drawer-bg);
+      transition:left .5s cubic-bezier(.16,1,.3,1);
+      z-index:2000;
+      box-shadow:10px 0 30px rgba(0,0,0,.5);
+      border-right:3px solid var(--accent);
+    }
+    .nav-drawer.open{left:0;}
+
+    .nav-overlay{
+      position:fixed;top:0;left:0;width:100vw;height:100vh;
+      background:rgba(12,47,59,.7);
+      opacity:0;visibility:hidden;
+      transition:all .5s;z-index:1999;backdrop-filter:blur(5px);
+    }
+    .nav-overlay.active{opacity:1;visibility:visible;}
+
+    .nav-btn{
+      font-family:'Oswald',sans-serif;
+      font-size:1rem;font-weight:500;
+      letter-spacing:.05em;text-transform:uppercase;
+      border-left:4px solid transparent;
+      transition:all .3s;
+      color:#7AA8B8;
+    }
+    .active-tab{
+      border-left:4px solid var(--accent);
+      color:var(--text-white) !important;
+      background:linear-gradient(90deg, rgba(255,76,59,.2) 0%, transparent 100%);
+      padding-left:28px !important;
+    }
+
+    /* Decorative elements */
+    .section-kicker{
+      display:block;
+      font-family:'Roboto Mono',monospace;
+      color:var(--accent);
+      font-weight:700;
+      letter-spacing:.2em;
+      margin-bottom:1rem;
+      text-transform:uppercase;
+    }
+
+    .concept-box{
+      margin:3.5rem 0;
+      padding:2.5rem;
+      background-color:#FFFFFF;
+      border:1px solid #E2E8F0;
+      border-top:3px solid var(--accent);
+      box-shadow:0 10px 25px -5px rgba(0,0,0,.05);
+      position:relative;
+    }
+    .concept-label{
+      position:absolute;top:-16px;left:2rem;
+      background:var(--accent);color:var(--text-white);
+      padding:4px 16px;
+      font-family:'Oswald',sans-serif;
+      font-weight:700;
+      letter-spacing:.15em;
+      text-transform:uppercase;
+      font-size:.75rem;
+    }
+
+    .divider{width:100%;height:1px;background:#CBD5E1;margin:4rem 0;position:relative;}
+    .divider::after{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:60px;height:3px;background:var(--accent);}
+
+    blockquote{
+      border-left:6px solid var(--accent);
+      padding-left:24px;
+      margin:3rem 0;
+      font-family:'Oswald',sans-serif;
+      font-size:1.4rem;
+      font-weight:300;
+      color:var(--text-ink);
+      line-height:1.4;
+      text-transform:uppercase;
+      background:#F1F5F9;
+      padding-top:1rem;
+      padding-bottom:1rem;
+    }
+
+    .pill{
+      display:inline-flex;align-items:center;gap:.5rem;
+      border:1px solid #E2E8F0;background:#FFFFFF;
+      padding:.35rem .75rem;border-radius:999px;
+      box-shadow:0 6px 18px rgba(0,0,0,.04);
+    }
+
+    @media (max-width:640px){
+      body{font-size:17px;line-height:1.8;}
+      .content-section{padding:80px 24px;}
+      .nav-drawer{width:85%;}
+      .drop-cap::first-letter{font-size:3.5rem;}
+      h2{font-size:2.5rem;}
+    }
+    @media (min-width:641px){
+      .content-section{padding-top:120px;}
+    }
+  </style>
 </head>
+
 <body>
+  <header class="header-bar">
+    <button class="drawer-toggle menu-btn" onclick="toggleDrawer()" aria-label="Menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
 
-    <header class="header-bar">
-        <button class="drawer-toggle menu-btn" onclick="toggleDrawer()" aria-label="Menu">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-        </button>
-        <div class="right-controls">
-            <a class="back-link" href="../index.html" aria-label="Back to home">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M15 18l-6-6 6-6" />
-                </svg>
-            </a>
-            <button class="lang-toggle-container" onclick="toggleLanguage()" aria-label="Toggle language">
-                <span class="lang-opt lang-opt-id">ID</span>
-                <span class="lang-sep">|</span>
-                <span class="lang-opt lang-opt-en active">EN</span>
-            </button>
-        </div>
-    </header>
+    <div class="right-controls">
+      <!-- You can point this to your homepage -->
+      <a class="back-link" href="../index.html" aria-label="Back to home">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </a>
 
-    <div class="nav-overlay" onclick="closeDrawer()"></div>
-    <nav class="nav-drawer flex flex-col h-full">
-        <div class="px-8 py-12 bg-[#002A33]">
-            <h2 class="text-white text-4xl leading-none mb-2 font-bold tracking-tight">GREAT BY <span class="text-white">CHOICE</span></h2>
-            <p class="text-teal-400 text-[11px] uppercase tracking-[0.2em] font-mono font-medium mt-4">
-                <span class="text-[#FF4C3B]">Collins & Hansen</span>
+      <button class="lang-toggle-container" onclick="toggleLanguage()" aria-label="Toggle language">
+        <span class="lang-opt lang-opt-id">ID</span>
+        <span class="lang-sep">|</span>
+        <span class="lang-opt lang-opt-en active">EN</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="nav-overlay" onclick="closeDrawer()"></div>
+
+  <nav class="nav-drawer flex flex-col h-full">
+    <div class="px-8 py-12 bg-[#002A33]">
+      <h2 class="text-white text-4xl leading-none mb-2 font-bold tracking-tight">
+        ATOMIC <span class="text-white">HABITS</span>
+      </h2>
+      <p class="text-teal-400 text-[11px] uppercase tracking-[0.2em] font-mono font-medium mt-4">
+        <span class="text-[#FF4C3B]">James Clear</span> · Masterclass Notes
+      </p>
+      <div class="w-16 h-2 bg-[#FF4C3B] mt-6"></div>
+    </div>
+
+    <div class="flex-1 overflow-y-auto py-8 px-4">
+      <ul class="space-y-3">
+
+        <li>
+          <button onclick="showSection('intro', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3 active-tab">
+            <span class="lang-en">00. Introduction: The Core Idea</span>
+            <span class="lang-id">00. Pendahuluan: Ide Inti</span>
+          </button>
+        </li>
+
+        <li><button onclick="showSection('c1', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">01. The Surprising Power of Atomic Habits</span><span class="lang-id">01. Kekuatan Kebiasaan Kecil</span></button></li>
+
+        <li><button onclick="showSection('c2', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">02. Identity Shapes Habits</span><span class="lang-id">02. Identitas Membentuk Kebiasaan</span></button></li>
+
+        <li><button onclick="showSection('c3', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">03. The 4-Step Habit Loop</span><span class="lang-id">03. 4 Langkah Siklus Kebiasaan</span></button></li>
+
+        <li><button onclick="showSection('c4', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">04. Make It Obvious (Overview)</span><span class="lang-id">04. Jadikan Jelas (Gambaran)</span></button></li>
+
+        <li><button onclick="showSection('c5', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">05. Habit Scorecard</span><span class="lang-id">05. Skor Kebiasaan</span></button></li>
+
+        <li><button onclick="showSection('c6', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">06. Implementation Intentions</span><span class="lang-id">06. Niat Implementasi</span></button></li>
+
+        <li><button onclick="showSection('c7', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">07. Habit Stacking</span><span class="lang-id">07. Tumpuk Kebiasaan</span></button></li>
+
+        <li><button onclick="showSection('c8', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">08. Make It Attractive (Overview)</span><span class="lang-id">08. Jadikan Menarik (Gambaran)</span></button></li>
+
+        <li><button onclick="showSection('c9', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">09. The Role of Family & Friends</span><span class="lang-id">09. Pengaruh Lingkungan Sosial</span></button></li>
+
+        <li><button onclick="showSection('c10', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">10. Reframe: From “Have to” to “Get to”</span><span class="lang-id">10. Ubah Makna: “Harus” → “Bisa”</span></button></li>
+
+        <li><button onclick="showSection('c11', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">11. Make It Easy (Overview)</span><span class="lang-id">11. Jadikan Mudah (Gambaran)</span></button></li>
+
+        <li><button onclick="showSection('c12', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">12. The Law of Least Effort</span><span class="lang-id">12. Hukum Usaha Minimum</span></button></li>
+
+        <li><button onclick="showSection('c13', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">13. Two-Minute Rule</span><span class="lang-id">13. Aturan 2 Menit</span></button></li>
+
+        <li><button onclick="showSection('c14', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">14. Make It Satisfying (Overview)</span><span class="lang-id">14. Jadikan Memuaskan (Gambaran)</span></button></li>
+
+        <li><button onclick="showSection('c15', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">15. Habit Tracking</span><span class="lang-id">15. Lacak Kebiasaan</span></button></li>
+
+        <li><button onclick="showSection('c16', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">16. Never Miss Twice</span><span class="lang-id">16. Jangan Gagal Dua Kali</span></button></li>
+
+        <li><button onclick="showSection('c17', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">17. Accountability Contracts</span><span class="lang-id">17. Kontrak Akuntabilitas</span></button></li>
+
+        <li><button onclick="showSection('c18', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">18. The Truth About Talent</span><span class="lang-id">18. Bakat & Kesesuaian</span></button></li>
+
+        <li><button onclick="showSection('c19', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">19. Goldilocks Rule</span><span class="lang-id">19. Aturan Goldilocks</span></button></li>
+
+        <li><button onclick="showSection('c20', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">20. The Downside of Success</span><span class="lang-id">20. Sisi Gelap Kesuksesan</span></button></li>
+
+        <li><button onclick="showSection('toolkit', event); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">BONUS. Practical Toolkit (Templates)</span><span class="lang-id">BONUS. Toolkit Praktis (Template)</span></button></li>
+      </ul>
+    </div>
+
+    <div class="p-8 text-teal-500 text-[10px] font-mono tracking-widest uppercase border-t border-[#FF4C3B]">
+      Atomic Habits · Study Notes (Summary)
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- INTRO -->
+    <section id="intro" class="content-section active fade-in">
+      <span class="section-kicker">Introduction</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Small Changes, Big Results</span>
+        <span class="lang-id">Perubahan Kecil, Hasil Besar</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            This page is a detailed chapter-by-chapter learning guide for <span class="mono-font">Atomic Habits</span>. It does not copy the book’s text.
+            Instead, it explains the ideas in plain language, then turns them into actions you can apply today.
+          </span>
+          <span class="lang-id">
+            Halaman ini adalah panduan belajar <span class="mono-font">Atomic Habits</span> yang ringkas tapi detail per bab. Ini bukan salinan teks buku.
+            Isinya menjelaskan inti gagasan dengan bahasa sederhana, lalu mengubahnya menjadi tindakan praktis.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">THE CORE FORMULA</div>
+          <div class="space-y-6">
+            <div class="pill mono-font">
+              <span class="text-[var(--accent)] font-bold">1%</span>
+              <span class="lang-en">Improve a little, consistently</span>
+              <span class="lang-id">Membaik sedikit, konsisten</span>
+            </div>
+
+            <p>
+              <span class="lang-en">
+                The book’s main message: habits are the compound interest of self-improvement. Tiny behaviors seem harmless,
+                but repeated daily they shape your identity and your results.
+              </span>
+              <span class="lang-id">
+                Pesan utama: kebiasaan adalah “bunga majemuk” dari perbaikan diri. Perilaku kecil terlihat sepele,
+                tapi jika diulang tiap hari ia membentuk identitas dan hasil hidup.
+              </span>
             </p>
-            <div class="w-16 h-2 bg-[#FF4C3B] mt-6"></div>
+
+            <div class="divider"></div>
+
+            <p class="mono-font">
+              <span class="lang-en"><strong>4 Laws to Build Good Habits:</strong> Make it Obvious → Attractive → Easy → Satisfying</span>
+              <span class="lang-id"><strong>4 Hukum membangun kebiasaan:</strong> Jadikan Jelas → Menarik → Mudah → Memuaskan</span>
+            </p>
+
+            <p class="mono-font">
+              <span class="lang-en"><strong>Invert</strong> the laws to break bad habits.</span>
+              <span class="lang-id"><strong>Balikkan</strong> hukumnya untuk menghentikan kebiasaan buruk.</span>
+            </p>
+          </div>
         </div>
-        
-        <div class="flex-1 overflow-y-auto py-8 px-4">
-            <ul class="space-y-3">
-                 <li>
-                    <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3 active-tab">
-                        <span class="lang-en">00. Introduction: The Question</span>
-                        <span class="lang-id">00. Pendahuluan: Pertanyaan Inti</span>
-                    </button>
-                </li>
-                <li>
-                    <button onclick="showSection('part1'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
-                        <span class="lang-en">01. The 10Xers (Amundsen vs Scott)</span>
-                        <span class="lang-id">01. Para 10Xers (Amundsen vs Scott)</span>
-                    </button>
-                </li>
-                <li>
-                    <button onclick="showSection('part2'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
-                        <span class="lang-en">02. 20 Mile March</span>
-                        <span class="lang-id">02. Mars 20 Mil</span>
-                    </button>
-                </li>
-                <li>
-                    <button onclick="showSection('part3'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
-                        <span class="lang-en">03. Fire Bullets, Then Cannonballs</span>
-                        <span class="lang-id">03. Tembakkan Peluru, Lalu Meriam</span>
-                    </button>
-                </li>
-                <li>
-                    <button onclick="showSection('part4'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
-                        <span class="lang-en">04. Leading above the Death Line</span>
-                        <span class="lang-id">04. Memimpin di Atas Garis Kematian</span>
-                    </button>
-                </li>
-                <li>
-                    <button onclick="showSection('part5'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
-                        <span class="lang-en">05. SMaC Recipe</span>
-                        <span class="lang-id">05. Resep SMaC</span>
-                    </button>
-                </li>
-                <li>
-                    <button onclick="showSection('part6'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
-                        <span class="lang-en">06. Return on Luck</span>
-                        <span class="lang-id">06. Pengembalian atas Keberuntungan</span>
-                    </button>
-                </li>
-            </ul>
+
+        <blockquote>
+          <span class="lang-en">“YOU DO NOT RISE TO THE LEVEL OF YOUR GOALS. YOU FALL TO THE LEVEL OF YOUR SYSTEMS.”</span>
+          <span class="lang-id">“KAMU TIDAK NAIK KE LEVEL TUJUANMU; KAMU TURUN KE LEVEL SISTEMMU.”</span>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- CH1 -->
+    <section id="c1" class="content-section fade-in">
+      <span class="section-kicker">Chapter 01</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">The Surprising Power of Atomic Habits</span>
+        <span class="lang-id">Kekuatan Kebiasaan Kecil</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            “Atomic” means tiny—so small it feels insignificant. This chapter explains why those tiny changes
+            are exactly what creates massive outcomes. Big success rarely comes from one giant move; it comes
+            from small, repeated behaviors that compound over time.
+          </span>
+          <span class="lang-id">
+            “Atomic” artinya kecil sekali—sampai terasa tidak penting. Bab ini menjelaskan kenapa justru perubahan kecil
+            itulah yang menghasilkan dampak besar. Kesuksesan jarang berasal dari satu tindakan besar; biasanya dari
+            kebiasaan kecil yang diulang dan “menggulung” hasilnya dari waktu ke waktu.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">KEY IDEAS</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>Compounding:</strong> a 1% improvement doesn’t look exciting today, but it changes your trajectory.</span>
+              <span class="lang-id"><strong>Bunga majemuk:</strong> naik 1% hari ini tidak terasa, tapi mengubah arah hidupmu.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Trajectory over moment:</strong> habits are like a plane’s angle—small shifts create different destinations.</span>
+              <span class="lang-id"><strong>Arah lebih penting dari momen:</strong> kebiasaan seperti sudut pesawat—sedikit beda, tujuan jauh beda.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Plateau of Latent Potential:</strong> results are delayed; many quit before the “breakthrough.”</span>
+              <span class="lang-id"><strong>Plateau potensi tersembunyi:</strong> hasilnya telat; banyak orang berhenti sebelum “meledak.”</span>
+            </li>
+          </ul>
         </div>
-        <div class="p-8 text-teal-500 text-[10px] font-mono tracking-widest uppercase border-t border-[#FF4C3B]">
-            Masterclass Edition
+
+        <div class="concept-box">
+          <div class="concept-label">DETAILED EXAMPLES</div>
+          <div class="space-y-5">
+            <p>
+              <span class="lang-en">
+                <strong>Example A — Reading:</strong> 5 pages/day ≈ 150 pages/month. In 12 months, you’ve finished 10–15 books,
+                which changes how you think and decide.
+              </span>
+              <span class="lang-id">
+                <strong>Contoh A — Membaca:</strong> 5 halaman/hari ≈ 150 halaman/bulan. Dalam 12 bulan kamu menamatkan 10–15 buku,
+                yang mengubah cara berpikir dan mengambil keputusan.
+              </span>
+            </p>
+            <p>
+              <span class="lang-en">
+                <strong>Example B — Fitness:</strong> 10 minutes/day feels “too small,” but it builds the identity of someone who trains daily.
+                After that, increasing volume becomes natural.
+              </span>
+              <span class="lang-id">
+                <strong>Contoh B — Fitness:</strong> 10 menit/hari terasa “kecil banget,” tapi membangun identitas orang yang latihan setiap hari.
+                Setelah itu, menaikkan durasi jadi lebih mudah.
+              </span>
+            </p>
+            <p>
+              <span class="lang-en">
+                <strong>Example C — Money:</strong> auto-save a small amount. The habit matters more than the initial value; it creates a default behavior.
+              </span>
+              <span class="lang-id">
+                <strong>Contoh C — Uang:</strong> auto-save kecil. Kebiasaan lebih penting daripada nominal awal; ia menciptakan perilaku default.
+              </span>
+            </p>
+          </div>
         </div>
-    </nav>
 
-    <main>
-        
-        <section id="intro" class="content-section active fade-in">
-            <span class="section-kicker">Introduction</span>
-            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
-                <span class="lang-en">Thriving in Chaos</span>
-                <span class="lang-id">Berkembang dalam Kekacauan</span>
-            </h2>
-            
-            <div class="space-y-8 justified-text font-serif">
-                <p class="drop-cap">
-                    <span class="lang-en">The future cannot be predicted, but it can be created. This book addresses a single, haunting question born from extensive research: Why do some companies thrive in uncertainty, even chaos, beating their industry averages by at least ten times (10X), while others underperform or collapse entirely?</span>
-                    <span class="lang-id">Masa depan tidak dapat diprediksi, tetapi dapat diciptakan. Buku ini menjawab satu pertanyaan yang menghantui dari penelitian ekstensif: Mengapa beberapa perusahaan berkembang pesat dalam ketidakpastian, bahkan kekacauan, mengalahkan rata-rata industri mereka setidaknya sepuluh kali lipat (10X), sementara yang lain berkinerja buruk atau runtuh sama sekali?</span>
-                </p>
+        <blockquote>
+          <span class="lang-en">FOCUS ON GETTING 1% BETTER, NOT PERFECT.</span>
+          <span class="lang-id">FOKUS NAIK 1%, BUKAN SEMPURNA.</span>
+        </blockquote>
+      </div>
+    </section>
 
-                <p>
-                    <span class="lang-en">Collins and Hansen studied these "10X" companies during highly tumultuous periods. The findings shatter a common myth: that in a chaotic world, you need to be chaotic, fast, and risk-taking to win. The data proves the exact opposite.</span>
-                    <span class="lang-id">Collins dan Hansen mempelajari perusahaan "10X" ini selama periode yang sangat kacau. Temuan ini menghancurkan mitos umum: bahwa dalam dunia yang kacau, Anda harus menjadi kacau, cepat, dan berani mengambil risiko untuk menang. Data membuktikan hal yang sebaliknya.</span>
-                </p>
+    <!-- CH2 -->
+    <section id="c2" class="content-section fade-in">
+      <span class="section-kicker">Chapter 02</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Identity Shapes Habits</span>
+        <span class="lang-id">Identitas Membentuk Kebiasaan</span>
+      </h2>
 
-                 <blockquote>
-                    <span class="lang-en">"Greatness is not a function of circumstance. Greatness, it turns out, is largely a matter of conscious choice, and discipline."</span>
-                    <span class="lang-id">"Kehebatan bukanlah fungsi dari keadaan. Kehebatan, ternyata, sebagian besar adalah masalah pilihan sadar, dan disiplin."</span>
-                </blockquote>
-            </div>
-        </section>
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            Most people start with outcomes (“I want to lose weight”). This chapter teaches a deeper approach:
+            start from identity (“I am someone who takes care of my body”). Habits are votes for your identity.
+            The more votes you cast, the more that identity becomes true.
+          </span>
+          <span class="lang-id">
+            Banyak orang memulai dari hasil (“Saya mau kurus”). Bab ini mengajarkan pendekatan lebih dalam:
+            mulai dari identitas (“Saya orang yang menjaga kesehatan”). Kebiasaan adalah “suara” untuk identitas.
+            Semakin sering kamu “memilih,” semakin nyata identitas itu.
+          </span>
+        </p>
 
-        <section id="part1" class="content-section fade-in">
-            <span class="section-kicker">Chapter 01</span>
-            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
-                <span class="lang-en">The 10Xers & The Triad</span>
-                <span class="lang-id">Para 10Xers & Tiga Serangkai</span>
-            </h2>
+        <div class="concept-box">
+          <div class="concept-label">3 LEVELS OF CHANGE</div>
+          <div class="space-y-4">
+            <p class="mono-font"><span class="text-[var(--accent)] font-bold">1)</span> <span class="lang-en">Outcome:</span><span class="lang-id">Hasil:</span>
+              <span class="lang-en">lose 10kg</span><span class="lang-id">turun 10kg</span>
+            </p>
+            <p class="mono-font"><span class="text-[var(--accent)] font-bold">2)</span> <span class="lang-en">Process:</span><span class="lang-id">Proses:</span>
+              <span class="lang-en">work out 4x/week</span><span class="lang-id">olahraga 4x/minggu</span>
+            </p>
+            <p class="mono-font"><span class="text-[var(--accent)] font-bold">3)</span> <span class="lang-en">Identity:</span><span class="lang-id">Identitas:</span>
+              <span class="lang-en">I am a healthy person</span><span class="lang-id">Saya orang sehat</span>
+            </p>
+          </div>
+        </div>
 
-            <div class="space-y-8 justified-text font-serif">
-                <h3 class="text-3xl mt-16 mb-6 font-bold">
-                    <span class="lang-en">The Definitive Case Study: Amundsen vs. Scott</span>
-                    <span class="lang-id">Studi Kasus Definitif: Amundsen vs. Scott</span>
-                </h3>
+        <div class="concept-box">
+          <div class="concept-label">HOW TO APPLY</div>
+          <ol class="list-decimal pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>Pick the identity</strong> you want (e.g., “I’m a reader”).</span>
+              <span class="lang-id"><strong>Pilih identitas</strong> yang kamu mau (mis. “Saya pembaca”).</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Prove it daily</strong> with small actions (2 pages still counts).</span>
+              <span class="lang-id"><strong>Buktikan tiap hari</strong> dengan aksi kecil (2 halaman tetap dihitung).</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Collect evidence</strong>: track streaks / notes to make identity feel real.</span>
+              <span class="lang-id"><strong>Kumpulkan bukti</strong>: catat streak / catatan agar identitas terasa nyata.</span>
+            </li>
+          </ol>
+        </div>
 
-                <p class="drop-cap">
-                    <span class="lang-en">In October 1911, two teams set out for the South Pole. One led by Roald Amundsen, the other by Robert Falcon Scott. The environment was equally brutal for both. Amundsen led his team to victory and returned safely. Scott arrived 34 days later, defeated, and died on the return journey with his entire team.</span>
-                    <span class="lang-id">Pada Oktober 1911, dua tim berangkat menuju Kutub Selatan. Satu dipimpin oleh Roald Amundsen, yang lain oleh Robert Falcon Scott. Lingkungan sama brutalnya bagi keduanya. Amundsen memimpin timnya menuju kemenangan dan kembali dengan selamat. Scott tiba 34 hari kemudian, kalah, dan meninggal dalam perjalanan pulang bersama seluruh timnya.</span>
-                </p>
+        <div class="concept-box">
+          <div class="concept-label">DETAILED EXAMPLES</div>
+          <div class="space-y-5">
+            <p>
+              <span class="lang-en"><strong>Stopping smoking:</strong> Instead of “I’m trying to quit,” say “I don’t smoke.” It aligns your behavior with identity.</span>
+              <span class="lang-id"><strong>Berhenti merokok:</strong> Bukan “Saya berusaha berhenti,” tapi “Saya tidak merokok.” Ini menyelaraskan aksi dengan identitas.</span>
+            </p>
+            <p>
+              <span class="lang-en"><strong>Becoming disciplined:</strong> One “disciplined” action per day (wake up on time, 10 min focus) is a vote for “I’m disciplined.”</span>
+              <span class="lang-id"><strong>Menjadi disiplin:</strong> Satu aksi “disiplin” per hari (bangun tepat waktu, 10 menit fokus) adalah suara untuk “Saya disiplin.”</span>
+            </p>
+          </div>
+        </div>
 
-                <p>
-                    <span class="lang-en">Why the divergence? Amundsen was a 10Xer. He didn't wait for the storm to hit to prepare; he prepared for conditions far worse than he ever expected. He lived with Eskimos to learn survival. He used dogs (Scott used ponies, which froze). Crucially, Amundsen brought <strong>3 tons</strong> of supplies for 5 men. Scott brought <strong>1 ton</strong> for 17 men. Amundsen was not "lucky"; he was fanatically prepared for misfortune.</span>
-                    <span class="lang-id">Mengapa terjadi perbedaan? Amundsen adalah seorang 10Xer. Dia tidak menunggu badai datang untuk bersiap; dia bersiap untuk kondisi yang jauh lebih buruk daripada yang dia harapkan. Dia tinggal bersama orang Eskimo untuk belajar bertahan hidup. Dia menggunakan anjing (Scott menggunakan kuda poni, yang mati beku). Yang terpenting, Amundsen membawa <strong>3 ton</strong> perbekalan untuk 5 orang. Scott membawa <strong>1 ton</strong> untuk 17 orang. Amundsen tidak "beruntung"; dia siap secara fanatik menghadapi kemalangan.</span>
-                </p>
+        <blockquote>
+          <span class="lang-en">HABITS ARE HOW YOU EMBODY A NEW IDENTITY.</span>
+          <span class="lang-id">KEBIASAAN ADALAH CARA IDENTITAS BARU MENJADI NYATA.</span>
+        </blockquote>
+      </div>
+    </section>
 
-                <div class="concept-box">
-                    <div class="concept-label">THE 10X TRIAD</div>
-                    <div class="space-y-6">
-                        <div>
-                            <h4 class="text-xl mb-1">1. Fanatic Discipline</h4>
-                            <p>Consistency of action. Adhering to values and performance standards regardless of the weather—good or bad.</p>
-                        </div>
-                        <div>
-                            <h4 class="text-xl mb-1">2. Empirical Creativity</h4>
-                            <p>Don't follow the herd. Look at the evidence (Empirical). Be bold in your solutions based on that evidence (Creative).</p>
-                        </div>
-                        <div>
-                            <h4 class="text-xl mb-1">3. Productive Paranoia</h4>
-                            <p>Hyper-vigilance. Assuming the worst will happen and preparing massive buffers before the storm hits.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <!-- CH3 -->
+    <section id="c3" class="content-section fade-in">
+      <span class="section-kicker">Chapter 03</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">The 4-Step Habit Loop</span>
+        <span class="lang-id">4 Langkah Siklus Kebiasaan</span>
+      </h2>
 
-        <section id="part2" class="content-section fade-in">
-            <span class="section-kicker">Chapter 02</span>
-            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
-                <span class="lang-en">20 Mile March</span>
-                <span class="lang-id">Mars 20 Mil</span>
-            </h2>
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            Habits are automated solutions to recurring problems. This chapter breaks habits into four parts:
+            <span class="mono-font">Cue → Craving → Response → Reward</span>. If you can control each part,
+            you can design good habits and dismantle bad ones.
+          </span>
+          <span class="lang-id">
+            Kebiasaan adalah solusi otomatis untuk masalah yang berulang. Bab ini memecah kebiasaan jadi empat bagian:
+            <span class="mono-font">Isyarat → Keinginan → Respons → Hadiah</span>. Jika kamu bisa mengatur tiap bagian,
+            kamu bisa membangun kebiasaan baik dan membongkar kebiasaan buruk.
+          </span>
+        </p>
 
-            <div class="space-y-8 justified-text font-serif">
-                <p class="drop-cap">
-                    <span class="lang-en">Imagine you must walk across a continent. A "20 Mile March" means you commit to walking exactly 20 miles every single day. On a beautiful, sunny day, you don't go 40 miles—you hold back. In a blizzard, you don't stay in bed—you get up and walk your 20 miles.</span>
-                    <span class="lang-id">Bayangkan Anda harus berjalan melintasi benua. "Mars 20 Mil" berarti Anda berkomitmen untuk berjalan tepat 20 mil setiap hari. Di hari yang cerah dan indah, Anda tidak menempuh 40 mil—Anda menahan diri. Saat badai salju, Anda tidak tetap di tempat tidur—Anda bangun dan berjalan 20 mil.</span>
-                </p>
+        <div class="concept-box">
+          <div class="concept-label">THE LOOP (WITH EXAMPLE)</div>
+          <div class="space-y-4">
+            <p class="mono-font"><span class="text-[var(--accent)] font-bold">Cue</span> →
+              <span class="lang-en">phone buzz</span><span class="lang-id">HP bunyi</span>
+            </p>
+            <p class="mono-font"><span class="text-[var(--accent)] font-bold">Craving</span> →
+              <span class="lang-en">curiosity / relief</span><span class="lang-id">penasaran / lega</span>
+            </p>
+            <p class="mono-font"><span class="text-[var(--accent)] font-bold">Response</span> →
+              <span class="lang-en">open social media</span><span class="lang-id">buka medsos</span>
+            </p>
+            <p class="mono-font"><span class="text-[var(--accent)] font-bold">Reward</span> →
+              <span class="lang-en">dopamine, distraction</span><span class="lang-id">dopamine, teralihkan</span>
+            </p>
+          </div>
+        </div>
 
-                <p>
-                    <span class="lang-en">The company <strong>Stryker</strong> is the perfect example. Since 1977, they set a benchmark of 20% net income growth every year. Not 50% in boom times, not 5% in recessions. Just a consistent 20%. This built a culture of intense discipline and predictability.</span>
-                    <span class="lang-id">Perusahaan <strong>Stryker</strong> adalah contoh sempurna. Sejak 1977, mereka menetapkan tolak ukur pertumbuhan laba bersih 20% setiap tahun. Bukan 50% di masa booming, bukan 5% di masa resesi. Hanya 20% yang konsisten. Ini membangun budaya disiplin yang intens dan prediktabilitas.</span>
-                </p>
+        <div class="concept-box">
+          <div class="concept-label">WHY HABITS STICK</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>We repeat what feels rewarding.</strong> The brain learns “do this again.”</span>
+              <span class="lang-id"><strong>Kita mengulang yang terasa memuaskan.</strong> Otak belajar “ulangi lagi.”</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Immediate rewards beat delayed rewards.</strong> That’s why junk food wins over long-term health.</span>
+              <span class="lang-id"><strong>Hadiah cepat mengalahkan hadiah lama.</strong> Itu sebabnya junk food menang dari “sehat nanti.”</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Craving drives behavior.</strong> We don’t crave habits; we crave the change they produce.</span>
+              <span class="lang-id"><strong>Keinginan mendorong aksi.</strong> Kita tidak menginginkan kebiasaan; kita menginginkan perubahan yang dihasilkan.</span>
+            </li>
+          </ul>
+        </div>
 
-                <div class="concept-box">
-                    <div class="concept-label">THE PHILOSOPHY</div>
-                     <p>
-                        <span class="lang-en">The 20 Mile March imposes order amidst disorder. It gives people a concrete goal when the world is chaotic. It builds confidence. It requires two distinct types of discomfort:</span>
-                        <span class="lang-id">Mars 20 Mil memaksakan keteraturan di tengah ketidakteraturan. Ini memberi orang tujuan konkret saat dunia sedang kacau. Ini membangun kepercayaan diri. Ini membutuhkan dua jenis ketidaknyamanan yang berbeda:</span>
-                    </p>
-                    <ul class="list-disc pl-6 mt-4 space-y-2 mono-font">
-                        <li><strong>The discipline to deliver</strong> performance when it is difficult.</li>
-                        <li><strong>The discipline to hold back</strong> when you want to run faster.</li>
-                    </ul>
-                </div>
-                 <p>
-                    <span class="lang-en">10Xers resist the urge to grow too fast in good times, because unchecked growth eats the resources needed to survive the inevitable bad times.</span>
-                    <span class="lang-id">10Xers menahan dorongan untuk tumbuh terlalu cepat di masa-masa indah, karena pertumbuhan yang tidak terkendali memakan sumber daya yang dibutuhkan untuk bertahan di masa-masa sulit yang tak terelakkan.</span>
-                </p>
-            </div>
-        </section>
+        <div class="concept-box">
+          <div class="concept-label">HOW TO EDIT A HABIT</div>
+          <div class="space-y-5">
+            <p>
+              <span class="lang-en"><strong>Bad habit:</strong> late-night scrolling</span>
+              <span class="lang-id"><strong>Kebiasaan buruk:</strong> scroll malam</span><br/>
+              <span class="lang-en"><strong>Edit the cue:</strong> charge phone outside bedroom.</span>
+              <span class="lang-id"><strong>Edit isyarat:</strong> charge HP di luar kamar.</span>
+            </p>
+            <p>
+              <span class="lang-en"><strong>Edit the response:</strong> replace with 2-minute reading (still gives “relief”).</span>
+              <span class="lang-id"><strong>Edit respons:</strong> ganti baca 2 menit (tetap memberi “lega”).</span>
+            </p>
+            <p>
+              <span class="lang-en"><strong>Edit the reward:</strong> give a small immediate payoff (tea, calm music, checkbox).</span>
+              <span class="lang-id"><strong>Edit hadiah:</strong> beri payoff cepat (teh, musik tenang, centang).</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        <section id="part3" class="content-section fade-in">
-            <span class="section-kicker">Chapter 03</span>
-            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
-                <span class="lang-en">Fire Bullets, Then Cannonballs</span>
-                <span class="lang-id">Tembakkan Peluru, Lalu Meriam</span>
-            </h2>
+    <!-- CH4 -->
+    <section id="c4" class="content-section fade-in">
+      <span class="section-kicker">Chapter 04</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Make It Obvious (Overview)</span>
+        <span class="lang-id">Jadikan Jelas (Gambaran)</span>
+      </h2>
 
-            <div class="space-y-8 justified-text font-serif">
-                <p class="drop-cap">
-                    <span class="lang-en">There is a pervasive myth that great companies are "bold innovators" who bet the farm on big ideas. The data says otherwise. 10Xers are actually quite risk-averse when it comes to unproven ideas.</span>
-                    <span class="lang-id">Ada mitos yang tersebar luas bahwa perusahaan hebat adalah "inovator berani" yang mempertaruhkan segalanya pada ide besar. Data mengatakan sebaliknya. 10Xers sebenarnya cukup menghindari risiko dalam hal ide yang belum terbukti.</span>
-                </p>
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            The first law is about visibility. If a cue is invisible, the habit is weak. This chapter frames behavior change
+            as cue design: you want good cues everywhere, and bad cues hidden or removed.
+          </span>
+          <span class="lang-id">
+            Hukum pertama tentang “terlihat.” Kalau isyaratnya tidak terlihat, kebiasaannya lemah. Bab ini menekankan
+            perubahan perilaku sebagai desain isyarat: isyarat baik dibuat mudah terlihat, isyarat buruk disembunyikan/dihapus.
+          </span>
+        </p>
 
-                <div class="concept-box">
-                    <div class="concept-label">THE METAPHOR</div>
-                    <p class="mb-0 text-lg font-medium">
-                        <span class="lang-en">You are on a ship with limited gunpowder. A hostile ship approaches. If you fire your big cannonball immediately and miss, you are out of ammo and you die. Instead, you fire a small bullet. It misses. You adjust 10 degrees. Fire another bullet. It hits. <span class="text-[#FF4C3B]">Now</span>, you load the gunpowder into the cannon and fire the cannonball along the calibrated line.</span>
-                        <span class="lang-id">Anda berada di kapal dengan bubuk mesiu terbatas. Kapal musuh mendekat. Jika Anda segera menembakkan bola meriam besar dan meleset, Anda kehabisan amunisi dan mati. Sebaliknya, Anda menembakkan peluru kecil. Meleset. Anda sesuaikan 10 derajat. Tembak peluru lagi. Kena. <span class="text-[#FF4C3B]">Sekarang</span>, Anda memuat bubuk mesiu ke dalam meriam dan menembakkan bola meriam di jalur yang sudah terkalibrasi.</span>
-                    </p>
-                </div>
+        <div class="concept-box">
+          <div class="concept-label">BUILD vs BREAK</div>
+          <div class="space-y-4">
+            <p class="mono-font">
+              <span class="text-[var(--accent)] font-bold">Build:</span>
+              <span class="lang-en">Make the cue obvious</span>
+              <span class="lang-id">Buat isyarat jelas</span>
+            </p>
+            <p class="mono-font">
+              <span class="text-[var(--accent)] font-bold">Break:</span>
+              <span class="lang-en">Make the cue invisible</span>
+              <span class="lang-id">Buat isyarat tak terlihat</span>
+            </p>
+          </div>
+        </div>
 
-                <h3 class="text-3xl mt-16 mb-6 font-bold">
-                    <span class="lang-en">Case Study: Apple's iPod</span>
-                    <span class="lang-id">Studi Kasus: iPod Apple</span>
-                </h3>
-                <p>
-                    <span class="lang-en">The iPod wasn't a random, giant gamble. Apple fired bullets first: they launched iTunes on Mac only, tested simple MP3 integration, and gauged user behavior. A bullet is low cost, low risk, and low distraction.</span>
-                    <span class="lang-id">iPod bukanlah perjudian acak yang besar. Apple menembakkan peluru terlebih dahulu: mereka meluncurkan iTunes hanya di Mac, menguji integrasi MP3 sederhana, dan mengukur perilaku pengguna. Peluru itu berbiaya rendah, berisiko rendah, dan gangguannya rendah.</span>
-                </p>
-                <p>
-                    <span class="lang-en">Only when they saw the bullet hit—confirming the demand for digital music organization—did they launch the cannonball: The iPod device combined with the iTunes Store for Windows, creating a massive success.</span>
-                    <span class="lang-id">Hanya ketika mereka melihat peluru itu mengenai sasaran—mengonfirmasi permintaan untuk organisasi musik digital—mereka meluncurkan bola meriam: Perangkat iPod yang digabungkan dengan iTunes Store untuk Windows, menciptakan kesuksesan besar.</span>
-                </p>
-            </div>
-        </section>
+        <div class="concept-box">
+          <div class="concept-label">EXAMPLES (ENVIRONMENT)</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>Want to drink more water:</strong> put a full bottle on your desk before bed.</span>
+              <span class="lang-id"><strong>Mau minum lebih banyak:</strong> taruh botol penuh di meja sebelum tidur.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Want to eat healthier:</strong> put fruit at eye level, hide snacks in hard-to-reach cabinets.</span>
+              <span class="lang-id"><strong>Mau makan sehat:</strong> taruh buah di depan mata, sembunyikan snack di tempat sulit.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Want to reduce phone use:</strong> remove social apps from home screen, turn off notifications.</span>
+              <span class="lang-id"><strong>Mau kurangi HP:</strong> hapus app medsos dari home screen, matikan notifikasi.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-        <section id="part4" class="content-section fade-in">
-            <span class="section-kicker">Chapter 04</span>
-            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
-                <span class="lang-en">Leading Above the Death Line</span>
-                <span class="lang-id">Memimpin di Atas Garis Kematian</span>
-            </h2>
+    <!-- CH5 -->
+    <section id="c5" class="content-section fade-in">
+      <span class="section-kicker">Chapter 05</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Habit Scorecard</span>
+        <span class="lang-id">Skor Kebiasaan</span>
+      </h2>
 
-            <div class="space-y-8 justified-text font-serif">
-                <p class="drop-cap">
-                    <span class="lang-en">10Xers operate with <strong>Productive Paranoia</strong>. They know that "Black Swan" events—unexpected, high-impact disasters—will happen. The only question is whether you have the buffer to survive them when they inevitably arrive.</span>
-                    <span class="lang-id">10Xers beroperasi dengan <strong>Paranoia Produktif</strong>. Mereka tahu bahwa peristiwa "Black Swan"—bencana tak terduga yang berdampak tinggi—akan terjadi. Satu-satunya pertanyaan adalah apakah Anda memiliki penyangga untuk bertahan ketika peristiwa itu datang.</span>
-                </p>
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            You can’t change what you don’t notice. This chapter introduces a simple awareness tool:
+            write down your typical day and label habits as positive, negative, or neutral—based on your desired identity.
+          </span>
+          <span class="lang-id">
+            Kamu tidak bisa mengubah sesuatu yang tidak kamu sadari. Bab ini mengenalkan alat kesadaran:
+            tulis rutinitas harianmu lalu beri label kebiasaan baik/buruk/netral—berdasarkan identitas yang kamu mau.
+          </span>
+        </p>
 
-                <h3 class="text-3xl mt-16 mb-6 font-bold">
-                    <span class="lang-en">Cash is Oxygen</span>
-                    <span class="lang-id">Uang Tunai adalah Oksigen</span>
-                </h3>
-                <p>
-                    <span class="lang-en">Most companies try to be "efficient" with capital, deploying it for maximum short-term return. 10X companies look inefficient by standard measures. Southwest Airlines, even after the industry collapsed following 9/11, remained the only profitable major airline because they maintained massive cash reserves far exceeding industry standards. They didn't need the cash when skies were clear; they needed it to breathe during the storm.</span>
-                    <span class="lang-id">Sebagian besar perusahaan berusaha "efisien" dengan modal, mengerahkannya untuk pengembalian jangka pendek yang maksimal. Perusahaan 10X terlihat tidak efisien menurut ukuran standar. Southwest Airlines, bahkan setelah industri runtuh setelah 9/11, tetap menjadi satu-satunya maskapai besar yang menguntungkan karena mereka memelihara cadangan kas besar yang jauh melebihi standar industri. Mereka tidak membutuhkan uang tunai saat langit cerah; mereka membutuhkannya untuk bernapas selama badai.</span>
-                </p>
+        <div class="concept-box">
+          <div class="concept-label">HOW TO DO IT</div>
+          <ol class="list-decimal pl-6 space-y-3">
+            <li>
+              <span class="lang-en">List actions from waking up to sleeping (realistically, not ideally).</span>
+              <span class="lang-id">Daftar aktivitas dari bangun sampai tidur (realistis, bukan ideal).</span>
+            </li>
+            <li>
+              <span class="lang-en">For each habit, ask: “Does this reinforce the identity I want?”</span>
+              <span class="lang-id">Tanya tiap kebiasaan: “Ini memperkuat identitas yang saya mau?”</span>
+            </li>
+            <li>
+              <span class="lang-en">Mark: <strong>+</strong> good, <strong>-</strong> bad, <strong>=</strong> neutral.</span>
+              <span class="lang-id">Beri tanda: <strong>+</strong> baik, <strong>-</strong> buruk, <strong>=</strong> netral.</span>
+            </li>
+          </ol>
+        </div>
 
-                <div class="concept-box">
-                    <div class="concept-label">ZOOM OUT, ZOOM IN</div>
-                    <p>
-                        <span class="lang-en">Productive paranoia requires a dual focus:</span>
-                        <span class="lang-id">Paranoia produktif membutuhkan fokus ganda:</span>
-                    </p>
-                     <ul class="list-none mt-6 space-y-4">
-                        <li>
-                            <strong class="text-[#FF4C3B] uppercase block tracking-wider mb-1 mono-font">Zoom Out</strong>
-                            <span class="lang-en">Sense the changing environment. Perceive the danger early. (Like Amundsen sensing the subtle shifts in Antarctic weather patterns).</span>
-                            <span class="lang-id">Rasakan perubahan lingkungan. Rasakan bahaya sejak dini. (Seperti Amundsen yang merasakan perubahan halus dalam pola cuaca Antartika).</span>
-                        </li>
-                         <li>
-                            <strong class="text-[#FF4C3B] uppercase block tracking-wider mb-1 mono-font">Zoom In</strong>
-                            <span class="lang-en">Execute with extreme precision and focus on the details. (Amundsen ensuring every single supply crate was marked perfectly so it could be found in a blizzard).</span>
-                            <span class="lang-id">Eksekusi dengan presisi ekstrem dan fokus pada detail. (Amundsen memastikan setiap peti perbekalan ditandai dengan sempurna agar dapat ditemukan saat badai salju).</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+        <div class="concept-box">
+          <div class="concept-label">DETAILED EXAMPLE</div>
+          <p class="mono-font">
+            <span class="lang-en">Wake up → check phone (-) → drink water (+) → scroll news (-/=) → shower (=) → plan top 3 tasks (+) → ...</span>
+            <span class="lang-id">Bangun → cek HP (-) → minum air (+) → scroll berita (-/=) → mandi (=) → tulis 3 prioritas (+) → ...</span>
+          </p>
+          <p class="mt-4">
+            <span class="lang-en">
+              The goal isn’t self-judgment. The goal is clarity: you now know which habits to keep, reduce, or replace.
+            </span>
+            <span class="lang-id">
+              Tujuannya bukan menghakimi diri. Tujuannya jelas: sekarang kamu tahu mana kebiasaan yang dipertahankan, dikurangi, atau diganti.
+            </span>
+          </p>
+        </div>
+      </div>
+    </section>
 
-        <section id="part5" class="content-section fade-in">
-            <span class="section-kicker">Chapter 05</span>
-            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
-                <span class="lang-en">SMaC Recipe</span>
-                <span class="lang-id">Resep SMaC</span>
-            </h2>
+    <!-- CH6 -->
+    <section id="c6" class="content-section fade-in">
+      <span class="section-kicker">Chapter 06</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Implementation Intentions</span>
+        <span class="lang-id">Niat Implementasi</span>
+      </h2>
 
-            <div class="space-y-8 justified-text font-serif">
-                <p class="drop-cap">
-                    <span class="lang-en">SMaC stands for <strong>Specific, Methodical, and Consistent</strong>. A SMaC recipe is a set of durable operating practices that create a replicable and consistent success formula. It is not a strategy; it is your operational code of conduct.</span>
-                    <span class="lang-id">SMaC singkatan dari <strong>Specific (Spesifik), Methodical (Metodis), dan Consistent (Konsisten)</strong>. Resep SMaC adalah serangkaian praktik operasional tahan lama yang menciptakan formula sukses yang dapat ditiru dan konsisten. Ini bukan strategi; ini adalah kode etik operasional Anda.</span>
-                </p>
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            People fail not because they lack motivation, but because they lack clarity. “I’ll exercise more” is vague.
+            This chapter teaches a precision format: <span class="mono-font">I will [behavior] at [time] in [location].</span>
+          </span>
+          <span class="lang-id">
+            Orang sering gagal bukan karena kurang motivasi, tapi kurang jelas. “Saya akan olahraga” itu samar.
+            Bab ini mengajarkan format presisi: <span class="mono-font">Saya akan [aksi] pada [jam] di [tempat].</span>
+          </span>
+        </p>
 
-                <div class="concept-box">
-                    <div class="concept-label">EXAMPLE: SOUTHWEST AIRLINES (1979 RECIPE)</div>
-                    <ul class="list-disc pl-6 space-y-3 mono-font">
-                        <li>Remain a short-haul carrier (under 2-hour flights).</li>
-                        <li>Utilize the Boeing 737 as the primary aircraft type.</li>
-                        <li>Stay out of food services (serve peanuts only).</li>
-                        <li>Turn aircraft in 10 minutes at the gate.</li>
-                        <li>The customer is not always right.</li>
-                    </ul>
-                </div>
+        <div class="concept-box">
+          <div class="concept-label">TEMPLATES</div>
+          <ul class="list-disc pl-6 space-y-3 mono-font">
+            <li>
+              <span class="lang-en">I will read <strong>2 pages</strong> at <strong>21:30</strong> in <strong>bedroom chair</strong>.</span>
+              <span class="lang-id">Saya akan membaca <strong>2 halaman</strong> jam <strong>21:30</strong> di <strong>kursi kamar</strong>.</span>
+            </li>
+            <li>
+              <span class="lang-en">I will walk <strong>10 minutes</strong> at <strong>07:10</strong> in <strong>my neighborhood</strong>.</span>
+              <span class="lang-id">Saya akan jalan <strong>10 menit</strong> jam <strong>07:10</strong> di <strong>komplek</strong>.</span>
+            </li>
+            <li>
+              <span class="lang-en">I will write <strong>1 paragraph</strong> at <strong>08:00</strong> at <strong>my desk</strong>.</span>
+              <span class="lang-id">Saya akan menulis <strong>1 paragraf</strong> jam <strong>08:00</strong> di <strong>meja kerja</strong>.</span>
+            </li>
+          </ul>
+        </div>
 
-                <p>
-                    <span class="lang-en">The key power of a SMaC recipe isn't just having one; it's having the discipline to stick to it when the world tries to force you to change. When the internet boom happened, many companies abandoned their SMaC recipes to chase new trends, and failed. The 10Xers amended their recipe rarely (maybe a 15% change over 20 years), but executed the remaining 85% with fanatical consistency.</span>
-                    <span class="lang-id">Kekuatan utama dari resep SMaC bukan hanya memilikinya; tetapi memiliki disiplin untuk mematuhinya ketika dunia mencoba memaksa Anda untuk berubah. Saat ledakan internet terjadi, banyak perusahaan meninggalkan resep SMaC mereka untuk mengejar tren baru, dan gagal. Para 10Xers jarang mengubah resep mereka (mungkin perubahan 15% selama 20 tahun), tetapi mengeksekusi 85% sisanya dengan konsistensi fanatik.</span>
-                </p>
-            </div>
-        </section>
+        <div class="concept-box">
+          <div class="concept-label">WHY IT WORKS</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>Removes decision fatigue:</strong> you don’t “decide,” you execute.</span>
+              <span class="lang-id"><strong>Mengurangi capek mikir:</strong> bukan “memutuskan,” tapi eksekusi.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Creates a cue:</strong> time + place becomes the trigger.</span>
+              <span class="lang-id"><strong>Menciptakan isyarat:</strong> jam + tempat jadi pemicu.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Enables measurement:</strong> did it happen or not?</span>
+              <span class="lang-id"><strong>Mudah diukur:</strong> dilakukan atau tidak?</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-        <section id="part6" class="content-section fade-in">
-            <span class="section-kicker">Chapter 06</span>
-            <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
-                <span class="lang-en">Return on Luck (ROL)</span>
-                <span class="lang-id">Pengembalian atas Keberuntungan (ROL)</span>
-            </h2>
+    <!-- CH7 -->
+    <section id="c7" class="content-section fade-in">
+      <span class="section-kicker">Chapter 07</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Habit Stacking</span>
+        <span class="lang-id">Tumpuk Kebiasaan</span>
+      </h2>
 
-            <div class="space-y-8 justified-text font-serif">
-                <p class="drop-cap">
-                    <span class="lang-en">Are 10Xers just luckier than the comparison companies? Collins analyzed this empirically. He defined a "luck event" as something independent of the actor, significant in impact, and unpredictable.</span>
-                    <span class="lang-id">Apakah 10Xers hanya lebih beruntung daripada perusahaan pembanding? Collins menganalisis ini secara empiris. Dia mendefinisikan "peristiwa keberuntungan" sebagai sesuatu yang independen dari aktor, berdampak signifikan, dan tidak terduga.</span>
-                </p>
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            The easiest way to remember a new habit is to attach it to an existing one. This is habit stacking:
+            <span class="mono-font">After [current habit], I will [new habit].</span>
+          </span>
+          <span class="lang-id">
+            Cara termudah mengingat kebiasaan baru adalah menempelkannya ke kebiasaan lama. Ini disebut habit stacking:
+            <span class="mono-font">Setelah [kebiasaan lama], saya akan [kebiasaan baru].</span>
+          </span>
+        </p>
 
-                <p>
-                    <span class="lang-en"><strong>The Surprising Finding:</strong> The 10X companies did NOT get more good luck, nor did they get less bad luck, than the comparison companies. The distribution of luck was roughly equal. The defining difference was what they <em>did</em> with the luck they received.</span>
-                    <span class="lang-id"><strong>Temuan Mengejutkan:</strong> Perusahaan 10X TIDAK mendapatkan keberuntungan baik lebih banyak, juga tidak mendapatkan keberuntungan buruk lebih sedikit, daripada perusahaan pembanding. Distribusi keberuntungan kurang lebih sama. Perbedaan yang menentukan adalah apa yang mereka <em>lakukan</em> dengan keberuntungan yang mereka terima.</span>
-                </p>
+        <div class="concept-box">
+          <div class="concept-label">STACK EXAMPLES</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en">After I brush my teeth, I will read 2 pages.</span>
+              <span class="lang-id">Setelah sikat gigi, saya baca 2 halaman.</span>
+            </li>
+            <li>
+              <span class="lang-en">After I pour coffee, I will write my top 3 priorities.</span>
+              <span class="lang-id">Setelah bikin kopi, saya tulis 3 prioritas.</span>
+            </li>
+            <li>
+              <span class="lang-en">After I sit at my desk, I will start a 10-minute focus timer.</span>
+              <span class="lang-id">Setelah duduk di meja, saya mulai timer fokus 10 menit.</span>
+            </li>
+          </ul>
+        </div>
 
-                <div class="concept-box">
-                    <div class="concept-label">THE FORMULA FOR HIGH ROL</div>
-                    <p class="text-lg">
-                        <span class="lang-en">Bill Gates didn't invent operating systems. He wasn't the only skilled programmer. But when the luck event happened—IBM needed an OS quickly—Gates recognized the moment, dropped out of Harvard, moved to Albuquerque, and worked 24/7 to capitalize on it.</span>
-                        <span class="lang-id">Bill Gates tidak menemukan sistem operasi. Dia bukan satu-satunya programmer yang terampil. Tapi saat peristiwa keberuntungan terjadi—IBM membutuhkan OS dengan cepat—Gates mengenali momen itu, keluar dari Harvard, pindah ke Albuquerque, dan bekerja 24/7 untuk memanfaatkannya.</span>
-                    </p>
-                    <p class="mt-4 font-bold text-[#FF4C3B]">That is High Return on Luck.</p>
-                </div>
+        <div class="concept-box">
+          <div class="concept-label">MAKE IT FOOLPROOF</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>Use a stable anchor:</strong> brushing teeth is more reliable than “when I feel ready.”</span>
+              <span class="lang-id"><strong>Pakai anchor stabil:</strong> sikat gigi lebih pasti daripada “kalau mood.”</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Keep the new habit tiny:</strong> stacking works best when the add-on is easy.</span>
+              <span class="lang-id"><strong>Buat kebiasaan baru kecil:</strong> stacking paling efektif kalau tambahannya mudah.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-                <div class="divider"></div>
+    <!-- CH8 -->
+    <section id="c8" class="content-section fade-in">
+      <span class="section-kicker">Chapter 08</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Make It Attractive (Overview)</span>
+        <span class="lang-id">Jadikan Menarik (Gambaran)</span>
+      </h2>
 
-                 <blockquote>
-                    <span class="lang-en">"We cannot control our luck, good or bad, but we can control our return on luck."</span>
-                    <span class="lang-id">"Kita tidak bisa mengendalikan keberuntungan kita, baik atau buruk, tapi kita bisa mengendalikan pengembalian atas keberuntungan itu."</span>
-                </blockquote>
-            </div>
-        </section>
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            We chase what looks appealing. This law is about increasing desire for good habits and reducing desire for bad ones.
+            The practical goal: create a strong emotional pull toward the behavior.
+          </span>
+          <span class="lang-id">
+            Kita mengejar sesuatu yang terlihat menarik. Hukum ini tentang menaikkan “daya tarik” kebiasaan baik dan menurunkan
+            daya tarik kebiasaan buruk. Tujuan praktis: buat ada “tarikan emosi” menuju kebiasaan itu.
+          </span>
+        </p>
 
-    </main>
+        <div class="concept-box">
+          <div class="concept-label">BUILD vs BREAK</div>
+          <p class="mono-font">
+            <span class="text-[var(--accent)] font-bold">Build:</span>
+            <span class="lang-en">Make it attractive</span><span class="lang-id">Buat menarik</span>
+            <span class="mono-font"> · </span>
+            <span class="text-[var(--accent)] font-bold">Break:</span>
+            <span class="lang-en">Make it unattractive</span><span class="lang-id">Buat tidak menarik</span>
+          </p>
+        </div>
 
-    <script>
-        // --- LOGIC ---
-        let currentLang = 'en';
+        <div class="concept-box">
+          <div class="concept-label">DETAILED TACTICS</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>Temptation bundling:</strong> pair “need to do” with “want to do.”</span>
+              <span class="lang-id"><strong>Temptation bundling:</strong> gabungkan “harus” dengan “mau.”</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Social proof:</strong> join a group where the behavior is normal.</span>
+              <span class="lang-id"><strong>Pengaruh sosial:</strong> gabung grup yang menganggap kebiasaan itu normal.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Reframe:</strong> link the habit to freedom, identity, pride.</span>
+              <span class="lang-id"><strong>Ubah makna:</strong> kaitkan kebiasaan ke kebebasan, identitas, rasa bangga.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-        function toggleLanguage() {
-            currentLang = currentLang === 'en' ? 'id' : 'en';
-            updateContent();
-        }
+    <!-- CH9 -->
+    <section id="c9" class="content-section fade-in">
+      <span class="section-kicker">Chapter 09</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">The Role of Family & Friends</span>
+        <span class="lang-id">Pengaruh Lingkungan Sosial</span>
+      </h2>
 
-        function updateContent() {
-            const enElements = document.querySelectorAll('.lang-en');
-            const idElements = document.querySelectorAll('.lang-id');
-            const langEn = document.querySelector('.lang-opt-en');
-            const langId = document.querySelector('.lang-opt-id');
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            Humans imitate: (1) the close, (2) the many, (3) the powerful. This chapter shows how your tribe shapes your habits.
+            If your environment normalizes a behavior, you’ll do it with less friction.
+          </span>
+          <span class="lang-id">
+            Manusia meniru: (1) yang dekat, (2) yang banyak, (3) yang berpengaruh. Bab ini menunjukkan bagaimana “suku” kamu
+            membentuk kebiasaan. Jika lingkungan menganggap suatu kebiasaan normal, kamu melakukannya lebih mudah.
+          </span>
+        </p>
 
-            if (currentLang === 'en') {
-                enElements.forEach(el => el.style.display = 'block');
-                idElements.forEach(el => el.style.display = 'none');
-                if (langEn && langId) {
-                    langEn.classList.add('active');
-                    langId.classList.remove('active');
-                }
-            } else {
-                enElements.forEach(el => el.style.display = 'none');
-                idElements.forEach(el => el.style.display = 'block');
-                if (langEn && langId) {
-                    langEn.classList.remove('active');
-                    langId.classList.add('active');
-                }
-            }
-        }
+        <div class="concept-box">
+          <div class="concept-label">HOW TO USE THIS</div>
+          <ol class="list-decimal pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>Join the right group:</strong> a community where your desired habit is the default.</span>
+              <span class="lang-id"><strong>Masuk grup yang tepat:</strong> komunitas yang kebiasaan targetmu adalah default.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Change your “normal”:</strong> make “reading after dinner” what your circle does.</span>
+              <span class="lang-id"><strong>Ubah “normal”:</strong> buat “baca setelah makan malam” jadi kebiasaan circle.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Use identity fit:</strong> we do what helps us belong.</span>
+              <span class="lang-id"><strong>Pakai rasa cocok:</strong> kita melakukan hal yang membuat kita “termasuk.”</span>
+            </li>
+          </ol>
+        </div>
 
-        // Navigation Drawer Logic
-        function toggleDrawer() {
-            const drawer = document.querySelector('.nav-drawer');
-            const overlay = document.querySelector('.nav-overlay');
-            
-            drawer.classList.toggle('open');
-            overlay.classList.toggle('active');
-            
-            if(drawer.classList.contains('open')) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = '';
-            }
-        }
-        
-        function closeDrawer() {
-            const drawer = document.querySelector('.nav-drawer');
-            const overlay = document.querySelector('.nav-overlay');
-            
-            drawer.classList.remove('open');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-        
-        function showSection(sectionId) {
-            // Hide all sections
-            document.querySelectorAll('.content-section').forEach(sec => {
-                sec.classList.remove('active');
-                sec.classList.remove('fade-in');
-            });
+        <div class="concept-box">
+          <div class="concept-label">DETAILED EXAMPLES</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>Fitness:</strong> go with a friend. The habit becomes “we train,” not “I try to train.”</span>
+              <span class="lang-id"><strong>Fitness:</strong> olahraga bareng teman. Jadinya “kita latihan,” bukan “saya mencoba.”</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Learning:</strong> join a study Discord/WhatsApp group with daily check-ins.</span>
+              <span class="lang-id"><strong>Belajar:</strong> gabung grup belajar dengan check-in harian.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-            // Reset active tab styling
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('active-tab');
-            });
+    <!-- CH10 -->
+    <section id="c10" class="content-section fade-in">
+      <span class="section-kicker">Chapter 10</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Reframe: From “Have to” to “Get to”</span>
+        <span class="lang-id">Ubah Makna: “Harus” → “Bisa”</span>
+      </h2>
 
-            // Show target
-            const target = document.getElementById(sectionId);
-            target.classList.add('active');
-            
-            // Trigger reflow for animation
-            void target.offsetWidth; 
-            target.classList.add('fade-in');
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            Many habits fail because they feel like punishment. This chapter teaches you to change the emotional meaning:
+            “I have to” creates resistance; “I get to” creates gratitude and desire. Your words shape your cravings.
+          </span>
+          <span class="lang-id">
+            Banyak kebiasaan gagal karena terasa seperti hukuman. Bab ini mengajarkan mengubah makna emosional:
+            “Saya harus” menimbulkan resistensi; “Saya bisa” menimbulkan rasa syukur dan dorongan. Bahasa membentuk keinginan.
+          </span>
+        </p>
 
-            // Set active tab
-            event.currentTarget.classList.add('active-tab');
+        <div class="concept-box">
+          <div class="concept-label">REFRAME SCRIPTS</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en">“I have to exercise” → “I get to move my body and build energy.”</span>
+              <span class="lang-id">“Saya harus olahraga” → “Saya bisa menggerakkan tubuh dan membangun energi.”</span>
+            </li>
+            <li>
+              <span class="lang-en">“I have to save money” → “I get to buy future freedom.”</span>
+              <span class="lang-id">“Saya harus nabung” → “Saya bisa membeli kebebasan masa depan.”</span>
+            </li>
+            <li>
+              <span class="lang-en">“I have to study” → “I get to upgrade my skills and options.”</span>
+              <span class="lang-id">“Saya harus belajar” → “Saya bisa upgrade skill dan pilihan hidup.”</span>
+            </li>
+          </ul>
+        </div>
 
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    </script>
-</body>
-</html>
+        <div class="concept-box">
+          <div class="concept-label">WHY THIS MATTERS</div>
+          <p>
+            <span class="lang-en">
+              Your brain learns associations. If the habit is tied to pride, identity, and freedom, you’ll crave it more.
+              If it’s tied to shame, stress, and “ugh,” you’ll avoid it.
+            </span>
+            <span class="lang-id">
+              Otak belajar asosiasi. Jika kebiasaan terkait rasa bangga, identitas, dan kebebasan, kamu akan lebih menginginkannya.
+              Jika terkait malu, stres, dan “ih,” kamu akan menghindar.
+            </span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH11 -->
+    <section id="c11" class="content-section fade-in">
+      <span class="section-kicker">Chapter 11</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Make It Easy (Overview)</span>
+        <span class="lang-id">Jadikan Mudah (Gambaran)</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            The best habit strategy is not “try harder” but “make it easier.” The law focuses on friction:
+            decrease steps for good habits, increase steps for bad ones. Consistency beats intensity.
+          </span>
+          <span class="lang-id">
+            Strategi terbaik bukan “lebih niat,” tapi “lebih mudah.” Hukum ini fokus pada friksi:
+            kurangi langkah untuk kebiasaan baik, tambah langkah untuk kebiasaan buruk. Konsistensi mengalahkan intensitas.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">BUILD vs BREAK</div>
+          <p class="mono-font">
+            <span class="text-[var(--accent)] font-bold">Build:</span>
+            <span class="lang-en">Make it easy</span><span class="lang-id">Buat mudah</span>
+            <span class="mono-font"> · </span>
+            <span class="text-[var(--accent)] font-bold">Break:</span>
+            <span class="lang-en">Make it difficult</span><span class="lang-id">Buat sulit</span>
+          </p>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">THE PRINCIPLE</div>
+          <p>
+            <span class="lang-en">
+              You don’t need perfect motivation. You need a system where the easiest option is the right option.
+              Make the habit the path of least resistance.
+            </span>
+            <span class="lang-id">
+              Kamu tidak butuh motivasi sempurna. Kamu butuh sistem di mana opsi termudah adalah opsi yang benar.
+              Buat kebiasaan menjadi jalur “paling minim hambatan.”
+            </span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH12 -->
+    <section id="c12" class="content-section fade-in">
+      <span class="section-kicker">Chapter 12</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">The Law of Least Effort</span>
+        <span class="lang-id">Hukum Usaha Minimum</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            People naturally choose the option that requires the least effort. That’s not laziness—it’s efficiency.
+            Use this to your advantage by reducing friction for good habits and adding friction to bad ones.
+          </span>
+          <span class="lang-id">
+            Manusia cenderung memilih opsi yang paling sedikit usaha. Ini bukan “malas,” tapi efisien.
+            Manfaatkan dengan mengurangi hambatan kebiasaan baik dan menambah hambatan kebiasaan buruk.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">REDUCE FRICTION (GOOD HABITS)</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>Prep the night before:</strong> clothes, book, water bottle.</span>
+              <span class="lang-id"><strong>Siapkan malam sebelumnya:</strong> baju, buku, botol air.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>One place for one action:</strong> desk = work only; bed = sleep only.</span>
+              <span class="lang-id"><strong>Satu tempat satu fungsi:</strong> meja = kerja; kasur = tidur.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Lower the start cost:</strong> make your starting step ridiculously easy.</span>
+              <span class="lang-id"><strong>Turunkan biaya mulai:</strong> langkah awal dibuat super gampang.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">INCREASE FRICTION (BAD HABITS)</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>Phone:</strong> log out of apps, grayscale screen, keep device in another room.</span>
+              <span class="lang-id"><strong>HP:</strong> logout, grayscale, taruh di ruangan lain.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Snacking:</strong> buy single-serving packs; keep snacks out of sight.</span>
+              <span class="lang-id"><strong>Ngemil:</strong> beli porsi kecil; simpan di tempat tak terlihat.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH13 -->
+    <section id="c13" class="content-section fade-in">
+      <span class="section-kicker">Chapter 13</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Two-Minute Rule</span>
+        <span class="lang-id">Aturan 2 Menit</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            When you start a new habit, scale it down to two minutes or less. Why? Because habits are built by showing up.
+            The early goal is not performance; it’s consistency and identity.
+          </span>
+          <span class="lang-id">
+            Saat memulai kebiasaan baru, kecilkan sampai 2 menit atau kurang. Kenapa? Karena kebiasaan dibangun dari “hadir.”
+            Tujuan awal bukan performa; tapi konsistensi dan identitas.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">2-MINUTE TRANSFORMS</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en">“Read every night” → “Read 1 page.”</span>
+              <span class="lang-id">“Baca tiap malam” → “Baca 1 halaman.”</span>
+            </li>
+            <li>
+              <span class="lang-en">“Go to the gym” → “Put on gym clothes.”</span>
+              <span class="lang-id">“Ke gym” → “Pakai baju olahraga.”</span>
+            </li>
+            <li>
+              <span class="lang-en">“Meditate 20 minutes” → “Breathe for 2 minutes.”</span>
+              <span class="lang-id">“Meditasi 20 menit” → “Tarik napas 2 menit.”</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">WHY THIS WORKS (DETAIL)</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>Reduces resistance:</strong> you can’t say “I’m too busy” for 2 minutes.</span>
+              <span class="lang-id"><strong>Kurangi resistensi:</strong> sulit bilang “sibuk” untuk 2 menit.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Creates a gateway habit:</strong> 2 minutes often becomes 10–30 once started.</span>
+              <span class="lang-id"><strong>Jadi gerbang:</strong> 2 menit sering lanjut jadi 10–30 setelah mulai.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Builds identity:</strong> “I’m the type of person who shows up.”</span>
+              <span class="lang-id"><strong>Membangun identitas:</strong> “Saya tipe orang yang hadir.”</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH14 -->
+    <section id="c14" class="content-section fade-in">
+      <span class="section-kicker">Chapter 14</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Make It Satisfying (Overview)</span>
+        <span class="lang-id">Jadikan Memuaskan (Gambaran)</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            We repeat what is satisfying. This law solves a modern mismatch: many good habits have delayed rewards (health),
+            while bad habits have instant rewards (junk food). The solution is to bring immediate satisfaction to good habits.
+          </span>
+          <span class="lang-id">
+            Kita mengulang yang terasa memuaskan. Hukum ini menjawab ketidaksesuaian: banyak kebiasaan baik hadiahnya lambat (sehat),
+            sedangkan kebiasaan buruk hadiahnya cepat (junk food). Solusinya: buat kebiasaan baik terasa memuaskan sekarang.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">BUILD vs BREAK</div>
+          <p class="mono-font">
+            <span class="text-[var(--accent)] font-bold">Build:</span>
+            <span class="lang-en">Make it satisfying</span><span class="lang-id">Buat memuaskan</span>
+            <span class="mono-font"> · </span>
+            <span class="text-[var(--accent)] font-bold">Break:</span>
+            <span class="lang-en">Make it unsatisfying</span><span class="lang-id">Buat tidak memuaskan</span>
+          </p>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">IMMEDIATE REWARD IDEAS</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>Visual progress:</strong> checkbox, streak, jar of marbles.</span>
+              <span class="lang-id"><strong>Progres terlihat:</strong> centang, streak, toples kelereng.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Small treat:</strong> after workout → favorite smoothie (reasonable).</span>
+              <span class="lang-id"><strong>Hadiah kecil:</strong> setelah olahraga → smoothie (wajar).</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>“Enjoy the ritual”:</strong> make the process pleasant (music, clean space).</span>
+              <span class="lang-id"><strong>Nikmati ritual:</strong> buat proses nyaman (musik, ruang rapi).</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH15 -->
+    <section id="c15" class="content-section fade-in">
+      <span class="section-kicker">Chapter 15</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Habit Tracking</span>
+        <span class="lang-id">Lacak Kebiasaan</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            Tracking is a form of immediate satisfaction and awareness. When you track, you see progress, and seeing progress
+            makes you want to continue. The simplest version: don’t break the chain.
+          </span>
+          <span class="lang-id">
+            Melacak kebiasaan memberi kepuasan instan dan kesadaran. Saat kamu melacak, kamu melihat progres, dan itu membuatmu
+            ingin lanjut. Versi paling sederhana: jangan putus rantai.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">TRACKING METHODS</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>Calendar X:</strong> mark an X for every day you do the habit.</span>
+              <span class="lang-id"><strong>Kalender X:</strong> tandai X setiap hari kamu melakukan kebiasaan.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Checklist:</strong> simple daily list (3–5 habits max).</span>
+              <span class="lang-id"><strong>Checklist:</strong> daftar harian sederhana (maks 3–5 kebiasaan).</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Streak app:</strong> digital tracking works if it stays frictionless.</span>
+              <span class="lang-id"><strong>Aplikasi streak:</strong> boleh asal tidak bikin ribet.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">COMMON TRAPS (AND FIX)</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>Trap:</strong> tracking becomes the goal. <strong>Fix:</strong> track the smallest meaningful unit.</span>
+              <span class="lang-id"><strong>Jebakan:</strong> tracking jadi tujuan. <strong>Solusi:</strong> lacak unit terkecil yang bermakna.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Trap:</strong> too many habits. <strong>Fix:</strong> focus on 1–3 “keystone” habits first.</span>
+              <span class="lang-id"><strong>Jebakan:</strong> kebanyakan kebiasaan. <strong>Solusi:</strong> fokus 1–3 kebiasaan kunci.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH16 -->
+    <section id="c16" class="content-section fade-in">
+      <span class="section-kicker">Chapter 16</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Never Miss Twice</span>
+        <span class="lang-id">Jangan Gagal Dua Kali</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            Perfection is not the standard; recovery is. Missing once is an accident. Missing twice is the beginning of a new habit.
+            This chapter teaches a powerful rule: if you slip, get back on track immediately.
+          </span>
+          <span class="lang-id">
+            Standarnya bukan sempurna; tapi cepat kembali. Gagal sekali itu kecelakaan. Gagal dua kali adalah awal kebiasaan baru.
+            Bab ini mengajarkan aturan kuat: jika slip, segera kembali.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">RECOVERY PLAYBOOK</div>
+          <ol class="list-decimal pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>Lower the bar for tomorrow:</strong> do the 2-minute version.</span>
+              <span class="lang-id"><strong>Turunkan target besok:</strong> lakukan versi 2 menit.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Remove one friction:</strong> prepare clothes, open the book, set the timer.</span>
+              <span class="lang-id"><strong>Hapus satu hambatan:</strong> siapkan baju, buka buku, set timer.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Don’t “punish” yourself:</strong> punishment links the habit to pain.</span>
+              <span class="lang-id"><strong>Jangan menghukum diri:</strong> hukuman mengaitkan kebiasaan dengan sakit.</span>
+            </li>
+          </ol>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">DETAILED EXAMPLE</div>
+          <p>
+            <span class="lang-en">
+              You planned to jog on Tuesday but it rained (miss once). Wednesday: do a 7-minute indoor walk (or 2 minutes).
+              The identity vote stays alive.
+            </span>
+            <span class="lang-id">
+              Kamu rencana jogging Selasa tapi hujan (gagal sekali). Rabu: lakukan jalan di tempat 7 menit (atau 2 menit).
+              “Suara” identitas tetap hidup.
+            </span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH17 -->
+    <section id="c17" class="content-section fade-in">
+      <span class="section-kicker">Chapter 17</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Accountability Contracts</span>
+        <span class="lang-id">Kontrak Akuntabilitas</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            Behavior changes faster when there are real consequences. Accountability turns invisible habits into visible commitments.
+            This chapter describes agreements with another person (or group) where you define the habit and the consequence.
+          </span>
+          <span class="lang-id">
+            Perilaku berubah lebih cepat jika ada konsekuensi nyata. Akuntabilitas mengubah kebiasaan yang “tidak terlihat” menjadi komitmen terlihat.
+            Bab ini membahas perjanjian dengan orang lain (atau grup) untuk mendefinisikan kebiasaan dan konsekuensinya.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">CONTRACT TEMPLATE</div>
+          <p class="mono-font">
+            <span class="lang-en">
+              I will [HABIT] at [TIME/PLACE] for [DURATION]. If I fail, I will [CONSEQUENCE]. Witnessed by [NAME].
+            </span>
+            <span class="lang-id">
+              Saya akan [KEBIASAAN] pada [JAM/TEMPAT] selama [DURASI]. Jika gagal, saya akan [KONSEKUENSI]. Disaksikan [NAMA].
+            </span>
+          </p>
+          <p class="mt-4">
+            <span class="lang-en"><strong>Tip:</strong> consequences should be immediate, fair, and slightly painful (but safe).</span>
+            <span class="lang-id"><strong>Tip:</strong> konsekuensi harus cepat, adil, dan sedikit “nyesek” (tapi aman).</span>
+          </p>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">DETAILED EXAMPLES</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>Study:</strong> if you skip, you must send $ to a cause you dislike.</span>
+              <span class="lang-id"><strong>Belajar:</strong> kalau skip, kamu transfer uang ke hal yang kamu tidak suka.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Fitness:</strong> weekly photo check-in with a friend; missing = buy them dinner.</span>
+              <span class="lang-id"><strong>Fitness:</strong> check-in foto mingguan; kalau miss = traktir teman.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH18 -->
+    <section id="c18" class="content-section fade-in">
+      <span class="section-kicker">Chapter 18</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">The Truth About Talent</span>
+        <span class="lang-id">Bakat & Kesesuaian</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            This chapter is about picking habits that match your nature so they’re sustainable. The “best” habit is the one you can keep doing.
+            When the habit fits your strengths, you need less willpower.
+          </span>
+          <span class="lang-id">
+            Bab ini membahas memilih kebiasaan yang “nyambung” dengan natur kamu agar tahan lama. Kebiasaan “terbaik” adalah yang bisa kamu pertahankan.
+            Kalau kebiasaannya cocok dengan kekuatanmu, kamu butuh lebih sedikit willpower.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">FIND YOUR FIT</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>Ask:</strong> What feels fun for me but work for others?</span>
+              <span class="lang-id"><strong>Tanya:</strong> Apa yang terasa menyenangkan bagiku tapi berat bagi orang lain?</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Look for natural pull:</strong> the habit you “return to” even without pressure.</span>
+              <span class="lang-id"><strong>Lihat tarikan alami:</strong> kebiasaan yang kamu “balik lagi” walau tidak dipaksa.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Choose the field where you can win:</strong> align habits with your context and preferences.</span>
+              <span class="lang-id"><strong>Pilih arena yang bisa kamu menangkan:</strong> selaraskan kebiasaan dengan konteks & preferensi.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">DETAILED EXAMPLES</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>If you hate gyms:</strong> choose home workouts, sports, or outdoor walks.</span>
+              <span class="lang-id"><strong>Kalau benci gym:</strong> pilih workout rumah, olahraga, atau jalan outdoor.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>If you like numbers:</strong> track reps, time, pages. Progress becomes satisfying.</span>
+              <span class="lang-id"><strong>Kalau suka angka:</strong> lacak reps, waktu, halaman. Progres jadi memuaskan.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH19 -->
+    <section id="c19" class="content-section fade-in">
+      <span class="section-kicker">Chapter 19</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Goldilocks Rule</span>
+        <span class="lang-id">Aturan Goldilocks</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            Habits stick when the difficulty is “just right.” Too easy → bored. Too hard → anxious, quit.
+            The sweet spot is slightly above your current ability: challenging but doable.
+          </span>
+          <span class="lang-id">
+            Kebiasaan bertahan saat tingkat kesulitannya “pas.” Terlalu mudah → bosan. Terlalu sulit → stres, berhenti.
+            Titik emas: sedikit di atas kemampuan sekarang—menantang tapi masih bisa.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">HOW TO APPLY</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>Adjust the challenge weekly:</strong> +1 rep, +1 page, +5 minutes.</span>
+              <span class="lang-id"><strong>Naikkan tantangan mingguan:</strong> +1 rep, +1 halaman, +5 menit.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Use “minimum + bonus”:</strong> minimum habit (2 min) + optional stretch.</span>
+              <span class="lang-id"><strong>Pakai “minimum + bonus”:</strong> minimum (2 menit) + bonus opsional.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Protect streaks:</strong> when life is busy, do minimum to keep identity alive.</span>
+              <span class="lang-id"><strong>Lindungi streak:</strong> saat sibuk, lakukan minimum agar identitas tetap hidup.</span>
+            </li>
+          </ul>
+        </div>
+
+        <blockquote>
+          <span class="lang-en">THE RIGHT DIFFICULTY KEEPS YOU ENGAGED.</span>
+          <span class="lang-id">KESULITAN YANG PAS MEMBUATMU TETAP “NYANTOL.”</span>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- CH20 -->
+    <section id="c20" class="content-section fade-in">
+      <span class="section-kicker">Chapter 20</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">The Downside of Success</span>
+        <span class="lang-id">Sisi Gelap Kesuksesan</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            Success can create complacency. Once something works, people stop paying attention. This chapter warns:
+            your habits need reflection and review, or they become mindless routines. Mastery requires continuous refinement.
+          </span>
+          <span class="lang-id">
+            Kesuksesan bisa membuat lengah. Saat sesuatu berhasil, orang berhenti memperhatikan. Bab ini memperingatkan:
+            kebiasaan butuh refleksi dan evaluasi, atau ia jadi rutinitas tanpa sadar. Keahlian butuh perbaikan terus-menerus.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">THE SOLUTION: REVIEW</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>Weekly review:</strong> what worked? what failed? what will I adjust?</span>
+              <span class="lang-id"><strong>Review mingguan:</strong> apa yang jalan? apa yang gagal? apa yang diubah?</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Keep the process alive:</strong> focus on the system, not just the outcome.</span>
+              <span class="lang-id"><strong>Hidupkan proses:</strong> fokus pada sistem, bukan hanya hasil.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Stay a student:</strong> mastery is boredom-resistant improvement.</span>
+              <span class="lang-id"><strong>Tetap jadi murid:</strong> mastery adalah peningkatan yang tahan bosan.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">DETAILED EXAMPLE</div>
+          <p>
+            <span class="lang-en">
+              You built a reading habit. After 3 months, progress slows. Review: perhaps your cue is weak on weekends.
+              Adjust: move reading to “after breakfast” instead of “before sleep.”
+            </span>
+            <span class="lang-id">
+              Kamu berhasil membangun kebiasaan membaca. Setelah 3 bulan, melambat. Review: mungkin cue lemah di weekend.
+              Perbaiki: pindahkan baca ke “setelah sarapan” bukan “sebelum tidur.”
+            </span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLKIT -->
+    <section id="toolkit" class="content-section fade-in">
+      <span class="section-kicker">Bonus</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Practical Toolkit</span>
+        <span class="lang-id">Toolkit Praktis</span>
+      </h2>
+
+      <div class="space-y-8 justified-text font-serif">
+        <p class="drop-cap">
+          <span class="lang-en">
+            Below are ready-to-copy templates to apply the entire book quickly. Use one habit at a time.
+            The fastest wins come from designing cues and reducing friction.
+          </span>
+          <span class="lang-id">
+            Di bawah ini template siap copy untuk menerapkan isi buku dengan cepat. Pakai satu kebiasaan dulu.
+            Hasil cepat biasanya datang dari desain isyarat dan pengurangan hambatan.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">1) THE 4 LAWS CHECKLIST</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li class="mono-font">
+              <span class="lang-en"><strong>Obvious:</strong> What is my cue? Where will I place it?</span>
+              <span class="lang-id"><strong>Jelas:</strong> Apa cue saya? Saya taruh di mana?</span>
+            </li>
+            <li class="mono-font">
+              <span class="lang-en"><strong>Attractive:</strong> How can I make it desirable? Who can I do it with?</span>
+              <span class="lang-id"><strong>Menarik:</strong> Bagaimana bikin menarik? Bisa bareng siapa?</span>
+            </li>
+            <li class="mono-font">
+              <span class="lang-en"><strong>Easy:</strong> What friction can I remove? What is the 2-min version?</span>
+              <span class="lang-id"><strong>Mudah:</strong> Hambatan apa yang bisa dihapus? Versi 2 menitnya apa?</span>
+            </li>
+            <li class="mono-font">
+              <span class="lang-en"><strong>Satisfying:</strong> How will I reward/track immediately?</span>
+              <span class="lang-id"><strong>Memuaskan:</strong> Reward/track instannya apa?</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">2) HABIT DESIGN (COPY/PASTE)</div>
+          <pre class="mono-font whitespace-pre-wrap leading-relaxed">
+[Identity]
+I am the type of person who: ____________________________
+
+[Habit]
+I will: ____________________________
+At: ________________________________
+In: ________________________________
+
+[Habit Stack]
+After I: ___________________________
+I will: ____________________________
+
+[2-Min Rule]
+The 2-minute version is: ___________
+
+[Tracking]
+I will track by: ____________________
+
+[If I miss once]
+Tomorrow I will do the minimum: _____
+          </pre>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">3) BREAK A BAD HABIT (INVERT)</div>
+          <ul class="list-disc pl-6 space-y-3">
+            <li>
+              <span class="lang-en"><strong>Make it invisible:</strong> remove cues (hide apps, change environment).</span>
+              <span class="lang-id"><strong>Buat tak terlihat:</strong> hilangkan cue (sembunyikan app, ubah lingkungan).</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Make it unattractive:</strong> list costs; reframe as harmful, not “fun.”</span>
+              <span class="lang-id"><strong>Buat tidak menarik:</strong> tulis biayanya; ubah makna jadi merugikan.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Make it difficult:</strong> add steps, add barriers.</span>
+              <span class="lang-id"><strong>Buat sulit:</strong> tambah langkah, tambah penghalang.</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>Make it unsatisfying:</strong> accountability, consequences, public commitment.</span>
+              <span class="lang-id"><strong>Buat tidak memuaskan:</strong> akuntabilitas, konsekuensi, komitmen publik.</span>
+            </li>
+          </ul>
+        </div>
+
+        <blockquote>
+          <span class="lang-en">DESIGN YOUR ENVIRONMENT, AND YOUR HABITS WILL FOLLOW.</span>
+          <span class="lang-id">DESAIN LINGKUNGANMU, MAKA KEBIASAANMU AKAN MENGIKUTI.</span>
+        </blockquote>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // --- LOGIC ---
+    let currentLang = 'en';
+
+    function toggleLanguage(){
+      currentLang = currentLang === 'en' ? 'id' : 'en';
+      updateContent();
+    }
+
+    function updateContent(){
+      const enElements = document.querySelectorAll('.lang-en');
+      const idElements = document.querySelectorAll('.lang-id');
+      const langEn = document.querySelector('.lang-opt-en');
+      const langId = document.querySelector('.lang-opt-id');
+
+      if(currentLang === 'en'){
+        enElements.forEach(el => el.style.display = 'block');
+        idElements.forEach(el => el.style.display = 'none');
+        if(langEn && langId){ langEn.classList.add('active'); langId.classList.remove('active'); }
+      }else{
+        enElements.forEach(el => el.style.display = 'none');
+        idElements.forEach(el => el.style.display = 'block');
+        if(langEn && langId){ langEn.classList.remove('active'); langId.classList.add('active'); }
+      }
+    }
+
+    // Navigation Drawer Logic
+    function toggleDrawer(){
+      const drawer = document.querySelector('.nav-drawer');
+      const overlay = document.querySelector('.nav-overlay');
+
+      drawer.classList.toggle('open');
+      overlay.classList.toggle('active');
+
+      if(drawer.classList.contains('open')){
+        document.body.style.overflow = 'hidden';
+      }else{
+        document.body.style.overflow = '';
+      }
+    }
+
+    function closeDrawer(){
+      const drawer = document.querySelector('.nav-drawer');
+      const overlay = document.querySelector('.nav-overlay');
+
+      drawer.classList.remove('open');
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function showSection(sectionId, evt){
+      document.query
