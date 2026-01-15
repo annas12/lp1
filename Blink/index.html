@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blink — The Power of Thinking Without Thinking (Masterclass Edition)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* Premium Fonts — editorial + punch */
+    @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Oswald:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap');
+
+    /* --- THEME: BLINK (Warm Paper + Bold Yellow Accent + Charcoal Drawer) --- */
+    :root {
+      --bg-paper: #FFF7E6;        /* warm, bookish paper */
+      --text-ink: #1F2937;        /* charcoal ink */
+      --accent: #FFCC00;          /* blink yellow */
+      --accent-2: #FF6A00;        /* orange for emphasis */
+      --drawer-bg: #111827;       /* deep charcoal */
+      --drawer-top: #0B1220;      /* darker top */
+      --text-white: #FFFFFF;
+      --muted: rgba(31, 41, 55, 0.68);
+      --card: #FFFFFF;
+      --border: #E5E7EB;
+      --soft: #FFF2CC;
+    }
+
+    body {
+      font-family: 'Merriweather', serif;
+      background-color: var(--bg-paper);
+      color: var(--text-ink);
+      line-height: 2.0;
+      font-size: 18px;
+      -webkit-font-smoothing: antialiased;
+      background-image: linear-gradient(to bottom, #FFF2CC, #FFF7E6);
+      padding-top: 80px;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Oswald', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      font-weight: 700;
+      color: var(--text-ink);
+    }
+
+    .mono-font { font-family: 'Roboto Mono', monospace; font-size: 0.92em; letter-spacing: 0.05em; }
+    .justified-text { text-align: justify; }
+
+    /* Drop cap */
+    .drop-cap::first-letter {
+      float: left;
+      font-size: 4.2rem;
+      line-height: 0.8;
+      margin-right: 0.15em;
+      margin-top: 0.05em;
+      font-family: 'Oswald', sans-serif;
+      color: var(--accent-2);
+      font-weight: 700;
+    }
+
+    /* Animations */
+    .fade-in { animation: fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    .content-section { display: none; padding-bottom: 120px; max-width: 980px; margin: 0 auto; }
+    .content-section.active { display: block; }
+
+    /* Language toggles */
+    .lang-id { display: none; }
+    .lang-en { display: block; }
+
+    /* Header bar */
+    .header-bar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 70px;
+      background: rgba(255, 247, 230, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(17, 24, 39, 0.10);
+      z-index: 2200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+    }
+
+    .drawer-toggle {
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 12px;
+      border: 1px solid rgba(17, 24, 39, 0.25);
+      color: var(--text-ink);
+      background: rgba(255,255,255,0.55);
+    }
+
+    .right-controls { display: flex; align-items: center; gap: 18px; }
+    .back-link { display: inline-flex; align-items: center; justify-content: center; color: inherit; transition: transform 0.2s ease; }
+    .back-link:hover { transform: translateX(-3px); }
+
+    .lang-toggle-container {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; cursor: pointer; color: inherit;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(17, 24, 39, 0.16);
+      background: rgba(255,255,255,0.55);
+    }
+    .lang-opt { color: rgba(17, 24, 39, 0.45); transition: color 0.2s ease; }
+    .lang-opt.active { color: inherit; border-bottom: 2px solid currentColor; }
+    .lang-sep { color: rgba(17, 24, 39, 0.25); }
+
+    /* Drawer */
+    .nav-drawer {
+      position: fixed; top: 0; left: -360px; width: 360px; height: 100vh;
+      background: var(--drawer-bg);
+      transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 2000;
+      box-shadow: 10px 0 30px rgba(0,0,0,0.55);
+      border-right: 3px solid var(--accent);
+    }
+    .nav-drawer.open { left: 0; }
+
+    .nav-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(17, 24, 39, 0.7);
+      opacity: 0; visibility: hidden;
+      transition: all 0.5s;
+      z-index: 1999;
+      backdrop-filter: blur(5px);
+    }
+    .nav-overlay.active { opacity: 1; visibility: visible; }
+
+    .nav-btn {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.98rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-left: 4px solid transparent;
+      transition: all 0.25s;
+      color: rgba(253, 230, 138, 0.65); /* yellow-ish muted */
+    }
+    .active-tab {
+      border-left: 4px solid var(--accent);
+      color: var(--text-white) !important;
+      background: linear-gradient(90deg, rgba(255, 204, 0, 0.20) 0%, transparent 100%);
+      padding-left: 28px !important;
+    }
+
+    /* Decorative */
+    .section-kicker {
+      display: block;
+      font-family: 'Roboto Mono', monospace;
+      color: #B45309; /* warm brown */
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+
+    .concept-box {
+      margin: 3.5rem 0;
+      padding: 2.5rem;
+      background-color: var(--card);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--accent);
+      box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.18);
+      position: relative;
+      border-radius: 18px;
+    }
+    .concept-label {
+      position: absolute;
+      top: -16px;
+      left: 2rem;
+      background: var(--accent);
+      color: #111827;
+      padding: 4px 16px;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      border-radius: 999px;
+      box-shadow: 0 10px 25px -10px rgba(0,0,0,0.35);
+    }
+
+    .divider { width: 100%; height: 1px; background: #E5E7EB; margin: 4rem 0; position: relative; }
+    .divider::after {
+      content: ''; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      width: 70px; height: 3px; background: var(--accent);
+      border-radius: 999px;
+    }
+
+    blockquote {
+      border-left: 6px solid var(--accent);
+      padding-left: 24px;
+      margin: 3rem 0;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 300;
+      color: #111827;
+      line-height: 1.4;
+      text-transform: uppercase;
+      background: var(--soft);
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      border-radius: 14px;
+    }
+
+    .mini-card {
+      border: 1px solid var(--border);
+      background: #FFFFFF;
+      padding: 1.25rem 1.25rem;
+      border-radius: 18px;
+      box-shadow: 0 14px 28px -18px rgba(0,0,0,0.22);
+    }
+
+    .pill {
+      display: inline-block;
+      border: 1px solid var(--border);
+      background: #FFFBEB;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      color: rgba(17, 24, 39, 0.88);
+    }
+
+    .callout {
+      border-left: 4px solid var(--accent-2);
+      background: #FFFFFF;
+      padding: 1.25rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+
+    .kbd {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.85em;
+      padding: 0.15rem 0.5rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #FFFBEB;
+      letter-spacing: 0.06em;
+    }
+
+    @media (max-width: 640px) {
+      body { font-size: 17px; line-height: 1.8; }
+      .content-section { padding: 80px 22px; }
+      .nav-drawer { width: 85%; }
+      .drop-cap::first-letter { font-size: 3.5rem; }
+      h2 { font-size: 2.5rem; }
+    }
+    @media (min-width: 641px) {
+      .content-section { padding-top: 120px; padding-left: 24px; padding-right: 24px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="header-bar">
+    <button class="drawer-toggle" onclick="toggleDrawer()" aria-label="Menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+
+    <div class="right-controls">
+      <a class="back-link" href="../index.html" aria-label="Back to home">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </a>
+
+      <button class="lang-toggle-container" onclick="toggleLanguage()" aria-label="Toggle language">
+        <span class="lang-opt lang-opt-id">ID</span>
+        <span class="lang-sep">|</span>
+        <span class="lang-opt lang-opt-en active">EN</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- DRAWER -->
+  <div class="nav-overlay" onclick="closeDrawer()"></div>
+
+  <nav class="nav-drawer flex flex-col h-full">
+    <div class="px-8 py-12" style="background: var(--drawer-top);">
+      <h2 class="text-white text-4xl leading-none mb-2 font-bold tracking-tight">
+        BLINK <span class="text-white">MASTERCLASS</span>
+      </h2>
+      <p class="text-[11px] uppercase tracking-[0.2em] font-mono font-medium mt-4" style="color: rgba(253,230,138,0.85);">
+        <span style="color: var(--accent);">Malcolm Gladwell</span> — Thinking Without Thinking
+      </p>
+      <div class="w-16 h-2 mt-6" style="background: var(--accent);"></div>
+
+      <div class="mt-8 text-[12px] leading-relaxed font-mono" style="color: rgba(255,255,255,0.75);">
+        <div><span style="color: rgba(255,255,255,0.9);">Core Idea:</span> Fast judgments can be brilliant—or dangerously wrong.</div>
+        <div><span style="color: rgba(255,255,255,0.9);">Mechanism:</span> Thin-slicing & the adaptive unconscious.</div>
+        <div><span style="color: rgba(255,255,255,0.9);">Skill:</span> Design better snap judgments (and avoid traps).</div>
+      </div>
+    </div>
+
+    <div class="flex-1 overflow-y-auto py-8 px-4">
+      <ul class="space-y-3">
+        <li>
+          <button onclick="showSection('intro'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3 active-tab">
+            <span class="lang-en">00. Overview: Why Blink Matters</span>
+            <span class="lang-id">00. Gambaran: Kenapa Blink Penting</span>
+          </button>
+        </li>
+
+        <li class="pt-2">
+          <div class="px-6 text-[10px] uppercase tracking-[0.18em] font-mono" style="color: rgba(253,230,138,0.65);">
+            Core Concepts (Structured Like Chapters)
+          </div>
+        </li>
+
+        <li><button onclick="showSection('ch1'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">01. Thin-Slicing: The First Two Seconds</span>
+          <span class="lang-id">01. Thin-Slicing: 2 Detik Pertama</span>
+        </button></li>
+
+        <li><button onclick="showSection('ch2'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">02. The Adaptive Unconscious</span>
+          <span class="lang-id">02. Alam Bawah Sadar Adaptif</span>
+        </button></li>
+
+        <li><button onclick="showSection('ch3'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">03. When Snap Judgments Fail (The Warren Harding Error)</span>
+          <span class="lang-id">03. Saat Intuisi Gagal (Kesalahan Warren Harding)</span>
+        </button></li>
+
+        <li><button onclick="showSection('ch4'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">04. Priming: The Hidden Remote Control</span>
+          <span class="lang-id">04. Priming: Remote Tersembunyi</span>
+        </button></li>
+
+        <li><button onclick="showSection('ch5'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">05. The Dark Side: Bias & “Mind-Reading”</span>
+          <span class="lang-id">05. Sisi Gelap: Bias & “Membaca Orang”</span>
+        </button></li>
+
+        <li><button onclick="showSection('ch6'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">06. Experts: Why They Can Blink Better</span>
+          <span class="lang-id">06. Pakar: Kenapa Mereka Lebih Akurat</span>
+        </button></li>
+
+        <li><button onclick="showSection('ch7'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">07. How to Design Better Snap Decisions</span>
+          <span class="lang-id">07. Mendesain Keputusan Cepat yang Lebih Baik</span>
+        </button></li>
+
+        <li class="pt-4">
+          <div class="px-6 text-[10px] uppercase tracking-[0.18em] font-mono" style="color: rgba(253,230,138,0.65);">
+            Toolkits
+          </div>
+        </li>
+
+        <li><button onclick="showSection('toolkit'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">A. Field Tools (Fast & Practical)</span>
+          <span class="lang-id">A. Tools Lapangan (Cepat & Praktis)</span>
+        </button></li>
+
+        <li><button onclick="showSection('cases'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">B. Case Studies Library</span>
+          <span class="lang-id">B. Perpustakaan Studi Kasus</span>
+        </button></li>
+
+        <li><button onclick="showSection('worksheets'); closeDrawer();" class="nav-btn w-full text-left px-6 py-3">
+          <span class="lang-en">C. Worksheets (Copy & Use)</span>
+          <span class="lang-id">C. Worksheet (Copy & Pakai)</span>
+        </button></li>
+      </ul>
+    </div>
+
+    <div class="p-8 text-[10px] font-mono tracking-widest uppercase border-t" style="color: rgba(253,230,138,0.55); border-color: rgba(255,204,0,0.35);">
+      Blink Edition — Complete & Detailed
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- INTRO -->
+    <section id="intro" class="content-section active fade-in">
+      <span class="section-kicker">00 — Overview</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Why Blink Matters</span>
+        <span class="lang-id">Kenapa Blink Penting</span>
+      </h2>
+
+      <div class="space-y-8 justified-text">
+        <p class="drop-cap">
+          <span class="lang-en">
+            <strong>Blink</strong> explores a strange truth: sometimes our best decisions happen in a flash—before we can explain them.
+            But the same speed can also produce catastrophic mistakes. The book is a guided tour of
+            <span class="pill">thin-slicing</span> (extracting meaning from tiny slices of experience),
+            the <span class="pill">adaptive unconscious</span> (fast mental processing outside awareness),
+            and how to build environments where fast judgment becomes more accurate.
+          </span>
+          <span class="lang-id">
+            <strong>Blink</strong> membahas kenyataan unik: kadang keputusan terbaik muncul dalam sekejap—bahkan sebelum kita bisa menjelaskannya.
+            Tapi kecepatan yang sama juga bisa menghasilkan kesalahan fatal. Buku ini mengupas
+            <span class="pill">thin-slicing</span> (mengambil makna dari potongan pengalaman yang sangat kecil),
+            <span class="pill">alam bawah sadar adaptif</span> (pemrosesan cepat di luar kesadaran),
+            dan cara membangun kondisi agar keputusan cepat jadi lebih akurat.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">THE BIG PROMISE</div>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Speed Can Be Smart</span><span class="lang-id">Cepat Bisa Pintar</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">The mind can detect patterns instantly, especially with experience.</span>
+                <span class="lang-id">Otak bisa menangkap pola dengan cepat, apalagi jika berpengalaman.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Speed Can Be Biased</span><span class="lang-id">Cepat Bisa Bias</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Hidden associations and stereotypes can hijack snap judgments.</span>
+                <span class="lang-id">Asosiasi tersembunyi dan stereotip bisa membajak keputusan cepat.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Design Beats Willpower</span><span class="lang-id">Desain Mengalahkan Niat</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Better environments + rules make fast decisions safer.</span>
+                <span class="lang-id">Lingkungan + aturan yang tepat membuat keputusan cepat lebih aman.</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="mini-card">
+            <h4 class="text-xl mb-2"><span class="lang-en">Two Kinds of Thinking</span><span class="lang-id">Dua Jenis Berpikir</span></h4>
+            <p class="mb-0">
+              <span class="lang-en">
+                <strong>Slow thinking</strong> is deliberate and explainable. <strong>Fast thinking</strong> is intuitive, automatic, and often wordless.
+                Blink focuses on when fast thinking is a superpower—and when it becomes a trap.
+              </span>
+              <span class="lang-id">
+                <strong>Pikir lambat</strong> itu sadar dan bisa dijelaskan. <strong>Pikir cepat</strong> itu intuitif, otomatis, dan sering tanpa kata.
+                Blink fokus pada kapan pikir cepat menjadi kekuatan—dan kapan menjadi jebakan.
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <blockquote>
+          <span class="lang-en">FAST THINKING IS POWERFUL — BUT IT MUST BE TRAINED AND PROTECTED.</span>
+          <span class="lang-id">BERPIKIR CEPAT ITU KUAT — TAPI HARUS DILATIH DAN DIJAGA.</span>
+        </blockquote>
+
+        <div class="concept-box">
+          <div class="concept-label">HOW TO USE THIS PAGE</div>
+          <p class="mb-0">
+            <span class="lang-en">
+              Each section includes: (1) the core idea, (2) what can go wrong, (3) a case study, and (4) practical steps.
+              If you only want results, jump to <span class="kbd">Toolkits</span>. If you want understanding, read from Chapter 01 onward.
+            </span>
+            <span class="lang-id">
+              Setiap bagian berisi: (1) ide inti, (2) risiko, (3) studi kasus, dan (4) langkah praktis.
+              Kalau mau hasil cepat, lompat ke <span class="kbd">Toolkits</span>. Kalau mau paham, mulai dari Bab 01.
+            </span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH1 -->
+    <section id="ch1" class="content-section fade-in">
+      <span class="section-kicker">01 — Thin-Slicing</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">The First Two Seconds</span>
+        <span class="lang-id">Dua Detik Pertama</span>
+      </h2>
+
+      <div class="space-y-8 justified-text">
+        <p class="drop-cap">
+          <span class="lang-en">
+            <strong>Thin-slicing</strong> is the brain’s ability to find patterns in very small samples—like reading a mood from a face,
+            evaluating a product from a few features, or sensing something “off” in a situation.
+            The key claim: sometimes <em>less information</em> leads to <em>better accuracy</em>, because it reduces noise and overthinking.
+          </span>
+          <span class="lang-id">
+            <strong>Thin-slicing</strong> adalah kemampuan otak menangkap pola dari sampel kecil—misalnya membaca mood dari ekspresi,
+            menilai produk dari beberapa fitur, atau merasa “ada yang tidak beres” dalam situasi.
+            Klaim intinya: kadang <em>informasi lebih sedikit</em> memberi <em>akurasi lebih tinggi</em> karena mengurangi noise dan overthinking.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">WHAT THIN-SLICING IS (AND ISN’T)</div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">It IS</span><span class="lang-id">INI adalah</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">Rapid pattern recognition</span><span class="lang-id">Pengenalan pola cepat</span></li>
+                <li><span class="lang-en">Compression: extracting signal from noise</span><span class="lang-id">Kompresi: mengambil sinyal dari noise</span></li>
+                <li><span class="lang-en">Often accurate with experience + good cues</span><span class="lang-id">Sering akurat bila berpengalaman + cue yang tepat</span></li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">It is NOT</span><span class="lang-id">BUKAN</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">Magic or “gut feeling” without basis</span><span class="lang-id">Sihir atau “feeling” tanpa dasar</span></li>
+                <li><span class="lang-en">Always correct</span><span class="lang-id">Selalu benar</span></li>
+                <li><span class="lang-en">A replacement for evidence in complex decisions</span><span class="lang-id">Pengganti bukti pada keputusan kompleks</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="mini-card">
+            <h4 class="text-xl mb-2"><span class="lang-en">Case Study: “Slicing” a Marriage</span><span class="lang-id">Studi Kasus: “Membaca” Pernikahan</span></h4>
+            <p class="mb-0">
+              <span class="lang-en">
+                Researchers studying couples found that very short observations (thin slices) of interaction can reveal relationship patterns.
+                The point is not “predict the future with magic,” but that <strong>tiny behavioral cues</strong> (tone, contempt, defensiveness,
+                warmth) can be more informative than long interviews where people try to look good.
+              </span>
+              <span class="lang-id">
+                Peneliti yang mempelajari pasangan menemukan bahwa observasi singkat interaksi dapat memperlihatkan pola relasi.
+                Intinya bukan “meramal dengan sihir,” tapi <strong>cue perilaku kecil</strong> (nada, meremehkan, defensif,
+                kehangatan) kadang lebih informatif daripada wawancara panjang yang mudah dipoles.
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">PRACTICAL TAKEAWAYS</div>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Choose Better Cues</span><span class="lang-id">Pilih Cue yang Tepat</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Fast judgment is only as good as the signals you attend to.</span>
+                <span class="lang-id">Keputusan cepat hanya sebagus sinyal yang kamu perhatikan.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Reduce Noise</span><span class="lang-id">Kurangi Noise</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Too much info can dilute the signal and slow you down.</span>
+                <span class="lang-id">Info berlebih bisa mengaburkan sinyal dan memperlambat.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Train with Feedback</span><span class="lang-id">Latih dengan Feedback</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Experts become experts because they get fast, clear feedback loops.</span>
+                <span class="lang-id">Pakar jadi pakar karena mereka punya feedback loop cepat dan jelas.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">ACTION STEPS</div>
+          <ol class="list-decimal pl-6 space-y-3 mono-font">
+            <li><span class="lang-en">Pick 1 domain you often “judge fast” (hiring, clients, products, people).</span><span class="lang-id">Pilih 1 area kamu sering “menilai cepat” (rekrut, klien, produk, orang).</span></li>
+            <li><span class="lang-en">List 5 cues you currently use. Then mark which are “signal” vs “noise.”</span><span class="lang-id">Tulis 5 cue yang kamu pakai. Tandai mana “sinyal” vs “noise.”</span></li>
+            <li><span class="lang-en">Replace 1 noisy cue (e.g., appearance) with 1 measurable cue (e.g., behavior under pressure).</span><span class="lang-id">Ganti 1 cue noise (mis. penampilan) dengan cue terukur (mis. perilaku saat tekanan).</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH2 -->
+    <section id="ch2" class="content-section fade-in">
+      <span class="section-kicker">02 — Adaptive Unconscious</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">The Hidden Engine</span>
+        <span class="lang-id">Mesin Tersembunyi</span>
+      </h2>
+
+      <div class="space-y-8 justified-text">
+        <p class="drop-cap">
+          <span class="lang-en">
+            The <strong>adaptive unconscious</strong> is the brain’s fast-processing system: it continuously interprets the world
+            without your awareness—recognizing faces, reading emotions, detecting danger, and building “instant impressions.”
+            It’s efficient, but it can also be biased and easily influenced by context.
+          </span>
+          <span class="lang-id">
+            <strong>Alam bawah sadar adaptif</strong> adalah sistem pemrosesan cepat otak: ia terus menafsirkan dunia
+            tanpa kamu sadari—mengenali wajah, membaca emosi, mendeteksi bahaya, dan membentuk “kesan instan.”
+            Sistem ini efisien, tapi bisa bias dan mudah dipengaruhi konteks.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">WHY IT’S USEFUL</div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Saves Cognitive Energy</span><span class="lang-id">Hemat Energi Otak</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">You can’t consciously compute everything. Fast processing keeps you functional.</span>
+                <span class="lang-id">Kita tidak bisa menghitung semuanya secara sadar. Pemrosesan cepat membuat kita tetap berjalan.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Makes Expert Intuition Possible</span><span class="lang-id">Membuat Intuisi Pakar Mungkin</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">With experience, the unconscious learns patterns and flags anomalies instantly.</span>
+                <span class="lang-id">Dengan pengalaman, bawah sadar belajar pola dan menandai kejanggalan secara cepat.</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="mini-card">
+            <h4 class="text-xl mb-2"><span class="lang-en">Case Study: Art Authentication (The “Kouros” Problem)</span><span class="lang-id">Studi Kasus: Autentikasi Seni (Kasus “Kouros”)</span></h4>
+            <p class="mb-0">
+              <span class="lang-en">
+                In one famous example, experts had a strong instant reaction that a statue felt “wrong,” even when documentation looked convincing.
+                The lesson: sometimes the unconscious catches subtle inconsistencies (style, tooling, aging patterns) before the conscious mind can articulate why.
+                But the reverse is also possible: if experts are primed or pressured, the gut can be distorted.
+              </span>
+              <span class="lang-id">
+                Dalam contoh terkenal, para ahli punya reaksi cepat bahwa sebuah patung terasa “aneh,” walau dokumen terlihat meyakinkan.
+                Pelajarannya: kadang bawah sadar menangkap ketidaksesuaian halus (gaya, teknik, pola penuaan) sebelum pikiran sadar bisa menjelaskan.
+                Tapi sebaliknya juga bisa: jika ahli ter-priming atau tertekan, “gut feeling” bisa meleset.
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">THE RISK: INVISIBLE INFLUENCES</div>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Context</span><span class="lang-id">Konteks</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Noise, time pressure, or mood can shift what your brain “sees.”</span>
+                <span class="lang-id">Noise, tekanan waktu, atau mood mengubah apa yang otak “lihat.”</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Priming</span><span class="lang-id">Priming</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Tiny cues can unconsciously steer decisions.</span>
+                <span class="lang-id">Cue kecil bisa mengarahkan keputusan tanpa sadar.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Bias</span><span class="lang-id">Bias</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Stereotypes can sneak into snap judgments.</span>
+                <span class="lang-id">Stereotip bisa menyelinap ke keputusan cepat.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">ACTION STEPS</div>
+          <ol class="list-decimal pl-6 space-y-3 mono-font">
+            <li><span class="lang-en">Identify 1 situation where you rely on “gut feeling.”</span><span class="lang-id">Tentukan 1 situasi kamu mengandalkan “feeling.”</span></li>
+            <li><span class="lang-en">Write what could silently influence you (fatigue, noise, stress, hunger, group pressure).</span><span class="lang-id">Tulis hal yang bisa mempengaruhi diam-diam (capek, bising, stres, lapar, tekanan kelompok).</span></li>
+            <li><span class="lang-en">Create a “state rule”: no big decisions when tired/hungry/angry; pause first.</span><span class="lang-id">Buat “aturan state”: jangan ambil keputusan besar saat capek/lapar/marah; jeda dulu.</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH3 -->
+    <section id="ch3" class="content-section fade-in">
+      <span class="section-kicker">03 — Failure Mode</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">The Warren Harding Error</span>
+        <span class="lang-id">Kesalahan Warren Harding</span>
+      </h2>
+
+      <div class="space-y-8 justified-text">
+        <p class="drop-cap">
+          <span class="lang-en">
+            One of the most important warnings in <strong>Blink</strong> is that the unconscious can be fooled by “surface cues.”
+            The <strong>Warren Harding error</strong> is when we confuse an impressive-looking person or thing with true competence.
+            We fall for height, voice, attractiveness, confidence, and style—then project ability onto it.
+          </span>
+          <span class="lang-id">
+            Salah satu peringatan penting di <strong>Blink</strong>: bawah sadar bisa tertipu oleh “cue permukaan.”
+            <strong>Kesalahan Warren Harding</strong> terjadi ketika kita mengira orang/hal yang terlihat meyakinkan pasti kompeten.
+            Kita mudah terpesona tinggi badan, suara, menarik, percaya diri, dan gaya—lalu memproyeksikan kemampuan.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">WHY THIS HAPPENS</div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">The Brain Loves Shortcuts</span><span class="lang-id">Otak Suka Jalan Pintas</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">In uncertain situations, we grab easy signals to reduce anxiety.</span>
+                <span class="lang-id">Dalam situasi tidak pasti, kita mengambil sinyal mudah untuk menurunkan cemas.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Surface Cues Feel “Certain”</span><span class="lang-id">Cue Permukaan Terasa “Pasti”</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Style is visible, measurable, and immediate—so it dominates attention.</span>
+                <span class="lang-id">Gaya terlihat jelas dan instan—jadi mendominasi perhatian.</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="mini-card">
+            <h4 class="text-xl mb-2"><span class="lang-en">Case Study: Hiring Charisma vs Hiring Competence</span><span class="lang-id">Studi Kasus: Rekrut Karisma vs Rekrut Kompetensi</span></h4>
+            <p class="mb-0">
+              <span class="lang-en">
+                Many hiring mistakes happen because interviews reward confidence and verbal fluency—traits that look like competence.
+                A better approach is to thin-slice on <strong>work samples</strong>: short tasks, simulations, or past-output reviews.
+                The lesson: change the cue. Don’t ask “Who feels smart?” Ask “Who performs?”
+              </span>
+              <span class="lang-id">
+                Banyak kesalahan rekrut terjadi karena interview menghadiahi percaya diri dan lancar bicara—yang terlihat seperti kompetensi.
+                Cara lebih baik adalah thin-slice pada <strong>work sample</strong>: tugas singkat, simulasi, atau review output sebelumnya.
+                Pelajaran: ganti cue. Jangan tanya “Siapa terlihat pintar?” tapi “Siapa terbukti perform?”
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">ANTI-HARDING CHECKLIST</div>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Replace “Look”</span><span class="lang-id">Ganti “Tampilan”</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Use behavior-based cues: tests, samples, metrics.</span>
+                <span class="lang-id">Pakai cue berbasis perilaku: tes, sampel, metrik.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Delay the Verdict</span><span class="lang-id">Tunda Vonis</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">If you feel instantly impressed, pause and verify.</span>
+                <span class="lang-id">Jika langsung terkesan, jeda lalu verifikasi.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Audit Your Cues</span><span class="lang-id">Audit Cue</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Ask: “Would this cue predict performance?”</span>
+                <span class="lang-id">Tanya: “Apakah cue ini memprediksi perform?”</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">ACTION STEPS</div>
+          <ol class="list-decimal pl-6 space-y-3 mono-font">
+            <li><span class="lang-en">List 3 “surface cues” that influence you (appearance, voice, status, brand, jargon).</span><span class="lang-id">Tulis 3 “cue permukaan” yang mempengaruhi kamu (penampilan, suara, status, brand, jargon).</span></li>
+            <li><span class="lang-en">For each, define a “proof cue” (work sample, track record, references, metrics).</span><span class="lang-id">Untuk tiap cue, buat “cue bukti” (work sample, rekam jejak, referensi, metrik).</span></li>
+            <li><span class="lang-en">Next time you decide, force yourself to use at least 2 proof cues.</span><span class="lang-id">Saat mengambil keputusan berikutnya, paksa pakai minimal 2 cue bukti.</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH4 -->
+    <section id="ch4" class="content-section fade-in">
+      <span class="section-kicker">04 — Priming</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">The Hidden Remote Control</span>
+        <span class="lang-id">Remote Tersembunyi</span>
+      </h2>
+
+      <div class="space-y-8 justified-text">
+        <p class="drop-cap">
+          <span class="lang-en">
+            <strong>Priming</strong> means small, seemingly irrelevant cues can activate certain ideas and behaviors—without you realizing it.
+            This is why context matters: the room, the words you just read, the mood of a meeting, even subtle signals can nudge decisions.
+            The practical message: if priming is real, we must <strong>design contexts</strong> that prime good behavior.
+          </span>
+          <span class="lang-id">
+            <strong>Priming</strong> adalah ketika cue kecil yang tampaknya tidak penting bisa mengaktifkan ide dan perilaku—tanpa kamu sadari.
+            Karena itu konteks sangat berpengaruh: ruangan, kata-kata yang baru kamu baca, mood rapat, bahkan sinyal halus bisa mendorong keputusan.
+            Pesan praktisnya: kalau priming itu nyata, kita harus <strong>mendesain konteks</strong> agar mem-priming perilaku yang baik.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">WHERE PRIMING SHOWS UP</div>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Work</span><span class="lang-id">Kerja</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Meeting tone, agenda framing, leadership language, room setup.</span>
+                <span class="lang-id">Nada rapat, framing agenda, bahasa pemimpin, tata ruang.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Shopping</span><span class="lang-id">Belanja</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Music, lighting, product placement, “limited time” cues.</span>
+                <span class="lang-id">Musik, cahaya, penempatan produk, cue “terbatas.”</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Relationships</span><span class="lang-id">Relasi</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">First words, facial expressions, micro-signals set the emotional direction.</span>
+                <span class="lang-id">Kata pertama, ekspresi, sinyal kecil menentukan arah emosi.</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="mini-card">
+            <h4 class="text-xl mb-2"><span class="lang-en">Case Study: The “Friendly Prime” vs “Threat Prime” Meeting</span><span class="lang-id">Studi Kasus: Rapat “Ramah” vs “Ancaman”</span></h4>
+            <p class="mb-0">
+              <span class="lang-en">
+                Imagine two meetings with the same agenda. In Meeting A, the leader opens with appreciation, clarity, and calm pace.
+                In Meeting B, the leader opens with blame, urgency, and aggressive tone. Even if the content is identical, people will think differently:
+                A primes cooperation; B primes defensiveness. The key: <strong>first minute primes the entire hour.</strong>
+              </span>
+              <span class="lang-id">
+                Bayangkan dua rapat dengan agenda sama. Rapat A dibuka dengan apresiasi, jelas, dan tempo tenang.
+                Rapat B dibuka dengan menyalahkan, tergesa, dan agresif. Walau isi sama, cara pikir tim beda:
+                A mem-priming kerja sama; B mem-priming defensif. Intinya: <strong>1 menit pertama mem-priming 1 jam.</strong>
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">DESIGN RULES (ANTI-BAD-PRIMING)</div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Rule 1 — Control the First Cue</span><span class="lang-id">Aturan 1 — Kontrol Cue Pertama</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Opening words, environment, and tone decide the default direction.</span>
+                <span class="lang-id">Kata pembuka, lingkungan, dan tone menentukan arah default.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Rule 2 — Remove “Threat Triggers”</span><span class="lang-id">Aturan 2 — Hilangkan Pemicu Ancaman</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Public shaming, unclear goals, chaotic settings prime fear.</span>
+                <span class="lang-id">Mempermalukan, tujuan kabur, setting kacau mem-priming takut.</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-6 callout">
+            <p class="mb-0">
+              <span class="lang-en"><strong>Simple hack:</strong> Before important conversations, write your first 2 sentences. That’s your prime.</span>
+              <span class="lang-id"><strong>Hack sederhana:</strong> Sebelum percakapan penting, tulis 2 kalimat pertama. Itu prime-mu.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">ACTION STEPS</div>
+          <ol class="list-decimal pl-6 space-y-3 mono-font">
+            <li><span class="lang-en">Identify 1 context where you want better outcomes (sales call, meeting, negotiation).</span><span class="lang-id">Tentukan 1 konteks yang ingin hasilnya lebih baik (sales call, rapat, negosiasi).</span></li>
+            <li><span class="lang-en">Define the prime: opening line + tone + environment cue.</span><span class="lang-id">Tentukan prime: kalimat pembuka + tone + cue lingkungan.</span></li>
+            <li><span class="lang-en">Remove 1 threat trigger (unclear goal, harsh opening, distractions).</span><span class="lang-id">Hilangkan 1 pemicu ancaman (goal kabur, pembuka keras, distraksi).</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH5 -->
+    <section id="ch5" class="content-section fade-in">
+      <span class="section-kicker">05 — Bias & Mind-Reading</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">The Dark Side of Snap Judgments</span>
+        <span class="lang-id">Sisi Gelap Keputusan Cepat</span>
+      </h2>
+
+      <div class="space-y-8 justified-text">
+        <p class="drop-cap">
+          <span class="lang-en">
+            Snap judgments can contain <strong>hidden bias</strong>. Sometimes we believe we’re being “objective,”
+            but our unconscious has learned associations from culture, media, and past experiences.
+            The danger is greatest in high-stakes moments—policing, hiring, courtroom decisions, medical triage—
+            where a split-second judgment can change someone’s life.
+          </span>
+          <span class="lang-id">
+            Keputusan cepat bisa membawa <strong>bias tersembunyi</strong>. Kadang kita merasa “objektif,”
+            padahal bawah sadar belajar asosiasi dari budaya, media, dan pengalaman.
+            Bahaya paling besar di momen high-stakes—penegakan hukum, rekrut, pengadilan, keputusan medis—
+            di mana keputusan sepersekian detik bisa mengubah hidup seseorang.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">WHY BIAS HIDES</div>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">It Feels Like “Instinct”</span><span class="lang-id">Terasa Seperti “Insting”</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Bias often arrives as a gut feeling, not a conscious thought.</span>
+                <span class="lang-id">Bias sering datang sebagai feeling, bukan pikiran sadar.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Time Pressure</span><span class="lang-id">Tekanan Waktu</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">When rushed, we rely on stereotypes as shortcuts.</span>
+                <span class="lang-id">Saat buru-buru, kita memakai stereotip sebagai jalan pintas.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Ambiguity</span><span class="lang-id">Ambiguitas</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">When signals are unclear, the mind fills gaps with assumptions.</span>
+                <span class="lang-id">Saat sinyal kabur, otak mengisi celah dengan asumsi.</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="mini-card">
+            <h4 class="text-xl mb-2"><span class="lang-en">Case Study: “Split-Second” Escalation</span><span class="lang-id">Studi Kasus: Eskalasi Sepersekian Detik</span></h4>
+            <p class="mb-0">
+              <span class="lang-en">
+                Blink discusses how rapid interpretation of a gesture or object can lead to escalation.
+                The important lesson is not “never trust instincts,” but <strong>build buffers</strong>:
+                training, protocols, and de-escalation steps that slow the moment just enough to confirm reality.
+              </span>
+              <span class="lang-id">
+                Blink membahas bagaimana tafsir cepat terhadap gesture atau benda bisa memicu eskalasi.
+                Pelajaran pentingnya bukan “jangan percaya insting,” tetapi <strong>buat buffer</strong>:
+                pelatihan, protokol, dan langkah de-eskalasi yang memperlambat momen sedikit saja untuk memastikan realitas.
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">HOW TO DEFEND AGAINST BIAS</div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">1) Create “Pause Points”</span><span class="lang-id">1) Buat Titik Jeda</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Add a micro-delay for verification: “What evidence do I have?”</span>
+                <span class="lang-id">Tambahkan jeda mikro untuk verifikasi: “Buktinya apa?”</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">2) Use Structured Decisions</span><span class="lang-id">2) Pakai Struktur</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Checklists beat vibes. Use criteria and scoring.</span>
+                <span class="lang-id">Checklist mengalahkan feeling. Pakai kriteria dan skor.</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-6 callout">
+            <p class="mb-0">
+              <span class="lang-en"><strong>High-stakes rule:</strong> If the cost of being wrong is huge, don’t allow “blink-only” decisions.</span>
+              <span class="lang-id"><strong>Aturan high-stakes:</strong> Kalau biaya salah besar, jangan izinkan keputusan “blink saja.”</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">ACTION STEPS</div>
+          <ol class="list-decimal pl-6 space-y-3 mono-font">
+            <li><span class="lang-en">Pick 1 high-stakes decision you make (hiring, pricing, approvals, customer complaints).</span><span class="lang-id">Pilih 1 keputusan high-stakes yang kamu lakukan (rekrut, pricing, approval, komplain).</span></li>
+            <li><span class="lang-en">Add a “pause point”: 10 seconds + one verification question.</span><span class="lang-id">Tambahkan “titik jeda”: 10 detik + 1 pertanyaan verifikasi.</span></li>
+            <li><span class="lang-en">Create a tiny checklist (3–5 criteria) and use it for 2 weeks.</span><span class="lang-id">Buat checklist kecil (3–5 kriteria) dan pakai 2 minggu.</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH6 -->
+    <section id="ch6" class="content-section fade-in">
+      <span class="section-kicker">06 — Experts</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Why Experts Can Blink Better</span>
+        <span class="lang-id">Kenapa Pakar Lebih Akurat</span>
+      </h2>
+
+      <div class="space-y-8 justified-text">
+        <p class="drop-cap">
+          <span class="lang-en">
+            Expert snap judgment is not a gift—it’s trained pattern recognition.
+            Experts often win because they know <strong>which cues matter</strong> and ignore the rest.
+            They also develop internal models through repetition and feedback.
+            The main idea: fast thinking becomes reliable when it is fed by good training data.
+          </span>
+          <span class="lang-id">
+            Keputusan cepat pakar bukan bakat—tapi pola yang dilatih.
+            Pakar unggul karena tahu <strong>cue mana yang penting</strong> dan mengabaikan sisanya.
+            Mereka membangun model internal lewat pengulangan dan feedback.
+            Intinya: pikir cepat jadi andal jika “data latihnya” bagus.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">WHAT MAKES EXPERT INTUITION WORK</div>
+          <div class="grid md:grid-cols-4 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Repetition</span><span class="lang-id">Pengulangan</span></h4>
+              <p class="mb-0"><span class="lang-en">Many cases, many variations.</span><span class="lang-id">Banyak kasus, banyak variasi.</span></p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Feedback</span><span class="lang-id">Umpan Balik</span></h4>
+              <p class="mb-0"><span class="lang-en">Clear signals of right/wrong.</span><span class="lang-id">Sinyal benar/salah yang jelas.</span></p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Cue Selection</span><span class="lang-id">Seleksi Cue</span></h4>
+              <p class="mb-0"><span class="lang-en">Focus on high-signal indicators.</span><span class="lang-id">Fokus pada indikator bersinyal tinggi.</span></p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">Environment</span><span class="lang-id">Lingkungan</span></h4>
+              <p class="mb-0"><span class="lang-en">Stable conditions reduce noise.</span><span class="lang-id">Kondisi stabil mengurangi noise.</span></p>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="mini-card">
+            <h4 class="text-xl mb-2"><span class="lang-en">Case Study: Emergency Decisions</span><span class="lang-id">Studi Kasus: Keputusan Darurat</span></h4>
+            <p class="mb-0">
+              <span class="lang-en">
+                In many high-pressure fields (medicine, firefighting), seasoned practitioners recognize patterns quickly
+                because they’ve seen many “signatures” of situations. The best systems add structure:
+                rapid triage, checklists, and team callouts to reduce individual blind spots.
+              </span>
+              <span class="lang-id">
+                Di bidang tekanan tinggi (medis, pemadam), praktisi senior mengenali pola cepat
+                karena sudah melihat banyak “signature” situasi. Sistem terbaik menambah struktur:
+                triase cepat, checklist, dan komunikasi tim untuk mengurangi blind spot individu.
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">ACTION STEPS</div>
+          <ol class="list-decimal pl-6 space-y-3 mono-font">
+            <li><span class="lang-en">Choose 1 skill where you want expert intuition (sales, negotiation, hiring, design).</span><span class="lang-id">Pilih 1 skill yang ingin jadi intuisi pakar (sales, negosiasi, rekrut, desain).</span></li>
+            <li><span class="lang-en">Create a feedback loop: after each decision, log outcome and what cue you used.</span><span class="lang-id">Buat feedback loop: setelah keputusan, catat hasil dan cue yang dipakai.</span></li>
+            <li><span class="lang-en">After 20 reps, identify 2 cues that best predict success and prioritize them.</span><span class="lang-id">Setelah 20 repetisi, temukan 2 cue paling memprediksi sukses dan prioritaskan.</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- CH7 -->
+    <section id="ch7" class="content-section fade-in">
+      <span class="section-kicker">07 — Design Better Blinks</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">How to Make Fast Decisions Safer</span>
+        <span class="lang-id">Cara Membuat Keputusan Cepat Lebih Aman</span>
+      </h2>
+
+      <div class="space-y-8 justified-text">
+        <p class="drop-cap">
+          <span class="lang-en">
+            The final practical lesson of <strong>Blink</strong>: don’t just “trust” or “distrust” snap judgments.
+            Instead, <strong>engineer</strong> them. You do that by:
+            choosing better cues, reducing noise, structuring decisions, and using pauses for high-stakes moments.
+            The goal is a smart hybrid: fast pattern recognition + minimal verification.
+          </span>
+          <span class="lang-id">
+            Pelajaran praktis akhir <strong>Blink</strong>: jangan cuma “percaya” atau “tidak percaya” intuisi.
+            Tapi <strong>rekayasa</strong> agar lebih akurat. Caranya:
+            memilih cue yang tepat, mengurangi noise, memberi struktur keputusan, dan jeda untuk momen high-stakes.
+            Targetnya hybrid pintar: pengenalan pola cepat + verifikasi minimal.
+          </span>
+        </p>
+
+        <div class="concept-box">
+          <div class="concept-label">THE BLINK DESIGN FRAMEWORK</div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">1) Set the Arena</span><span class="lang-id">1) Atur Arenanya</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">Reduce distractions</span><span class="lang-id">Kurangi distraksi</span></li>
+                <li><span class="lang-en">Remove threat cues</span><span class="lang-id">Hilangkan pemicu ancaman</span></li>
+                <li><span class="lang-en">Make goals explicit</span><span class="lang-id">Tujuan harus jelas</span></li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">2) Choose the Cues</span><span class="lang-id">2) Pilih Cue</span></h4>
+              <ul class="list-disc pl-6 space-y-2">
+                <li><span class="lang-en">Prefer behavior over appearance</span><span class="lang-id">Utamakan perilaku daripada tampilan</span></li>
+                <li><span class="lang-en">Prefer evidence over eloquence</span><span class="lang-id">Utamakan bukti daripada kelancaran bicara</span></li>
+                <li><span class="lang-en">Use a small scorecard</span><span class="lang-id">Pakai scorecard kecil</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">3) Add a Pause Point</span><span class="lang-id">3) Tambah Titik Jeda</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">10–30 seconds to ask one verification question.</span>
+                <span class="lang-id">10–30 detik untuk 1 pertanyaan verifikasi.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">4) Use a Default Rule</span><span class="lang-id">4) Pakai Aturan Default</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">If unsure, follow a rule that reduces harm.</span>
+                <span class="lang-id">Kalau ragu, ikuti aturan yang mengurangi risiko.</span>
+              </p>
+            </div>
+            <div class="mini-card">
+              <h4 class="text-xl mb-2"><span class="lang-en">5) Close the Loop</span><span class="lang-id">5) Tutup Loop</span></h4>
+              <p class="mb-0">
+                <span class="lang-en">Track outcomes so your intuition gets trained.</span>
+                <span class="lang-id">Catat hasil agar intuisi terlatih.</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-6 callout">
+            <p class="mb-0">
+              <span class="lang-en"><strong>Rule of thumb:</strong> Fast decisions are best for pattern-rich domains with feedback. They’re risky for novel, rare, or politically charged contexts.</span>
+              <span class="lang-id"><strong>Rule of thumb:</strong> Keputusan cepat bagus untuk domain kaya pola dan ada feedback. Berisiko untuk situasi baru, langka, atau sangat sensitif.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">ACTION STEPS</div>
+          <ol class="list-decimal pl-6 space-y-3 mono-font">
+            <li><span class="lang-en">Pick 1 decision type you do weekly (e.g., selecting vendors, approving content, hiring).</span><span class="lang-id">Pilih 1 jenis keputusan mingguan (mis. pilih vendor, approve konten, rekrut).</span></li>
+            <li><span class="lang-en">Make a 5-criteria scorecard and commit to using it for 10 decisions.</span><span class="lang-id">Buat scorecard 5 kriteria dan pakai untuk 10 keputusan.</span></li>
+            <li><span class="lang-en">Add one pause-point question and one “default rule” if uncertain.</span><span class="lang-id">Tambahkan 1 pertanyaan jeda dan 1 aturan default saat ragu.</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLKIT -->
+    <section id="toolkit" class="content-section fade-in">
+      <span class="section-kicker">Toolkit A</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Field Tools (Fast & Practical)</span>
+        <span class="lang-id">Tools Lapangan (Cepat & Praktis)</span>
+      </h2>
+
+      <div class="space-y-8 justified-text">
+        <div class="concept-box">
+          <div class="concept-label">TOOL 1 — THE 10-SECOND CHECK</div>
+          <div class="mini-card">
+            <p class="mb-0 mono-font">
+              <span class="lang-en">
+                1) What am I reacting to? (cue) <br/>
+                2) Is it a performance cue or a surface cue? <br/>
+                3) What evidence would confirm/deny it quickly?
+              </span>
+              <span class="lang-id">
+                1) Saya bereaksi pada apa? (cue) <br/>
+                2) Ini cue perform atau cue permukaan? <br/>
+                3) Bukti cepat apa yang mengonfirmasi/menolak?
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">TOOL 2 — ANTI-BIAS PAUSE</div>
+          <div class="mini-card">
+            <p class="mb-0 mono-font">
+              <span class="lang-en">
+                Pause 10 seconds. Ask: <br/>
+                “If the person looked different, would I judge the same?” <br/>
+                “What are 2 alternative explanations?”
+              </span>
+              <span class="lang-id">
+                Jeda 10 detik. Tanya: <br/>
+                “Kalau orangnya tampil berbeda, apakah saya menilai sama?” <br/>
+                “Apa 2 penjelasan alternatif?”
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">TOOL 3 — SCORECARD SNAP</div>
+          <div class="mini-card">
+            <p class="mb-0">
+              <span class="lang-en">
+                For repeated decisions (hiring/vendors/content): use 3–5 criteria, score 1–5 quickly.
+                This keeps snap judgment anchored to evidence, not vibes.
+              </span>
+              <span class="lang-id">
+                Untuk keputusan berulang (rekrut/vendor/konten): gunakan 3–5 kriteria, beri skor 1–5 cepat.
+                Ini menambatkan keputusan cepat pada bukti, bukan vibes.
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">TOOL 4 — NOISE AUDIT</div>
+          <div class="mini-card">
+            <p class="mb-0">
+              <span class="lang-en">
+                Before important decisions, remove noise: hunger, fatigue, distractions, social pressure.
+                If you can’t remove noise, postpone or use a checklist-heavy mode.
+              </span>
+              <span class="lang-id">
+                Sebelum keputusan penting, buang noise: lapar, capek, distraksi, tekanan sosial.
+                Kalau tidak bisa, tunda atau pakai mode checklist.
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CASES -->
+    <section id="cases" class="content-section fade-in">
+      <span class="section-kicker">Toolkit B</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Case Studies Library</span>
+        <span class="lang-id">Perpustakaan Studi Kasus</span>
+      </h2>
+
+      <div class="space-y-8 justified-text">
+        <div class="concept-box">
+          <div class="concept-label">CASE 1 — ART AUTHENTICATION (KOUROS)</div>
+          <p class="mb-0">
+            <span class="lang-en">
+              Experts sensed “something off” immediately—thin-slicing subtle cues beyond paperwork. The insight:
+              <strong>snap judgments can be valid when they’re grounded in deep experience</strong>.
+              The warning: documentation and authority can prime people to ignore their own pattern alarms—so good systems protect dissenting expert intuition.
+            </span>
+            <span class="lang-id">
+              Para ahli merasa “ada yang aneh” secara instan—thin-slicing cue halus di luar dokumen. Intinya:
+              <strong>intuisi cepat bisa valid jika berbasis pengalaman mendalam</strong>.
+              Peringatan: dokumen dan otoritas bisa mem-priming orang untuk mengabaikan alarm pola—jadi sistem bagus melindungi intuisi ahli yang berbeda.
+            </span>
+          </p>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">CASE 2 — MARRIAGE THIN-SLICING</div>
+          <p class="mb-0">
+            <span class="lang-en">
+              Short interactions can reveal stable patterns (warmth vs contempt). Why it matters:
+              sometimes <strong>micro-behaviors</strong> predict relationship health better than “what people say.”
+              Use responsibly: not for labeling people, but for noticing patterns and correcting them early.
+            </span>
+            <span class="lang-id">
+              Interaksi singkat bisa menunjukkan pola (hangat vs meremehkan). Kenapa penting:
+              kadang <strong>micro-behavior</strong> lebih memprediksi kesehatan relasi daripada “kata-kata.”
+              Gunakan dengan bijak: bukan untuk melabeli, tapi untuk menyadari pola dan memperbaiki lebih awal.
+            </span>
+          </p>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">CASE 3 — THE HARDING ERROR (LOOKS LIKE LEADERSHIP)</div>
+          <p class="mb-0">
+            <span class="lang-en">
+              People often mistake “presidential presence” (style) for competence. Business version:
+              mistaking charismatic pitching for execution ability. Fix: use <strong>work samples</strong>, track records, and structured criteria.
+            </span>
+            <span class="lang-id">
+              Orang sering mengira “tampil meyakinkan” = kompeten. Versi bisnis:
+              mengira presentasi memukau = kemampuan eksekusi. Solusi: pakai <strong>work sample</strong>, rekam jejak, dan kriteria terstruktur.
+            </span>
+          </p>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">CASE 4 — PRIMING IN DAILY LIFE</div>
+          <p class="mb-0">
+            <span class="lang-en">
+              Small cues can nudge behavior. A practical mindset: treat environments like code—if you want different outputs,
+              change inputs (opening words, room setup, default scripts, reminders).
+            </span>
+            <span class="lang-id">
+              Cue kecil bisa mendorong perilaku. Mindset praktis: anggap lingkungan seperti kode—kalau mau output beda,
+              ubah input (kata pembuka, tata ruang, skrip default, pengingat).
+            </span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORKSHEETS -->
+    <section id="worksheets" class="content-section fade-in">
+      <span class="section-kicker">Toolkit C</span>
+      <h2 class="text-5xl sm:text-6xl mb-12 leading-none">
+        <span class="lang-en">Worksheets (Copy & Use)</span>
+        <span class="lang-id">Worksheet (Copy & Pakai)</span>
+      </h2>
+
+      <div class="space-y-8 justified-text">
+
+        <div class="concept-box">
+          <div class="concept-label">1) YOUR BLINK SCORECARD (3–5 CRITERIA)</div>
+          <div class="mini-card mono-font">
+            <p class="mb-0">
+              <span class="lang-en">
+                Decision type: ______________________________ <br/>
+                Criteria 1 (performance): ____________________ Score 1–5: ____ <br/>
+                Criteria 2 (performance): ____________________ Score 1–5: ____ <br/>
+                Criteria 3 (performance): ____________________ Score 1–5: ____ <br/>
+                Criteria 4 (risk): ___________________________ Score 1–5: ____ <br/>
+                Criteria 5 (fit): ____________________________ Score 1–5: ____ <br/>
+                Total: ________  |  Decision: Accept / Reject / Verify
+              </span>
+              <span class="lang-id">
+                Jenis keputusan: ____________________________ <br/>
+                Kriteria 1 (perform): ________________________ Skor 1–5: ____ <br/>
+                Kriteria 2 (perform): ________________________ Skor 1–5: ____ <br/>
+                Kriteria 3 (perform): ________________________ Skor 1–5: ____ <br/>
+                Kriteria 4 (risiko): _________________________ Skor 1–5: ____ <br/>
+                Kriteria 5 (fit): ____________________________ Skor 1–5: ____ <br/>
+                Total: ________  |  Keputusan: Terima / Tolak / Verifikasi
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">2) ANTI-HARDING CUE SWAP</div>
+          <div class="mini-card mono-font">
+            <p class="mb-0">
+              <span class="lang-en">
+                Surface cue I fall for: _______________________ <br/>
+                Proof cue to replace it: ______________________ <br/>
+                Quick verification step (≤ 2 min): ___________ <br/>
+                Default rule if uncertain: ____________________
+              </span>
+              <span class="lang-id">
+                Cue permukaan yang saya mudah percaya: ________ <br/>
+                Cue bukti untuk menggantikan: ________________ <br/>
+                Verifikasi cepat (≤ 2 menit): _________________ <br/>
+                Aturan default saat ragu: _____________________
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">3) PRIMING DESIGN (CHANGE INPUTS)</div>
+          <div class="mini-card mono-font">
+            <p class="mb-0">
+              <span class="lang-en">
+                Context (meeting/sales/negotiation): __________ <br/>
+                Desired behavior/output: ______________________ <br/>
+                Prime #1 (first sentence): ____________________ <br/>
+                Prime #2 (environment cue): ___________________ <br/>
+                Threat trigger to remove: _____________________ <br/>
+                1-minute script to open: ______________________
+              </span>
+              <span class="lang-id">
+                Konteks (rapat/sales/negosiasi): _____________ <br/>
+                Output yang diinginkan: _______________________ <br/>
+                Prime #1 (kalimat pertama): ___________________ <br/>
+                Prime #2 (cue lingkungan): ____________________ <br/>
+                Pemicu ancaman yang dihapus: _________________ <br/>
+                Skrip pembuka 1 menit: _______________________
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="concept-box">
+          <div class="concept-label">4) BLINK LOG (TRAIN YOUR INTUITION)</div>
+          <div class="mini-card mono-font">
+            <p class="mb-0">
+              <span class="lang-en">
+                Decision made: _______________________________ <br/>
+                My snap impression (blink): __________________ <br/>
+                Cues I used: _________________________________ <br/>
+                Verification step: ___________________________ <br/>
+                Outcome (after time): ________________________ <br/>
+                Lesson: Which cues were signal vs noise? ______
+              </span>
+              <span class="lang-id">
+                Keputusan: _________________________________ <br/>
+                Kesan cepat (blink): ________________________ <br/>
+                Cue yang saya pakai: ________________________ <br/>
+                Verifikasi: _________________________________ <br/>
+                Hasil (setelah waktu): ______________________ <br/>
+                Pelajaran: cue mana sinyal vs noise? _________
+              </span>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- SCRIPT -->
+  <script>
+    // --- LANGUAGE LOGIC ---
+    let currentLang = 'en';
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'en' ? 'id' : 'en';
+      updateContent();
+    }
+
+    function updateContent() {
+      const enElements = document.querySelectorAll('.lang-en');
+      const idElements = document.querySelectorAll('.lang-id');
+      const langEn = document.querySelector('.lang-opt-en');
+      const langId = document.querySelector('.lang-opt-id');
+
+      if (currentLang === 'en') {
+        enElements.forEach(el => el.style.display = 'block');
+        idElements.forEach(el => el.style.display = 'none');
+        if (langEn && langId) {
+          langEn.classList.add('active');
+          langId.classList.remove('active');
+        }
+      } else {
+        enElements.forEach(el => el.style.display = 'none');
+        idElements.forEach(el => el.style.display = 'block');
+        if (langEn && langId) {
+          langEn.classList.remove('active');
+          langId.classList.add('active');
+        }
+      }
+    }
+
+    // --- DRAWER LOGIC ---
+    function toggleDrawer() {
+      const drawer = document.querySelector('.nav-drawer');
+      const overlay = document.querySelector('.nav-overlay');
+      drawer.classList.toggle('open');
+      overlay.classList.toggle('active');
+      document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : '';
+    }
+
+    function closeDrawer() {
+      const drawer = document.querySelector('.nav-drawer');
+      const overlay = document.querySelector('.nav-overlay');
+      drawer.classList.remove('open');
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function showSection(sectionId) {
+      document.querySelectorAll('.content-section').forEach(sec => {
+        sec.classList.remove('active');
+        sec.classList.remove('fade-in');
+      });
+
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active-tab'));
+
+      const target = document.getElementById(sectionId);
+      if (!target) return;
+
+      target.classList.add('active');
+      void target.offsetWidth; // reflow
+      target.classList.add('fade-in');
+
+      if (typeof event !== 'undefined' && event.currentTarget) {
+        event.currentTarget.classList.add('active-tab');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Init
+    updateContent();
+  </script>
+
+</body>
+</html>
